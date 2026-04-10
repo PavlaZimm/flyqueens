@@ -112,8 +112,10 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         </div>
       </div>
 
-      {/* Typ */}
-      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4 }}>{label}</div>
+      {/* Typ + model */}
+      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4 }}>
+        {flight.model ? <><span style={{ color: 'var(--text-muted)' }}>{flight.model}</span> · </> : ''}{label}
+      </div>
 
       {/* Vibe */}
       <div style={{

@@ -1,4 +1,21 @@
 import { NextResponse } from 'next/server'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+// Načteme aircraft DB jednou při startu serveru (module-level cache)
+let aircraftDb: Record<string, { m: string; t: string }> | null = null
+
+function getAircraftDb() {
+  if (!aircraftDb) {
+    try {
+      const raw = readFileSync(join(process.cwd(), 'public/aircraft-db.json'), 'utf-8')
+      aircraftDb = JSON.parse(raw)
+    } catch {
+      aircraftDb = {}
+    }
+  }
+  return aircraftDb!
+}
 
 // Server-side proxy pro OpenSky API — obchází CORS
 export async function GET() {
@@ -35,7 +52,17 @@ export async function GET() {
       return NextResponse.json(getMockData())
     }
 
-    return NextResponse.json(data)
+    // Obohatíme data o model letadla z DB
+    const db = getAircraftDb()
+    const enriched = {
+      ...data,
+      states: data.states.map((s: unknown[]) => {
+        const icao = String(s[0]).toLowerCase()
+        const entry = db[icao]
+        return entry ? [...s, entry.m, entry.t] : s
+      })
+    }
+    return NextResponse.json(enriched)
   } catch {
     // Při jakékoliv chybě vrátíme mock data
     return NextResponse.json(getMockData())

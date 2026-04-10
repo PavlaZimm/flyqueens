@@ -18,5 +18,6 @@ export interface Flight {
   heading: number       // stupně 0-360
   onGround: boolean
   aircraftType?: AircraftType
+  model?: string            // přesný model z aircraft DB (např. "A320-214")
   origin_country?: string
 }
