@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import type { Flight } from '@/types/flight'
+import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
 
 interface MapViewProps {
@@ -10,19 +10,33 @@ interface MapViewProps {
   onFlightSelect: (flight: Flight) => void
   theme: 'dark' | 'light'
   searchQuery?: string
+  activeFilters: Set<string>
+  onMapReady?: (flyTo: (lat: number, lng: number) => void) => void
 }
 
-// Drží předchozí pozice letadel pro interpolaci
-const prevPositions = new Map<string, { lat: number; lng: number }>()
+// Historie pozic — max 12 bodů na letadlo
+const flightHistory = new Map<string, Array<{ lat: number; lng: number }>>()
+const MAX_HISTORY = 12
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery }: MapViewProps) {
+function matchesFilter(flight: Flight, filters: Set<string>): boolean {
+  if (filters.size === 0) return true
+  const t = flight.aircraftType ?? 'narrow-body'
+  if (filters.has('passenger') && ['narrow-body', 'wide-body', 'turboprop'].includes(t)) return true
+  if (filters.has('cargo')     && t === 'cargo') return true
+  if (filters.has('private')   && ['private-jet', 'ga'].includes(t)) return true
+  if (filters.has('military')  && t === 'military') return true
+  if (filters.has('helicopter')&& t === 'helicopter') return true
+  return false
+}
+
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, onMapReady }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mapRef = useRef<any>(null)
+  const mapRef   = useRef<any>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<Map<string, any>>(new Map())
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pathsRef = useRef<Map<string, any>>(new Map())
+  const trailsRef  = useRef<Map<string, any>>(new Map())
 
   // Init mapy
   useEffect(() => {
@@ -36,10 +50,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' })
 
       const map = L.map(containerRef.current, {
-        center: [50.0, 15.5],
-        zoom: 6,
-        zoomControl: false,
-        attributionControl: true,
+        center: [50.0, 15.5], zoom: 6,
+        zoomControl: false, attributionControl: true,
       })
 
       const darkTiles = L.tileLayer(
@@ -51,12 +63,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         { attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>', subdomains: 'abcd', maxZoom: 19 }
       )
 
-      if (theme === 'light') lightTiles.addTo(map)
-      else darkTiles.addTo(map)
-
+      theme === 'light' ? lightTiles.addTo(map) : darkTiles.addTo(map)
       L.control.zoom({ position: 'bottomright' }).addTo(map)
 
       mapRef.current = { map, darkTiles, lightTiles, L }
+
+      if (onMapReady) {
+        onMapReady((lat, lng) => {
+          map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 })
+        })
+      }
     })
 
     return () => {
@@ -64,119 +80,120 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         mapRef.current.map.remove()
         mapRef.current = null
         markersRef.current.clear()
-        pathsRef.current.clear()
-        prevPositions.clear()
+        trailsRef.current.clear()
+        flightHistory.clear()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Přepínání tématu
+  // Přepínání tématu — opraveno
   useEffect(() => {
     if (!mapRef.current) return
     const { map, darkTiles, lightTiles } = mapRef.current
-    if (theme === 'light') { map.removeLayer(darkTiles); lightTiles.addTo(map) }
-    else { map.removeLayer(lightTiles); darkTiles.addTo(map) }
+    if (theme === 'light') {
+      if (map.hasLayer(darkTiles))  map.removeLayer(darkTiles)
+      if (!map.hasLayer(lightTiles)) lightTiles.addTo(map)
+    } else {
+      if (map.hasLayer(lightTiles)) map.removeLayer(lightTiles)
+      if (!map.hasLayer(darkTiles))  darkTiles.addTo(map)
+    }
   }, [theme])
 
-  // FlyTo při výběru letadla
+  // FlyTo při výběru
   useEffect(() => {
     if (!mapRef.current || !selectedFlight) return
     const { map } = mapRef.current
     map.flyTo([selectedFlight.lat, selectedFlight.lng], Math.max(map.getZoom(), 7), {
-      animate: true,
-      duration: 0.8,
+      animate: true, duration: 0.8,
     })
   }, [selectedFlight])
 
-  // Aktualizace markerů + flight paths
+  // Markery + trail
   useEffect(() => {
     if (!mapRef.current) return
     const { map, L } = mapRef.current
-
     const q = (searchQuery ?? '').trim().toUpperCase()
 
     flights.forEach((flight) => {
-      const isVisible = !q || flight.callsign.includes(q) || flight.icao24.toUpperCase().includes(q)
-      const isSelected = selectedFlight?.icao24 === flight.icao24
-      const color = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
-      const size = isSelected ? 34 : 22
+      const passesSearch = !q || flight.callsign.includes(q) || flight.icao24.toUpperCase().includes(q)
+      const passesFilter = matchesFilter(flight, activeFilters)
+      const isVisible    = passesSearch && passesFilter
+      const isSelected   = selectedFlight?.icao24 === flight.icao24
+      const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
+      const size         = isSelected ? 34 : 22
 
-      // Předchozí pozice pro flight path
-      const prev = prevPositions.get(flight.icao24)
-
-      // --- Flight path (přerušovaná čára) ---
-      if (prev && isSelected) {
-        const existingPath = pathsRef.current.get(flight.icao24)
-        if (existingPath) map.removeLayer(existingPath)
-
-        const path = L.polyline(
-          [[prev.lat, prev.lng], [flight.lat, flight.lng]],
-          {
-            color: color,
-            weight: 1.5,
-            opacity: 0.4,
-            dashArray: '6 6',
-          }
-        )
-        if (isVisible) path.addTo(map)
-        pathsRef.current.set(flight.icao24, path)
-      } else if (!isSelected) {
-        const existingPath = pathsRef.current.get(flight.icao24)
-        if (existingPath) { map.removeLayer(existingPath); pathsRef.current.delete(flight.icao24) }
+      // --- Historie trasy ---
+      const hist = flightHistory.get(flight.icao24) ?? []
+      const last = hist[hist.length - 1]
+      if (!last || last.lat !== flight.lat || last.lng !== flight.lng) {
+        hist.push({ lat: flight.lat, lng: flight.lng })
+        if (hist.length > MAX_HISTORY) hist.shift()
+        flightHistory.set(flight.icao24, hist)
       }
 
-      // Ulož aktuální pozici
-      prevPositions.set(flight.icao24, { lat: flight.lat, lng: flight.lng })
+      // Trail polyline
+      const existingTrail = trailsRef.current.get(flight.icao24)
+      if (existingTrail) map.removeLayer(existingTrail)
+
+      if (hist.length >= 2 && isVisible) {
+        const trailColor = isSelected ? color : `${color}55`
+        const trail = L.polyline(
+          hist.map(p => [p.lat, p.lng]),
+          {
+            color: trailColor,
+            weight: isSelected ? 2 : 1,
+            opacity: isSelected ? 0.7 : 0.35,
+            dashArray: '5 5',
+            smoothFactor: 2,
+          }
+        )
+        trail.addTo(map)
+        trailsRef.current.set(flight.icao24, trail)
+      }
 
       // --- Marker ---
-      const svgHtml = createAircraftSVG(color, size, flight.heading, isSelected)
       const icon = L.divIcon({
-        html: svgHtml,
+        html: createAircraftSVG(color, size, flight.heading, isSelected),
         className: '',
         iconSize: [size, size],
         iconAnchor: [size / 2, size / 2],
       })
 
       const existing = markersRef.current.get(flight.icao24)
-
       if (existing) {
-        // Plynulý přesun markeru (animace pohybu)
-        const currentLatLng = existing.getLatLng()
-        if (currentLatLng.lat !== flight.lat || currentLatLng.lng !== flight.lng) {
-          animateMarker(existing, currentLatLng, { lat: flight.lat, lng: flight.lng })
+        const cur = existing.getLatLng()
+        if (cur.lat !== flight.lat || cur.lng !== flight.lng) {
+          animateMarker(existing, cur, { lat: flight.lat, lng: flight.lng })
         }
         existing.setIcon(icon)
-        if (isVisible) { if (!map.hasLayer(existing)) existing.addTo(map) }
-        else { if (map.hasLayer(existing)) map.removeLayer(existing) }
+        isVisible ? (!map.hasLayer(existing) && existing.addTo(map))
+                  : (map.hasLayer(existing)  && map.removeLayer(existing))
       } else {
         const marker = L.marker([flight.lat, flight.lng], { icon })
         marker.on('click', () => onFlightSelect(flight))
         marker.bindTooltip(flight.callsign, {
-          permanent: false,
-          direction: 'top',
-          offset: [0, -size / 2 - 4],
-          className: 'fq-tooltip',
+          permanent: false, direction: 'top',
+          offset: [0, -size / 2 - 4], className: 'fq-tooltip',
         })
         if (isVisible) marker.addTo(map)
         markersRef.current.set(flight.icao24, marker)
       }
     })
 
-    // Smaž markery letadel co zmizela
-    const currentIds = new Set(flights.map((f) => f.icao24))
-    markersRef.current.forEach((marker, id) => {
-      if (!currentIds.has(id)) {
-        map.removeLayer(marker)
+    // Smaž odstraněná letadla
+    const ids = new Set(flights.map(f => f.icao24))
+    markersRef.current.forEach((m, id) => {
+      if (!ids.has(id)) {
+        map.removeLayer(m)
         markersRef.current.delete(id)
-        prevPositions.delete(id)
-        const path = pathsRef.current.get(id)
-        if (path) { map.removeLayer(path); pathsRef.current.delete(id) }
+        flightHistory.delete(id)
+        const t = trailsRef.current.get(id)
+        if (t) { map.removeLayer(t); trailsRef.current.delete(id) }
       }
     })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flights, selectedFlight, theme, searchQuery])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flights, selectedFlight, theme, searchQuery, activeFilters])
 
   return (
     <>
@@ -198,7 +215,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           border: 1px solid rgba(255,255,255,0.12) !important;
           border-radius: 8px !important;
           overflow: hidden;
-          margin-bottom: 40px !important;
+          margin-bottom: 44px !important;
           margin-right: 12px !important;
         }
         .leaflet-control-zoom-in,
@@ -206,54 +223,37 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           background: rgba(15,23,42,0.88) !important;
           color: rgba(255,255,255,0.6) !important;
           border: none !important;
-          width: 30px !important;
-          height: 30px !important;
-          line-height: 30px !important;
-          font-size: 16px !important;
+          width: 30px !important; height: 30px !important; line-height: 30px !important;
         }
         .leaflet-control-zoom-in:hover,
-        .leaflet-control-zoom-out:hover {
-          background: rgba(30,41,59,0.95) !important;
-          color: #FDE047 !important;
-        }
-        .leaflet-control-attribution {
-          font-size: 9px !important;
-          background: rgba(10,15,30,0.6) !important;
-          color: rgba(255,255,255,0.25) !important;
-        }
-        .leaflet-control-attribution a { color: rgba(255,255,255,0.3) !important; }
+        .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: #FDE047 !important; }
+        .leaflet-control-attribution { font-size: 9px !important; background: rgba(10,15,30,0.55) !important; color: rgba(255,255,255,0.2) !important; }
+        .leaflet-control-attribution a { color: rgba(255,255,255,0.25) !important; }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>
   )
 }
 
-// Plynulá animace pohybu markeru (60 fps, 800ms)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function animateMarker(marker: any, from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
-  const duration = 800
+  const duration = 900
   const start = performance.now()
-
   function step(now: number) {
-    const t = Math.min((now - start) / duration, 1)
-    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOut
-    marker.setLatLng([
-      from.lat + (to.lat - from.lat) * ease,
-      from.lng + (to.lng - from.lng) * ease,
-    ])
+    const t    = Math.min((now - start) / duration, 1)
+    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    marker.setLatLng([from.lat + (to.lat - from.lat) * ease, from.lng + (to.lng - from.lng) * ease])
     if (t < 1) requestAnimationFrame(step)
     else marker.setLatLng([to.lat, to.lng])
   }
-
   requestAnimationFrame(step)
 }
 
 function createAircraftSVG(color: string, size: number, heading: number, selected: boolean): string {
-  const pulse = selected
-    ? `<circle cx="40" cy="30" r="24" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.5" style="animation:pulse-ring 2s ease-out infinite"/>
-       <circle cx="40" cy="30" r="34" fill="none" stroke="${color}" stroke-width="1" opacity="0.25" style="animation:pulse-ring 2s ease-out infinite;animation-delay:0.5s"/>`
-    : ''
-
+  const pulse = selected ? `
+    <circle cx="40" cy="30" r="24" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.5" style="animation:pulse-ring 2s ease-out infinite"/>
+    <circle cx="40" cy="30" r="34" fill="none" stroke="${color}" stroke-width="1"   opacity="0.25" style="animation:pulse-ring 2s ease-out infinite;animation-delay:0.5s"/>
+  ` : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" width="${size}" height="${size}"
     style="transform:rotate(${heading}deg);transform-origin:center;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.7));overflow:visible;display:block">
     ${pulse}
@@ -268,3 +268,6 @@ function createAircraftSVG(color: string, size: number, heading: number, selecte
     </g>
   </svg>`
 }
+
+// Export typu pro TypeScript
+export type { AircraftType }

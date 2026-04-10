@@ -1,21 +1,63 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { MapView } from '@/components/Map/MapView'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
-import { TopBar } from '@/components/UI/TopBar'
+import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { StatusBar } from '@/components/UI/StatusBar'
 import type { Flight } from '@/types/flight'
+
+function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  const touchStartY = useRef(0)
+  const sheetRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div
+      ref={sheetRef}
+      className="fq-detail-mobile bottom-sheet-enter"
+      style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: 'var(--midnight-2)',
+        borderTop: '1px solid var(--glass-border)',
+        borderRadius: '24px 24px 0 0',
+        padding: '16px',
+        zIndex: 1500,
+        maxHeight: '72vh',
+        overflow: 'auto',
+      }}
+      onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
+      onTouchEnd={(e) => {
+        const dy = e.changedTouches[0].clientY - touchStartY.current
+        if (dy > 60) onClose()
+      }}
+    >
+      <div className="handle-bar" />
+      {children}
+    </div>
+  )
+}
 
 export default function Home() {
   const { flights, loading, count } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)   // mobile hamburger
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
+  const [locateMe, setLocateMe] = useState<{ lat: number; lng: number } | null>(null)
+  const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+
+  const handleLocateMe = () => {
+    if (!navigator.geolocation) return
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude, longitude } = pos.coords
+      setLocateMe({ lat: latitude, lng: longitude })
+      mapLocateFnRef.current?.(latitude, longitude)
+    })
+  }
 
   const handleFlightSelect = (flight: Flight) => {
     setSelectedFlight(flight)
@@ -71,6 +113,8 @@ export default function Home() {
               onFlightSelect={handleFlightSelect}
               theme={theme}
               searchQuery={searchQuery}
+              activeFilters={activeFilters}
+              onMapReady={(fn) => { mapLocateFnRef.current = fn }}
             />
           </div>
         )}
@@ -82,6 +126,8 @@ export default function Home() {
             theme={theme}
             onToggleTheme={toggleTheme}
             onHamburger={() => setSidebarOpen(true)}
+            activeFilters={activeFilters}
+            onFilterChange={setActiveFilters}
           />
         </div>
 
@@ -96,20 +142,27 @@ export default function Home() {
 
         {/* Mobile bottom sheet */}
         {selectedFlight && (
-          <div className="fq-detail-mobile bottom-sheet-enter" style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0,
-            background: 'var(--midnight-2)',
-            borderTop: '1px solid var(--glass-border)',
-            borderRadius: '24px 24px 0 0',
-            padding: '16px',
-            zIndex: 1500,
-            maxHeight: '72vh',
-            overflow: 'auto',
-          }}>
-            <div className="handle-bar" />
+          <MobileBottomSheet onClose={handleDetailClose}>
             <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} />
-          </div>
+          </MobileBottomSheet>
         )}
+
+        {/* GPS button */}
+        <button
+          onClick={handleLocateMe}
+          style={{
+            position: 'absolute', bottom: 52, right: 12, zIndex: 1000,
+            width: 36, height: 36, borderRadius: 8,
+            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+            backdropFilter: 'blur(8px)', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 16,
+          }}
+          aria-label="Najít mou polohu"
+          title="Najít mou polohu"
+        >
+          📍
+        </button>
 
         {/* StatusBar */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>

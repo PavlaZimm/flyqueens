@@ -1,36 +1,36 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
+
+export type FilterType = 'passenger' | 'cargo' | 'private' | 'military' | 'helicopter'
 
 interface TopBarProps {
   flightCount: number
   theme: 'dark' | 'light'
   onToggleTheme: () => void
   onHamburger: () => void
+  activeFilters: Set<FilterType>
+  onFilterChange: (filters: Set<FilterType>) => void
 }
 
-type FilterType = 'passenger' | 'cargo' | 'private'
-
-export function TopBar({ flightCount, theme, onToggleTheme, onHamburger }: TopBarProps) {
-  const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
-
+export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeFilters, onFilterChange }: TopBarProps) {
   const toggleFilter = (f: FilterType) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev)
-      if (next.has(f)) {
-        next.delete(f)
-      } else {
-        next.add(f)
-      }
-      return next
-    })
+    const next = new Set(activeFilters)
+    if (next.has(f)) {
+      next.delete(f)
+    } else {
+      next.add(f)
+    }
+    onFilterChange(next)
   }
 
   const filters: { id: FilterType; label: string }[] = [
     { id: 'passenger', label: 'Pasažérské' },
     { id: 'cargo', label: 'Nákladní' },
     { id: 'private', label: 'Soukromé' },
+    { id: 'military', label: 'Vojenské' },
+    { id: 'helicopter', label: 'Vrtulníky' },
   ]
 
   return (
@@ -140,6 +140,19 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger }: TopBa
       </div>
 
       <div style={{ flex: 1 }} />
+
+      {/* Stats link */}
+      <Link href="/stats" style={{ textDecoration: 'none' }}>
+        <div style={{
+          background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+          borderRadius: 8, padding: '6px 10px', cursor: 'pointer',
+          backdropFilter: 'blur(8px)', fontSize: 10,
+          color: 'var(--text-muted)', letterSpacing: 0.5,
+          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600,
+        }}>
+          📊
+        </div>
+      </Link>
 
       {/* Theme toggle */}
       <button
