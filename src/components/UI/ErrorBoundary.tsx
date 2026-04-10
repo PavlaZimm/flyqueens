@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </div>
           {process.env.NODE_ENV === 'development' && (
             <div style={{
-              background: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.3)',
+              background: 'color-mix(in srgb, var(--red-alert) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--red-alert) 30%, transparent)',
               borderRadius: 8, padding: '8px 14px', maxWidth: 400,
               fontSize: 10, color: 'var(--red-alert)', fontFamily: 'monospace',
             }}>

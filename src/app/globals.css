@@ -32,6 +32,9 @@
 
   --cta-bg:          #FDE047;
   --cta-text:        #0F172A;
+
+  --accent-blue:     #38BDF8;
+  --accent-green:    #34D399;
 }
 
 /* === LIGHT MODE === */
@@ -65,6 +68,9 @@ html.light {
 
   --cta-bg:          #0F172A;
   --cta-text:        #FDE047;
+
+  --accent-blue:     #0284C7;
+  --accent-green:    #059669;
 }
 
 /* === BASE === */

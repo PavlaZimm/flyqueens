@@ -47,7 +47,7 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
 
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 32,
-        background: 'rgba(10, 15, 30, 0.85)',
+        background: 'color-mix(in srgb, var(--midnight-3) 90%, transparent)',
         borderTop: '1px solid var(--border-subtle)',
         backdropFilter: 'blur(8px)',
         display: 'flex', alignItems: 'center',

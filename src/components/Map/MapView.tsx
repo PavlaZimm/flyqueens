@@ -152,12 +152,13 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         trailsRef.current.set(flight.icao24, trail)
       }
 
-      // --- Marker ---
+      // --- Marker — min 44×44px hit area pro touch ---
+      const HIT = Math.max(44, size)
       const icon = L.divIcon({
-        html: createAircraftSVG(color, size, flight.heading, isSelected),
+        html: `<div style="width:${HIT}px;height:${HIT}px;display:flex;align-items:center;justify-content:center;">${createAircraftSVG(color, size, flight.heading, isSelected)}</div>`,
         className: '',
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
+        iconSize: [HIT, HIT],
+        iconAnchor: [HIT / 2, HIT / 2],
       })
 
       const existing = markersRef.current.get(flight.icao24)

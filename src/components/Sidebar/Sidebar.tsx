@@ -55,7 +55,7 @@ export function Sidebar({
               width: 32, height: 32, borderRadius: 8,
               background: 'var(--gold)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 16, flexShrink: 0, color: '#0F172A',
+              fontSize: 16, flexShrink: 0, color: 'var(--cta-text)',
             }}>✈</div>
             <div>
               <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 2, textTransform: 'uppercase' }}>

@@ -97,7 +97,7 @@ export default function StatsPage() {
             <div key={country} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
               <div style={{ width: 18, fontSize: 11, color: 'var(--text-dim)', textAlign: 'right' }}>#{i + 1}</div>
               <div style={{ flex: 1, fontSize: 12, color: 'var(--text-primary)' }}>{country}</div>
-              <div style={{ position: 'relative', width: 80, height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
+              <div style={{ position: 'relative', width: 80, height: 4, background: 'var(--border-subtle)', borderRadius: 2 }}>
                 <div style={{ position: 'absolute', inset: 0, right: `${100 - Math.round(num / count * 100)}%`, background: 'var(--gold)', borderRadius: 2 }} />
               </div>
               <div className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700, width: 24, textAlign: 'right' }}>{num}</div>
@@ -117,7 +117,7 @@ export default function StatsPage() {
             return (
               <div key={type} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                 <div style={{ flex: 1, fontSize: 12, color: 'var(--text-primary)' }}>{labels[type] ?? type}</div>
-                <div style={{ position: 'relative', width: 80, height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2 }}>
+                <div style={{ position: 'relative', width: 80, height: 4, background: 'var(--border-subtle)', borderRadius: 2 }}>
                   <div style={{ position: 'absolute', inset: 0, right: `${100 - Math.round(num / count * 100)}%`, background: 'var(--accent-blue)', borderRadius: 2 }} />
                 </div>
                 <div className="font-display" style={{ fontSize: 12, color: 'var(--accent-blue)', fontWeight: 700, width: 24, textAlign: 'right' }}>{num}</div>

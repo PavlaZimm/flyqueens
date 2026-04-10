@@ -11,9 +11,9 @@ interface FlightCardProps {
 }
 
 function getStatusColor(flight: Flight): string {
-  if (flight.onGround) return '#94A3B8'
-  if (flight.velocity < 200) return '#F59E0B'
-  return '#22C55E'
+  if (flight.onGround) return 'var(--text-muted)'
+  if (flight.velocity < 200) return 'var(--amber-delay)'
+  return 'var(--green-live)'
 }
 
 function getStatusLabel(flight: Flight): string {
@@ -74,15 +74,15 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
       {/* Row 3: metrics */}
       <div style={{ display: 'flex', gap: 8 }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, textTransform: 'uppercase' }}>km/h</span>
+          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1.5, textTransform: 'uppercase' }}>km/h</span>
           <span style={{ fontSize: 11, color: acColor, fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>
             {flight.velocity}
           </span>
         </div>
         <div style={{ width: 1, background: 'var(--border-subtle)' }} />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, textTransform: 'uppercase' }}>výška</span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>
+          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1.5, textTransform: 'uppercase' }}>výška</span>
+          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>
             {Math.round(flight.altitude / 100) * 100}m
           </span>
         </div>
