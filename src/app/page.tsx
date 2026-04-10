@@ -41,7 +41,7 @@ function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; o
 }
 
 export default function Home() {
-  const { flights, loading, count } = useFlights()
+  const { flights, loading, count, isMock } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -49,6 +49,19 @@ export default function Home() {
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
   const [locateMe, setLocateMe] = useState<{ lat: number; lng: number } | null>(null)
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+
+  // Keyboard shortcuts
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedFlight(null)
+      if (e.key === '/' && !(e.target instanceof HTMLInputElement)) {
+        e.preventDefault()
+        document.querySelector<HTMLInputElement>('input[type="text"]')?.focus()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   const handleLocateMe = () => {
     if (!navigator.geolocation) return
@@ -151,7 +164,7 @@ export default function Home() {
         <button
           onClick={handleLocateMe}
           style={{
-            position: 'absolute', bottom: 52, right: 12, zIndex: 1000,
+            position: 'absolute', bottom: isMock ? 88 : 52, right: 12, zIndex: 1000,
             width: 36, height: 36, borderRadius: 8,
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
             backdropFilter: 'blur(8px)', cursor: 'pointer',
@@ -165,9 +178,7 @@ export default function Home() {
         </button>
 
         {/* StatusBar */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-          <StatusBar flightCount={count} visibleCount={count} />
-        </div>
+        <StatusBar flightCount={count} visibleCount={count} isMock={isMock} />
       </div>
 
       <style>{`

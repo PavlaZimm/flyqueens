@@ -104,13 +104,18 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
         </div>
       </div>
 
-      {/* Filter chips */}
+      {/* Filter chips — scrollovatelné na mobilu */}
       <div
         className="fq-filters"
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: 5,
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          WebkitOverflowScrolling: 'touch',
+          flexShrink: 1,
+          minWidth: 0,
         }}
       >
         {filters.map((filter) => {

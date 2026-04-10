@@ -70,18 +70,18 @@ function parseState(state: unknown[]): Flight | null {
   }
 }
 
-export async function fetchFlights(): Promise<Flight[]> {
-  // Voláme přes náš server-side proxy (obchází CORS)
+export async function fetchFlights(): Promise<{ flights: Flight[]; isMock: boolean }> {
   const res = await fetch('/api/flights', { cache: 'no-store' })
 
   if (!res.ok) {
     throw new Error(`OpenSky API error: ${res.status}`)
   }
 
-  const data = await res.json() as { states?: unknown[][] }
-  if (!data.states) return []
+  const data = await res.json() as { states?: unknown[][]; _mock?: boolean }
+  if (!data.states) return { flights: [], isMock: false }
 
-  return data.states
-    .map(parseState)
-    .filter((f): f is Flight => f !== null)
+  return {
+    flights: data.states.map(parseState).filter((f): f is Flight => f !== null),
+    isMock: data._mock === true,
+  }
 }

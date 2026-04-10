@@ -37,12 +37,11 @@ export async function GET() {
     )
 
     if (res.status === 429) {
-      // Rate limit — vrátíme mock data pro demo
-      return NextResponse.json(getMockData())
+      return NextResponse.json({ ...getMockData(), _mock: true })
     }
 
     if (!res.ok) {
-      return NextResponse.json(getMockData())
+      return NextResponse.json({ ...getMockData(), _mock: true })
     }
 
     const data = await res.json()
@@ -64,8 +63,7 @@ export async function GET() {
     }
     return NextResponse.json(enriched)
   } catch {
-    // Při jakékoliv chybě vrátíme mock data
-    return NextResponse.json(getMockData())
+    return NextResponse.json({ ...getMockData(), _mock: true })
   }
 }
 

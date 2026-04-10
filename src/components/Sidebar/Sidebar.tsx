@@ -1,6 +1,8 @@
 'use client'
 
 import { useMemo } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import type { Flight } from '@/types/flight'
 import { FlightCard } from './FlightCard'
 
@@ -16,22 +18,22 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'map',      label: 'Živá mapa',       icon: '🗺' },
-  { id: 'tracked',  label: 'Sledované lety',  icon: '⭐' },
-  { id: 'airports', label: 'Letiště',          icon: '🏢' },
-  { id: 'stats',    label: 'Statistiky',       icon: '📊' },
+  { id: 'map',      label: 'Živá mapa',      icon: '🗺',  href: '/' },
+  { id: 'stats',    label: 'Statistiky',      icon: '📊',  href: '/stats' },
 ]
 
 export function Sidebar({
   flights, selectedFlight, onFlightSelect, flightCount,
   theme, searchQuery, onSearchChange, onClose,
 }: SidebarProps) {
+  const pathname = usePathname()
+
   const filteredFlights = useMemo(() => {
     const q = searchQuery.trim().toUpperCase()
-    if (!q) return flights.slice(0, 8)
-    return flights
-      .filter((f) => f.callsign.includes(q) || (f.origin_country ?? '').toUpperCase().includes(q))
-      .slice(0, 8)
+    if (!q) return flights
+    return flights.filter((f) =>
+      f.callsign.includes(q) || (f.origin_country ?? '').toUpperCase().includes(q)
+    )
   }, [flights, searchQuery])
 
   return (
@@ -114,19 +116,21 @@ export function Sidebar({
       {/* Nav */}
       <nav style={{ padding: '6px 8px 0' }}>
         {NAV_ITEMS.map((item) => {
-          const active = item.id === 'map'
+          const active = pathname === item.href
           return (
-            <button key={item.id} style={{
-              display: 'flex', alignItems: 'center', gap: 8,
-              width: '100%', padding: '7px 8px', borderRadius: 7, border: 'none',
-              background: active ? 'rgba(253,224,71,0.08)' : 'none',
-              color: active ? 'var(--gold)' : 'var(--text-muted)',
-              cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif',
-              fontSize: 12, fontWeight: active ? 600 : 400, textAlign: 'left',
-            }}>
-              <span style={{ fontSize: 13 }}>{item.icon}</span>
-              {item.label}
-            </button>
+            <Link key={item.id} href={item.href} style={{ textDecoration: 'none' }} onClick={onClose}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                width: '100%', padding: '7px 8px', borderRadius: 7,
+                background: active ? 'rgba(253,224,71,0.08)' : 'none',
+                color: active ? 'var(--gold)' : 'var(--text-muted)',
+                cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif',
+                fontSize: 12, fontWeight: active ? 600 : 400,
+              }}>
+                <span style={{ fontSize: 13 }}>{item.icon}</span>
+                {item.label}
+              </div>
+            </Link>
           )
         })}
       </nav>
@@ -139,11 +143,9 @@ export function Sidebar({
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
           <span>Lety v okolí</span>
-          {searchQuery && (
-            <span style={{ color: 'var(--gold)', fontSize: 9 }}>
-              {filteredFlights.length} nalezeno
-            </span>
-          )}
+          <span style={{ color: searchQuery ? 'var(--gold)' : 'var(--text-dim)', fontSize: 9 }}>
+            {filteredFlights.length}
+          </span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {filteredFlights.length === 0 ? (
@@ -165,17 +167,9 @@ export function Sidebar({
       </div>
 
       {/* Footer */}
-      <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{
-          width: 28, height: 28, borderRadius: '50%',
-          background: 'linear-gradient(135deg, var(--gold), var(--lavender))',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 700, color: 'var(--midnight)', flexShrink: 0,
-        }}>PZ</div>
-        <div>
-          <div style={{ fontSize: 11, color: 'var(--text-primary)', fontWeight: 600 }}>Pavla</div>
-          <div style={{ fontSize: 8, color: 'var(--gold)', letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 700 }}>PRO PLAN</div>
-        </div>
+      <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green-live)', flexShrink: 0 }} />
+        <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>Data: OpenSky Network</span>
       </div>
 
       <style>{`

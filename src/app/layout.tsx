@@ -19,12 +19,21 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "FlyQueens · Track Every Flight",
-  description: "Sleduj lety živě na mapě — real-time flight tracking pro střední Evropu.",
+  description: "Sleduj lety živě na mapě. Real-time flight tracking pro střední Evropu — letadla, výšky, rychlosti, trasy.",
+  keywords: ["flight tracker", "letadla live", "sledování letů", "mapa letadel", "ADS-B"],
   openGraph: {
     title: "FlyQueens · Track Every Flight",
-    description: "Sleduj lety živě na mapě — real-time flight tracking pro střední Evropu.",
+    description: "Sleduj lety živě na mapě. Real-time flight tracking pro střední Evropu.",
     type: "website",
+    locale: "cs_CZ",
+    siteName: "FlyQueens",
   },
+  twitter: {
+    card: "summary",
+    title: "FlyQueens · Track Every Flight",
+    description: "Real-time mapa letadel nad střední Evropou.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

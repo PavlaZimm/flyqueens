@@ -9,6 +9,7 @@ interface UseFlightsResult {
   loading: boolean
   error: string | null
   count: number
+  isMock: boolean
 }
 
 const POLL_INTERVAL = 5_000 // 5 sekund (s auth účtem)
@@ -17,11 +18,13 @@ export function useFlights(): UseFlightsResult {
   const [flights, setFlights] = useState<Flight[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isMock, setIsMock] = useState(false)
 
   const load = useCallback(async () => {
     try {
-      const data = await fetchFlights()
+      const { flights: data, isMock: mock } = await fetchFlights()
       setFlights(data)
+      setIsMock(mock)
       setError(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při načítání letů')
@@ -41,5 +44,6 @@ export function useFlights(): UseFlightsResult {
     loading,
     error,
     count: flights.length,
+    isMock,
   }
 }
