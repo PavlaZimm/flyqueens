@@ -43,10 +43,11 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
 }
 
 export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady }: MapViewProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const mapRef       = useRef<MapRefs | null>(null)
-  const markersRef   = useRef<Map<string, Marker>>(new Map())
-  const trailsRef    = useRef<Map<string, Polyline>>(new Map())
+  const containerRef    = useRef<HTMLDivElement>(null)
+  const mapRef          = useRef<MapRefs | null>(null)
+  const markersRef      = useRef<Map<string, Marker>>(new Map())
+  const trailsRef       = useRef<Map<string, Polyline>>(new Map())
+  const showAirportsRef = useRef(showAirports)  // vždy aktuální hodnota pro async init callback
 
   // Init mapy
   useEffect(() => {
@@ -110,6 +111,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           airportLayer.addLayer(marker)
         })
 
+      // Pokud byl toggle zapnut ještě před init mapou — přidej vrstvu hned
+      if (showAirportsRef.current) airportLayer.addTo(map)
+
       if (onMapReady) {
         onMapReady((lat, lng) => {
           map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 })
@@ -132,6 +136,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Udržuj ref synchronizovaný s props (pro async Leaflet init callback)
+  useEffect(() => { showAirportsRef.current = showAirports }, [showAirports])
 
   // Toggle letišť
   useEffect(() => {
