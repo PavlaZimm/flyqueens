@@ -1,8 +1,17 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type { Map as LeafletMap, TileLayer, Marker, Polyline } from 'leaflet'
 import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
+
+interface MapRefs {
+  map: LeafletMap
+  darkTiles: TileLayer
+  lightTiles: TileLayer
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  L: any  // Leaflet dynamically imported — no static type available at module level
+}
 
 interface MapViewProps {
   flights: Flight[]
@@ -31,12 +40,9 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
 
 export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, onMapReady }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mapRef   = useRef<any>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markersRef = useRef<Map<string, any>>(new Map())
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const trailsRef  = useRef<Map<string, any>>(new Map())
+  const mapRef       = useRef<MapRefs | null>(null)
+  const markersRef   = useRef<Map<string, Marker>>(new Map())
+  const trailsRef    = useRef<Map<string, Polyline>>(new Map())
 
   // Init mapy
   useEffect(() => {
@@ -63,7 +69,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         { attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>', subdomains: 'abcd', maxZoom: 19 }
       )
 
-      theme === 'light' ? lightTiles.addTo(map) : darkTiles.addTo(map)
+      if (theme === 'light') { lightTiles.addTo(map) } else { darkTiles.addTo(map) }
       L.control.zoom({ position: 'bottomright' }).addTo(map)
 
       mapRef.current = { map, darkTiles, lightTiles, L }
@@ -75,12 +81,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       }
     })
 
+    // Capture refs pro cleanup (eslint react-hooks/exhaustive-deps)
+    const markers = markersRef.current
+    const trails  = trailsRef.current
+
     return () => {
       if (mapRef.current) {
         mapRef.current.map.remove()
         mapRef.current = null
-        markersRef.current.clear()
-        trailsRef.current.clear()
+        markers.clear()
+        trails.clear()
         flightHistory.clear()
       }
     }
@@ -168,8 +178,11 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           animateMarker(existing, cur, { lat: flight.lat, lng: flight.lng })
         }
         existing.setIcon(icon)
-        isVisible ? (!map.hasLayer(existing) && existing.addTo(map))
-                  : (map.hasLayer(existing)  && map.removeLayer(existing))
+        if (isVisible) {
+          if (!map.hasLayer(existing)) existing.addTo(map)
+        } else {
+          if (map.hasLayer(existing)) map.removeLayer(existing)
+        }
       } else {
         const marker = L.marker([flight.lat, flight.lng], { icon })
         marker.on('click', () => onFlightSelect(flight))
@@ -236,8 +249,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function animateMarker(marker: any, from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
+function animateMarker(marker: Marker, from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
   const duration = 900
   const start = performance.now()
   function step(now: number) {

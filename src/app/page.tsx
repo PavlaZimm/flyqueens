@@ -49,7 +49,6 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
-  const [locateMe, setLocateMe] = useState<{ lat: number; lng: number } | null>(null)
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
 
   // Keyboard shortcuts
@@ -68,9 +67,7 @@ export default function Home() {
   const handleLocateMe = () => {
     if (!navigator.geolocation) return
     navigator.geolocation.getCurrentPosition((pos) => {
-      const { latitude, longitude } = pos.coords
-      setLocateMe({ lat: latitude, lng: longitude })
-      mapLocateFnRef.current?.(latitude, longitude)
+      mapLocateFnRef.current?.(pos.coords.latitude, pos.coords.longitude)
     })
   }
 

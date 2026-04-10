@@ -35,7 +35,6 @@ function guessAircraftType(icao24: string): AircraftType {
   return 'narrow-body'
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseState(state: unknown[]): Flight | null {
   const arr = state as Array<unknown>
   const lat = arr[IDX_LAT] as number | null

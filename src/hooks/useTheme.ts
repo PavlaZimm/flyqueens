@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 type Theme = 'dark' | 'light'
 
@@ -11,16 +11,28 @@ interface UseThemeResult {
 
 const STORAGE_KEY = 'flyqueens-theme'
 
-export function useTheme(): UseThemeResult {
-  const [theme, setTheme] = useState<Theme>('dark')
+function applyTheme(theme: Theme) {
+  if (typeof document === 'undefined') return
+  if (theme === 'light') {
+    document.documentElement.classList.add('light')
+  } else {
+    document.documentElement.classList.remove('light')
+  }
+}
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null
-    if (saved === 'light' || saved === 'dark') {
-      setTheme(saved)
-      applyTheme(saved)
-    }
-  }, [])
+function getInitialTheme(): Theme {
+  if (typeof localStorage === 'undefined') return 'dark'
+  const saved = localStorage.getItem(STORAGE_KEY)
+  if (saved === 'light' || saved === 'dark') {
+    applyTheme(saved)
+    return saved
+  }
+  return 'dark'
+}
+
+export function useTheme(): UseThemeResult {
+  // Lazy initializer — čte localStorage jednou při mount, žádný cascading render
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark'
@@ -30,12 +42,4 @@ export function useTheme(): UseThemeResult {
   }
 
   return { theme, toggleTheme }
-}
-
-function applyTheme(theme: Theme) {
-  if (theme === 'light') {
-    document.documentElement.classList.add('light')
-  } else {
-    document.documentElement.classList.remove('light')
-  }
 }
