@@ -56,7 +56,7 @@ export default function RootLayout({
       lang="cs"
       className={`${syne.variable} ${spaceGrotesk.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }}>
+      <body className="min-h-full flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }} suppressHydrationWarning>
         {children}
         <Analytics />
         <SpeedInsights />
