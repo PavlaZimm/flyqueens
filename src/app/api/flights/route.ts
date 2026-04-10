@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 import { readFileSync } from 'fs'
 import { join } from 'path'
+import { checkRateLimit } from '@/lib/rateLimit'
+import { getServerEnv } from '@/lib/env'
 
 // Načteme aircraft DB jednou při startu serveru (module-level cache)
 let aircraftDb: Record<string, { m: string; t: string }> | null = null
@@ -19,21 +22,32 @@ function getAircraftDb() {
 
 // Server-side proxy pro OpenSky API — obchází CORS
 export async function GET() {
-  const username = process.env.OPENSKY_USERNAME
-  const password = process.env.OPENSKY_PASSWORD
+  // Rate limiting — max 30 req/min per IP
+  const reqHeaders = await headers()
+  const ip = reqHeaders.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? reqHeaders.get('x-real-ip')
+    ?? '127.0.0.1'
 
-  const headers: Record<string, string> = { 'Accept': 'application/json' }
+  const { allowed, retryAfter } = checkRateLimit(ip)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests', retryAfter },
+      { status: 429, headers: { 'Retry-After': String(retryAfter) } }
+    )
+  }
 
-  // S auth: 5s polling + vyšší rate limit
+  const { username, password } = getServerEnv()
+  const fetchHeaders: Record<string, string> = { 'Accept': 'application/json' }
+
   if (username && password) {
     const token = Buffer.from(`${username}:${password}`).toString('base64')
-    headers['Authorization'] = `Basic ${token}`
+    fetchHeaders['Authorization'] = `Basic ${token}`
   }
 
   try {
     const res = await fetch(
       'https://opensky-network.org/api/states/all?lamin=45&lamax=55&lomin=8&lomax=22',
-      { headers, next: { revalidate: 0 } }
+      { headers: fetchHeaders, next: { revalidate: 0 } }
     )
 
     if (res.status === 429) {

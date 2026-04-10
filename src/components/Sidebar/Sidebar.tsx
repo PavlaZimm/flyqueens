@@ -94,7 +94,11 @@ export function Sidebar({
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(e) => {
+              // Sanitizace — pouze alfanumerické + pomlčka, max 10 znaků
+              const clean = e.target.value.replace(/[^A-Za-z0-9\- ]/g, '').slice(0, 10)
+              onSearchChange(clean)
+            }}
             placeholder="Hledat let nebo letiště..."
             style={{
               width: '100%', paddingLeft: 28, paddingRight: 10, paddingTop: 7, paddingBottom: 7,

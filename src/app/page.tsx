@@ -8,6 +8,8 @@ import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { StatusBar } from '@/components/UI/StatusBar'
+import { LoadingScreen } from '@/components/UI/LoadingScreen'
+import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
 import type { Flight } from '@/types/flight'
 
 function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
@@ -108,18 +110,10 @@ export default function Home() {
 
         {/* Mapa */}
         {loading && flights.length === 0 ? (
-          <div style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexDirection: 'column', gap: 12, background: 'var(--midnight-3)',
-          }}>
-            <div style={{ fontSize: 40 }}>✈️</div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 16, color: 'var(--text-muted)', fontWeight: 700, letterSpacing: 2 }}>
-              NAČÍTÁM LETY...
-            </div>
-          </div>
+          <LoadingScreen />
         ) : (
           <div style={{ position: 'absolute', inset: 0 }}>
+            <ErrorBoundary>
             <MapView
               flights={flights}
               selectedFlight={selectedFlight}
@@ -129,6 +123,7 @@ export default function Home() {
               activeFilters={activeFilters}
               onMapReady={(fn) => { mapLocateFnRef.current = fn }}
             />
+            </ErrorBoundary>
           </div>
         )}
 
