@@ -5,7 +5,7 @@ import { useTheme } from '@/hooks/useTheme'
 import Link from 'next/link'
 
 export default function StatsPage() {
-  const { flights, count } = useFlights()
+  const { flights, count, loading } = useFlights()
   const { theme, toggleTheme } = useTheme()
 
   const airborne = flights.filter(f => !f.onGround)
@@ -31,6 +31,15 @@ export default function StatsPage() {
 
   const avgAlt  = airborne.length ? Math.round(airborne.reduce((s, f) => s + f.altitude, 0) / airborne.length) : 0
   const avgSpd  = airborne.length ? Math.round(airborne.reduce((s, f) => s + f.velocity, 0) / airborne.length) : 0
+
+  if (loading && count === 0) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--midnight)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+        <div style={{ fontSize: 32 }}>✈️</div>
+        <div className="font-display" style={{ color: 'var(--gold)', fontSize: 13, letterSpacing: 2 }}>NAČÍTÁM DATA…</div>
+      </div>
+    )
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--midnight)', padding: '24px 16px', fontFamily: 'Space Grotesk, sans-serif' }}>
