@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import type { Map as LeafletMap, TileLayer, Marker, Polyline, LayerGroup } from 'leaflet'
 import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
-import { fetchAirports, airportDisplayName } from '@/lib/airportData'
+import { airports, airportDisplayName } from '@/lib/airportData'
 import type { Airport } from '@/lib/airportData'
 
 interface MapRefs {
@@ -79,9 +79,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const airportLayer = L.layerGroup()
       mapRef.current = { map, darkTiles, lightTiles, airportLayer, L }
 
-      // Načti letiště a přidej markery do airportLayer
-      fetchAirports().then((airports: Airport[]) => {
-        airports.forEach((a) => {
+      // Přidej airport markery do airportLayer (data jsou bundlovaná, žádný fetch)
+      airports.forEach((a: Airport) => {
           const isLarge = a.type === 'large_airport'
           const isMedium = a.type === 'medium_airport'
           const size = isLarge ? 14 : isMedium ? 10 : 7
@@ -110,7 +109,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           )
           airportLayer.addLayer(marker)
         })
-      })
 
       if (onMapReady) {
         onMapReady((lat, lng) => {

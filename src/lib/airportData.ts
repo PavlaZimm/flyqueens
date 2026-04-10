@@ -1,3 +1,5 @@
+import rawAirports from '@/data/airports.json'
+
 export interface Airport {
   icao: string
   iata: string
@@ -10,14 +12,7 @@ export interface Airport {
   elev: number
 }
 
-let _cache: Airport[] | null = null
-
-export async function fetchAirports(): Promise<Airport[]> {
-  if (_cache) return _cache
-  const res = await fetch('/airports.json')
-  _cache = await res.json()
-  return _cache!
-}
+export const airports: Airport[] = rawAirports as Airport[]
 
 export function airportDisplayName(a: Airport): string {
   return a.iata ? `${a.iata} · ${a.city || a.name}` : a.city || a.name
