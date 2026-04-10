@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "cs_CZ",
     siteName: "FlyQueens",
+    url: "https://flyqueens-app.vercel.app",
   },
   twitter: {
     card: "summary",
@@ -34,6 +37,13 @@ export const metadata: Metadata = {
     description: "Real-time mapa letadel nad střední Evropou.",
   },
   robots: { index: true, follow: true },
+  metadataBase: new URL("https://flyqueens-app.vercel.app"),
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F172A",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -48,6 +58,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }}>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
