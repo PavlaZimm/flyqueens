@@ -12,9 +12,11 @@ interface TopBarProps {
   onHamburger: () => void
   activeFilters: Set<FilterType>
   onFilterChange: (filters: Set<FilterType>) => void
+  showAirports: boolean
+  onToggleAirports: () => void
 }
 
-export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeFilters, onFilterChange }: TopBarProps) {
+export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeFilters, onFilterChange, showAirports, onToggleAirports }: TopBarProps) {
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
     if (next.has(f)) {
@@ -143,6 +145,30 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
           )
         })}
       </div>
+
+      {/* Letiště toggle */}
+      <button
+        onClick={onToggleAirports}
+        title="Zobrazit/skrýt letiště"
+        style={{
+          background: showAirports ? 'rgba(56,189,248,0.12)' : 'var(--glass-bg)',
+          border: `1px solid ${showAirports ? 'rgba(56,189,248,0.4)' : 'var(--glass-border)'}`,
+          borderRadius: 6,
+          padding: '3px 10px',
+          cursor: 'pointer',
+          fontFamily: 'Space Grotesk, sans-serif',
+          fontSize: 10,
+          color: showAirports ? '#38BDF8' : 'var(--text-muted)',
+          fontWeight: showAirports ? 600 : 400,
+          backdropFilter: 'blur(8px)',
+          letterSpacing: 0.3,
+          flexShrink: 0,
+        }}
+        aria-label="Přepnout zobrazení letišť"
+        aria-pressed={showAirports}
+      >
+        🛬 Letiště
+      </button>
 
       <div style={{ flex: 1 }} />
 

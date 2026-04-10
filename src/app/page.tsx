@@ -49,6 +49,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
+  const [showAirports, setShowAirports] = useState(false)
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
 
   // Keyboard shortcuts
@@ -118,6 +119,7 @@ export default function Home() {
               theme={theme}
               searchQuery={searchQuery}
               activeFilters={activeFilters}
+              showAirports={showAirports}
               onMapReady={(fn) => { mapLocateFnRef.current = fn }}
             />
             </ErrorBoundary>
@@ -133,6 +135,8 @@ export default function Home() {
             onHamburger={() => setSidebarOpen(true)}
             activeFilters={activeFilters}
             onFilterChange={setActiveFilters}
+            showAirports={showAirports}
+            onToggleAirports={() => setShowAirports(v => !v)}
           />
         </div>
 

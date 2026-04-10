@@ -1,14 +1,17 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import type { Map as LeafletMap, TileLayer, Marker, Polyline } from 'leaflet'
+import type { Map as LeafletMap, TileLayer, Marker, Polyline, LayerGroup } from 'leaflet'
 import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
+import { fetchAirports, airportDisplayName } from '@/lib/airportData'
+import type { Airport } from '@/lib/airportData'
 
 interface MapRefs {
   map: LeafletMap
   darkTiles: TileLayer
   lightTiles: TileLayer
+  airportLayer: LayerGroup
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   L: any  // Leaflet dynamically imported — no static type available at module level
 }
@@ -20,6 +23,7 @@ interface MapViewProps {
   theme: 'dark' | 'light'
   searchQuery?: string
   activeFilters: Set<string>
+  showAirports: boolean
   onMapReady?: (flyTo: (lat: number, lng: number) => void) => void
 }
 
@@ -38,7 +42,7 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   return false
 }
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, onMapReady }: MapViewProps) {
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef       = useRef<MapRefs | null>(null)
   const markersRef   = useRef<Map<string, Marker>>(new Map())
@@ -72,7 +76,41 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       if (theme === 'light') { lightTiles.addTo(map) } else { darkTiles.addTo(map) }
       L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-      mapRef.current = { map, darkTiles, lightTiles, L }
+      const airportLayer = L.layerGroup()
+      mapRef.current = { map, darkTiles, lightTiles, airportLayer, L }
+
+      // Načti letiště a přidej markery do airportLayer
+      fetchAirports().then((airports: Airport[]) => {
+        airports.forEach((a) => {
+          const isLarge = a.type === 'large_airport'
+          const isMedium = a.type === 'medium_airport'
+          const size = isLarge ? 14 : isMedium ? 10 : 7
+          const icon = L.divIcon({
+            html: createAirportSVG(size, isLarge),
+            className: '',
+            iconSize: [size * 2, size * 2],
+            iconAnchor: [size, size],
+          })
+          const marker = L.marker([a.lat, a.lng], { icon, interactive: true })
+          const label = airportDisplayName(a)
+          marker.bindTooltip(label, {
+            permanent: false,
+            direction: 'top',
+            offset: [0, -size - 2],
+            className: 'fq-airport-tooltip',
+          })
+          // Klik — otevře letiště na FlightAware (nebo jen zobrazí popup)
+          marker.bindPopup(
+            `<div class="fq-airport-popup">
+              <div class="fq-ap-code">${a.iata || a.icao}</div>
+              <div class="fq-ap-name">${a.name}</div>
+              <div class="fq-ap-meta">${a.city} · ${a.country} · ${a.elev} ft</div>
+            </div>`,
+            { className: 'fq-airport-popup-wrap', maxWidth: 220 }
+          )
+          airportLayer.addLayer(marker)
+        })
+      })
 
       if (onMapReady) {
         onMapReady((lat, lng) => {
@@ -96,6 +134,17 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Toggle letišť
+  useEffect(() => {
+    if (!mapRef.current) return
+    const { map, airportLayer } = mapRef.current
+    if (showAirports) {
+      if (!map.hasLayer(airportLayer)) airportLayer.addTo(map)
+    } else {
+      if (map.hasLayer(airportLayer)) map.removeLayer(airportLayer)
+    }
+  }, [showAirports])
 
   // Přepínání tématu — opraveno
   useEffect(() => {
@@ -243,6 +292,32 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: #FDE047 !important; }
         .leaflet-control-attribution { font-size: 9px !important; background: rgba(10,15,30,0.55) !important; color: rgba(255,255,255,0.2) !important; }
         .leaflet-control-attribution a { color: rgba(255,255,255,0.25) !important; }
+        .fq-airport-tooltip {
+          background: rgba(15,23,42,0.92) !important;
+          border: 1px solid rgba(56,189,248,0.35) !important;
+          border-radius: 6px !important;
+          color: #38BDF8 !important;
+          font-family: 'Space Grotesk', sans-serif !important;
+          font-size: 10px !important;
+          font-weight: 600 !important;
+          letter-spacing: 0.5px !important;
+          padding: 3px 8px !important;
+          box-shadow: none !important;
+        }
+        .fq-airport-tooltip::before { display: none !important; }
+        .fq-airport-popup-wrap .leaflet-popup-content-wrapper {
+          background: rgba(15,23,42,0.96) !important;
+          border: 1px solid rgba(56,189,248,0.25) !important;
+          border-radius: 10px !important;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+          padding: 0 !important;
+        }
+        .fq-airport-popup-wrap .leaflet-popup-tip { background: rgba(15,23,42,0.96) !important; }
+        .fq-airport-popup-wrap .leaflet-popup-content { margin: 0 !important; }
+        .fq-airport-popup { padding: 12px 14px; }
+        .fq-ap-code { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #38BDF8; letter-spacing: 2px; }
+        .fq-ap-name { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+        .fq-ap-meta { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; letter-spacing: 0.5px; }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>
@@ -279,6 +354,18 @@ function createAircraftSVG(color: string, size: number, heading: number, selecte
       <path d="M36 40 Q30 42 26 44 Q27 45 30 44 L36 42Z"/>
       <path d="M44 40 Q50 42 54 44 Q53 45 50 44 L44 42Z"/>
     </g>
+  </svg>`
+}
+
+function createAirportSVG(size: number, isLarge: boolean): string {
+  const r = size
+  const stroke = isLarge ? '#38BDF8' : '#38BDF888'
+  const fill = isLarge ? 'rgba(56,189,248,0.15)' : 'rgba(56,189,248,0.08)'
+  const s = r * 2
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
+    <circle cx="${r}" cy="${r}" r="${r - 1}" fill="${fill}" stroke="${stroke}" stroke-width="${isLarge ? 1.5 : 1}"/>
+    <line x1="${r}" y1="2" x2="${r}" y2="${s - 2}" stroke="${stroke}" stroke-width="${isLarge ? 1.5 : 1}"/>
+    <line x1="2" y1="${r}" x2="${s - 2}" y2="${r}" stroke="${stroke}" stroke-width="${isLarge ? 1 : 0.8}"/>
   </svg>`
 }
 
