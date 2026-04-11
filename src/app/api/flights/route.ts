@@ -20,6 +20,11 @@ function getAircraftDb() {
   return aircraftDb!
 }
 
+// Cache poslední úspěšné odpovědi — serverless instance si ji pamatuje
+let lastGoodData: unknown = null
+let lastGoodTime = 0
+const CACHE_TTL = 15_000 // 15 sekund
+
 // Server-side proxy pro OpenSky API — obchází CORS
 export async function GET() {
   // Rate limiting — max 30 req/min per IP
@@ -44,17 +49,26 @@ export async function GET() {
     fetchHeaders['Authorization'] = `Basic ${token}`
   }
 
+  // Vrať cached data pokud jsou čerstvá (ochrana proti burst requestům)
+  const now = Date.now()
+  if (lastGoodData && (now - lastGoodTime) < CACHE_TTL) {
+    return NextResponse.json(lastGoodData)
+  }
+
   try {
     const res = await fetch(
       'https://opensky-network.org/api/states/all?lamin=45&lamax=55&lomin=8&lomax=22',
-      { headers: fetchHeaders, next: { revalidate: 0 } }
+      { headers: fetchHeaders, cache: 'no-store' }
     )
 
     if (res.status === 429) {
+      // Vrať poslední dobrou odpověď pokud ji máme, jinak mock
+      if (lastGoodData) return NextResponse.json(lastGoodData)
       return NextResponse.json({ ...getMockData(), _mock: true })
     }
 
     if (!res.ok) {
+      if (lastGoodData) return NextResponse.json(lastGoodData)
       return NextResponse.json({ ...getMockData(), _mock: true })
     }
 
@@ -75,8 +89,14 @@ export async function GET() {
         return entry ? [...s, entry.m, entry.t] : s
       })
     }
+
+    // Ulož do cache
+    lastGoodData = enriched
+    lastGoodTime = Date.now()
+
     return NextResponse.json(enriched)
   } catch {
+    if (lastGoodData) return NextResponse.json(lastGoodData)
     return NextResponse.json({ ...getMockData(), _mock: true })
   }
 }
