@@ -25,6 +25,9 @@ let lastGoodData: unknown = null
 let lastGoodTime = 0
 const CACHE_TTL = 15_000 // 15 sekund
 
+// Vercel CDN cache — pouze 1 request na OpenSky za 10 sekund pro celý svět
+export const revalidate = 10
+
 // Server-side proxy pro OpenSky API — obchází CORS
 export async function GET() {
   // Rate limiting — max 30 req/min per IP
@@ -58,7 +61,7 @@ export async function GET() {
   try {
     const res = await fetch(
       'https://opensky-network.org/api/states/all?lamin=45&lamax=55&lomin=8&lomax=22',
-      { headers: fetchHeaders, cache: 'no-store' }
+      { headers: fetchHeaders, next: { revalidate: 10 } }
     )
 
     if (res.status === 429) {
