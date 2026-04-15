@@ -31,7 +31,12 @@ function playAtcStream(url: string, btnId: string) {
   }
   const audio = new Audio(url)
   audio.play().catch(() => {
-    if (btn) btn.textContent = '⚠ Stream nedostupný'
+    if (btn) {
+      btn.textContent = '⚠ Stream offline'
+      btn.classList.remove('playing')
+      btn.classList.add('offline')
+    }
+    globalAudio = null
   })
   globalAudio = audio
   btn.textContent = '⏹ Zastavit'
@@ -195,15 +200,17 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                 }
 
                 const feeds = getAtcFeeds(a.icao)
+                const liveatcLink = `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🔗 Otevřít LiveATC.net ↗</a>`
                 let atcHtml = ''
                 if (feeds.length > 0) {
                   const btns = feeds.map((f, i) => {
                     const btnId = `atc-btn-${a.icao}-${i}`
                     return `<button id="${btnId}" class="fq-atc-btn" data-label="${f.label}" onclick="window.__playAtc('${f.url}','${btnId}')">▶ ${f.label}</button>`
                   }).join('')
-                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}`
+                  // Vždy přidej záložní odkaz — streamy mohou být offline
+                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}${liveatcLink}`
                 } else {
-                  atcHtml = `<div class="fq-metar-divider"></div><a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🎙 Poslouchat ATC na LiveATC.net ↗</a>`
+                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${liveatcLink}`
                 }
 
                 marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
@@ -459,6 +466,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         }
         .fq-atc-btn:hover { background: rgba(253,224,71,0.16); }
         .fq-atc-btn.playing { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); color: #22C55E; }
+        .fq-atc-btn.offline { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: #F87171; cursor: default; }
         .fq-atc-ext { display: block; font-size: 10px; color: #38BDF8; text-decoration: none; padding: 4px 0; }
         .fq-atc-ext:hover { text-decoration: underline; }
       `}</style>
