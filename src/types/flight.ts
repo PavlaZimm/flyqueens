@@ -19,5 +19,6 @@ export interface Flight {
   onGround: boolean
   aircraftType?: AircraftType
   model?: string            // přesný model z aircraft DB (např. "A320-214")
+  registration?: string     // poznávací značka (např. "OK-SWW")
   origin_country?: string
 }

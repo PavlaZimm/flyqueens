@@ -1,13 +1,44 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
-import { getAirportFromCallsign, guessDestination } from '@/lib/airports'
+import { getAirportFromCallsign } from '@/lib/airports'
 
 interface DetailPanelProps {
   flight: Flight | null
   theme: 'dark' | 'light'
   onClose: () => void
+}
+
+interface PlanePhoto {
+  thumbnail_large: { src: string }
+  photographer: string
+  link: string
+}
+
+function useAircraftPhoto(icao24: string | null) {
+  const [photo, setPhoto] = useState<PlanePhoto | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!icao24) { setPhoto(null); return }
+    setLoading(true)
+    setPhoto(null)
+    const controller = new AbortController()
+
+    fetch(`https://api.planespotters.net/pub/photos/hex/${icao24}`, { signal: controller.signal })
+      .then(r => r.json())
+      .then((data: { photos?: PlanePhoto[] }) => {
+        setPhoto(data.photos?.[0] ?? null)
+      })
+      .catch(() => setPhoto(null))
+      .finally(() => setLoading(false))
+
+    return () => controller.abort()
+  }, [icao24])
+
+  return { photo, loading }
 }
 
 function getVibeText(altitude: number, velocity: number): string {
@@ -53,6 +84,8 @@ function getFlightLevel(altitude: number): string {
 }
 
 export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
+  const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
+
   if (!flight) return null
 
   const color = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
@@ -61,13 +94,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const flag  = getFlagEmoji(flight.origin_country)
   const fl    = getFlightLevel(flight.altitude)
 
-  const origin = getAirportFromCallsign(flight.callsign)
-  const dest   = origin ? guessDestination(origin.iata, flight.heading) : null
-  const originLabel = origin?.iata ?? flight.origin_country?.substring(0, 3).toUpperCase() ?? '???'
-  const destLabel   = dest?.iata ?? '???'
-
-  // Progress odhad podle polohy (hrubý)
-  const progress = flight.onGround ? 0 : Math.min(90, Math.max(10, Math.round((flight.altitude / 12000) * 60 + 15)))
+  const airline = getAirportFromCallsign(flight.callsign)
 
   return (
     <div
@@ -81,6 +108,8 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: 10,
+        maxHeight: 'calc(100vh - 80px)',
+        overflowY: 'auto',
       }}
     >
       {/* Handle + Close */}
@@ -93,28 +122,72 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         >✕</button>
       </div>
 
-      {/* Callsign + ikona */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{
-          width: 44, height: 44, borderRadius: 10,
-          background: 'var(--glass-bg)', border: '1px solid var(--border-mid)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-        }}>
-          <AircraftIcon type={flight.aircraftType ?? 'narrow-body'} color={color} size={28} heading={0} />
+      {/* Fotka letadla */}
+      <div style={{
+        width: '100%', height: 110, borderRadius: 8, overflow: 'hidden',
+        background: 'var(--glass-bg)', border: '1px solid var(--border-mid)',
+        position: 'relative', flexShrink: 0,
+      }}>
+        {photoLoading && (
+          <div style={{
+            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', fontSize: 10, color: 'var(--text-dim)',
+          }}>
+            Hledám fotku…
+          </div>
+        )}
+        {photo && !photoLoading && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photo.thumbnail_large.src}
+              alt={`${flight.callsign} – ${flight.model ?? label}`}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <a
+              href={photo.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                position: 'absolute', bottom: 4, right: 6,
+                fontSize: 8, color: 'rgba(255,255,255,0.6)',
+                textDecoration: 'none', background: 'rgba(0,0,0,0.45)',
+                padding: '1px 4px', borderRadius: 3,
+              }}
+            >
+              © {photo.photographer}
+            </a>
+          </>
+        )}
+        {!photo && !photoLoading && (
+          <div style={{
+            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <AircraftIcon type={flight.aircraftType ?? 'narrow-body'} color={color} size={48} heading={0} />
+          </div>
+        )}
+      </div>
+
+      {/* Callsign + registrace */}
+      <div>
+        <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
+          {flight.callsign}
         </div>
-        <div>
-          <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
-            {flight.callsign}
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 1 }}>
-            {flag} {flight.origin_country ?? 'Neznámá země'}
-          </div>
+        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <span>{flag} {flight.origin_country ?? 'Neznámá země'}</span>
+          {flight.registration && (
+            <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{flight.registration}</span>
+          )}
         </div>
       </div>
 
       {/* Typ + model */}
-      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4 }}>
-        {flight.model ? <><span style={{ color: 'var(--text-muted)' }}>{flight.model}</span> · </> : ''}{label}
+      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+        {flight.model
+          ? <><span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{flight.model}</span> · {label}</>
+          : label
+        }
       </div>
 
       {/* Vibe */}
@@ -125,38 +198,21 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         {vibe}
       </div>
 
-      {/* Route */}
-      <div className="route-row">
-        <div style={{ textAlign: 'center' }}>
-          <div className="route-airport">{originLabel}</div>
-          {origin && <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>{origin.name}</div>}
+      {/* Dopravce / letiště */}
+      {airline && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', flexShrink: 0 }}>DOPRAVCE</div>
+          <div style={{ flex: 1 }}>
+            <div className="route-airport" style={{ fontSize: 14 }}>{airline.iata}</div>
+            <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>{airline.name}</div>
+          </div>
+          <div style={{ fontSize: 18, color: 'var(--text-dim)' }}>✈</div>
+          <div style={{ flex: 1, textAlign: 'right' }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-dim)', fontFamily: 'var(--font-display)' }}>???</div>
+            <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>cíl neznámý</div>
+          </div>
         </div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-          <div style={{ fontSize: 10, color: 'var(--gold)' }}>✈</div>
-          <div style={{ width: '100%', height: 1, background: 'rgba(253,224,71,0.25)' }} />
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div className="route-airport">{destLabel}</div>
-          {dest && <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>{dest.name}</div>}
-        </div>
-      </div>
-
-      {/* Progress */}
-      <div>
-        <div className="progress-track">
-          <div className="progress-fill" style={{ width: `${progress}%`, transition: 'width 1s ease' }} />
-          {/* Letadlo na progress baru */}
-          <div style={{
-            position: 'absolute', top: -5, left: `${progress}%`, transform: 'translateX(-50%)',
-            fontSize: 10, color: 'var(--gold)',
-          }}>✈</div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 8, color: 'var(--text-dim)' }}>
-          <span>{originLabel}</span>
-          <span style={{ color: 'var(--text-muted)' }}>{progress}%</span>
-          <span>{destLabel}</span>
-        </div>
-      </div>
+      )}
 
       {/* 4 metric tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
@@ -183,7 +239,15 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
       </div>
 
       {/* CTA */}
-      <button className="btn-cta">SLEDOVAT LET</button>
+      <a
+        href={`https://www.flightradar24.com/${flight.callsign.trim()}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-cta"
+        style={{ textDecoration: 'none', textAlign: 'center' }}
+      >
+        SLEDOVAT NA FR24
+      </a>
     </div>
   )
 }

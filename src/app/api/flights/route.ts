@@ -63,7 +63,8 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
   const onGnd   = ac.alt_baro === 'ground' || alt < 10
   const now     = Math.floor(Date.now() / 1000)
   const country = getCountry(icao)
-  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, 0]
+  const reg     = String(ac.r ?? '').trim()  // registrace (poznávací značka)
+  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg]
 }
 
 // Vercel CDN cache — 1 request na adsb.lol za 10 sekund
@@ -113,8 +114,8 @@ export async function GET() {
       const entry = db[icao]
       // model letadla z naší DB (přesnější než adsb.lol type designator)
       if (entry) {
-        row[17] = entry.m  // model
-        ;(row as unknown[]).push(entry.t)  // typ
+        row[17] = entry.m  // model (index 17)
+        row[18] = entry.t  // typ (index 18)
       }
       return row
     })

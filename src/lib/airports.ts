@@ -70,18 +70,3 @@ export function getAirportFromCallsign(callsign: string): { iata: string; name: 
   return AIRLINE_TO_AIRPORT[prefix] ?? null
 }
 
-// Výpočet přibližného cíle podle heading + origin
-export function guessDestination(
-  originIata: string,
-  heading: number
-): { iata: string; name: string } {
-  // Jednoduchá heuristika podle směru letu
-  if (heading >= 315 || heading < 45) return { iata: 'CPH', name: 'Kodaň' }
-  if (heading >= 45 && heading < 90)  return { iata: 'WAW', name: 'Varšava' }
-  if (heading >= 90 && heading < 135) return { iata: 'BUD', name: 'Budapešť' }
-  if (heading >= 135 && heading < 180) return { iata: 'ATH', name: 'Atény' }
-  if (heading >= 180 && heading < 225) return { iata: 'FCO', name: 'Řím' }
-  if (heading >= 225 && heading < 270) return { iata: 'MAD', name: 'Madrid' }
-  if (heading >= 270 && heading < 315) return { iata: 'LHR', name: 'Londýn' }
-  return { iata: '???', name: 'Neznámý' }
-}

@@ -50,7 +50,8 @@ function parseState(state: unknown[]): Flight | null {
   const onGround = Boolean(arr[IDX_ON_GROUND])
   const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
 
-  // Indexy 17 a 18 jsou naše rozšíření z aircraft-db.json
+  // Index 16: registrace z adsb.lol, 17+18 z aircraft-db.json
+  const registration = arr[16] ? String(arr[16]) : undefined
   const dbModel = arr[17] ? String(arr[17]) : undefined
   const dbType  = arr[18] ? (arr[18] as AircraftType) : undefined
 
@@ -65,6 +66,7 @@ function parseState(state: unknown[]): Flight | null {
     onGround,
     aircraftType: dbType ?? guessAircraftType(icao24),
     model: dbModel,
+    registration: registration || undefined,
     origin_country,
   }
 }
