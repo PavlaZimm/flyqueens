@@ -144,80 +144,73 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             offset: [0, -size - 2],
             className: 'fq-airport-tooltip',
           })
-          // Popup se základními info + placeholder pro METAR
-          const popupId = `metar-${a.icao}`
-          marker.bindPopup(
-            `<div class="fq-airport-popup">
+          // Popup — bind prázdný, obsah se nastaví po kliknutí
+          marker.bindPopup('', { className: 'fq-airport-popup-wrap', maxWidth: 260 })
+
+          const buildPopupHtml = (metarHtml: string, atcHtml: string) => `
+            <div class="fq-airport-popup">
               <div class="fq-ap-code">${a.iata || a.icao}</div>
               <div class="fq-ap-name">${a.name}</div>
               <div class="fq-ap-meta">${a.city} · ${a.country} · ${a.elev} ft</div>
-              <div id="${popupId}" class="fq-ap-metar">
-                <div class="fq-ap-metar-loading">⏳ Načítám počasí…</div>
-              </div>
-              <div id="atc-${a.icao}"></div>
-            </div>`,
-            { className: 'fq-airport-popup-wrap', maxWidth: 260 }
-          )
+              <div class="fq-ap-metar">${metarHtml}</div>
+              ${atcHtml}
+            </div>`
 
-          // Při otevření popupu fetchni METAR a doplň obsah
-          marker.on('popupopen', () => {
+          const compass = (deg: number) => {
+            const dirs = ['S','SSV','SV','VSV','V','VJV','JV','JJV','J','JJZ','JZ','ZJZ','Z','ZSZ','SZ','SSZ']
+            return dirs[Math.round(deg / 22.5) % 16]
+          }
+          const wxMap: Record<string, string> = {
+            'RA':'🌧 Déšť','DZ':'🌦 Mrholení','SN':'❄️ Sníh','TS':'⛈ Bouřka',
+            'FG':'🌫 Mlha','BR':'🌁 Opar','HZ':'😶‍🌫️ Zákal','TSRA':'⛈ Bouřka s deštěm',
+            '-RA':'🌦 Slabý déšť','+RA':'🌧 Silný déšť','-SN':'🌨 Slabý sníh',
+            'VCSH':'🌦 Přeháňky','GR':'🌩 Kroupy',
+          }
+
+          marker.on('click', () => {
+            // Okamžitě otevři popup s "načítám..."
+            marker.setPopupContent(buildPopupHtml('<div class="fq-ap-metar-loading">⏳ Načítám počasí…</div>', ''))
+            marker.openPopup()
+
             fetch(`/api/metar?icao=${encodeURIComponent(a.icao)}`)
               .then(r => r.json())
               .then((m) => {
-                const el = document.getElementById(popupId)
-                if (!el) return
-                if (m.error) { el.innerHTML = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'; return }
-
-                const qnh = m.altimeter ? Math.round(m.altimeter * 33.8639) : null
-                const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
-                const windDir = m.windDir != null ? m.windDir : null
-                const catColor = m.category === 'VFR' ? '#22C55E' : m.category === 'MVFR' ? '#38BDF8' : m.category === 'IFR' ? '#F87171' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
-
-                const compass = (deg: number) => {
-                  const dirs = ['S','SSV','SV','VSV','V','VJV','JV','JJV','J','JJZ','JZ','ZJZ','Z','ZSZ','SZ','SSZ']
-                  return dirs[Math.round(deg / 22.5) % 16]
-                }
-                const wxMap: Record<string, string> = {
-                  'RA':'🌧 Déšť','DZ':'🌦 Mrholení','SN':'❄️ Sníh','TS':'⛈ Bouřka',
-                  'FG':'🌫 Mlha','BR':'🌁 Opar','HZ':'😶‍🌫️ Zákal','TSRA':'⛈ Bouřka s deštěm',
-                  '-RA':'🌦 Slabý déšť','+RA':'🌧 Silný déšť','-SN':'🌨 Slabý sníh',
-                  'VCSH':'🌦 Přeháňky','GR':'🌩 Kroupy',
-                }
-                const wxLabel = m.weather ? (wxMap[m.weather] ?? m.weather) : null
-
-                el.innerHTML = `
-                  <div class="fq-metar-divider"></div>
-                  ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}</div>` : ''}
-                  <div class="fq-metar-grid">
-                    ${m.temp != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">TEPLOTA</div><div class="fq-mt-val">${m.temp}°C</div></div>` : ''}
-                    ${qnh ? `<div class="fq-metar-tile"><div class="fq-mt-label">QNH</div><div class="fq-mt-val">${qnh} hPa</div></div>` : ''}
-                    ${windSpd != null && windDir != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">VÍTR</div><div class="fq-mt-val">${windSpd} km/h ${compass(windDir)}${m.windGust ? ` (poryvy ${Math.round(m.windGust * 1.852)})` : ''}</div></div>` : ''}
-                    ${m.visibility != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">DOHLEDNOST</div><div class="fq-mt-val">${m.visibility >= 6 ? '10+ km' : (m.visibility * 1.609).toFixed(1) + ' km'}</div></div>` : ''}
-                  </div>
-                  ${wxLabel ? `<div class="fq-metar-wx">${wxLabel}</div>` : ''}
-                  ${m.rawMetar ? `<div class="fq-metar-raw">${m.rawMetar}</div>` : ''}
-                `
-
-                // ATC sekce — přidej po METAR
-                const atcEl = document.getElementById(`atc-${a.icao}`)
-                if (atcEl) {
-                  const feeds = getAtcFeeds(a.icao)
-                  if (feeds.length > 0) {
-                    const btns = feeds.map((f, i) => {
-                      const btnId = `atc-btn-${a.icao}-${i}`
-                      return `<button id="${btnId}" class="fq-atc-btn" data-label="${f.label}" onclick="window.__playAtc('${f.url}','${btnId}')" >▶ ${f.label}</button>`
-                    }).join('')
-                    atcEl.innerHTML = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}`
-                  } else {
-                    atcEl.innerHTML = `<div class="fq-metar-divider"></div><a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🎙 Poslouchat ATC na LiveATC.net ↗</a>`
-                  }
+                let metarHtml = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
+                if (!m.error) {
+                  const qnh = m.altimeter ? Math.round(m.altimeter) : null
+                  const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
+                  const catColor = m.category === 'VFR' ? '#22C55E' : m.category === 'MVFR' ? '#38BDF8' : m.category === 'IFR' ? '#F87171' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
+                  const wxLabel = m.weather ? (wxMap[m.weather] ?? m.weather) : null
+                  metarHtml = `
+                    <div class="fq-metar-divider"></div>
+                    ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}</div>` : ''}
+                    <div class="fq-metar-grid">
+                      ${m.temp != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">TEPLOTA</div><div class="fq-mt-val">${m.temp}°C</div></div>` : ''}
+                      ${qnh ? `<div class="fq-metar-tile"><div class="fq-mt-label">QNH</div><div class="fq-mt-val">${qnh} hPa</div></div>` : ''}
+                      ${windSpd != null && m.windDir != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">VÍTR</div><div class="fq-mt-val">${windSpd} km/h ${compass(m.windDir)}${m.windGust ? ` (poryvy ${Math.round(m.windGust * 1.852)})` : ''}</div></div>` : m.windVrb ? `<div class="fq-metar-tile"><div class="fq-mt-label">VÍTR</div><div class="fq-mt-val">proměnlivý ${windSpd ?? '?'} km/h</div></div>` : ''}
+                      ${m.visibility != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">DOHLEDNOST</div><div class="fq-mt-val">${m.visibility >= 6 ? '10+ km' : (m.visibility * 1.609).toFixed(1) + ' km'}</div></div>` : ''}
+                    </div>
+                    ${wxLabel ? `<div class="fq-metar-wx">${wxLabel}</div>` : ''}
+                    ${m.rawMetar ? `<div class="fq-metar-raw">${m.rawMetar}</div>` : ''}`
                 }
 
+                const feeds = getAtcFeeds(a.icao)
+                let atcHtml = ''
+                if (feeds.length > 0) {
+                  const btns = feeds.map((f, i) => {
+                    const btnId = `atc-btn-${a.icao}-${i}`
+                    return `<button id="${btnId}" class="fq-atc-btn" data-label="${f.label}" onclick="window.__playAtc('${f.url}','${btnId}')">▶ ${f.label}</button>`
+                  }).join('')
+                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}`
+                } else {
+                  atcHtml = `<div class="fq-metar-divider"></div><a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🎙 Poslouchat ATC na LiveATC.net ↗</a>`
+                }
+
+                marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
                 marker.getPopup()?.update()
               })
               .catch(() => {
-                const el = document.getElementById(popupId)
-                if (el) el.innerHTML = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
+                marker.setPopupContent(buildPopupHtml('<div class="fq-ap-metar-loading">Počasí nedostupné</div>', ''))
               })
           })
 
