@@ -12,7 +12,7 @@ interface UseFlightsResult {
   isMock: boolean
 }
 
-const POLL_INTERVAL   = 5_000   // 5s s auth
+const POLL_INTERVAL   = 10_000  // 10s — OpenSky free tier minimum
 const MAX_BACKOFF     = 60_000  // max 60s backoff při chybě
 const BACKOFF_FACTOR  = 2
 
@@ -23,6 +23,7 @@ export function useFlights(): UseFlightsResult {
   const [isMock, setIsMock]     = useState(false)
   const backoffRef              = useRef(POLL_INTERVAL)
   const timerRef                = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const activeRef               = useRef(false) // guard proti dvojitému spuštění
 
   const schedule = useCallback((delay: number, fn: () => void) => {
     if (timerRef.current) clearTimeout(timerRef.current)
@@ -50,8 +51,11 @@ export function useFlights(): UseFlightsResult {
   }, [schedule])
 
   useEffect(() => {
+    if (activeRef.current) return // StrictMode guard
+    activeRef.current = true
     load()
     return () => {
+      activeRef.current = false
       if (timerRef.current) clearTimeout(timerRef.current)
     }
   }, [load])
