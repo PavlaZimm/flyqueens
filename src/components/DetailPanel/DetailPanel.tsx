@@ -265,16 +265,48 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         </div>
       </div>
 
-      {/* CTA */}
-      <a
-        href={`https://www.flightradar24.com/${flight.callsign.trim()}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn-cta"
-        style={{ textDecoration: 'none', textAlign: 'center' }}
-      >
-        SLEDOVAT NA FR24
-      </a>
+      {/* Share + FR24 */}
+      <div style={{ display: 'flex', gap: 6 }}>
+        <button
+          onClick={() => {
+            const url = `${window.location.origin}${window.location.pathname}?flight=${encodeURIComponent(flight.callsign.trim())}`
+            if (navigator.share) {
+              navigator.share({ title: `${flight.callsign} – FlyQueens`, url })
+            } else {
+              navigator.clipboard.writeText(url).then(() => {
+                const btn = document.getElementById('fq-share-btn')
+                if (btn) { btn.textContent = 'ZKOPÍROVÁNO ✓'; setTimeout(() => { btn.textContent = 'SDÍLET' }, 2000) }
+              })
+            }
+          }}
+          id="fq-share-btn"
+          style={{
+            flex: 1,
+            background: 'var(--glass-bg)',
+            border: '1px solid var(--glass-border)',
+            color: 'var(--text-muted)',
+            fontFamily: "'Syne', sans-serif",
+            fontWeight: 700,
+            fontSize: 10,
+            letterSpacing: 2,
+            textTransform: 'uppercase',
+            borderRadius: 10,
+            padding: '11px 8px',
+            cursor: 'pointer',
+          }}
+        >
+          SDÍLET
+        </button>
+        <a
+          href={`https://www.flightradar24.com/${flight.callsign.trim()}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-cta"
+          style={{ textDecoration: 'none', textAlign: 'center', flex: 2 }}
+        >
+          SLEDOVAT NA FR24
+        </a>
+      </div>
     </div>
   )
 }

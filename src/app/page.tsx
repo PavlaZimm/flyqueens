@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { MapView } from '@/components/Map/MapView'
@@ -50,7 +50,19 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
   const [showAirports, setShowAirports] = useState(false)
+  const [nearbyFlights, setNearbyFlights] = useState<Flight[]>([])
+  const [showNearby, setShowNearby] = useState(false)
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+
+  // Auto-select flight from URL param ?flight=CSA123
+  useEffect(() => {
+    if (flights.length === 0) return
+    const params = new URLSearchParams(window.location.search)
+    const flightParam = params.get('flight')
+    if (!flightParam) return
+    const match = flights.find(f => f.callsign.trim().toUpperCase() === flightParam.toUpperCase())
+    if (match) setSelectedFlight(match)
+  }, [flights])
 
   // Keyboard shortcuts
   React.useEffect(() => {
@@ -68,7 +80,20 @@ export default function Home() {
   const handleLocateMe = () => {
     if (!navigator.geolocation) return
     navigator.geolocation.getCurrentPosition((pos) => {
-      mapLocateFnRef.current?.(pos.coords.latitude, pos.coords.longitude)
+      const { latitude, longitude } = pos.coords
+      mapLocateFnRef.current?.(latitude, longitude)
+
+      // Letadla nad hlavou — v okruhu 30 km
+      const R = 6371
+      const nearby = flights.filter(f => {
+        const dLat = (f.lat - latitude) * Math.PI / 180
+        const dLng = (f.lng - longitude) * Math.PI / 180
+        const a = Math.sin(dLat/2)**2 + Math.cos(latitude * Math.PI/180) * Math.cos(f.lat * Math.PI/180) * Math.sin(dLng/2)**2
+        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+        return dist <= 30
+      })
+      setNearbyFlights(nearby)
+      setShowNearby(true)
     })
   }
 
@@ -154,6 +179,47 @@ export default function Home() {
           <MobileBottomSheet onClose={handleDetailClose}>
             <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} />
           </MobileBottomSheet>
+        )}
+
+        {/* Letadla nad hlavou panel */}
+        {showNearby && (
+          <div style={{
+            position: 'absolute', bottom: isMock ? 128 : 96, right: 12, zIndex: 1000,
+            width: 220, background: 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)',
+            border: '1px solid var(--glass-border)', borderRadius: 12, padding: '10px 12px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+                Letadla nad tebou
+              </span>
+              <button onClick={() => setShowNearby(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
+            </div>
+            {nearbyFlights.length === 0 ? (
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Žádná letadla v okruhu 30 km ✈️</div>
+            ) : (
+              <>
+                <div style={{ fontSize: 11, color: 'var(--gold)', fontWeight: 700, marginBottom: 6 }}>
+                  {nearbyFlights.length} letadel v okruhu 30 km
+                </div>
+                {nearbyFlights.slice(0, 5).map(f => (
+                  <div
+                    key={f.icao24}
+                    onClick={() => { handleFlightSelect(f); setShowNearby(false) }}
+                    style={{
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '4px 0', borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer',
+                    }}
+                  >
+                    <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, color: 'var(--text-primary)' }}>{f.callsign}</span>
+                    <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>{Math.round(f.altitude).toLocaleString('cs')} m</span>
+                  </div>
+                ))}
+                {nearbyFlights.length > 5 && (
+                  <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 4 }}>+{nearbyFlights.length - 5} dalších</div>
+                )}
+              </>
+            )}
+          </div>
         )}
 
         {/* GPS button */}
