@@ -17,7 +17,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-eval' 'unsafe-inline'",  // Next.js + Leaflet vyžadují
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://cdn.planespotters.net https://*.planespotters.net",
+      "img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net",
       "connect-src 'self' https://opensky-network.org https://api.adsb.lol https://api.planespotters.net",
       "frame-ancestors 'none'",
     ].join('; '),
