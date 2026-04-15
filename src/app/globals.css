@@ -232,7 +232,10 @@ html.light .metric-tile {
   animation: slide-up 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-* { transition: background-color 0.3s ease, border-color 0.3s ease; }
+/* Cílená transition — ne na * (zabíjí výkon na mobilu) */
+.flight-card, .glass-panel, .btn-cta, .metric-tile {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
 
 /* === LIGHT MODE OVERRIDES === */
 html.light .fq-tooltip {
@@ -257,16 +260,42 @@ html.light .leaflet-control-attribution {
 @media (max-width: 768px) {
   .fq-hamburger { display: flex !important; }
 
-  /* Filtry v TopBaru — scrollovatelné na mobilu */
-  .fq-filters {
+  /* TopBar — filter chips na druhý řádek */
+  .fq-topbar-inner  { flex-wrap: wrap; }
+  .fq-topbar-row1   { width: 100%; display: flex; align-items: center; gap: 8px; }
+  .fq-topbar-row2   {
+    width: 100%;
     display: flex !important;
-    max-width: calc(100vw - 160px); /* místo pro hamburger + live badge + ikony */
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 5px;
+    padding-bottom: 2px;
+  }
+  .fq-topbar-row2::-webkit-scrollbar { display: none; }
+  .fq-chip-label    { display: none !important; }
+
+  /* DetailPanel uvnitř bottom sheetu — bez absolutního pozicování */
+  .fq-detail-mobile .fq-detail-panel {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-height: none !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
   }
 
-  /* Detail panel metriky — 2 sloupce na mobile */
+  /* Sidebar — plná výška na mobilu */
+  .fq-sidebar > div {
+    height: 100dvh !important;
+  }
+
+  /* Detail panel metriky — větší čísla */
   .metric-tile .value { font-size: 15px; }
 }
 
 @media (min-width: 769px) {
-  .fq-hamburger { display: none !important; }
+  .fq-hamburger    { display: none !important; }
+  .fq-topbar-row1  { display: contents; }
+  .fq-topbar-row2  { display: contents !important; }
 }

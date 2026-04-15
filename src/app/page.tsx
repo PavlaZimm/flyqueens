@@ -111,7 +111,7 @@ export default function Home() {
     <div style={{ display: 'flex', height: '100dvh', width: '100vw', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
-      <div className={`fq-sidebar${sidebarOpen ? ' fq-sidebar-open' : ''}`}>
+      <div className={`fq-sidebar${sidebarOpen ? ' fq-sidebar-open' : ''}`} style={{ width: 220 }}>
         <Sidebar
           flights={flights}
           selectedFlight={selectedFlight}
@@ -272,9 +272,10 @@ export default function Home() {
           .fq-sidebar {
             display: flex;
             position: fixed;
-            top: 0; left: 0; bottom: 0;
+            top: 0; left: 0;
+            height: 100dvh;
             z-index: 2000;
-            width: min(320px, 85vw) !important;
+            width: min(300px, 82vw) !important;
             transform: translateX(-100%);
             transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
           }

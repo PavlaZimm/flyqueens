@@ -39,7 +39,8 @@ export function Sidebar({
 
   return (
     <div style={{
-      width: 220,
+      width: '100%',
+      minWidth: 220,
       flexShrink: 0,
       height: '100%',
       background: 'var(--midnight-2)',

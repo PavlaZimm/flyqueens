@@ -101,7 +101,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
 
   return (
     <div
-      className="glass-panel"
+      className="glass-panel fq-detail-panel"
       style={{
         position: 'absolute',
         top: 60, right: 16,
@@ -111,7 +111,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: 10,
-        maxHeight: 'calc(100vh - 80px)',
+        maxHeight: 'calc(100dvh - 80px)',
         overflowY: 'auto',
         background: 'rgba(10, 15, 30, 0.94)',
         backdropFilter: 'blur(20px)',
