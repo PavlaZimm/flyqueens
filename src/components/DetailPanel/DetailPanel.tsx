@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getAirportFromCallsign } from '@/lib/airports'
+import { getAirlineLogoUrl } from '@/lib/airlineLogos'
 
 interface DetailPanelProps {
   flight: Flight | null
@@ -94,7 +95,8 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const flag  = getFlagEmoji(flight.origin_country)
   const fl    = getFlightLevel(flight.altitude)
 
-  const airline = getAirportFromCallsign(flight.callsign)
+  const airline  = getAirportFromCallsign(flight.callsign)
+  const logoUrl  = getAirlineLogoUrl(flight.callsign)
 
   return (
     <div
@@ -198,18 +200,40 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         {vibe}
       </div>
 
-      {/* Dopravce / letiště */}
-      {airline && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', flexShrink: 0 }}>DOPRAVCE</div>
-          <div style={{ flex: 1 }}>
-            <div className="route-airport" style={{ fontSize: 14 }}>{airline.iata}</div>
-            <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>{airline.name}</div>
-          </div>
-          <div style={{ fontSize: 18, color: 'var(--text-dim)' }}>✈</div>
-          <div style={{ flex: 1, textAlign: 'right' }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-dim)', fontFamily: 'var(--font-display)' }}>???</div>
-            <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>cíl neznámý</div>
+      {/* Dopravce + logo */}
+      {(airline || logoUrl) && (
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', marginBottom: 6, letterSpacing: 1 }}>DOPRAVCE</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* Logo */}
+            {logoUrl && (
+              <div style={{
+                width: 48, height: 48, borderRadius: 8, flexShrink: 0,
+                background: 'rgba(255,255,255,0.92)',
+                border: '1px solid var(--border-mid)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden', padding: 4,
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoUrl}
+                  alt="logo dopravce"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                />
+              </div>
+            )}
+            {/* Název a hub */}
+            {airline && (
+              <div>
+                <div className="font-display" style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
+                  {airline.iata}
+                </div>
+                <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2 }}>
+                  hub: {airline.name}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

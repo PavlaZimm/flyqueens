@@ -2,6 +2,7 @@
 
 import type { Flight } from '@/types/flight'
 import { getAircraftColor } from '@/components/Map/AircraftIcon'
+import { getAirlineLogoUrl } from '@/lib/airlineLogos'
 
 interface FlightCardProps {
   flight: Flight
@@ -24,7 +25,8 @@ function getStatusLabel(flight: Flight): string {
 
 export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps) {
   const statusColor = getStatusColor(flight)
-  const acColor = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
+  const acColor  = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
+  const logoUrl  = getAirlineLogoUrl(flight.callsign)
 
   return (
     <div
@@ -35,11 +37,29 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
       onKeyDown={(e) => e.key === 'Enter' && onClick(flight)}
       aria-pressed={selected}
     >
-      {/* Row 1: callsign + status */}
+      {/* Row 1: logo + callsign + status */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-        <span className="callsign" style={{ color: selected ? 'var(--gold)' : 'var(--text-primary)' }}>
-          {flight.callsign}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {logoUrl && (
+            <div style={{
+              width: 22, height: 22, borderRadius: 4, flexShrink: 0,
+              background: 'rgba(255,255,255,0.88)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden', padding: 2,
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={logoUrl}
+                alt=""
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                onError={(e) => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none' }}
+              />
+            </div>
+          )}
+          <span className="callsign" style={{ color: selected ? 'var(--gold)' : 'var(--text-primary)' }}>
+            {flight.callsign}
+          </span>
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <div
             style={{
