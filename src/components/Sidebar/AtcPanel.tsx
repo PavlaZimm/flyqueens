@@ -42,7 +42,10 @@ export function AtcPanel() {
   }
 
   useEffect(() => {
-    if (open && feeds.length === 0) checkFeeds()
+    if (!open) return
+    checkFeeds()
+    const interval = setInterval(checkFeeds, 60_000)
+    return () => clearInterval(interval)
   }, [open])
 
   const play = (feed: FeedStatus) => {
