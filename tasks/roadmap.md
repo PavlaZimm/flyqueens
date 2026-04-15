@@ -1,7 +1,7 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-04-10
+> Poslední update: 2026-04-10 (session 2)
 
 ---
 
@@ -37,6 +37,7 @@
 
 ## 🔵 Fáze 2 — Vylepšení mapy & UX
 
+- [ ] **Letiště na mapě** — OurAirports CC0 data, vyfiltrováno na střední Evropu (~200 letišť), ikonky large/medium/small airport, hover tooltip (IATA + název), klik → detail, toggle v TopBaru
 - [ ] **Počasí na mapě** — OpenWeatherMap tile overlay (oblačnost, déšť, vítr)
 - [ ] **Cluster markery** — seskupení letadel při oddalení (Leaflet.markercluster)
 - [ ] **Letové koridory** — statická vrstva hlavních tras nad Evropou
