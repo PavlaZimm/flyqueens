@@ -153,23 +153,6 @@ export function TopBar({
           </div>
         </div>
 
-        {/* Desktop filter chips — inline v řádku 1 */}
-        <div
-          className="fq-filters"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            overflowX: 'auto',
-            scrollbarWidth: 'none',
-            flexShrink: 1,
-            minWidth: 0,
-            padding: '2px 0',
-          }}
-        >
-          {filterChips}
-        </div>
-
         <div style={{ flex: 1 }} />
 
         {/* Stats link */}

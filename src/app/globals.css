@@ -296,6 +296,5 @@ html.light .leaflet-control-attribution {
 
 @media (min-width: 769px) {
   .fq-hamburger    { display: none !important; }
-  .fq-topbar-row1  { display: contents; }
-  .fq-topbar-row2  { display: contents !important; }
+  .fq-topbar-row2  { display: none !important; }
 }
