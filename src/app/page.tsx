@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
+import { useFlightRoute } from '@/hooks/useFlightRoute'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
@@ -50,6 +51,12 @@ export default function Home() {
   const { flights, loading, count, isMock } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
+  const { route: selectedRoute } = useFlightRoute(
+    selectedFlight?.icao24 ?? null,
+    selectedFlight?.lat    ?? 0,
+    selectedFlight?.lng    ?? 0,
+    selectedFlight?.velocity ?? 0,
+  )
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
@@ -150,6 +157,7 @@ export default function Home() {
               activeFilters={activeFilters}
               showAirports={showAirports}
               onMapReady={(fn) => { mapLocateFnRef.current = fn }}
+              selectedRoute={selectedRoute}
             />
             </ErrorBoundary>
           </div>

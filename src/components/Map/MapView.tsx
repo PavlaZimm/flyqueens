@@ -7,6 +7,7 @@ import { getAircraftColor } from './AircraftIcon'
 import { airports, airportDisplayName } from '@/lib/airportData'
 import type { Airport } from '@/lib/airportData'
 import { getAtcFeeds, getLiveAtcUrl } from '@/lib/liveatc'
+import type { FlightRoute } from '@/hooks/useFlightRoute'
 
 // Globální audio instance — jen jeden stream hraje naráz
 let globalAudio: HTMLAudioElement | null = null
@@ -68,11 +69,37 @@ interface MapViewProps {
   activeFilters: Set<string>
   showAirports: boolean
   onMapReady?: (flyTo: (lat: number, lng: number) => void) => void
+  selectedRoute?: FlightRoute | null   // trasa pro kreslení oblouku
 }
 
 // Historie pozic — max 12 bodů na letadlo
 const flightHistory = new Map<string, Array<{ lat: number; lng: number }>>()
 const MAX_HISTORY = 12
+
+// Generuje body velkého oblouku (great circle arc) mezi dvěma body
+function greatCirclePoints(
+  lat1: number, lng1: number,
+  lat2: number, lng2: number,
+  steps = 80,
+): [number, number][] {
+  const toRad = (d: number) => d * Math.PI / 180
+  const toDeg = (r: number) => r * 180 / Math.PI
+  const φ1 = toRad(lat1), λ1 = toRad(lng1)
+  const φ2 = toRad(lat2), λ2 = toRad(lng2)
+  const points: [number, number][] = []
+  for (let i = 0; i <= steps; i++) {
+    const f  = i / steps
+    const A  = Math.sin((1 - f) * Math.acos(Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1))) /
+               Math.sin(Math.acos(Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1))) || 0
+    const B  = Math.sin(f * Math.acos(Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1))) /
+               Math.sin(Math.acos(Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1))) || 0
+    const x  = A*Math.cos(φ1)*Math.cos(λ1) + B*Math.cos(φ2)*Math.cos(λ2)
+    const y  = A*Math.cos(φ1)*Math.sin(λ1) + B*Math.cos(φ2)*Math.sin(λ2)
+    const z  = A*Math.sin(φ1)              + B*Math.sin(φ2)
+    points.push([toDeg(Math.atan2(z, Math.sqrt(x*x + y*y))), toDeg(Math.atan2(y, x))])
+  }
+  return points
+}
 
 function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   if (filters.size === 0) return true
@@ -85,11 +112,12 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   return false
 }
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady }: MapViewProps) {
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute }: MapViewProps) {
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
   const trailsRef       = useRef<Map<string, Polyline>>(new Map())
+  const routeArcRef     = useRef<Polyline | null>(null)
   const showAirportsRef = useRef(showAirports)
 
   // Registruj window.__playAtc — volá se z Leaflet popup tlačítek
@@ -325,6 +353,69 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       animate: true, duration: 0.8,
     })
   }, [selectedFlight])
+
+  // Route arc — nakreslí oblouk DEP → letadlo → ARR
+  useEffect(() => {
+    if (!mapRef.current) return
+    const { map, L } = mapRef.current
+
+    // Odstraň předchozí arc
+    if (routeArcRef.current) {
+      map.removeLayer(routeArcRef.current)
+      routeArcRef.current = null
+    }
+
+    if (!selectedRoute || !selectedFlight) return
+    const { departure, arrival } = selectedRoute
+
+    if (!arrival) return
+
+    // Bod A = odlet (nebo aktuální poloha pokud nemáme DEP)
+    const depLat = departure?.lat ?? selectedFlight.lat
+    const depLng = departure?.lng ?? selectedFlight.lng
+    const arrLat = arrival.lat
+    const arrLng = arrival.lng
+    const curLat = selectedFlight.lat
+    const curLng = selectedFlight.lng
+
+    // Uletěná část (DEP → letadlo) — šedá přerušovaná
+    const flownPts = greatCirclePoints(depLat, depLng, curLat, curLng, 40)
+    const flownArc = L.polyline(flownPts, {
+      color: 'rgba(255,255,255,0.18)',
+      weight: 1.5,
+      dashArray: '4 6',
+      smoothFactor: 1,
+    })
+
+    // Zbývající část (letadlo → ARR) — zlatá plná
+    const remainPts = greatCirclePoints(curLat, curLng, arrLat, arrLng, 60)
+    const remainArc = L.polyline(remainPts, {
+      color: '#FDE047',
+      weight: 2,
+      opacity: 0.55,
+      dashArray: '6 4',
+      smoothFactor: 1,
+    })
+
+    // Marker cílového letiště
+    const arrIcon = L.divIcon({
+      html: `<div style="
+        width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+        background:rgba(253,224,71,0.15);border:1.5px solid rgba(253,224,71,0.5);
+        border-radius:50%;font-size:14px;
+      ">🛬</div>`,
+      className: '',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    })
+    const arrMarker = L.marker([arrLat, arrLng], { icon: arrIcon, interactive: false })
+
+    // Seskup vše do jedné vrstvy pro snadné mazání
+    const group = L.layerGroup([flownArc, remainArc, arrMarker])
+    group.addTo(map)
+    // Ulož jako polyline (group nemá Polyline typ, ale máme ref)
+    routeArcRef.current = group as unknown as Polyline
+  }, [selectedRoute, selectedFlight])
 
   // Markery + trail
   useEffect(() => {

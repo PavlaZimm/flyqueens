@@ -5,6 +5,7 @@ import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getAirportFromCallsign } from '@/lib/airports'
 import { getAirlineLogoUrl } from '@/lib/airlineLogos'
+import { useFlightRoute } from '@/hooks/useFlightRoute'
 
 interface DetailPanelProps {
   flight: Flight | null
@@ -87,6 +88,12 @@ function getFlightLevel(altitude: number): string {
 
 export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
+  const { route, loading: routeLoading  } = useFlightRoute(
+    flight?.icao24 ?? null,
+    flight?.lat    ?? 0,
+    flight?.lng    ?? 0,
+    flight?.velocity ?? 0,
+  )
 
   if (!flight) return null
 
@@ -239,6 +246,82 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Trasa — odkud / kam */}
+      {(routeLoading || route) && (
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>TRASA</div>
+
+          {routeLoading && (
+            <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>Hledám trasu…</div>
+          )}
+
+          {!routeLoading && route && (
+            <>
+              {/* DEP → ARR */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                {/* Odlet */}
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                  <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
+                    {route.departure ? (route.departure.iata || route.departure.icao) : '???'}
+                  </div>
+                  <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                    {route.departure ? (route.departure.city || route.departure.name) : 'Neznámé'}
+                  </div>
+                </div>
+
+                {/* Letadlo + čára */}
+                <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                  <div style={{ fontSize: 12 }}>✈</div>
+                  <div style={{ width: '100%', height: 2, background: 'var(--border-subtle)', borderRadius: 1, position: 'relative' }}>
+                    {route.totalDist > 0 && (
+                      <div style={{
+                        position: 'absolute', left: 0, top: 0, bottom: 0,
+                        width: `${route.progress}%`,
+                        background: 'linear-gradient(90deg, var(--gold), var(--lavender))',
+                        borderRadius: 1,
+                        transition: 'width 0.5s ease',
+                      }} />
+                    )}
+                  </div>
+                  <div style={{ fontSize: 8, color: 'var(--text-dim)' }}>{route.progress} %</div>
+                </div>
+
+                {/* Přilet */}
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                  <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--gold)', letterSpacing: 1 }}>
+                    {route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}
+                  </div>
+                  <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                    {route.arrival ? (route.arrival.city || route.arrival.name) : 'Neznámé'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Zbývá km + ETA */}
+              {route.arrival && route.remaining > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div className="font-display" style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-blue)' }}>
+                      {route.remaining.toLocaleString('cs')} km
+                    </div>
+                    <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>ZBÝVÁ</div>
+                  </div>
+                  <div style={{ width: 1, background: 'var(--border-subtle)' }} />
+                  <div style={{ textAlign: 'center' }}>
+                    <div className="font-display" style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-blue)' }}>
+                      {route.etaMin < 60
+                        ? `${route.etaMin} min`
+                        : `${Math.floor(route.etaMin / 60)}h ${route.etaMin % 60}m`}
+                    </div>
+                    <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>DO PŘISTÁNÍ</div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
 
