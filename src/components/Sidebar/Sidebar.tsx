@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { Flight } from '@/types/flight'
 import { FlightCard } from './FlightCard'
+import { AtcPanel } from './AtcPanel'
 
 interface SidebarProps {
   flights: Flight[]
@@ -138,6 +139,9 @@ export function Sidebar({
           )
         })}
       </nav>
+
+      {/* ATC Panel */}
+      <AtcPanel />
 
       {/* Flight list */}
       <div style={{ flex: 1, overflow: 'hidden auto', padding: '10px 10px 8px' }}>
