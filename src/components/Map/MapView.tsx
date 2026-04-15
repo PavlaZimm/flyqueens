@@ -6,6 +6,44 @@ import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
 import { airports, airportDisplayName } from '@/lib/airportData'
 import type { Airport } from '@/lib/airportData'
+import { getAtcFeeds, getLiveAtcUrl } from '@/lib/liveatc'
+
+// Globální audio instance — jen jeden stream hraje naráz
+let globalAudio: HTMLAudioElement | null = null
+function playAtcStream(url: string, btnId: string) {
+  // Zastav předchozí stream
+  if (globalAudio) {
+    globalAudio.pause()
+    globalAudio.src = ''
+    // Reset všech ATC tlačítek
+    document.querySelectorAll('.fq-atc-btn').forEach(b => {
+      b.textContent = '▶ ' + b.getAttribute('data-label')
+      b.classList.remove('playing')
+    })
+    globalAudio = null
+  }
+  const btn = document.getElementById(btnId)
+  if (!btn) return
+  // Pokud jsme klikli na stejné tlačítko → stop (toggle)
+  if (btn.classList.contains('was-playing')) {
+    btn.classList.remove('was-playing')
+    return
+  }
+  const audio = new Audio(url)
+  audio.play().catch(() => {
+    if (btn) btn.textContent = '⚠ Stream nedostupný'
+  })
+  globalAudio = audio
+  btn.textContent = '⏹ Zastavit'
+  btn.classList.add('playing')
+  audio.onended = () => {
+    btn.textContent = '▶ ' + btn.getAttribute('data-label')
+    btn.classList.remove('playing')
+    globalAudio = null
+  }
+  // Odhalit tlačítko pro toggle
+  setTimeout(() => btn.classList.add('was-playing'), 100)
+}
 
 interface MapRefs {
   map: LeafletMap
@@ -47,7 +85,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
   const trailsRef       = useRef<Map<string, Polyline>>(new Map())
-  const showAirportsRef = useRef(showAirports)  // vždy aktuální hodnota pro async init callback
+  const showAirportsRef = useRef(showAirports)
+
+  // Registruj window.__playAtc — volá se z Leaflet popup tlačítek
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window as any).__playAtc = playAtcStream
+    return () => { delete (window as any).__playAtc }
+  }, [])
 
   // Init mapy
   useEffect(() => {
@@ -109,6 +154,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
               <div id="${popupId}" class="fq-ap-metar">
                 <div class="fq-ap-metar-loading">⏳ Načítám počasí…</div>
               </div>
+              <div id="atc-${a.icao}"></div>
             </div>`,
             { className: 'fq-airport-popup-wrap', maxWidth: 260 }
           )
@@ -151,13 +197,37 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   ${wxLabel ? `<div class="fq-metar-wx">${wxLabel}</div>` : ''}
                   ${m.rawMetar ? `<div class="fq-metar-raw">${m.rawMetar}</div>` : ''}
                 `
-                // Update popup size
+
+                // ATC sekce — přidej po METAR
+                const atcEl = document.getElementById(`atc-${a.icao}`)
+                if (atcEl) {
+                  const feeds = getAtcFeeds(a.icao)
+                  if (feeds.length > 0) {
+                    const btns = feeds.map((f, i) => {
+                      const btnId = `atc-btn-${a.icao}-${i}`
+                      return `<button id="${btnId}" class="fq-atc-btn" data-label="${f.label}" onclick="window.__playAtc('${f.url}','${btnId}')" >▶ ${f.label}</button>`
+                    }).join('')
+                    atcEl.innerHTML = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}`
+                  } else {
+                    atcEl.innerHTML = `<div class="fq-metar-divider"></div><a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🎙 Poslouchat ATC na LiveATC.net ↗</a>`
+                  }
+                }
+
                 marker.getPopup()?.update()
               })
               .catch(() => {
                 const el = document.getElementById(popupId)
                 if (el) el.innerHTML = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
               })
+          })
+
+          // Stop audio při zavření popupu
+          marker.on('popupclose', () => {
+            if (globalAudio) {
+              globalAudio.pause()
+              globalAudio.src = ''
+              globalAudio = null
+            }
           })
 
           airportLayer.addLayer(marker)
@@ -385,6 +455,19 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-mt-val { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
         .fq-metar-wx { font-size: 11px; color: rgba(255,255,255,0.75); margin: 4px 0; }
         .fq-metar-raw { font-size: 8px; color: rgba(255,255,255,0.2); margin-top: 6px; font-family: monospace; word-break: break-all; line-height: 1.4; }
+        .fq-atc-label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+        .fq-atc-btn {
+          display: block; width: 100%; margin-bottom: 5px;
+          background: rgba(253,224,71,0.08); border: 1px solid rgba(253,224,71,0.25);
+          border-radius: 7px; padding: 7px 10px;
+          color: #FDE047; font-family: 'Space Grotesk', sans-serif;
+          font-size: 11px; font-weight: 600; cursor: pointer; text-align: left;
+          transition: background 0.15s;
+        }
+        .fq-atc-btn:hover { background: rgba(253,224,71,0.16); }
+        .fq-atc-btn.playing { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); color: #22C55E; }
+        .fq-atc-ext { display: block; font-size: 10px; color: #38BDF8; text-decoration: none; padding: 4px 0; }
+        .fq-atc-ext:hover { text-decoration: underline; }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>

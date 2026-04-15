@@ -27,18 +27,28 @@ export async function GET(req: NextRequest) {
     }
 
     // Parsuj a vrať jen co potřebujeme
+    // Normalizace windDir — "VRB" = proměnlivý, vrátíme null
+    const rawWdir = metar.wdir
+    const windDir = (rawWdir === 'VRB' || rawWdir == null) ? null : Number(rawWdir)
+    const windVrb = rawWdir === 'VRB'
+
+    // Normalizace visibility — "6+" → 10, číslo nechej být
+    const rawVis = metar.visib
+    const visibility = rawVis === '6+' || rawVis === 'P6' ? 10 : (rawVis != null ? Number(rawVis) : null)
+
     return NextResponse.json({
       icao:      metar.icaoId ?? icao,
-      temp:      metar.temp    ?? null,   // °C
-      dewpoint:  metar.dewp    ?? null,   // °C
-      windDir:   metar.wdir    ?? null,   // stupně
-      windSpeed: metar.wspd    ?? null,   // uzly
-      windGust:  metar.wgst    ?? null,   // uzly
-      visibility: metar.visib  ?? null,   // míle
-      altimeter: metar.altim   ?? null,   // inHg → převedeme na hPa
-      weather:   metar.wxString ?? null,  // RA, FG, TSRA...
-      clouds:    metar.clouds   ?? [],    // [{cover, base}]
-      category:  metar.fltcat  ?? null,   // VFR / MVFR / IFR / LIFR
+      temp:      metar.temp    ?? null,
+      dewpoint:  metar.dewp    ?? null,
+      windDir,
+      windVrb,                              // true = proměnlivý vítr
+      windSpeed: metar.wspd    ?? null,     // uzly
+      windGust:  metar.wgst    ?? null,     // uzly
+      visibility,                           // míle (číslo)
+      altimeter: metar.altim   ?? null,     // inHg
+      weather:   metar.wxString ?? null,
+      clouds:    metar.clouds   ?? [],
+      category:  metar.fltcat  ?? null,
       rawMetar:  metar.rawOb   ?? null,
       obsTime:   metar.obsTime ?? null,
     })
