@@ -46,12 +46,14 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
       )}
 
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: 32,
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         background: 'color-mix(in srgb, var(--midnight-3) 90%, transparent)',
         borderTop: '1px solid var(--border-subtle)',
         backdropFilter: 'blur(8px)',
         display: 'flex', alignItems: 'center',
-        padding: '0 16px', gap: 16, zIndex: 1000,
+        padding: '0 16px', gap: 12, zIndex: 1000,
         fontFamily: 'Space Grotesk, sans-serif',
       }}>
         {/* UTC čas */}
@@ -60,25 +62,18 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
           <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>{time}</span>
         </div>
 
-        <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
+        <div className="fq-sb-sep" style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div className="fq-sb-col" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>OBLAST</span>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Central Europe</span>
         </div>
 
-        <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
+        <div className="fq-sb-sep" style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>V POHLEDU</span>
-          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{visibleCount}</span>
-        </div>
-
-        <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>CELKEM</span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{flightCount}</span>
+        <div className="fq-sb-col" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>LETÍ</span>
+          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{flightCount}</span>
         </div>
 
         <div style={{ flex: 1 }} />
@@ -92,6 +87,13 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
           <span style={{ fontSize: 9, letterSpacing: 1.5, color: 'var(--green-live)', fontWeight: 700 }}>LIVE</span>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .fq-sb-col  { display: none !important; }
+          .fq-sb-sep  { display: none !important; }
+        }
+      `}</style>
     </>
   )
 }

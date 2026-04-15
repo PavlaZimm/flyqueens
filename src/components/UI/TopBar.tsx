@@ -22,7 +22,7 @@ const CHIP_BASE: React.CSSProperties = {
   justifyContent: 'center',
   height: 36,
   borderRadius: 8,
-  padding: '0 14px',
+  padding: '0 10px',
   cursor: 'pointer',
   fontFamily: 'Space Grotesk, sans-serif',
   fontSize: 11,
@@ -89,11 +89,11 @@ export function TopBar({
         pointerEvents: 'all',
       }}
     >
-      {/* Hamburger — pouze mobile */}
+      {/* Hamburger — pouze mobile (display override přes CSS .fq-hamburger) */}
       <button
         onClick={onHamburger}
         className="fq-hamburger"
-        style={{ ...ICON_BTN, display: 'none' }}
+        style={{ ...ICON_BTN }}
         aria-label="Otevřít menu"
       >
         <div style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -159,8 +159,8 @@ export function TopBar({
                 fontWeight: active ? 600 : 400,
               }}
             >
-              <span style={{ marginRight: 5, fontSize: 12 }}>{filter.emoji}</span>
-              {filter.label}
+              <span style={{ fontSize: 13 }}>{filter.emoji}</span>
+              <span className="fq-chip-label" style={{ marginLeft: 5 }}>{filter.label}</span>
             </button>
           )
         })}
@@ -178,8 +178,8 @@ export function TopBar({
             fontWeight: showAirports ? 600 : 400,
           }}
         >
-          <span style={{ marginRight: 5, fontSize: 12 }}>🛬</span>
-          Letiště
+          <span style={{ fontSize: 13 }}>🛬</span>
+          <span className="fq-chip-label" style={{ marginLeft: 5 }}>Letiště</span>
         </button>
       </div>
 

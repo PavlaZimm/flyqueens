@@ -214,7 +214,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   const atcHtml = `
                     <div class="fq-metar-divider"></div>
                     <div class="fq-atc-label">🎙 LIVE ATC</div>
-                    <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
+                    <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
                   marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
                   marker.getPopup()?.update()
                 } else {
@@ -240,7 +240,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                       <div class="fq-metar-divider"></div>
                       <div class="fq-atc-label">🎙 LIVE ATC</div>
                       ${feedBtns}
-                      ${!anyOnline ? `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>` : ''}`
+                      ${!anyOnline ? `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>` : ''}`
 
                     marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
                     marker.getPopup()?.update()
@@ -423,7 +423,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           background: rgba(15,23,42,0.92) !important;
           border: 1px solid rgba(253,224,71,0.3) !important;
           border-radius: 6px !important;
-          color: #FDE047 !important;
+          color: var(--gold) !important;
           font-family: 'Syne', sans-serif !important;
           font-size: 11px !important;
           font-weight: 700 !important;
@@ -447,14 +447,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           width: 30px !important; height: 30px !important; line-height: 30px !important;
         }
         .leaflet-control-zoom-in:hover,
-        .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: #FDE047 !important; }
+        .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: var(--gold) !important; }
         .leaflet-control-attribution { font-size: 9px !important; background: rgba(10,15,30,0.55) !important; color: rgba(255,255,255,0.2) !important; }
         .leaflet-control-attribution a { color: rgba(255,255,255,0.25) !important; }
         .fq-airport-tooltip {
           background: rgba(15,23,42,0.92) !important;
           border: 1px solid rgba(56,189,248,0.35) !important;
           border-radius: 6px !important;
-          color: #38BDF8 !important;
+          color: var(--accent-blue) !important;
           font-family: 'Space Grotesk', sans-serif !important;
           font-size: 10px !important;
           font-weight: 600 !important;
@@ -473,7 +473,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-airport-popup-wrap .leaflet-popup-tip { background: rgba(15,23,42,0.96) !important; }
         .fq-airport-popup-wrap .leaflet-popup-content { margin: 0 !important; }
         .fq-airport-popup { padding: 12px 14px; }
-        .fq-ap-code { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #38BDF8; letter-spacing: 2px; }
+        .fq-ap-code { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent-blue); letter-spacing: 2px; }
         .fq-ap-name { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
         .fq-ap-meta { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; letter-spacing: 0.5px; }
         .fq-ap-metar { margin-top: 2px; }
@@ -493,17 +493,17 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           display: block; width: 100%; margin-bottom: 4px;
           background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.35);
           border-radius: 7px; padding: 7px 10px;
-          color: #22C55E; font-family: 'Space Grotesk', sans-serif;
+          color: var(--green-live); font-family: 'Space Grotesk', sans-serif;
           font-size: 11px; font-weight: 600; cursor: pointer; text-align: left;
           transition: background 0.15s;
         }
         .fq-atc-btn:hover { background: rgba(34,197,94,0.2); }
-        .fq-atc-btn.playing { background: rgba(253,224,71,0.12); border-color: rgba(253,224,71,0.4); color: #FDE047; }
+        .fq-atc-btn.playing { background: rgba(253,224,71,0.12); border-color: rgba(253,224,71,0.4); color: var(--gold); }
         .fq-atc-link-btn {
           display: block; margin-top: 5px;
           background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25);
           border-radius: 7px; padding: 7px 10px;
-          color: #38BDF8; font-family: 'Space Grotesk', sans-serif;
+          color: var(--accent-blue); font-family: 'Space Grotesk', sans-serif;
           font-size: 11px; font-weight: 600; text-align: center;
           text-decoration: none; transition: background 0.15s;
         }

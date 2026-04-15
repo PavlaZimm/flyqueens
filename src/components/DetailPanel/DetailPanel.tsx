@@ -27,6 +27,7 @@ function useAircraftPhoto(icao24: string | null) {
     setLoading(true)
     setPhoto(null)
     const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 8000)
 
     fetch(`https://api.planespotters.net/pub/photos/hex/${icao24}`, { signal: controller.signal })
       .then(r => r.json())
@@ -34,9 +35,9 @@ function useAircraftPhoto(icao24: string | null) {
         setPhoto(data.photos?.[0] ?? null)
       })
       .catch(() => setPhoto(null))
-      .finally(() => setLoading(false))
+      .finally(() => { clearTimeout(timeoutId); setLoading(false) })
 
-    return () => controller.abort()
+    return () => { clearTimeout(timeoutId); controller.abort() }
   }, [icao24])
 
   return { photo, loading }

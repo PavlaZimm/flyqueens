@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit } from '@/lib/rateLimit'
 
 // Node.js runtime — Edge runtime nepodporuje HTTP (jen HTTPS), audio.liveatc.net je pouze HTTP
 
 // Proxy pro LiveATC audio stream — vyřeší CORS problém
 export async function GET(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? req.headers.get('x-real-ip')
+    ?? '127.0.0.1'
+  const { allowed, retryAfter } = checkRateLimit(ip)
+  if (!allowed) {
+    return new NextResponse('Too many requests', { status: 429, headers: { 'Retry-After': String(retryAfter) } })
+  }
+
   const feed = req.nextUrl.searchParams.get('feed')
   if (!feed || !/^[a-z0-9_]+$/i.test(feed)) {
     return new NextResponse('Invalid feed', { status: 400 })

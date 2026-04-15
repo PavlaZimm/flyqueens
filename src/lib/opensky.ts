@@ -72,7 +72,10 @@ function parseState(state: unknown[]): Flight | null {
 }
 
 export async function fetchFlights(): Promise<{ flights: Flight[]; isMock: boolean }> {
-  const res = await fetch('/api/flights', { cache: 'no-store' })
+  const res = await fetch('/api/flights', {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(8000),
+  })
 
   if (!res.ok) {
     throw new Error(`OpenSky API error: ${res.status}`)

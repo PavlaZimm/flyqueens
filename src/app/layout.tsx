@@ -30,11 +30,13 @@ export const metadata: Metadata = {
     locale: "cs_CZ",
     siteName: "FlyQueens",
     url: "https://flyqueens-app.vercel.app",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FlyQueens · Track Every Flight" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "FlyQueens · Track Every Flight",
     description: "Real-time mapa letadel nad střední Evropou.",
+    images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
   metadataBase: new URL("https://flyqueens-app.vercel.app"),
@@ -44,6 +46,7 @@ export const viewport: Viewport = {
   themeColor: "#0F172A",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",   // nutné pro env(safe-area-inset-*) na iOS
 };
 
 export default function RootLayout({

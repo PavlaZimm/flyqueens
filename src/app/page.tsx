@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
-import { MapView } from '@/components/Map/MapView'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
@@ -11,6 +11,9 @@ import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
 import type { Flight } from '@/types/flight'
+
+// Leaflet (~800 KB) se nesmí renderovat na serveru — SSR crash
+const MapView = dynamic(() => import('@/components/Map/MapView').then(m => ({ default: m.MapView })), { ssr: false })
 
 function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   const touchStartY = useRef(0)
@@ -24,11 +27,12 @@ function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; o
         position: 'absolute', bottom: 0, left: 0, right: 0,
         background: 'var(--midnight-2)',
         borderTop: '1px solid var(--glass-border)',
-        borderRadius: '24px 24px 0 0',
-        padding: '16px',
+        borderRadius: '20px 20px 0 0',
+        padding: '16px 16px calc(16px + env(safe-area-inset-bottom, 0px))',
         zIndex: 1500,
-        maxHeight: '72vh',
+        maxHeight: '68dvh',
         overflow: 'auto',
+        WebkitOverflowScrolling: 'touch',
       }}
       onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
       onTouchEnd={(e) => {
@@ -104,7 +108,7 @@ export default function Home() {
   const handleDetailClose = () => setSelectedFlight(null)
 
   return (
-    <div style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', background: 'var(--midnight)' }}>
+    <div style={{ display: 'flex', height: '100dvh', width: '100vw', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
       <div className={`fq-sidebar${sidebarOpen ? ' fq-sidebar-open' : ''}`}>
@@ -152,7 +156,12 @@ export default function Home() {
         )}
 
         {/* TopBar */}
-        <div style={{ position: 'absolute', top: 12, left: 12, right: 12, zIndex: 1000, pointerEvents: 'none' }}>
+        <div style={{
+          position: 'absolute',
+          top: 'calc(12px + env(safe-area-inset-top, 0px))',
+          left: 12, right: 12,
+          zIndex: 1000, pointerEvents: 'none',
+        }}>
           <TopBar
             flightCount={count}
             theme={theme}
@@ -184,7 +193,9 @@ export default function Home() {
         {/* Letadla nad hlavou panel */}
         {showNearby && (
           <div style={{
-            position: 'absolute', bottom: isMock ? 128 : 96, right: 12, zIndex: 1000,
+            position: 'absolute',
+            bottom: `calc(${isMock ? 128 : 96}px + env(safe-area-inset-bottom, 0px))`,
+            right: 12, zIndex: 1000,
             width: 220, background: 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)',
             border: '1px solid var(--glass-border)', borderRadius: 12, padding: '10px 12px',
           }}>
@@ -226,7 +237,9 @@ export default function Home() {
         <button
           onClick={handleLocateMe}
           style={{
-            position: 'absolute', bottom: isMock ? 88 : 52, right: 12, zIndex: 1000,
+            position: 'absolute',
+            bottom: `calc(${isMock ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
+            right: 12, zIndex: 1000,
             width: 36, height: 36, borderRadius: 8,
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
             backdropFilter: 'blur(8px)', cursor: 'pointer',
@@ -244,39 +257,71 @@ export default function Home() {
       </div>
 
       <style>{`
-        /* Desktop */
+        /* ── Desktop ── */
         .fq-sidebar {
           display: flex;
           height: 100%;
           flex-shrink: 0;
         }
         .fq-sidebar-overlay { display: none; }
+        .fq-detail-mobile  { display: none !important; }
 
-        /* Mobile */
+        /* ── Mobile (≤ 768 px) ── */
         @media (max-width: 768px) {
+          /* Sidebar jako drawer zprava */
           .fq-sidebar {
             display: flex;
             position: fixed;
             top: 0; left: 0; bottom: 0;
             z-index: 2000;
+            width: min(320px, 85vw) !important;
             transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
           .fq-sidebar.fq-sidebar-open {
             transform: translateX(0);
+            box-shadow: 8px 0 32px rgba(0,0,0,0.6);
           }
           .fq-sidebar-overlay {
             display: block;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.55);
             z-index: 1999;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
           }
+
+          /* Desktop detail panel skrytý, zobrazuje se bottom sheet */
           .fq-detail-desktop { display: none !important; }
+          .fq-detail-mobile  { display: flex !important; }
+
+          /* TopBar hamburger viditelný */
+          .fq-hamburger { display: inline-flex !important; }
+
+          /* Filter chips — jen emoji, text skrytý */
+          .fq-chip-label { display: none !important; }
+          .fq-filters {
+            gap: 5px !important;
+          }
         }
+
         @media (min-width: 769px) {
-          .fq-detail-mobile { display: none !important; }
+          .fq-hamburger { display: none !important; }
+        }
+
+        /* Bottom sheet animace */
+        @keyframes slideUp {
+          from { transform: translateY(100%); opacity: 0; }
+          to   { transform: translateY(0);   opacity: 1; }
+        }
+        .bottom-sheet-enter {
+          animation: slideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .handle-bar {
+          width: 36px; height: 4px;
+          background: var(--border-mid);
+          border-radius: 2px;
+          margin: 0 auto 14px;
         }
       `}</style>
     </div>
