@@ -18,32 +18,82 @@ const MapView = dynamic(() => import('@/components/Map/MapView').then(m => ({ de
 
 function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   const touchStartY = useRef(0)
-  const sheetRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div
-      ref={sheetRef}
-      className="fq-detail-mobile bottom-sheet-enter"
-      style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        background: 'var(--midnight-2)',
-        borderTop: '1px solid var(--glass-border)',
-        borderRadius: '20px 20px 0 0',
-        padding: '16px 16px calc(16px + env(safe-area-inset-bottom, 0px))',
-        zIndex: 1500,
-        maxHeight: '68dvh',
-        overflow: 'auto',
-        WebkitOverflowScrolling: 'touch',
-      }}
-      onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
-      onTouchEnd={(e) => {
-        const dy = e.changedTouches[0].clientY - touchStartY.current
-        if (dy > 60) onClose()
-      }}
-    >
-      <div className="handle-bar" />
-      {children}
-    </div>
+    <>
+      {/* Backdrop — klik zavře sheet */}
+      <div
+        className="fq-detail-mobile"
+        style={{
+          position: 'absolute', inset: 0,
+          zIndex: 1499,
+          background: 'rgba(0,0,0,0.4)',
+        }}
+        onClick={onClose}
+      />
+
+      {/* Sheet */}
+      <div
+        className="fq-detail-mobile bottom-sheet-enter"
+        style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          background: 'var(--midnight-2)',
+          borderTop: '1px solid var(--glass-border)',
+          borderRadius: '20px 20px 0 0',
+          zIndex: 1500,
+          maxHeight: '72dvh',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Handle — swipe area + close (vždy nahoře, nescrolluje) */}
+        <div
+          style={{ padding: '12px 16px 4px', flexShrink: 0, cursor: 'grab', display: 'flex', alignItems: 'center', gap: 8 }}
+          onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
+          onTouchEnd={(e) => {
+            const dy = e.changedTouches[0].clientY - touchStartY.current
+            if (dy > 50) onClose()
+          }}
+        >
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+            <div className="handle-bar" style={{ margin: 0 }} />
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Zavřít"
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: 6,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+              fontSize: 13,
+              width: 28,
+              height: 28,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              lineHeight: 1,
+            }}
+          >✕</button>
+        </div>
+
+        {/* Scrollovatelný obsah */}
+        <div
+          ref={scrollRef}
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            padding: '0 16px calc(16px + env(safe-area-inset-bottom, 0px))',
+          }}
+        >
+          {children}
+        </div>
+      </div>
+    </>
   )
 }
 

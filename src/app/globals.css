@@ -285,6 +285,11 @@ html.light .leaflet-control-attribution {
     box-sizing: border-box !important;
   }
 
+  /* Skryj interní ✕ z DetailPanelu — sheet má vlastní zavírací tlačítko */
+  .fq-detail-mobile .fq-detail-panel .fq-close-btn {
+    display: none !important;
+  }
+
   /* Sidebar — plná výška na mobilu */
   .fq-sidebar > div {
     height: 100dvh !important;

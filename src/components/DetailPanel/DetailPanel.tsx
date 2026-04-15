@@ -130,6 +130,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         <div style={{ flex: 1, height: 3, background: 'var(--border-strong)', borderRadius: 2 }} />
         <button
           onClick={onClose}
+          className="fq-close-btn"
           style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 15, padding: 0, lineHeight: 1, flexShrink: 0 }}
           aria-label="Zavřít"
         >✕</button>
