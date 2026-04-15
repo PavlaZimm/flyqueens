@@ -16,7 +16,52 @@ interface TopBarProps {
   onToggleAirports: () => void
 }
 
-export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeFilters, onFilterChange, showAirports, onToggleAirports }: TopBarProps) {
+const CHIP_BASE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: 36,
+  borderRadius: 8,
+  padding: '0 14px',
+  cursor: 'pointer',
+  fontFamily: 'Space Grotesk, sans-serif',
+  fontSize: 11,
+  fontWeight: 500,
+  backdropFilter: 'blur(10px)',
+  letterSpacing: 0.3,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  transition: 'background 0.15s, border-color 0.15s, color 0.15s',
+  border: '1px solid var(--glass-border)',
+  background: 'var(--glass-bg)',
+  color: 'var(--text-muted)',
+}
+
+const ICON_BTN: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 36,
+  height: 36,
+  borderRadius: 8,
+  cursor: 'pointer',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid var(--glass-border)',
+  background: 'var(--glass-bg)',
+  fontSize: 15,
+  flexShrink: 0,
+}
+
+export function TopBar({
+  flightCount,
+  theme,
+  onToggleTheme,
+  onHamburger,
+  activeFilters,
+  onFilterChange,
+  showAirports,
+  onToggleAirports,
+}: TopBarProps) {
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
     if (next.has(f)) {
@@ -27,60 +72,54 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
     onFilterChange(next)
   }
 
-  const filters: { id: FilterType; label: string }[] = [
-    { id: 'passenger', label: 'Pasažérské' },
-    { id: 'cargo', label: 'Nákladní' },
-    { id: 'private', label: 'Soukromé' },
-    { id: 'military', label: 'Vojenské' },
-    { id: 'helicopter', label: 'Vrtulníky' },
+  const filters: { id: FilterType; label: string; emoji: string }[] = [
+    { id: 'passenger', label: 'Pasažérské', emoji: '✈️' },
+    { id: 'cargo',     label: 'Nákladní',   emoji: '📦' },
+    { id: 'private',   label: 'Soukromé',   emoji: '🛩️' },
+    { id: 'military',  label: 'Vojenské',   emoji: '🪖' },
+    { id: 'helicopter',label: 'Vrtulníky',  emoji: '🚁' },
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        pointerEvents: 'all',
+      }}
+    >
       {/* Hamburger — pouze mobile */}
       <button
         onClick={onHamburger}
         className="fq-hamburger"
-        style={{
-          background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
-          borderRadius: 8, padding: '6px 9px', cursor: 'pointer',
-          backdropFilter: 'blur(8px)', lineHeight: 1, pointerEvents: 'all',
-          display: 'none',
-        }}
+        style={{ ...ICON_BTN, display: 'none' }}
         aria-label="Otevřít menu"
       >
         <div style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
-          {[0,1,2].map(i => (
-            <div key={i} style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }} />
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }}
+            />
           ))}
         </div>
       </button>
 
-      {/* Pills left */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-        }}
-      >
+      {/* Live + stats info */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
         <LiveBadge />
 
         {/* Počet letadel */}
         <div
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
+            ...CHIP_BASE,
+            padding: '0 12px',
             gap: 5,
-            background: 'var(--glass-bg)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: 6,
-            padding: '3px 10px',
-            backdropFilter: 'blur(8px)',
+            cursor: 'default',
           }}
         >
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>LETADEL</span>
+          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
           <span
             className="font-display"
             style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}
@@ -88,36 +127,21 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
             {flightCount}
           </span>
         </div>
-
-        {/* Oblast */}
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 5,
-            background: 'var(--glass-bg)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: 6,
-            padding: '3px 10px',
-            backdropFilter: 'blur(8px)',
-          }}
-        >
-          <span style={{ fontSize: 9, color: 'var(--text-muted)', letterSpacing: 0.5 }}>Central Europe</span>
-        </div>
       </div>
 
-      {/* Filter chips — scrollovatelné na mobilu */}
+      {/* Filter chips + letiště — scrollovatelné */}
       <div
         className="fq-filters"
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 5,
+          gap: 6,
           overflowX: 'auto',
           scrollbarWidth: 'none',
-          WebkitOverflowScrolling: 'touch',
+          WebkitOverflowScrolling: 'touch' as React.CSSProperties['WebkitOverflowScrolling'],
           flexShrink: 1,
           minWidth: 0,
+          padding: '2px 0',
         }}
       >
         {filters.map((filter) => {
@@ -126,62 +150,48 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
             <button
               key={filter.id}
               onClick={() => toggleFilter(filter.id)}
+              aria-pressed={active}
               style={{
-                background: active ? 'rgba(253,224,71,0.12)' : 'var(--glass-bg)',
-                border: `1px solid ${active ? 'rgba(253,224,71,0.35)' : 'var(--glass-border)'}`,
-                borderRadius: 6,
-                padding: '3px 10px',
-                cursor: 'pointer',
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontSize: 10,
+                ...CHIP_BASE,
+                background: active ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
+                border: `1px solid ${active ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
                 color: active ? 'var(--gold)' : 'var(--text-muted)',
                 fontWeight: active ? 600 : 400,
-                backdropFilter: 'blur(8px)',
-                letterSpacing: 0.3,
-                flexShrink: 0,
               }}
             >
+              <span style={{ marginRight: 5, fontSize: 12 }}>{filter.emoji}</span>
               {filter.label}
             </button>
           )
         })}
 
-        {/* Letiště toggle — v scroll řadě, dostupné na mobilu swipem */}
+        {/* Letiště toggle */}
         <button
           onClick={onToggleAirports}
-          title="Zobrazit/skrýt letiště"
-          style={{
-            background: showAirports ? 'rgba(56,189,248,0.12)' : 'var(--glass-bg)',
-            border: `1px solid ${showAirports ? 'rgba(56,189,248,0.4)' : 'var(--glass-border)'}`,
-            borderRadius: 6,
-            padding: '3px 10px',
-            cursor: 'pointer',
-            fontFamily: 'Space Grotesk, sans-serif',
-            fontSize: 10,
-            color: showAirports ? '#38BDF8' : 'var(--text-muted)',
-            fontWeight: showAirports ? 600 : 400,
-            backdropFilter: 'blur(8px)',
-            letterSpacing: 0.3,
-            flexShrink: 0,
-          }}
           aria-label="Přepnout zobrazení letišť"
           aria-pressed={showAirports}
+          style={{
+            ...CHIP_BASE,
+            background: showAirports ? 'rgba(56,189,248,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${showAirports ? 'rgba(56,189,248,0.4)' : 'var(--glass-border)'}`,
+            color: showAirports ? '#38BDF8' : 'var(--text-muted)',
+            fontWeight: showAirports ? 600 : 400,
+          }}
         >
-          🛬 Letiště
+          <span style={{ marginRight: 5, fontSize: 12 }}>🛬</span>
+          Letiště
         </button>
       </div>
 
       <div style={{ flex: 1 }} />
 
       {/* Stats link */}
-      <Link href="/stats" style={{ textDecoration: 'none' }}>
-        <div style={{
-          background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
-          borderRadius: 8, padding: '6px 10px', cursor: 'pointer',
-          backdropFilter: 'blur(8px)', fontSize: 10,
-          color: 'var(--text-muted)', letterSpacing: 0.5,
-          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600,
-        }}>
+      <Link href="/stats" style={{ textDecoration: 'none', flexShrink: 0 }}>
+        <div
+          style={{ ...ICON_BTN }}
+          title="Statistiky"
+          aria-label="Statistiky"
+        >
           📊
         </div>
       </Link>
@@ -189,16 +199,7 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
       {/* Theme toggle */}
       <button
         onClick={onToggleTheme}
-        style={{
-          background: 'var(--glass-bg)',
-          border: '1px solid var(--glass-border)',
-          borderRadius: 8,
-          padding: '6px 10px',
-          cursor: 'pointer',
-          fontSize: 14,
-          backdropFilter: 'blur(8px)',
-          lineHeight: 1,
-        }}
+        style={{ ...ICON_BTN }}
         aria-label={theme === 'dark' ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
       >
         {theme === 'dark' ? '☀️' : '🌙'}
@@ -206,4 +207,3 @@ export function TopBar({ flightCount, theme, onToggleTheme, onHamburger, activeF
     </div>
   )
 }
-

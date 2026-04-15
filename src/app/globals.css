@@ -253,8 +253,11 @@ html.light .leaflet-control-attribution {
 @media (max-width: 768px) {
   .fq-hamburger { display: flex !important; }
 
-  /* Filtry v TopBaru — schovej na velmi malých obrazovkách */
-  .fq-filters { display: none !important; }
+  /* Filtry v TopBaru — scrollovatelné na mobilu */
+  .fq-filters {
+    display: flex !important;
+    max-width: calc(100vw - 160px); /* místo pro hamburger + live badge + ikony */
+  }
 
   /* Detail panel metriky — 2 sloupce na mobile */
   .metric-tile .value { font-size: 15px; }
