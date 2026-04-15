@@ -99,15 +99,67 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             offset: [0, -size - 2],
             className: 'fq-airport-tooltip',
           })
-          // Klik — otevře letiště na FlightAware (nebo jen zobrazí popup)
+          // Popup se základními info + placeholder pro METAR
+          const popupId = `metar-${a.icao}`
           marker.bindPopup(
             `<div class="fq-airport-popup">
               <div class="fq-ap-code">${a.iata || a.icao}</div>
               <div class="fq-ap-name">${a.name}</div>
               <div class="fq-ap-meta">${a.city} · ${a.country} · ${a.elev} ft</div>
+              <div id="${popupId}" class="fq-ap-metar">
+                <div class="fq-ap-metar-loading">⏳ Načítám počasí…</div>
+              </div>
             </div>`,
-            { className: 'fq-airport-popup-wrap', maxWidth: 220 }
+            { className: 'fq-airport-popup-wrap', maxWidth: 260 }
           )
+
+          // Při otevření popupu fetchni METAR a doplň obsah
+          marker.on('popupopen', () => {
+            fetch(`/api/metar?icao=${encodeURIComponent(a.icao)}`)
+              .then(r => r.json())
+              .then((m) => {
+                const el = document.getElementById(popupId)
+                if (!el) return
+                if (m.error) { el.innerHTML = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'; return }
+
+                const qnh = m.altimeter ? Math.round(m.altimeter * 33.8639) : null
+                const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
+                const windDir = m.windDir != null ? m.windDir : null
+                const catColor = m.category === 'VFR' ? '#22C55E' : m.category === 'MVFR' ? '#38BDF8' : m.category === 'IFR' ? '#F87171' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
+
+                const compass = (deg: number) => {
+                  const dirs = ['S','SSV','SV','VSV','V','VJV','JV','JJV','J','JJZ','JZ','ZJZ','Z','ZSZ','SZ','SSZ']
+                  return dirs[Math.round(deg / 22.5) % 16]
+                }
+                const wxMap: Record<string, string> = {
+                  'RA':'🌧 Déšť','DZ':'🌦 Mrholení','SN':'❄️ Sníh','TS':'⛈ Bouřka',
+                  'FG':'🌫 Mlha','BR':'🌁 Opar','HZ':'😶‍🌫️ Zákal','TSRA':'⛈ Bouřka s deštěm',
+                  '-RA':'🌦 Slabý déšť','+RA':'🌧 Silný déšť','-SN':'🌨 Slabý sníh',
+                  'VCSH':'🌦 Přeháňky','GR':'🌩 Kroupy',
+                }
+                const wxLabel = m.weather ? (wxMap[m.weather] ?? m.weather) : null
+
+                el.innerHTML = `
+                  <div class="fq-metar-divider"></div>
+                  ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}</div>` : ''}
+                  <div class="fq-metar-grid">
+                    ${m.temp != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">TEPLOTA</div><div class="fq-mt-val">${m.temp}°C</div></div>` : ''}
+                    ${qnh ? `<div class="fq-metar-tile"><div class="fq-mt-label">QNH</div><div class="fq-mt-val">${qnh} hPa</div></div>` : ''}
+                    ${windSpd != null && windDir != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">VÍTR</div><div class="fq-mt-val">${windSpd} km/h ${compass(windDir)}${m.windGust ? ` (poryvy ${Math.round(m.windGust * 1.852)})` : ''}</div></div>` : ''}
+                    ${m.visibility != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">DOHLEDNOST</div><div class="fq-mt-val">${m.visibility >= 6 ? '10+ km' : (m.visibility * 1.609).toFixed(1) + ' km'}</div></div>` : ''}
+                  </div>
+                  ${wxLabel ? `<div class="fq-metar-wx">${wxLabel}</div>` : ''}
+                  ${m.rawMetar ? `<div class="fq-metar-raw">${m.rawMetar}</div>` : ''}
+                `
+                // Update popup size
+                marker.getPopup()?.update()
+              })
+              .catch(() => {
+                const el = document.getElementById(popupId)
+                if (el) el.innerHTML = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
+              })
+          })
+
           airportLayer.addLayer(marker)
         })
 
@@ -323,6 +375,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-ap-code { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: #38BDF8; letter-spacing: 2px; }
         .fq-ap-name { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
         .fq-ap-meta { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; letter-spacing: 0.5px; }
+        .fq-ap-metar { margin-top: 2px; }
+        .fq-ap-metar-loading { font-size: 9px; color: rgba(255,255,255,0.3); padding: 6px 0; }
+        .fq-metar-divider { height: 1px; background: rgba(56,189,248,0.15); margin: 8px 0; }
+        .fq-metar-cat { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .fq-metar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+        .fq-metar-tile { background: rgba(255,255,255,0.05); border-radius: 6px; padding: 5px 7px; }
+        .fq-mt-label { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+        .fq-mt-val { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
+        .fq-metar-wx { font-size: 11px; color: rgba(255,255,255,0.75); margin: 4px 0; }
+        .fq-metar-raw { font-size: 8px; color: rgba(255,255,255,0.2); margin-top: 6px; font-family: monospace; word-break: break-all; line-height: 1.4; }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>

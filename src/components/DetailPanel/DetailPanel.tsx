@@ -104,7 +104,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
       style={{
         position: 'absolute',
         top: 60, right: 16,
-        width: 240,
+        width: 252,
         zIndex: 100,
         padding: '14px 14px 16px',
         display: 'flex',
@@ -112,6 +112,9 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         gap: 10,
         maxHeight: 'calc(100vh - 80px)',
         overflowY: 'auto',
+        background: 'rgba(10, 15, 30, 0.94)',
+        backdropFilter: 'blur(20px)',
+        borderColor: 'rgba(255,255,255,0.10)',
       }}
     >
       {/* Handle + Close */}
