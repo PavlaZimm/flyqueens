@@ -200,21 +200,52 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                 }
 
                 const feeds = getAtcFeeds(a.icao)
-                const liveatcLink = `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-ext">🔗 Otevřít LiveATC.net ↗</a>`
-                let atcHtml = ''
-                if (feeds.length > 0) {
-                  const btns = feeds.map((f, i) => {
-                    const btnId = `atc-btn-${a.icao}-${i}`
-                    return `<button id="${btnId}" class="fq-atc-btn" data-label="${f.label}" onclick="window.__playAtc('${f.url}','${btnId}')">▶ ${f.label}</button>`
-                  }).join('')
-                  // Vždy přidej záložní odkaz — streamy mohou být offline
-                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${btns}${liveatcLink}`
-                } else {
-                  atcHtml = `<div class="fq-metar-divider"></div><div class="fq-atc-label">🎙 LIVE ATC</div>${liveatcLink}`
-                }
 
-                marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
+                // Nejdřív zobraz popup s "Zjišťuji status streamů..."
+                const atcLoading = `
+                  <div class="fq-metar-divider"></div>
+                  <div class="fq-atc-label">🎙 LIVE ATC</div>
+                  <div class="fq-atc-feed-item" style="color:rgba(255,255,255,0.3)">⏳ Zjišťuji dostupné streamy…</div>`
+                marker.setPopupContent(buildPopupHtml(metarHtml, atcLoading))
                 marker.getPopup()?.update()
+
+                if (feeds.length === 0) {
+                  // Letiště bez known feedů — rovnou zobraz odkaz
+                  const atcHtml = `
+                    <div class="fq-metar-divider"></div>
+                    <div class="fq-atc-label">🎙 LIVE ATC</div>
+                    <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
+                  marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
+                  marker.getPopup()?.update()
+                } else {
+                  // Zkontroluj status každého feedu paralelně
+                  Promise.all(feeds.map(f =>
+                    fetch(`/api/atc-check?feed=${encodeURIComponent(f.feed)}`)
+                      .then(r => r.json())
+                      .then((d: { online: boolean }) => ({ ...f, online: d.online }))
+                      .catch(() => ({ ...f, online: false }))
+                  )).then(results => {
+                    const feedBtns = results.map((f, i) => {
+                      const btnId = `atc-btn-${a.icao}-${i}`
+                      const proxyUrl = `/api/atc-stream?feed=${encodeURIComponent(f.feed)}`
+                      if (f.online) {
+                        return `<button id="${btnId}" class="fq-atc-btn online" data-label="${f.label}" onclick="window.__playAtc('${proxyUrl}','${btnId}')">🟢 ▶ ${f.label}</button>`
+                      } else {
+                        return `<div class="fq-atc-feed-offline">⚫ ${f.label} — offline</div>`
+                      }
+                    }).join('')
+
+                    const anyOnline = results.some(f => f.online)
+                    const atcHtml = `
+                      <div class="fq-metar-divider"></div>
+                      <div class="fq-atc-label">🎙 LIVE ATC</div>
+                      ${feedBtns}
+                      ${!anyOnline ? `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>` : ''}`
+
+                    marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
+                    marker.getPopup()?.update()
+                  })
+                }
               })
               .catch(() => {
                 marker.setPopupContent(buildPopupHtml('<div class="fq-ap-metar-loading">Počasí nedostupné</div>', ''))
@@ -455,20 +486,28 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-mt-val { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
         .fq-metar-wx { font-size: 11px; color: rgba(255,255,255,0.75); margin: 4px 0; }
         .fq-metar-raw { font-size: 8px; color: rgba(255,255,255,0.2); margin-top: 6px; font-family: monospace; word-break: break-all; line-height: 1.4; }
-        .fq-atc-label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+        .fq-atc-label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
+        .fq-atc-feed-item { font-size: 10px; color: rgba(255,255,255,0.5); padding: 2px 0; }
+        .fq-atc-feed-offline { font-size: 10px; color: rgba(255,255,255,0.25); padding: 3px 0; }
         .fq-atc-btn {
-          display: block; width: 100%; margin-bottom: 5px;
-          background: rgba(253,224,71,0.08); border: 1px solid rgba(253,224,71,0.25);
+          display: block; width: 100%; margin-bottom: 4px;
+          background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.35);
           border-radius: 7px; padding: 7px 10px;
-          color: #FDE047; font-family: 'Space Grotesk', sans-serif;
+          color: #22C55E; font-family: 'Space Grotesk', sans-serif;
           font-size: 11px; font-weight: 600; cursor: pointer; text-align: left;
           transition: background 0.15s;
         }
-        .fq-atc-btn:hover { background: rgba(253,224,71,0.16); }
-        .fq-atc-btn.playing { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); color: #22C55E; }
-        .fq-atc-btn.offline { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: #F87171; cursor: default; }
-        .fq-atc-ext { display: block; font-size: 10px; color: #38BDF8; text-decoration: none; padding: 4px 0; }
-        .fq-atc-ext:hover { text-decoration: underline; }
+        .fq-atc-btn:hover { background: rgba(34,197,94,0.2); }
+        .fq-atc-btn.playing { background: rgba(253,224,71,0.12); border-color: rgba(253,224,71,0.4); color: #FDE047; }
+        .fq-atc-link-btn {
+          display: block; margin-top: 5px;
+          background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25);
+          border-radius: 7px; padding: 7px 10px;
+          color: #38BDF8; font-family: 'Space Grotesk', sans-serif;
+          font-size: 11px; font-weight: 600; text-align: center;
+          text-decoration: none; transition: background 0.15s;
+        }
+        .fq-atc-link-btn:hover { background: rgba(56,189,248,0.16); }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>

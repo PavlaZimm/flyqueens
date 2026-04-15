@@ -5,76 +5,65 @@
 export interface AtcFeed {
   label: string          // název frekvenece / pásma
   url:   string          // přímý MP3 stream
+  feed:  string          // slug pro proxy endpoint (/api/atc-stream?feed=...)
 }
 
 const ATC_FEEDS: Record<string, AtcFeed[]> = {
-  // Česko
   'LKPR': [
-    { label: 'Praha Přiblížení',  url: 'https://s1.liveatc.net/lkpr' },
+    { label: 'Praha Přiblížení',  feed: 'lkpr',          url: 'https://s1.liveatc.net/lkpr' },
   ],
-  // Německo
   'EDDF': [
-    { label: 'Frankfurt Věž',     url: 'https://s1.liveatc.net/eddf_twr' },
-    { label: 'Frankfurt Přibl.',  url: 'https://s1.liveatc.net/eddf_app' },
+    { label: 'Frankfurt Věž',     feed: 'eddf_twr',      url: 'https://s1.liveatc.net/eddf_twr' },
+    { label: 'Frankfurt Přibl.',  feed: 'eddf_app',      url: 'https://s1.liveatc.net/eddf_app' },
   ],
   'EDDM': [
-    { label: 'Mnichov Věž',       url: 'https://s1.liveatc.net/eddm_twr' },
-    { label: 'Mnichov Přibl.',    url: 'https://s1.liveatc.net/eddm_app' },
+    { label: 'Mnichov Věž',       feed: 'eddm_twr',      url: 'https://s1.liveatc.net/eddm_twr' },
+    { label: 'Mnichov Přibl.',    feed: 'eddm_app',      url: 'https://s1.liveatc.net/eddm_app' },
   ],
   'EDDB': [
-    { label: 'Berlín Věž',        url: 'https://s1.liveatc.net/eddb' },
+    { label: 'Berlín Věž',        feed: 'eddb',          url: 'https://s1.liveatc.net/eddb' },
   ],
-  // Rakousko
   'LOWW': [
-    { label: 'Vídeň Věž',         url: 'https://s1.liveatc.net/loww_twr' },
-    { label: 'Vídeň Přibl.',      url: 'https://s1.liveatc.net/loww_app' },
+    { label: 'Vídeň Věž',         feed: 'loww_twr',      url: 'https://s1.liveatc.net/loww_twr' },
+    { label: 'Vídeň Přibl.',      feed: 'loww_app',      url: 'https://s1.liveatc.net/loww_app' },
   ],
-  // Polsko
   'EPWA': [
-    { label: 'Varšava Věž',       url: 'https://s1.liveatc.net/epwa' },
+    { label: 'Varšava Věž',       feed: 'epwa',          url: 'https://s1.liveatc.net/epwa' },
   ],
-  // Maďarsko
   'LHBP': [
-    { label: 'Budapešť Věž',      url: 'https://s1.liveatc.net/lhbp' },
+    { label: 'Budapešť Věž',      feed: 'lhbp',          url: 'https://s1.liveatc.net/lhbp' },
   ],
-  // UK
   'EGLL': [
-    { label: 'Heathrow Věž N',    url: 'https://s1.liveatc.net/egll_twr_north' },
-    { label: 'Heathrow Věž S',    url: 'https://s1.liveatc.net/egll_twr_south' },
-    { label: 'Heathrow Přibl.',   url: 'https://s1.liveatc.net/egll_app' },
+    { label: 'Heathrow Věž N',    feed: 'egll_twr_north',url: 'https://s1.liveatc.net/egll_twr_north' },
+    { label: 'Heathrow Věž S',    feed: 'egll_twr_south',url: 'https://s1.liveatc.net/egll_twr_south' },
+    { label: 'Heathrow Přibl.',   feed: 'egll_app',      url: 'https://s1.liveatc.net/egll_app' },
   ],
   'EGKK': [
-    { label: 'Gatwick Věž',       url: 'https://s1.liveatc.net/egkk' },
+    { label: 'Gatwick Věž',       feed: 'egkk',          url: 'https://s1.liveatc.net/egkk' },
   ],
   'EGGW': [
-    { label: 'Luton Věž',         url: 'https://s1.liveatc.net/eggw' },
+    { label: 'Luton Věž',         feed: 'eggw',          url: 'https://s1.liveatc.net/eggw' },
   ],
-  // Belgie
   'EBBR': [
-    { label: 'Brusel Věž',        url: 'https://s1.liveatc.net/ebbr' },
+    { label: 'Brusel Věž',        feed: 'ebbr',          url: 'https://s1.liveatc.net/ebbr' },
   ],
-  // Nizozemsko
   'EHAM': [
-    { label: 'Amsterdam Věž',     url: 'https://s1.liveatc.net/eham_twr' },
-    { label: 'Amsterdam Přibl.',  url: 'https://s1.liveatc.net/eham_app' },
+    { label: 'Amsterdam Věž',     feed: 'eham_twr',      url: 'https://s1.liveatc.net/eham_twr' },
+    { label: 'Amsterdam Přibl.',  feed: 'eham_app',      url: 'https://s1.liveatc.net/eham_app' },
   ],
-  // Švýcarsko
   'LSZH': [
-    { label: 'Curych Věž',        url: 'https://s1.liveatc.net/lszh_twr' },
-    { label: 'Curych Přibl.',     url: 'https://s1.liveatc.net/lszh_app' },
+    { label: 'Curych Věž',        feed: 'lszh_twr',      url: 'https://s1.liveatc.net/lszh_twr' },
+    { label: 'Curych Přibl.',     feed: 'lszh_app',      url: 'https://s1.liveatc.net/lszh_app' },
   ],
-  // Francie
   'LFPG': [
-    { label: 'Paris CDG Věž',     url: 'https://s1.liveatc.net/lfpg_twr' },
-    { label: 'Paris CDG Přibl.',  url: 'https://s1.liveatc.net/lfpg_app' },
+    { label: 'Paris CDG Věž',     feed: 'lfpg_twr',      url: 'https://s1.liveatc.net/lfpg_twr' },
+    { label: 'Paris CDG Přibl.',  feed: 'lfpg_app',      url: 'https://s1.liveatc.net/lfpg_app' },
   ],
-  // Španělsko
   'LEMD': [
-    { label: 'Madrid Věž',        url: 'https://s1.liveatc.net/lemd_twr' },
+    { label: 'Madrid Věž',        feed: 'lemd_twr',      url: 'https://s1.liveatc.net/lemd_twr' },
   ],
-  // Slovensko
   'LZIB': [
-    { label: 'Bratislava Věž',    url: 'https://s1.liveatc.net/lzib' },
+    { label: 'Bratislava Věž',    feed: 'lzib',          url: 'https://s1.liveatc.net/lzib' },
   ],
 }
 
