@@ -89,10 +89,11 @@ function getFlightLevel(altitude: number): string {
 export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
   const { route, loading: routeLoading  } = useFlightRoute(
-    flight?.icao24 ?? null,
-    flight?.lat    ?? 0,
-    flight?.lng    ?? 0,
+    flight?.icao24   ?? null,
+    flight?.lat      ?? 0,
+    flight?.lng      ?? 0,
     flight?.velocity ?? 0,
+    flight?.heading  ?? 0,
   )
 
   if (!flight) return null

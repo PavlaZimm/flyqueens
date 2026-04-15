@@ -33,6 +33,7 @@ export function useFlightRoute(
   currentLat: number,
   currentLng: number,
   velocityKmh: number,
+  headingDeg: number = 0,
 ) {
   const [route, setRoute] = useState<FlightRoute | null>(null)
   const [loading, setLoading] = useState(false)
@@ -43,7 +44,13 @@ export function useFlightRoute(
     setLoading(true)
     setRoute(null)
 
-    fetch(`/api/flight-route?icao24=${encodeURIComponent(icao24)}`, {
+    const params = new URLSearchParams({
+      icao24,
+      lat: String(currentLat),
+      lng: String(currentLng),
+      heading: String(headingDeg),
+    })
+    fetch(`/api/flight-route?${params}`, {
       signal: AbortSignal.timeout(10000),
     })
       .then(r => r.json())

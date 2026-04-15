@@ -102,10 +102,11 @@ export default function Home() {
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
   const { route: selectedRoute } = useFlightRoute(
-    selectedFlight?.icao24 ?? null,
-    selectedFlight?.lat    ?? 0,
-    selectedFlight?.lng    ?? 0,
+    selectedFlight?.icao24   ?? null,
+    selectedFlight?.lat      ?? 0,
+    selectedFlight?.lng      ?? 0,
     selectedFlight?.velocity ?? 0,
+    selectedFlight?.heading  ?? 0,
   )
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
