@@ -8,62 +8,62 @@ export interface AtcFeed {
   feed:  string          // slug pro proxy endpoint (/api/atc-stream?feed=...)
 }
 
+const BASE = 'http://audio.liveatc.net'
+
 const ATC_FEEDS: Record<string, AtcFeed[]> = {
-  'LKPR': [
-    { label: 'Praha Přiblížení',  feed: 'lkpr',          url: 'https://s1.liveatc.net/lkpr' },
-  ],
-  'EDDF': [
-    { label: 'Frankfurt Věž',     feed: 'eddf_twr',      url: 'https://s1.liveatc.net/eddf_twr' },
-    { label: 'Frankfurt Přibl.',  feed: 'eddf_app',      url: 'https://s1.liveatc.net/eddf_app' },
-  ],
-  'EDDM': [
-    { label: 'Mnichov Věž',       feed: 'eddm_twr',      url: 'https://s1.liveatc.net/eddm_twr' },
-    { label: 'Mnichov Přibl.',    feed: 'eddm_app',      url: 'https://s1.liveatc.net/eddm_app' },
-  ],
-  'EDDB': [
-    { label: 'Berlín Věž',        feed: 'eddb',          url: 'https://s1.liveatc.net/eddb' },
-  ],
-  'LOWW': [
-    { label: 'Vídeň Věž',         feed: 'loww_twr',      url: 'https://s1.liveatc.net/loww_twr' },
-    { label: 'Vídeň Přibl.',      feed: 'loww_app',      url: 'https://s1.liveatc.net/loww_app' },
-  ],
-  'EPWA': [
-    { label: 'Varšava Věž',       feed: 'epwa',          url: 'https://s1.liveatc.net/epwa' },
-  ],
-  'LHBP': [
-    { label: 'Budapešť Věž',      feed: 'lhbp',          url: 'https://s1.liveatc.net/lhbp' },
-  ],
-  'EGLL': [
-    { label: 'Heathrow Věž N',    feed: 'egll_twr_north',url: 'https://s1.liveatc.net/egll_twr_north' },
-    { label: 'Heathrow Věž S',    feed: 'egll_twr_south',url: 'https://s1.liveatc.net/egll_twr_south' },
-    { label: 'Heathrow Přibl.',   feed: 'egll_app',      url: 'https://s1.liveatc.net/egll_app' },
-  ],
-  'EGKK': [
-    { label: 'Gatwick Věž',       feed: 'egkk',          url: 'https://s1.liveatc.net/egkk' },
-  ],
-  'EGGW': [
-    { label: 'Luton Věž',         feed: 'eggw',          url: 'https://s1.liveatc.net/eggw' },
-  ],
-  'EBBR': [
-    { label: 'Brusel Věž',        feed: 'ebbr',          url: 'https://s1.liveatc.net/ebbr' },
+  // Ověřené funkční feedy (mount pointy přímo z Icecast serveru)
+  'EIDW': [
+    { label: 'Dublin Gnd/Věž/Přibl.', feed: 'eidw8',          url: `${BASE}/eidw8` },
   ],
   'EHAM': [
-    { label: 'Amsterdam Věž',     feed: 'eham_twr',      url: 'https://s1.liveatc.net/eham_twr' },
-    { label: 'Amsterdam Přibl.',  feed: 'eham_app',      url: 'https://s1.liveatc.net/eham_app' },
+    { label: 'Amsterdam Přibl. 119.0', feed: 'eham_app_119055', url: `${BASE}/eham_app_119055` },
+  ],
+  'EPWA': [
+    { label: 'Varšava Přiblížení',    feed: 'epwa_app',        url: `${BASE}/epwa_app` },
+  ],
+  'KJFK': [
+    { label: 'JFK Věž',               feed: 'kjfk_twr',        url: `${BASE}/kjfk_twr` },
+    { label: 'JFK Zem',               feed: 'kjfk_gnd',        url: `${BASE}/kjfk_gnd` },
+    { label: 'JFK Odlet',             feed: 'kjfk_dep',        url: `${BASE}/kjfk_dep` },
+  ],
+  'RJTT': [
+    { label: 'Tokio Věž',             feed: 'rjtt_twr',        url: `${BASE}/rjtt_twr` },
+    { label: 'Tokio Přiblížení',      feed: 'rjtt_app',        url: `${BASE}/rjtt_app` },
+  ],
+  'KSFO': [
+    { label: 'San Francisco Věž',     feed: 'ksfo_twr',        url: `${BASE}/ksfo_twr` },
+  ],
+  'KATL': [
+    { label: 'Atlanta Věž',           feed: 'katl_twr',        url: `${BASE}/katl_twr` },
+  ],
+  // Evropská letiště — feedy závisí na dobrovolnících
+  'LKPR': [
+    { label: 'Praha Přiblížení',      feed: 'lkpr_app',        url: `${BASE}/lkpr_app` },
+    { label: 'Praha Věž',             feed: 'lkpr_twr',        url: `${BASE}/lkpr_twr` },
+  ],
+  'LOWW': [
+    { label: 'Vídeň Věž',             feed: 'loww_twr',        url: `${BASE}/loww_twr` },
+    { label: 'Vídeň Přiblížení',      feed: 'loww_app',        url: `${BASE}/loww_app` },
+  ],
+  'EDDF': [
+    { label: 'Frankfurt Věž',         feed: 'eddf_twr',        url: `${BASE}/eddf_twr` },
+    { label: 'Frankfurt Přibl.',      feed: 'eddf_app',        url: `${BASE}/eddf_app` },
+  ],
+  'EGLL': [
+    { label: 'Heathrow Věž N',        feed: 'egll_twr_north',  url: `${BASE}/egll_twr_north` },
+    { label: 'Heathrow Věž S',        feed: 'egll_twr_south',  url: `${BASE}/egll_twr_south` },
   ],
   'LSZH': [
-    { label: 'Curych Věž',        feed: 'lszh_twr',      url: 'https://s1.liveatc.net/lszh_twr' },
-    { label: 'Curych Přibl.',     feed: 'lszh_app',      url: 'https://s1.liveatc.net/lszh_app' },
+    { label: 'Curych Věž',            feed: 'lszh_twr',        url: `${BASE}/lszh_twr` },
   ],
   'LFPG': [
-    { label: 'Paris CDG Věž',     feed: 'lfpg_twr',      url: 'https://s1.liveatc.net/lfpg_twr' },
-    { label: 'Paris CDG Přibl.',  feed: 'lfpg_app',      url: 'https://s1.liveatc.net/lfpg_app' },
+    { label: 'Paris CDG Věž',         feed: 'lfpg_twr',        url: `${BASE}/lfpg_twr` },
   ],
-  'LEMD': [
-    { label: 'Madrid Věž',        feed: 'lemd_twr',      url: 'https://s1.liveatc.net/lemd_twr' },
+  'EBBR': [
+    { label: 'Brusel Věž',            feed: 'ebbr_twr',        url: `${BASE}/ebbr_twr` },
   ],
   'LZIB': [
-    { label: 'Bratislava Věž',    feed: 'lzib',          url: 'https://s1.liveatc.net/lzib' },
+    { label: 'Bratislava Věž',        feed: 'lzib_twr',        url: `${BASE}/lzib_twr` },
   ],
 }
 

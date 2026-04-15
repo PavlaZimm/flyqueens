@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export const runtime = 'edge' // Edge runtime podporuje streaming responses
+// Node.js runtime — Edge runtime nepodporuje HTTP (jen HTTPS), audio.liveatc.net je pouze HTTP
 
 // Proxy pro LiveATC audio stream — vyřeší CORS problém
 export async function GET(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse('Invalid feed', { status: 400 })
   }
 
-  const url = `https://s1.liveatc.net/${feed}`
+  const url = `http://audio.liveatc.net/${feed}`
   try {
     const upstream = await fetch(url, {
       headers: {

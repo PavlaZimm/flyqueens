@@ -5,7 +5,7 @@ import { getAtcFeeds } from '@/lib/liveatc'
 import type { AtcFeed } from '@/lib/liveatc'
 
 // Všechna letiště s known feeds
-const ALL_ICAO = ['LKPR','EDDF','EDDM','EDDB','LOWW','EPWA','LHBP','EGLL','EGKK','EGGW','EBBR','EHAM','LSZH','LFPG','LEMD','LZIB']
+const ALL_ICAO = ['EIDW','EHAM','EPWA','KJFK','RJTT','KSFO','KATL','LKPR','LOWW','EDDF','EGLL','LSZH','LFPG','EBBR','LZIB']
 
 interface FeedStatus extends AtcFeed {
   icao: string
@@ -23,23 +23,22 @@ export function AtcPanel() {
 
   const checkFeeds = async () => {
     setChecking(true)
-    // Sestav seznam všech feedů
-    const allFeeds: FeedStatus[] = ALL_ICAO.flatMap(icao =>
-      getAtcFeeds(icao).map(f => ({ ...f, icao, online: null }))
-    )
-    setFeeds(allFeeds)
-
-    // Zkontroluj paralelně
-    const results = await Promise.all(
-      allFeeds.map(f =>
-        fetch(`/api/atc-check?feed=${encodeURIComponent(f.feed)}`)
-          .then(r => r.json())
-          .then((d: { online: boolean }) => ({ ...f, online: d.online }))
-          .catch(() => ({ ...f, online: false }))
+    try {
+      const allFeeds: FeedStatus[] = ALL_ICAO.flatMap(icao =>
+        getAtcFeeds(icao).map(f => ({ ...f, icao, online: null }))
       )
-    )
-    setFeeds(results)
-    setChecking(false)
+      setFeeds(allFeeds)
+
+      const feedList = allFeeds.map(f => f.feed).join(',')
+      const res = await fetch(`/api/atc-check?feeds=${encodeURIComponent(feedList)}`)
+      const data: Record<string, boolean> = await res.json()
+      setFeeds(allFeeds.map(f => ({ ...f, online: data[f.feed] ?? false })))
+    } catch (err) {
+      console.error('[ATC] error:', err)
+      setFeeds(prev => prev.map(f => ({ ...f, online: false })))
+    } finally {
+      setChecking(false)
+    }
   }
 
   useEffect(() => {
@@ -197,7 +196,15 @@ export function AtcPanel() {
           {!checking && feeds.length > 0 && onlineFeeds.length === 0 && loadingFeeds.length === 0 && (
             <div style={{ fontSize: 10, color: 'var(--text-dim)', padding: '6px 0', textAlign: 'center' }}>
               Žádný stream není právě online.<br />
-              <span style={{ fontSize: 9 }}>Zkus to za chvíli nebo navštiv LiveATC.net</span>
+              <span style={{ fontSize: 9 }}>Vysílání zajišťují dobrovolníci – zkus to za chvíli nebo</span><br />
+              <a
+                href="https://www.liveatc.net/search/?icao=LKPR"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: 9, color: 'var(--gold)', textDecoration: 'none', opacity: 0.8 }}
+              >
+                otevři LiveATC.net →
+              </a>
             </div>
           )}
         </div>
