@@ -79,101 +79,98 @@ export function TopBar({
     { id: 'helicopter',label: 'Vrtulníky',  emoji: '🚁' },
   ]
 
-  const filterChips = (
-    <>
-      {filters.map((filter) => {
-        const active = activeFilters.has(filter.id)
-        return (
-          <button
-            key={filter.id}
-            onClick={() => toggleFilter(filter.id)}
-            aria-pressed={active}
-            style={{
-              ...CHIP_BASE,
-              background: active ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
-              border: `1px solid ${active ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
-              color: active ? 'var(--gold)' : 'var(--text-muted)',
-              fontWeight: active ? 600 : 400,
-            }}
-          >
-            <span style={{ fontSize: 13 }}>{filter.emoji}</span>
-            <span className="fq-chip-label" style={{ marginLeft: 5 }}>{filter.label}</span>
-          </button>
-        )
-      })}
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, pointerEvents: 'all' }}>
 
-      {/* Letiště toggle */}
+      {/* Hamburger — pouze mobile */}
       <button
-        onClick={onToggleAirports}
-        aria-label="Přepnout zobrazení letišť"
-        aria-pressed={showAirports}
+        onClick={onHamburger}
+        className="fq-hamburger"
+        style={{ ...ICON_BTN }}
+        aria-label="Otevřít menu"
+      >
+        <div style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }} />
+          ))}
+        </div>
+      </button>
+
+      {/* Live badge + počet letadel */}
+      <LiveBadge />
+      <div style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default', flexShrink: 0 }}>
+        <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
+        <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>
+          {flightCount}
+        </span>
+      </div>
+
+      {/* Filter chips — scrollovatelné, vyplní zbývající místo */}
+      <div
+        className="fq-filters"
         style={{
-          ...CHIP_BASE,
-          background: showAirports ? 'rgba(56,189,248,0.13)' : 'var(--glass-bg)',
-          border: `1px solid ${showAirports ? 'rgba(56,189,248,0.4)' : 'var(--glass-border)'}`,
-          color: showAirports ? 'var(--accent-blue)' : 'var(--text-muted)',
-          fontWeight: showAirports ? 600 : 400,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          flex: 1,
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          minWidth: 0,
+          padding: '2px 0',
         }}
       >
-        <span style={{ fontSize: 13 }}>🛬</span>
-        <span className="fq-chip-label" style={{ marginLeft: 5 }}>Letiště</span>
+        {filters.map((filter) => {
+          const active = activeFilters.has(filter.id)
+          return (
+            <button
+              key={filter.id}
+              onClick={() => toggleFilter(filter.id)}
+              aria-pressed={active}
+              style={{
+                ...CHIP_BASE,
+                background: active ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
+                border: `1px solid ${active ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
+                color: active ? 'var(--gold)' : 'var(--text-muted)',
+                fontWeight: active ? 600 : 400,
+              }}
+            >
+              <span style={{ fontSize: 13 }}>{filter.emoji}</span>
+              <span className="fq-chip-label" style={{ marginLeft: 5 }}>{filter.label}</span>
+            </button>
+          )
+        })}
+
+        {/* Letiště toggle */}
+        <button
+          onClick={onToggleAirports}
+          aria-label="Přepnout zobrazení letišť"
+          aria-pressed={showAirports}
+          style={{
+            ...CHIP_BASE,
+            background: showAirports ? 'rgba(56,189,248,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${showAirports ? 'rgba(56,189,248,0.4)' : 'var(--glass-border)'}`,
+            color: showAirports ? 'var(--accent-blue)' : 'var(--text-muted)',
+            fontWeight: showAirports ? 600 : 400,
+          }}
+        >
+          <span style={{ fontSize: 13 }}>🛬</span>
+          <span className="fq-chip-label" style={{ marginLeft: 5 }}>Letiště</span>
+        </button>
+      </div>
+
+      {/* Stats link */}
+      <Link href="/stats" style={{ textDecoration: 'none', flexShrink: 0 }}>
+        <div style={{ ...ICON_BTN }} title="Statistiky" aria-label="Statistiky">📊</div>
+      </Link>
+
+      {/* Theme toggle */}
+      <button
+        onClick={onToggleTheme}
+        style={{ ...ICON_BTN }}
+        aria-label={theme === 'dark' ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+      >
+        {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-    </>
-  )
-
-  return (
-    /* fq-topbar-inner — na mobilu se zalomí do 2 řádků */
-    <div className="fq-topbar-inner" style={{ display: 'flex', alignItems: 'center', gap: 8, pointerEvents: 'all' }}>
-
-      {/* ── Řádek 1 (vždy) ── */}
-      <div className="fq-topbar-row1" style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-
-        {/* Hamburger — pouze mobile (CSS přepíná display) */}
-        <button
-          onClick={onHamburger}
-          className="fq-hamburger"
-          style={{ ...ICON_BTN }}
-          aria-label="Otevřít menu"
-        >
-          <div style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
-            {[0, 1, 2].map((i) => (
-              <div key={i} style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }} />
-            ))}
-          </div>
-        </button>
-
-        {/* Live badge + počet letadel */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-          <LiveBadge />
-          <div style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default' }}>
-            <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
-            <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>
-              {flightCount}
-            </span>
-          </div>
-        </div>
-
-        <div style={{ flex: 1 }} />
-
-        {/* Stats link */}
-        <Link href="/stats" style={{ textDecoration: 'none', flexShrink: 0 }}>
-          <div style={{ ...ICON_BTN }} title="Statistiky" aria-label="Statistiky">📊</div>
-        </Link>
-
-        {/* Theme toggle */}
-        <button
-          onClick={onToggleTheme}
-          style={{ ...ICON_BTN }}
-          aria-label={theme === 'dark' ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
-        >
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
-      </div>
-
-      {/* ── Řádek 2 — pouze mobile, filter chips ── */}
-      <div className="fq-topbar-row2" style={{ display: 'none' }}>
-        {filterChips}
-      </div>
 
     </div>
   )

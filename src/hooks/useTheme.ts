@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type Theme = 'dark' | 'light'
 
@@ -20,19 +20,18 @@ function applyTheme(theme: Theme) {
   }
 }
 
-function getInitialTheme(): Theme {
-  if (typeof localStorage === 'undefined') return 'dark'
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved === 'light' || saved === 'dark') {
-    applyTheme(saved)
-    return saved
-  }
-  return 'dark'
-}
-
 export function useTheme(): UseThemeResult {
-  // Lazy initializer — čte localStorage jednou při mount, žádný cascading render
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  // Vždy začínáme 'dark' — stejné na serveru i klientu, žádný hydration mismatch
+  const [theme, setTheme] = useState<Theme>('dark')
+
+  // Po mount načteme localStorage a aplikujeme uložené téma
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === 'light') {
+      setTheme('light')
+      applyTheme('light')
+    }
+  }, [])
 
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark'
