@@ -11,6 +11,28 @@ interface FlightCardProps {
   theme: 'dark' | 'light'
 }
 
+function getFlagEmoji(country: string | undefined): string {
+  const flags: Record<string, string> = {
+    'Czech Republic': '🇨🇿', 'Czechia': '🇨🇿',
+    'Germany': '🇩🇪', 'Austria': '🇦🇹', 'Slovakia': '🇸🇰',
+    'Poland': '🇵🇱', 'Hungary': '🇭🇺', 'United Kingdom': '🇬🇧',
+    'France': '🇫🇷', 'Netherlands': '🇳🇱', 'Switzerland': '🇨🇭',
+    'United States': '🇺🇸', 'Spain': '🇪🇸', 'Italy': '🇮🇹',
+    'Russia': '🇷🇺', 'Ukraine': '🇺🇦', 'Denmark': '🇩🇰',
+    'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Finland': '🇫🇮',
+    'Greece': '🇬🇷', 'Turkey': '🇹🇷', 'Ireland': '🇮🇪',
+    'Portugal': '🇵🇹', 'Belgium': '🇧🇪', 'Romania': '🇷🇴',
+    'Japan': '🇯🇵', 'China': '🇨🇳', 'Canada': '🇨🇦',
+    'Australia': '🇦🇺', 'UAE': '🇦🇪', 'Qatar': '🇶🇦',
+  }
+  return flags[country ?? ''] ?? '🌍'
+}
+
+function headingLabel(heading: number): string {
+  const dirs = ['N','NE','E','SE','S','SW','W','NW']
+  return dirs[Math.round(heading / 45) % 8]
+}
+
 function getStatusColor(flight: Flight): string {
   if (flight.onGround) return 'var(--text-muted)'
   if (flight.velocity < 200) return 'var(--amber-delay)'
@@ -76,19 +98,17 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
         </div>
       </div>
 
-      {/* Row 2: route */}
+      {/* Row 2: country flag + heading */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 5 }}>
-        <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
-          {flight.origin_country?.substring(0, 3).toUpperCase() ?? '???'}
+        <span style={{ fontSize: 11 }}>{getFlagEmoji(flight.origin_country)}</span>
+        <span style={{ fontSize: 9, color: 'var(--text-dim)', flex: 1 }}>
+          {flight.origin_country ?? ''}
         </span>
-        <div
-          style={{
-            flex: 1,
-            height: 1,
-            background: `linear-gradient(90deg, ${acColor}44, transparent)`,
-          }}
-        />
-        <span style={{ fontSize: 9, color: 'var(--text-dim)' }}>→ ??</span>
+        {!flight.onGround && (
+          <span style={{ fontSize: 9, color: 'var(--text-dim)' }}>
+            {headingLabel(flight.heading)}
+          </span>
+        )}
       </div>
 
       {/* Row 3: metrics */}

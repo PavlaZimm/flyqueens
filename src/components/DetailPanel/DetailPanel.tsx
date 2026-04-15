@@ -125,9 +125,8 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         borderColor: 'rgba(255,255,255,0.10)',
       }}
     >
-      {/* Handle + Close */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{ flex: 1, height: 3, background: 'var(--border-strong)', borderRadius: 2 }} />
+      {/* Close — desktop only (mobile má vlastní ✕ v handle liště) */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           onClick={onClose}
           className="fq-close-btn"
@@ -198,10 +197,10 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
 
       {/* Typ + model */}
       <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-        {flight.model
-          ? <><span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>{flight.model}</span> · {label}</>
-          : label
-        }
+        {label}
+        {flight.model && (
+          <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.7 }}>· {flight.model}</span>
+        )}
       </div>
 
       {/* Vibe */}
