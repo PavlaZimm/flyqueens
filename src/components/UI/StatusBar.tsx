@@ -56,28 +56,28 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
       }}>
         {/* UTC čas */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>UTC</span>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>UTC</span>
           <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>{time}</span>
         </div>
 
         <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>OBLAST</span>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>OBLAST</span>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Central Europe</span>
         </div>
 
         <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>V POHLEDU</span>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>V POHLEDU</span>
           <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{visibleCount}</span>
         </div>
 
         <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>CELKEM</span>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>CELKEM</span>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{flightCount}</span>
         </div>
 

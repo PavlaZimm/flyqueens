@@ -283,7 +283,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           border: 1px solid rgba(255,255,255,0.12) !important;
           border-radius: 8px !important;
           overflow: hidden;
-          margin-bottom: 44px !important;
+          margin-bottom: 136px !important;
           margin-right: 12px !important;
         }
         .leaflet-control-zoom-in,
