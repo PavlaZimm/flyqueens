@@ -86,9 +86,9 @@ export async function GET() {
   }
 
   try {
-    // adsb.lol — free, bez registrace, bez rate limitu, 1758+ letadel v oblasti
+    // adsb.lol — free, bez registrace, bez rate limitu — celý svět
     const res = await fetch(
-      'https://api.adsb.lol/v2/lat/50/lon/15/dist/600',
+      'https://api.adsb.lol/v2/point/50/15/10000',
       {
         headers: { 'Accept': 'application/json' },
         next: { revalidate: 10 }
