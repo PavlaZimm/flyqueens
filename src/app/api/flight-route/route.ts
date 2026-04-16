@@ -60,6 +60,15 @@ interface AeroDataBoxFlight {
   status?: string
 }
 
+interface RouteAirport {
+  icao: string | null
+  iata: string | null
+  name: string | null
+  city: string | null
+  lat:  number | null
+  lng:  number | null
+}
+
 interface OpenSkyTrack {
   icao24: string
   startTime: number
@@ -105,11 +114,27 @@ export async function GET(req: NextRequest) {
         const data: AeroDataBoxFlight[] | AeroDataBoxFlight = await res.json()
         const flight = Array.isArray(data) ? data[0] : data
 
-        const depIcao = flight?.departure?.airport?.icao ?? null
-        const arrIcao = flight?.arrival?.airport?.icao   ?? null
+        const dep = flight?.departure?.airport
+        const arr = flight?.arrival?.airport
 
-        if (depIcao || arrIcao) {
-          return NextResponse.json({ route: { departure: depIcao, arrival: arrIcao }, source: 'aerodatabox' })
+        if (dep || arr) {
+          const depAp: RouteAirport = {
+            icao: dep?.icao ?? null,
+            iata: dep?.iata ?? null,
+            name: dep?.name ?? null,
+            city: dep?.municipalityName ?? null,
+            lat:  dep?.location?.lat ?? null,
+            lng:  dep?.location?.lon ?? null,
+          }
+          const arrAp: RouteAirport = {
+            icao: arr?.icao ?? null,
+            iata: arr?.iata ?? null,
+            name: arr?.name ?? null,
+            city: arr?.municipalityName ?? null,
+            lat:  arr?.location?.lat ?? null,
+            lng:  arr?.location?.lon ?? null,
+          }
+          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, source: 'aerodatabox' })
         }
       }
     } catch {

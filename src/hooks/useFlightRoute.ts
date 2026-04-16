@@ -13,10 +13,46 @@ export interface FlightRoute {
   totalDist: number          // celková vzdálenost km
 }
 
-function findAirport(icao: string | null): Airport | null {
-  if (!icao) return null
-  const upper = icao.toUpperCase()
-  return airports.find(a => a.icao === upper || a.iata === upper) ?? null
+// Airport jak ho vrátí AeroDataBox (s lat/lng přímo)
+interface ApiAirport {
+  icao: string | null
+  iata: string | null
+  name: string | null
+  city: string | null
+  lat:  number | null
+  lng:  number | null
+}
+
+function apiToAirport(ap: ApiAirport | string | null): Airport | null {
+  if (!ap) return null
+
+  // Starý formát — jen ICAO string (OpenSky fallback)
+  if (typeof ap === 'string') {
+    const upper = ap.toUpperCase()
+    return airports.find(a => a.icao === upper || a.iata === upper) ?? null
+  }
+
+  // Nový formát — plný objekt z AeroDataBox
+  if (ap.lat != null && ap.lng != null) {
+    return {
+      icao:    ap.icao ?? '',
+      iata:    ap.iata ?? '',
+      name:    ap.name ?? '',
+      city:    ap.city ?? '',
+      lat:     ap.lat,
+      lng:     ap.lng,
+      type:    'large_airport',
+      country: '',
+      elev:    0,
+    }
+  }
+
+  // Fallback: zkus najít v lokální DB podle ICAO
+  if (ap.icao) {
+    return airports.find(a => a.icao === ap.icao?.toUpperCase()) ?? null
+  }
+
+  return null
 }
 
 // Haversine vzdálenost v km
@@ -46,38 +82,37 @@ export function useFlightRoute(
 
     const params = new URLSearchParams({
       icao24,
-      lat: String(currentLat),
-      lng: String(currentLng),
+      lat:     String(currentLat),
+      lng:     String(currentLng),
       heading: String(headingDeg),
     })
-    fetch(`/api/flight-route?${params}`, {
-      signal: AbortSignal.timeout(10000),
-    })
+
+    fetch(`/api/flight-route?${params}`, { signal: AbortSignal.timeout(10000) })
       .then(r => r.json())
-      .then((data: { route: { departure: string | null; arrival: string | null } | null }) => {
+      .then((data: { route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null }) => {
         if (!data.route) { setRoute(null); return }
 
-        const dep = findAirport(data.route.departure)
-        const arr = findAirport(data.route.arrival)
+        const dep = apiToAirport(data.route.departure)
+        const arr = apiToAirport(data.route.arrival)
 
-        if (!arr) { setRoute({ departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0, totalDist: 0 }); return }
+        if (!arr) {
+          setRoute({ departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0, totalDist: 0 })
+          return
+        }
 
-        // Vzdálenosti
-        const distFlown = dep
-          ? distKm(dep.lat, dep.lng, currentLat, currentLng)
-          : 0
+        const distFlown    = dep ? distKm(dep.lat, dep.lng, currentLat, currentLng) : 0
         const distRemaining = distKm(currentLat, currentLng, arr.lat, arr.lng)
-        const totalDist     = distFlown + distRemaining
-        const progress      = totalDist > 0 ? Math.min(100, Math.round((distFlown / totalDist) * 100)) : 0
-        const speedKmh      = velocityKmh > 50 ? velocityKmh : 800  // fallback pokud stojí
-        const etaMin        = Math.round(distRemaining / speedKmh * 60)
+        const totalDist    = distFlown + distRemaining
+        const progress     = totalDist > 0 ? Math.min(100, Math.round((distFlown / totalDist) * 100)) : 0
+        const speedKmh     = velocityKmh > 50 ? velocityKmh : 800
+        const etaMin       = Math.round(distRemaining / speedKmh * 60)
 
         setRoute({ departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin, totalDist: Math.round(totalDist) })
       })
       .catch(() => setRoute(null))
       .finally(() => setLoading(false))
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [icao24])   // záměrně jen icao24 — poloha se mění každých 10s, nechceme refetch
+  }, [icao24])
 
   return { route, loading }
 }
