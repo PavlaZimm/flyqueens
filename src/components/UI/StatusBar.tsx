@@ -2,13 +2,24 @@
 
 import { useState, useEffect } from 'react'
 
+const REGION_LABELS: Record<string, string> = {
+  europe:     'Europe',
+  namerica:   'N. America',
+  samerica:   'S. America',
+  asia:       'Asia',
+  middleeast: 'Middle East',
+  africa:     'Africa',
+  oceania:    'Oceania',
+}
+
 interface StatusBarProps {
   flightCount: number
   visibleCount: number
   isMock?: boolean
+  region?: string
 }
 
-export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps) {
+export function StatusBar({ flightCount, visibleCount, isMock, region = 'europe' }: StatusBarProps) {
   const [time, setTime] = useState('')
   const [tick, setTick] = useState(true)
 
@@ -66,7 +77,7 @@ export function StatusBar({ flightCount, visibleCount, isMock }: StatusBarProps)
 
         <div className="fq-sb-col" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>OBLAST</span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Central Europe</span>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{REGION_LABELS[region] ?? region}</span>
         </div>
 
         <div className="fq-sb-sep" style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />

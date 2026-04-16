@@ -325,7 +325,7 @@ export default function Home() {
         </button>
 
         {/* StatusBar */}
-        <StatusBar flightCount={count} visibleCount={count} isMock={isMock} />
+        <StatusBar flightCount={count} visibleCount={count} isMock={isMock} region={region} />
       </div>
 
       {/* Emergency radar banner */}
@@ -380,8 +380,9 @@ export default function Home() {
           /* TopBar hamburger viditelný */
           .fq-hamburger { display: inline-flex !important; }
 
-          /* Filter chips — jen emoji, text skrytý */
-          .fq-chip-label { display: none !important; }
+          /* Filter chips + region — jen emoji/vlajka, text skrytý */
+          .fq-chip-label  { display: none !important; }
+          .fq-region-label { display: none !important; }
           .fq-filters {
             gap: 5px !important;
           }

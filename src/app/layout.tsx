@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "cs_CZ",
     siteName: "FlyQueens",
-    url: "https://flyqueens-app.vercel.app",
+    url: "https://www.flyqueens.cz",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FlyQueens · Track Every Flight" }],
   },
   twitter: {

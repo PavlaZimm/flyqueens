@@ -79,6 +79,9 @@ export function TopBar({
   const [regionOpen, setRegionOpen] = useState(false)
   const currentRegion = REGIONS.find(r => r.id === region) ?? REGIONS[0]
 
+  // Zavřít dropdown kliknutím mimo
+  const handleRegionBlur = () => setTimeout(() => setRegionOpen(false), 150)
+
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
     if (next.has(f)) {
@@ -177,7 +180,7 @@ export function TopBar({
       </div>
 
       {/* Region selector */}
-      <div style={{ position: 'relative', flexShrink: 0 }}>
+      <div style={{ position: 'relative', flexShrink: 0 }} onBlur={handleRegionBlur}>
         <button
           onClick={() => setRegionOpen(v => !v)}
           aria-label="Vybrat region"
@@ -190,25 +193,26 @@ export function TopBar({
             color: regionOpen ? 'var(--gold)' : 'var(--text-muted)',
           }}
         >
-          <span style={{ fontSize: 13 }}>{currentRegion.flag}</span>
-          <span className="fq-chip-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
-          <span style={{ fontSize: 8, marginLeft: 2, opacity: 0.6 }}>▼</span>
+          <span style={{ fontSize: 15 }}>{currentRegion.flag}</span>
+          <span className="fq-region-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
+          <span className="fq-region-label" style={{ fontSize: 8, marginLeft: 2, opacity: 0.6 }}>▼</span>
         </button>
         {regionOpen && (
           <div style={{
-            position: 'absolute',
-            top: 40,
-            right: 0,
-            background: 'var(--midnight)',
+            position: 'fixed',
+            top: 56,
+            right: 12,
+            background: 'rgba(10,15,30,0.97)',
             border: '1px solid var(--glass-border)',
             borderRadius: 10,
             padding: 6,
-            minWidth: 150,
-            zIndex: 2000,
-            backdropFilter: 'blur(16px)',
+            minWidth: 155,
+            zIndex: 3000,
+            backdropFilter: 'blur(20px)',
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
           }}>
             {REGIONS.map(r => (
               <button
