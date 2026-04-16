@@ -50,13 +50,17 @@ function parseState(state: unknown[]): Flight | null {
   const onGround = Boolean(arr[IDX_ON_GROUND])
   const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
 
-  // Index 16: registrace, 17+18: aircraft-db, 19-21: oat/ws/mach z adsb.lol
+  // Layout: [16]=reg [17]=model(db) [18]=type(db) [19]=oat [20]=ws [21]=mach [22]=baroRate [23]=squawk [24]=emergency [25]=navAlt
   const registration = arr[16] ? String(arr[16]) : undefined
-  const dbModel = arr[17] ? String(arr[17]) : undefined
-  const dbType  = arr[18] ? (arr[18] as AircraftType) : undefined
-  const oat     = arr[19] != null ? Number(arr[19]) : undefined
+  const dbModel  = arr[17] ? String(arr[17]) : undefined
+  const dbType   = arr[18] ? (arr[18] as AircraftType) : undefined
+  const oat      = arr[19] != null ? Number(arr[19]) : undefined
   const windSpeed = arr[20] != null ? Number(arr[20]) : undefined
-  const mach    = arr[21] != null ? Number(arr[21]) : undefined
+  const mach     = arr[21] != null ? Number(arr[21]) : undefined
+  const baroRate = arr[22] != null ? Number(arr[22]) : undefined  // ft/min, + = stoupání
+  const squawk   = arr[23] ? String(arr[23]) : undefined
+  const emergency = arr[24] ? String(arr[24]) : undefined
+  const navAltFt = arr[25] != null ? Number(arr[25]) : undefined  // autopilot target ft
 
   return {
     icao24,
@@ -74,11 +78,15 @@ function parseState(state: unknown[]): Flight | null {
     oat,
     windSpeed,
     mach,
+    baroRate,
+    squawk,
+    emergency,
+    navAltitudeFt: navAltFt,
   }
 }
 
-export async function fetchFlights(): Promise<{ flights: Flight[]; isMock: boolean }> {
-  const res = await fetch('/api/flights', {
+export async function fetchFlights(region = 'europe'): Promise<{ flights: Flight[]; isMock: boolean }> {
+  const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}`, {
     cache: 'no-store',
     signal: AbortSignal.timeout(8000),
   })

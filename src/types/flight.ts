@@ -24,4 +24,8 @@ export interface Flight {
   oat?: number              // teplota venku v °C
   windSpeed?: number        // rychlost větru v uzlech
   mach?: number             // Mach číslo
+  baroRate?: number         // ft/min — kladné = stoupání, záporné = klesání
+  squawk?: string           // transponder kód (7700=emergency, 7500=hijack, 7600=radio)
+  emergency?: string        // emergency typ z adsb.lol
+  navAltitudeFt?: number    // autopilot target altitude v ft
 }

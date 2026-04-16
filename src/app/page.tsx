@@ -5,12 +5,14 @@ import dynamic from 'next/dynamic'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute } from '@/hooks/useFlightRoute'
+import { useFaviconCount } from '@/hooks/useFaviconCount'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
+import { EmergencyBanner } from '@/components/UI/EmergencyBanner'
 import type { Flight } from '@/types/flight'
 
 // Leaflet (~800 KB) se nesmí renderovat na serveru — SSR crash
@@ -115,6 +117,15 @@ export default function Home() {
   const [nearbyFlights, setNearbyFlights] = useState<Flight[]>([])
   const [showNearby, setShowNearby] = useState(false)
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+
+  // Emergency detection
+  const emergencyFlights = flights.filter(
+    f => (f.squawk && ['7700','7500','7600'].includes(f.squawk)) || f.emergency
+  )
+  const hasEmergency = emergencyFlights.length > 0
+
+  // Favicon — živý počet + červená při emergency
+  useFaviconCount(count, hasEmergency)
 
   // Auto-select flight from URL param ?flight=CSA123
   useEffect(() => {
@@ -316,6 +327,15 @@ export default function Home() {
         {/* StatusBar */}
         <StatusBar flightCount={count} visibleCount={count} isMock={isMock} />
       </div>
+
+      {/* Emergency radar banner */}
+      <EmergencyBanner
+        flights={flights}
+        onSelect={(f) => {
+          setSelectedFlight(f)
+          mapLocateFnRef.current?.(f.lat, f.lng)
+        }}
+      />
 
       <style>{`
         /* ── Desktop ── */

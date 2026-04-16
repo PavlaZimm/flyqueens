@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { readFileSync } from 'fs'
 import { join } from 'path'
@@ -64,16 +64,32 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
   const now     = Math.floor(Date.now() / 1000)
   const country = getCountry(icao)
   const reg     = String(ac.r ?? '').trim()
-  const oat     = ac.oat != null ? Number(ac.oat) : null
-  const ws      = ac.ws  != null ? Number(ac.ws)  : null
-  const mach    = ac.mach != null ? Number(ac.mach) : null
-  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg, oat, ws, mach]
+  const oat      = ac.oat       != null ? Number(ac.oat)       : null
+  const ws       = ac.ws        != null ? Number(ac.ws)        : null
+  const mach     = ac.mach      != null ? Number(ac.mach)      : null
+  const baroRate = ac.baro_rate != null ? Number(ac.baro_rate) : null  // ft/min
+  const squawk   = ac.squawk    != null ? String(ac.squawk)    : null
+  const emergency = ac.emergency != null && ac.emergency !== 'none' ? String(ac.emergency) : null
+  const navAlt   = ac.nav_altitude_mcp != null ? Number(ac.nav_altitude_mcp) : null // ft
+  // Layout: [0-15 standard OpenSky] [16]=reg [17]=model(db) [18]=type(db) [19]=oat [20]=ws [21]=mach [22]=baroRate [23]=squawk [24]=emergency [25]=navAlt
+  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg, null, null, oat, ws, mach, baroRate, squawk, emergency, navAlt]
 }
 
 // Vercel CDN cache — 1 request na adsb.lol za 10 sekund
 export const revalidate = 10
 
-export async function GET() {
+// Regiony — střed + radius pro adsb.lol
+const REGIONS: Record<string, { lat: number; lon: number; dist: number }> = {
+  europe:       { lat: 50,  lon: 15,   dist: 600  },
+  namerica:     { lat: 40,  lon: -95,  dist: 2500 },
+  samerica:     { lat: -15, lon: -55,  dist: 2500 },
+  asia:         { lat: 35,  lon: 105,  dist: 2500 },
+  middleeast:   { lat: 25,  lon: 45,   dist: 1500 },
+  africa:       { lat: 5,   lon: 20,   dist: 2500 },
+  oceania:      { lat: -25, lon: 135,  dist: 2000 },
+}
+
+export async function GET(req: NextRequest) {
   // Rate limiting — max 30 req/min per IP
   const reqHeaders = await headers()
   const ip = reqHeaders.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -88,10 +104,13 @@ export async function GET() {
     )
   }
 
+  const regionKey = req.nextUrl.searchParams.get('region') ?? 'europe'
+  const region = REGIONS[regionKey] ?? REGIONS.europe
+
   try {
     // adsb.lol — free, bez registrace, bez rate limitu
     const res = await fetch(
-      'https://api.adsb.lol/v2/lat/50/lon/15/dist/600',
+      `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
       {
         headers: { 'Accept': 'application/json' },
         next: { revalidate: 10 }

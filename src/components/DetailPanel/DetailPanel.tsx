@@ -326,6 +326,31 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         </div>
       )}
 
+      {/* Emergency badge */}
+      {(flight.squawk === '7700' || flight.squawk === '7500' || flight.squawk === '7600' || flight.emergency) && (
+        <div style={{
+          background: 'rgba(239,68,68,0.15)',
+          border: '1px solid rgba(239,68,68,0.6)',
+          borderRadius: 8,
+          padding: '8px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          animation: 'fq-pulse 1.2s ease-in-out infinite',
+        }}>
+          <span style={{ fontSize: 18 }}>🚨</span>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', letterSpacing: 1 }}>
+              {flight.squawk === '7700' ? 'SQUAWK 7700 — NOUZOVÁ SITUACE' :
+               flight.squawk === '7500' ? 'SQUAWK 7500 — ÚNOS' :
+               flight.squawk === '7600' ? 'SQUAWK 7600 — VÝPADEK RÁDIA' :
+               `EMERGENCY: ${flight.emergency?.toUpperCase()}`}
+            </div>
+            <div style={{ fontSize: 9, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
+          </div>
+        </div>
+      )}
+
       {/* 4 metric tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
         <div className="metric-tile">
@@ -348,6 +373,27 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
           <div className="value">{fl}</div>
           <div className="sub">letová hladina</div>
         </div>
+        {/* Vertikální rychlost */}
+        {flight.baroRate != null && (
+          <div className="metric-tile">
+            <div className="label">Stoupání</div>
+            <div className="value" style={{ color: flight.baroRate > 100 ? '#4ade80' : flight.baroRate < -100 ? '#f87171' : 'var(--gold)' }}>
+              {flight.baroRate > 100 ? '↑' : flight.baroRate < -100 ? '↓' : '→'}
+              {' '}{Math.abs(Math.round(flight.baroRate))}
+            </div>
+            <div className="sub">ft/min</div>
+          </div>
+        )}
+        {/* Autopilot target */}
+        {flight.navAltitudeFt != null && flight.navAltitudeFt > 0 && (
+          <div className="metric-tile">
+            <div className="label">Autopilot</div>
+            <div className="value" style={{ color: 'var(--lavender)' }}>
+              FL{Math.round(flight.navAltitudeFt / 100)}
+            </div>
+            <div className="sub">míří na</div>
+          </div>
+        )}
       </div>
 
       {/* Share + FR24 */}
