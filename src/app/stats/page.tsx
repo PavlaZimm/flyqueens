@@ -15,21 +15,30 @@ const CAPACITY: Record<string, number> = {
 
 function TopList({ title, items, color = 'var(--gold)' }: {
   title: string
-  items: { label: string; value: string; sub?: string }[]
+  items: { label: string; value: string; sub?: string; callsign?: string }[]
   color?: string
 }) {
   return (
     <div className="glass-panel" style={{ padding: 16 }}>
       <div style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1.5, marginBottom: 12 }}>{title}</div>
       {items.map((item, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: i < items.length - 1 ? 10 : 0 }}>
+        <Link
+          key={i}
+          href={item.callsign ? `/?flight=${encodeURIComponent(item.callsign)}` : '#'}
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10, marginBottom: i < items.length - 1 ? 10 : 0, borderRadius: 8, padding: '4px 6px', margin: `0 -6px ${i < items.length - 1 ? '6px' : '0'} -6px`, transition: 'background 0.15s', cursor: item.callsign ? 'pointer' : 'default' }}
+          onMouseEnter={e => { if (item.callsign) (e.currentTarget as HTMLElement).style.background = 'var(--glass-bg)' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
+        >
           <div style={{ fontSize: 10, color: 'var(--text-dim)', width: 16, textAlign: 'right', flexShrink: 0 }}>#{i + 1}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color, letterSpacing: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.label}</div>
             {item.sub && <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 1 }}>{item.sub}</div>}
           </div>
-          <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: 'Syne, sans-serif', flexShrink: 0 }}>{item.value}</div>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: 'Syne, sans-serif' }}>{item.value}</div>
+            {item.callsign && <div style={{ fontSize: 9, color: 'var(--text-dim)' }}>→</div>}
+          </div>
+        </Link>
       ))}
     </div>
   )
@@ -235,6 +244,7 @@ export default function StatsPage() {
             label: f.callsign,
             value: `${f.velocity} km/h`,
             sub: f.model ?? f.origin_country ?? '',
+            callsign: f.callsign.trim(),
           }))}
         />
         <TopList
@@ -244,6 +254,7 @@ export default function StatsPage() {
             label: f.callsign,
             value: `FL${Math.round(f.altitude * 3.28084 / 100)}`,
             sub: `${f.altitude.toLocaleString('cs')} m`,
+            callsign: f.callsign.trim(),
           }))}
         />
       </div>
