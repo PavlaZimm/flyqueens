@@ -39,7 +39,21 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
-  metadataBase: new URL("https://flyqueens-app.vercel.app"),
+  metadataBase: new URL("https://www.flyqueens.cz"),
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "FlyQueens",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    other: [{ url: "/icons/icon-512.png", sizes: "512x512" }],
+  },
 };
 
 export const viewport: Viewport = {

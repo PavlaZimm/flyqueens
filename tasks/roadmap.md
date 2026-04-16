@@ -32,6 +32,8 @@
 - [x] Swipe-down gesto na detail panel
 - [x] GitHub + Vercel auto-deploy
 - [x] SEO meta, Twitter card, robots
+- [x] AeroDataBox integrace — přesná DEP→ARR trasa s progress barem a ETA
+- [x] Vlastní doména flyqueens.cz (Wedos → Vercel)
 
 ---
 
@@ -75,6 +77,14 @@
 
 ---
 
+## 💰 Monetizace
+
+- [ ] **Affiliate booking** — v detail panelu tlačítko "Koupit letenku" → Kiwi.com affiliate link s `from` + `to` parametry (provize 1–3%)
+- [ ] **PRO tier** — $2–5/měsíc: historie letů, notifikace, radar konkrétního letadla, bez reklam
+- [ ] **Kiwi.com affiliate program** — registrace na partners.kiwi.com
+
+---
+
 ## 💡 Nápady do budoucna
 
 - [ ] Animace tab favicon (blikající puntík vedle ikony)
@@ -83,6 +93,8 @@
 - [ ] Vícejazyčná verze (EN/CS)
 - [ ] Widget pro plochu (Android)
 - [ ] Apple Watch companion app
+- [ ] **Délka letu** — Airports Database API ($20/měsíc), zobrazit "2h 15min" v detail panelu
+- [ ] **Trasa autem na letiště** — Trueway Routing API (zdarma), "z centra Prahy: 25 min"
 
 ---
 
