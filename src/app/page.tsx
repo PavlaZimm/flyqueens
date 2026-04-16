@@ -98,7 +98,7 @@ function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; o
 }
 
 export default function Home() {
-  const { flights, loading, count, isMock } = useFlights()
+  const { flights, loading, count, isMock, region, setRegion } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
   const { route: selectedRoute } = useFlightRoute(
@@ -230,6 +230,8 @@ export default function Home() {
             onFilterChange={setActiveFilters}
             showAirports={showAirports}
             onToggleAirports={() => setShowAirports(v => !v)}
+            region={region}
+            onRegionChange={setRegion}
           />
         </div>
 

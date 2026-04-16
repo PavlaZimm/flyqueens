@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
 
@@ -14,7 +15,19 @@ interface TopBarProps {
   onFilterChange: (filters: Set<FilterType>) => void
   showAirports: boolean
   onToggleAirports: () => void
+  region: string
+  onRegionChange: (r: string) => void
 }
+
+const REGIONS: { id: string; label: string; flag: string }[] = [
+  { id: 'europe',     label: 'Evropa',     flag: '🇪🇺' },
+  { id: 'namerica',   label: 'S. Amerika', flag: '🇺🇸' },
+  { id: 'samerica',   label: 'J. Amerika', flag: '🌎' },
+  { id: 'asia',       label: 'Asie',       flag: '🌏' },
+  { id: 'middleeast', label: 'Blízký v.',  flag: '🕌' },
+  { id: 'africa',     label: 'Afrika',     flag: '🌍' },
+  { id: 'oceania',    label: 'Oceánie',    flag: '🦘' },
+]
 
 const CHIP_BASE: React.CSSProperties = {
   display: 'inline-flex',
@@ -60,7 +73,12 @@ export function TopBar({
   onFilterChange,
   showAirports,
   onToggleAirports,
+  region,
+  onRegionChange,
 }: TopBarProps) {
+  const [regionOpen, setRegionOpen] = useState(false)
+  const currentRegion = REGIONS.find(r => r.id === region) ?? REGIONS[0]
+
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
     if (next.has(f)) {
@@ -156,6 +174,69 @@ export function TopBar({
           <span style={{ fontSize: 13 }}>🛬</span>
           <span className="fq-chip-label" style={{ marginLeft: 5 }}>Letiště</span>
         </button>
+      </div>
+
+      {/* Region selector */}
+      <div style={{ position: 'relative', flexShrink: 0 }}>
+        <button
+          onClick={() => setRegionOpen(v => !v)}
+          aria-label="Vybrat region"
+          style={{
+            ...CHIP_BASE,
+            padding: '0 10px',
+            gap: 5,
+            background: regionOpen ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${regionOpen ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
+            color: regionOpen ? 'var(--gold)' : 'var(--text-muted)',
+          }}
+        >
+          <span style={{ fontSize: 13 }}>{currentRegion.flag}</span>
+          <span className="fq-chip-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
+          <span style={{ fontSize: 8, marginLeft: 2, opacity: 0.6 }}>▼</span>
+        </button>
+        {regionOpen && (
+          <div style={{
+            position: 'absolute',
+            top: 40,
+            right: 0,
+            background: 'var(--midnight)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: 10,
+            padding: 6,
+            minWidth: 150,
+            zIndex: 2000,
+            backdropFilter: 'blur(16px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}>
+            {REGIONS.map(r => (
+              <button
+                key={r.id}
+                onClick={() => { onRegionChange(r.id); setRegionOpen(false) }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '7px 10px',
+                  borderRadius: 7,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  fontSize: 12,
+                  fontWeight: r.id === region ? 600 : 400,
+                  background: r.id === region ? 'rgba(253,224,71,0.12)' : 'transparent',
+                  color: r.id === region ? 'var(--gold)' : 'var(--text-primary)',
+                  width: '100%',
+                  textAlign: 'left',
+                }}
+              >
+                <span style={{ fontSize: 15 }}>{r.flag}</span>
+                {r.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Stats link */}
