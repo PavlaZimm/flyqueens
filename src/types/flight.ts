@@ -21,4 +21,7 @@ export interface Flight {
   model?: string            // přesný model z aircraft DB (např. "A320-214")
   registration?: string     // poznávací značka (např. "OK-SWW")
   origin_country?: string
+  oat?: number              // teplota venku v °C
+  windSpeed?: number        // rychlost větru v uzlech
+  mach?: number             // Mach číslo
 }

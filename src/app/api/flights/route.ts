@@ -63,8 +63,11 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
   const onGnd   = ac.alt_baro === 'ground' || alt < 10
   const now     = Math.floor(Date.now() / 1000)
   const country = getCountry(icao)
-  const reg     = String(ac.r ?? '').trim()  // registrace (poznávací značka)
-  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg]
+  const reg     = String(ac.r ?? '').trim()
+  const oat     = ac.oat != null ? Number(ac.oat) : null
+  const ws      = ac.ws  != null ? Number(ac.ws)  : null
+  const mach    = ac.mach != null ? Number(ac.mach) : null
+  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg, oat, ws, mach]
 }
 
 // Vercel CDN cache — 1 request na adsb.lol za 10 sekund

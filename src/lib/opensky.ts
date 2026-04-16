@@ -50,10 +50,13 @@ function parseState(state: unknown[]): Flight | null {
   const onGround = Boolean(arr[IDX_ON_GROUND])
   const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
 
-  // Index 16: registrace z adsb.lol, 17+18 z aircraft-db.json
+  // Index 16: registrace, 17+18: aircraft-db, 19-21: oat/ws/mach z adsb.lol
   const registration = arr[16] ? String(arr[16]) : undefined
   const dbModel = arr[17] ? String(arr[17]) : undefined
   const dbType  = arr[18] ? (arr[18] as AircraftType) : undefined
+  const oat     = arr[19] != null ? Number(arr[19]) : undefined
+  const windSpeed = arr[20] != null ? Number(arr[20]) : undefined
+  const mach    = arr[21] != null ? Number(arr[21]) : undefined
 
   return {
     icao24,
@@ -68,6 +71,9 @@ function parseState(state: unknown[]): Flight | null {
     model: dbModel,
     registration: registration || undefined,
     origin_country,
+    oat,
+    windSpeed,
+    mach,
   }
 }
 
