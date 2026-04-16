@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'
-  const { allowed, retryAfter } = checkRateLimit(ip)
+  const { allowed, retryAfter } = checkRateLimit(ip, 'atc-stream')
   if (!allowed) {
     return new NextResponse('Too many requests', { status: 429, headers: { 'Retry-After': String(retryAfter) } })
   }
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
         'Content-Type': upstream.headers.get('Content-Type') ?? 'audio/mpeg',
         'Cache-Control': 'no-cache, no-store',
         'Transfer-Encoding': 'chunked',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://www.flyqueens.cz',
       },
     })
   } catch {

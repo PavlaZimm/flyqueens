@@ -77,6 +77,7 @@ export function useFlightRoute(
   useEffect(() => {
     if (!icao24) { setRoute(null); return }
 
+    const controller = new AbortController()
     setLoading(true)
     setRoute(null)
 
@@ -87,7 +88,7 @@ export function useFlightRoute(
       heading: String(headingDeg),
     })
 
-    fetch(`/api/flight-route?${params}`, { signal: AbortSignal.timeout(10000) })
+    fetch(`/api/flight-route?${params}`, { signal: controller.signal })
       .then(r => r.json())
       .then((data: { route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null }) => {
         if (!data.route) { setRoute(null); return }
@@ -100,17 +101,19 @@ export function useFlightRoute(
           return
         }
 
-        const distFlown    = dep ? distKm(dep.lat, dep.lng, currentLat, currentLng) : 0
+        const distFlown     = dep ? distKm(dep.lat, dep.lng, currentLat, currentLng) : 0
         const distRemaining = distKm(currentLat, currentLng, arr.lat, arr.lng)
-        const totalDist    = distFlown + distRemaining
-        const progress     = totalDist > 0 ? Math.min(100, Math.round((distFlown / totalDist) * 100)) : 0
-        const speedKmh     = velocityKmh > 50 ? velocityKmh : 800
-        const etaMin       = Math.round(distRemaining / speedKmh * 60)
+        const totalDist     = distFlown + distRemaining
+        const progress      = totalDist > 0 ? Math.min(100, Math.round((distFlown / totalDist) * 100)) : 0
+        const speedKmh      = velocityKmh > 50 ? velocityKmh : 800
+        const etaMin        = Math.round(distRemaining / speedKmh * 60)
 
         setRoute({ departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin, totalDist: Math.round(totalDist) })
       })
-      .catch(() => setRoute(null))
+      .catch((err) => { if ((err as Error).name !== 'AbortError') setRoute(null) })
       .finally(() => setLoading(false))
+
+    return () => controller.abort()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [icao24])
 

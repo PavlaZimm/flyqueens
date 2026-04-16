@@ -4,14 +4,12 @@ import { checkRateLimit } from '@/lib/rateLimit'
 export const revalidate = 0
 
 async function checkFeed(feed: string): Promise<boolean> {
-  const timeout = new Promise<boolean>(resolve => setTimeout(() => resolve(false), 5000))
-  const check = fetch(`http://audio.liveatc.net/${feed}`, {
-    method: 'GET',
+  // HEAD místo GET — nezačne stahovat stream data
+  return fetch(`http://audio.liveatc.net/${feed}`, {
+    method: 'HEAD',
     headers: { 'Icy-MetaData': '0' },
     signal: AbortSignal.timeout(5000),
-  }).then(res => res.status === 200 || res.status === 206).catch(() => false)
-
-  return Promise.race([check, timeout])
+  }).then(res => res.ok).catch(() => false)
 }
 
 // Zkontroluje jeden nebo více feedů najednou
@@ -20,7 +18,7 @@ export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'
-  const { allowed, retryAfter } = checkRateLimit(ip)
+  const { allowed, retryAfter } = checkRateLimit(ip, 'atc-check')
   if (!allowed) {
     return NextResponse.json({ error: 'Too many requests', retryAfter }, { status: 429 })
   }
