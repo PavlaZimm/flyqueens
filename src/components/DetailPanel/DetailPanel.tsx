@@ -115,26 +115,39 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         top: 60, right: 16,
         width: 252,
         zIndex: 100,
-        padding: '14px 14px 16px',
         display: 'flex',
         flexDirection: 'column',
-        gap: 10,
         maxHeight: 'calc(100dvh - 80px)',
-        overflowY: 'auto',
         background: 'rgba(10, 15, 30, 0.94)',
         backdropFilter: 'blur(20px)',
         borderColor: 'rgba(255,255,255,0.10)',
+        overflow: 'hidden',
       }}
     >
-      {/* Close — desktop only (mobile má vlastní ✕ v handle liště) */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {/* ✕ vždy viditelný — nesrolluje — desktop only */}
+      <div
+        className="fq-close-btn"
+        style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0', flexShrink: 0 }}
+      >
         <button
           onClick={onClose}
-          className="fq-close-btn"
-          style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 15, padding: 0, lineHeight: 1, flexShrink: 0 }}
+          style={{
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: 6,
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            fontSize: 13,
+            width: 28, height: 28,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            lineHeight: 1, flexShrink: 0,
+          }}
           aria-label="Zavřít"
         >✕</button>
       </div>
+
+      {/* Scrollovatelný obsah */}
+      <div style={{ overflowY: 'auto', flex: 1, padding: '8px 14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
 
       {/* Fotka letadla */}
       <div style={{
@@ -438,6 +451,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
           SLEDOVAT NA FR24
         </a>
       </div>
+      </div>{/* konec scrollovatelného wrapperu */}
     </div>
   )
 }

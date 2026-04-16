@@ -291,7 +291,7 @@ html.light .leaflet-control-attribution {
   }
 
   /* Skryj interní ✕ z DetailPanelu — sheet má vlastní zavírací tlačítko */
-  .fq-detail-mobile .fq-detail-panel .fq-close-btn {
+  .fq-detail-mobile .fq-close-btn {
     display: none !important;
   }
 
