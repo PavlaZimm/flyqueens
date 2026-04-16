@@ -93,7 +93,6 @@ export async function GET(req: NextRequest) {
   if (aeroKey && aeroBase) {
     try {
       const url = `${aeroBase}/flights/icao24/${icao24}`
-      console.log('[flight-route] AeroDataBox URL:', url)
       const res = await fetch(url, {
         headers: {
           'x-api-market-key': aeroKey,
@@ -102,12 +101,8 @@ export async function GET(req: NextRequest) {
         signal: AbortSignal.timeout(8000),
       })
 
-      console.log('[flight-route] AeroDataBox status:', res.status)
-      const rawText = await res.text()
-      console.log('[flight-route] AeroDataBox body:', rawText.slice(0, 500))
-
       if (res.ok) {
-        const data: AeroDataBoxFlight[] | AeroDataBoxFlight = JSON.parse(rawText)
+        const data: AeroDataBoxFlight[] | AeroDataBoxFlight = await res.json()
         const flight = Array.isArray(data) ? data[0] : data
 
         const depIcao = flight?.departure?.airport?.icao ?? null
@@ -117,8 +112,7 @@ export async function GET(req: NextRequest) {
           return NextResponse.json({ route: { departure: depIcao, arrival: arrIcao }, source: 'aerodatabox' })
         }
       }
-    } catch (e) {
-      console.log('[flight-route] AeroDataBox error:', e)
+    } catch {
       // fallthrough na OpenSky
     }
   }
