@@ -1,15 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/rateLimit'
 
+export const runtime = 'nodejs'
 export const revalidate = 0
 
 async function checkFeed(feed: string): Promise<boolean> {
-  // HEAD místo GET — nezačne stahovat stream data
-  return fetch(`http://audio.liveatc.net/${feed}`, {
-    method: 'HEAD',
-    headers: { 'Icy-MetaData': '0' },
-    signal: AbortSignal.timeout(5000),
-  }).then(res => res.ok).catch(() => false)
+  // Icecast nereaguje spolehlivě na HEAD — použijeme GET a ihned přerušíme
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), 8000)
+  try {
+    const res = await fetch(`http://audio.liveatc.net/${feed}`, {
+      method: 'GET',
+      headers: { 'Icy-MetaData': '0', 'Range': 'bytes=0-1023' },
+      signal: ctrl.signal,
+    })
+    return res.status === 200 || res.status === 206
+  } catch {
+    return false
+  } finally {
+    clearTimeout(timer)
+  }
 }
 
 // Zkontroluje jeden nebo více feedů najednou

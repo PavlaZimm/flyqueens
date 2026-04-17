@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/rateLimit'
 
-// Node.js runtime — Edge runtime nepodporuje HTTP (jen HTTPS), audio.liveatc.net je pouze HTTP
+export const runtime = 'nodejs'
 
 // Proxy pro LiveATC audio stream — vyřeší CORS problém
 export async function GET(req: NextRequest) {
