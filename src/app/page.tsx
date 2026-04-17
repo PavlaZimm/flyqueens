@@ -9,6 +9,7 @@ import { useFaviconCount } from '@/hooks/useFaviconCount'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
+import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS, NEARBY_RADIUS_KM, EARTH_RADIUS_KM } from '@/lib/constants'
 import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
@@ -120,7 +121,7 @@ export default function Home() {
 
   // Emergency detection
   const emergencyFlights = flights.filter(
-    f => (f.squawk && ['7700','7500','7600'].includes(f.squawk)) || f.emergency
+    f => (f.squawk && EMERGENCY_SQUAWKS.includes(f.squawk as typeof EMERGENCY_SQUAWKS[number])) || f.emergency
   )
   const hasEmergency = emergencyFlights.length > 0
 
@@ -156,14 +157,12 @@ export default function Home() {
       const { latitude, longitude } = pos.coords
       mapLocateFnRef.current?.(latitude, longitude)
 
-      // Letadla nad hlavou — v okruhu 30 km
-      const R = 6371
       const nearby = flights.filter(f => {
         const dLat = (f.lat - latitude) * Math.PI / 180
         const dLng = (f.lng - longitude) * Math.PI / 180
         const a = Math.sin(dLat/2)**2 + Math.cos(latitude * Math.PI/180) * Math.cos(f.lat * Math.PI/180) * Math.sin(dLng/2)**2
-        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-        return dist <= 30
+        const dist = EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+        return dist <= NEARBY_RADIUS_KM
       })
       setNearbyFlights(nearby)
       setShowNearby(true)
@@ -229,7 +228,7 @@ export default function Home() {
         <div style={{
           position: 'absolute',
           top: 'calc(12px + env(safe-area-inset-top, 0px))',
-          left: 12, right: selectedFlight ? 12 + 252 + 8 : 12,
+          left: 12, right: selectedFlight ? 12 + DETAIL_PANEL_WIDTH + 8 : 12,
           zIndex: 1000, pointerEvents: 'none',
           transition: 'right 0.2s ease',
         }}>

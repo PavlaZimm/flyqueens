@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { checkRateLimit } from '@/lib/rateLimit'
+import { REGION_CONFIGS } from '@/lib/constants'
 
 // Načteme aircraft DB jednou při startu serveru (module-level cache)
 let aircraftDb: Record<string, { m: string; t: string }> | null = null
@@ -78,16 +79,8 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
 // Vercel CDN cache — 1 request na adsb.lol za 10 sekund
 export const revalidate = 10
 
-// Regiony — střed + radius pro adsb.lol
-const REGIONS: Record<string, { lat: number; lon: number; dist: number }> = {
-  europe:       { lat: 50,  lon: 15,   dist: 600  },
-  namerica:     { lat: 40,  lon: -95,  dist: 2500 },
-  samerica:     { lat: -15, lon: -55,  dist: 2500 },
-  asia:         { lat: 35,  lon: 105,  dist: 2500 },
-  middleeast:   { lat: 25,  lon: 45,   dist: 1500 },
-  africa:       { lat: 5,   lon: 20,   dist: 2500 },
-  oceania:      { lat: -25, lon: 135,  dist: 2000 },
-}
+// Regiony — střed + radius pro adsb.lol (sdíleno s TopBar přes constants.ts)
+const REGIONS = REGION_CONFIGS
 
 export async function GET(req: NextRequest) {
   // Rate limiting — max 30 req/min per IP

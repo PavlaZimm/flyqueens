@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchFlights } from '@/lib/opensky'
 import type { Flight } from '@/types/flight'
+import { POLL_INTERVAL_MS, MAX_BACKOFF_MS } from '@/lib/constants'
 
 interface UseFlightsResult {
   flights: Flight[]
@@ -14,8 +15,8 @@ interface UseFlightsResult {
   setRegion: (r: string) => void
 }
 
-const POLL_INTERVAL  = 10_000
-const MAX_BACKOFF    = 60_000
+const POLL_INTERVAL  = POLL_INTERVAL_MS
+const MAX_BACKOFF    = MAX_BACKOFF_MS
 const BACKOFF_FACTOR = 2
 
 export function useFlights(): UseFlightsResult {

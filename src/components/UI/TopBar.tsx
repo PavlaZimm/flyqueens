@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
+import { REGION_CONFIGS } from '@/lib/constants'
 
 export type FilterType = 'passenger' | 'cargo' | 'private' | 'military' | 'helicopter'
 
@@ -19,15 +20,7 @@ interface TopBarProps {
   onRegionChange: (r: string) => void
 }
 
-const REGIONS: { id: string; label: string; flag: string }[] = [
-  { id: 'europe',     label: 'Evropa',     flag: '🇪🇺' },
-  { id: 'namerica',   label: 'S. Amerika', flag: '🇺🇸' },
-  { id: 'samerica',   label: 'J. Amerika', flag: '🌎' },
-  { id: 'asia',       label: 'Asie',       flag: '🌏' },
-  { id: 'middleeast', label: 'Blízký v.',  flag: '🕌' },
-  { id: 'africa',     label: 'Afrika',     flag: '🌍' },
-  { id: 'oceania',    label: 'Oceánie',    flag: '🦘' },
-]
+const REGIONS = Object.entries(REGION_CONFIGS).map(([id, r]) => ({ id, label: r.label, flag: r.flag }))
 
 const CHIP_BASE: React.CSSProperties = {
   display: 'inline-flex',
