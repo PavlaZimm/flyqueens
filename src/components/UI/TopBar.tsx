@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
 
@@ -77,10 +77,19 @@ export function TopBar({
   onRegionChange,
 }: TopBarProps) {
   const [regionOpen, setRegionOpen] = useState(false)
+  const regionRef = useRef<HTMLDivElement>(null)
   const currentRegion = REGIONS.find(r => r.id === region) ?? REGIONS[0]
 
-  // Zavřít dropdown kliknutím mimo
-  const handleRegionBlur = () => setTimeout(() => setRegionOpen(false), 150)
+  useEffect(() => {
+    if (!regionOpen) return
+    const handler = (e: MouseEvent) => {
+      if (regionRef.current && !regionRef.current.contains(e.target as Node)) {
+        setRegionOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [regionOpen])
 
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
@@ -180,7 +189,7 @@ export function TopBar({
       </div>
 
       {/* Region selector */}
-      <div style={{ position: 'relative', flexShrink: 0 }} onBlur={handleRegionBlur}>
+      <div ref={regionRef} style={{ position: 'relative', flexShrink: 0 }}>
         <button
           onClick={() => setRegionOpen(v => !v)}
           aria-label="Vybrat region"
