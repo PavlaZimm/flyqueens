@@ -6,10 +6,12 @@ import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute } from '@/hooks/useFlightRoute'
 import { useFaviconCount } from '@/hooks/useFaviconCount'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useNearbyFlights } from '@/hooks/useNearbyFlights'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
-import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS, NEARBY_RADIUS_KM, EARTH_RADIUS_KM } from '@/lib/constants'
+import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS } from '@/lib/constants'
 import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
@@ -115,8 +117,7 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
   const [showAirports, setShowAirports] = useState(false)
-  const [nearbyFlights, setNearbyFlights] = useState<Flight[]>([])
-  const [showNearby, setShowNearby] = useState(false)
+  const { nearbyFlights, showNearby, locateMe, dismiss: dismissNearby } = useNearbyFlights()
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
 
   // Emergency detection
@@ -138,35 +139,13 @@ export default function Home() {
     if (match) setSelectedFlight(match)
   }, [flights])
 
-  // Keyboard shortcuts
-  React.useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedFlight(null)
-      if (e.key === '/' && !(e.target instanceof HTMLInputElement)) {
-        e.preventDefault()
-        document.querySelector<HTMLInputElement>('input[type="text"]')?.focus()
-      }
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [])
+  useKeyboardShortcuts({
+    onEscape: () => setSelectedFlight(null),
+    onSlash: () => document.querySelector<HTMLInputElement>('input[type="text"]')?.focus(),
+  })
 
   const handleLocateMe = () => {
-    if (!navigator.geolocation) return
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { latitude, longitude } = pos.coords
-      mapLocateFnRef.current?.(latitude, longitude)
-
-      const nearby = flights.filter(f => {
-        const dLat = (f.lat - latitude) * Math.PI / 180
-        const dLng = (f.lng - longitude) * Math.PI / 180
-        const a = Math.sin(dLat/2)**2 + Math.cos(latitude * Math.PI/180) * Math.cos(f.lat * Math.PI/180) * Math.sin(dLng/2)**2
-        const dist = EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-        return dist <= NEARBY_RADIUS_KM
-      })
-      setNearbyFlights(nearby)
-      setShowNearby(true)
-    })
+    locateMe(flights, (lat, lng) => mapLocateFnRef.current?.(lat, lng))
   }
 
   const handleFlightSelect = (flight: Flight) => {
@@ -275,7 +254,7 @@ export default function Home() {
               <span style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)' }}>
                 Letadla nad tebou
               </span>
-              <button onClick={() => setShowNearby(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
+              <button onClick={dismissNearby} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
             </div>
             {nearbyFlights.length === 0 ? (
               <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Žádná letadla v okruhu 30 km ✈️</div>
@@ -287,7 +266,7 @@ export default function Home() {
                 {nearbyFlights.slice(0, 5).map(f => (
                   <div
                     key={f.icao24}
-                    onClick={() => { handleFlightSelect(f); setShowNearby(false) }}
+                    onClick={() => { handleFlightSelect(f); dismissNearby() }}
                     style={{
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                       padding: '4px 0', borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer',
