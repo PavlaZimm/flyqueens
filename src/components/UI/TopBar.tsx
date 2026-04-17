@@ -208,9 +208,9 @@ export function TopBar({
         </button>
         {regionOpen && (
           <div style={{
-            position: 'fixed',
-            top: 56,
-            right: 12,
+            position: 'absolute',
+            top: 'calc(100% + 6px)',
+            right: 0,
             background: 'rgba(10,15,30,0.97)',
             border: '1px solid var(--glass-border)',
             borderRadius: 10,
