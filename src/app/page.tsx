@@ -229,8 +229,9 @@ export default function Home() {
         <div style={{
           position: 'absolute',
           top: 'calc(12px + env(safe-area-inset-top, 0px))',
-          left: 12, right: 12,
+          left: 12, right: selectedFlight ? 12 + 252 + 8 : 12,
           zIndex: 1000, pointerEvents: 'none',
+          transition: 'right 0.2s ease',
         }}>
           <TopBar
             flightCount={count}
