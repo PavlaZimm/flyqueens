@@ -414,8 +414,8 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         )}
       </div>
 
-      {/* Share + FR24 */}
-      <div style={{ display: 'flex', gap: 6 }}>
+      {/* Share */}
+      <div style={{ display: 'flex' }}>
         <button
           onClick={() => {
             const url = `${window.location.origin}${window.location.pathname}?flight=${encodeURIComponent(flight.callsign.trim())}`
@@ -446,15 +446,6 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         >
           SDÍLET
         </button>
-        <a
-          href={`https://www.flightradar24.com/${flight.callsign.trim()}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-cta"
-          style={{ textDecoration: 'none', textAlign: 'center', flex: 2 }}
-        >
-          SLEDOVAT NA FR24
-        </a>
       </div>
       </div>{/* konec scrollovatelného wrapperu */}
     </div>
