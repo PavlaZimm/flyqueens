@@ -4,6 +4,7 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import { checkRateLimit } from '@/lib/rateLimit'
 import { REGION_CONFIGS } from '@/lib/constants'
+import { getOpenSkyToken } from '@/lib/openskyAuth'
 
 // Načteme aircraft DB jednou při startu serveru (module-level cache)
 let aircraftDb: Record<string, { m: string; t: string }> | null = null
@@ -107,9 +108,14 @@ export async function GET(req: NextRequest) {
   try {
     const osky = region.osky
     if (osky) {
+      // OAuth2 token (pokud jsou nastavené credentials) — nutné pro přístup z Vercelu
+      const token = await getOpenSkyToken()
       const url = `https://opensky-network.org/api/states/all?lamin=${osky.lamin}&lamax=${osky.lamax}&lomin=${osky.lomin}&lomax=${osky.lomax}`
       const res = await fetch(url, {
-        headers: { 'Accept': 'application/json' },
+        headers: {
+          'Accept': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         next: { revalidate: 10 },
         signal: AbortSignal.timeout(6000),
       })
