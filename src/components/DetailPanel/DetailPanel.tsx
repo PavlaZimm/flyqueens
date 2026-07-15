@@ -86,6 +86,26 @@ function getFlightLevel(altitude: number): string {
   return fl > 0 ? `FL${fl}` : 'GND'
 }
 
+// ISO čas (s offsetem) → "HH:MM"
+function fmtTime(iso: string | null): string | null {
+  if (!iso) return null
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return null
+  return d.toLocaleTimeString('cs', { hour: '2-digit', minute: '2-digit', hour12: false })
+}
+
+// AeroDataBox status → český popisek
+function statusLabel(status: string | null): string | null {
+  if (!status) return null
+  const map: Record<string, string> = {
+    Unknown: 'Neznámý', Expected: 'Očekáván', EnRoute: 'Na trase',
+    CheckIn: 'Check-in', Boarding: 'Nástup', GateClosed: 'Brána zavřena',
+    Departed: 'Odletěl', Delayed: 'Zpožděn', Approaching: 'Přibližuje se',
+    Arrived: 'Přistál', Canceled: 'Zrušen', Diverted: 'Odkloněn',
+  }
+  return map[status] ?? status
+}
+
 export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
   const { route, loading: routeLoading  } = useFlightRoute(
@@ -336,6 +356,66 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
                         : `${Math.floor(route.etaMin / 60)}h ${route.etaMin % 60}m`}
                     </div>
                     <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>DO PŘISTÁNÍ</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Letový řád — časy, zpoždění, brána (AeroDataBox) */}
+              {route.schedule && (route.schedule.depScheduled || route.schedule.arrScheduled || route.schedule.status) && (
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border-subtle)' }}>
+                  {/* Číslo letu + status */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
+                      {route.schedule.number ?? route.schedule.airline ?? 'Letový řád'}
+                    </span>
+                    {statusLabel(route.schedule.status) && (
+                      <span style={{
+                        fontSize: 8, letterSpacing: 0.5, textTransform: 'uppercase',
+                        padding: '2px 6px', borderRadius: 4,
+                        background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+                        color: (route.schedule.depDelayMin ?? 0) > 10 || (route.schedule.arrDelayMin ?? 0) > 10 ? 'var(--amber-delay)' : 'var(--green-live)',
+                      }}>
+                        {statusLabel(route.schedule.status)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Časy odlet / přílet */}
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    {(fmtTime(route.schedule.depActual) || fmtTime(route.schedule.depScheduled)) && (
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>ODLET</div>
+                        <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+                          {fmtTime(route.schedule.depActual) ?? fmtTime(route.schedule.depScheduled)}
+                        </div>
+                        {(route.schedule.depDelayMin ?? 0) > 0 && (
+                          <div style={{ fontSize: 8, color: 'var(--amber-delay)' }}>+{route.schedule.depDelayMin} min</div>
+                        )}
+                        {(route.schedule.depTerminal || route.schedule.depGate) && (
+                          <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                            {route.schedule.depTerminal && `T${route.schedule.depTerminal}`}
+                            {route.schedule.depGate && ` · ${route.schedule.depGate}`}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {(fmtTime(route.schedule.arrActual) || fmtTime(route.schedule.arrScheduled)) && (
+                      <div style={{ flex: 1, textAlign: 'right' }}>
+                        <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>PŘÍLET</div>
+                        <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--gold)' }}>
+                          {fmtTime(route.schedule.arrActual) ?? fmtTime(route.schedule.arrScheduled)}
+                        </div>
+                        {(route.schedule.arrDelayMin ?? 0) > 0 && (
+                          <div style={{ fontSize: 8, color: 'var(--amber-delay)' }}>+{route.schedule.arrDelayMin} min</div>
+                        )}
+                        {(route.schedule.arrTerminal || route.schedule.arrGate) && (
+                          <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                            {route.schedule.arrTerminal && `T${route.schedule.arrTerminal}`}
+                            {route.schedule.arrGate && ` · ${route.schedule.arrGate}`}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

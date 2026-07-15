@@ -4,6 +4,23 @@ import { useState, useEffect } from 'react'
 import type { Airport } from '@/lib/airportData'
 import { airports } from '@/lib/airportData'
 
+export interface FlightSchedule {
+  number: string | null
+  airline: string | null
+  status: string | null
+  depScheduled: string | null
+  depActual: string | null
+  depTerminal: string | null
+  depGate: string | null
+  depDelayMin: number | null
+  arrScheduled: string | null
+  arrActual: string | null
+  arrTerminal: string | null
+  arrGate: string | null
+  arrBaggageBelt: string | null
+  arrDelayMin: number | null
+}
+
 export interface FlightRoute {
   departure: Airport | null
   arrival:   Airport | null
@@ -11,6 +28,7 @@ export interface FlightRoute {
   remaining: number          // km do cíle
   etaMin:    number          // minuty do přistání
   totalDist: number          // celková vzdálenost km
+  schedule:  FlightSchedule | null  // časy, zpoždění, brána (AeroDataBox)
 }
 
 // Airport jak ho vrátí AeroDataBox (s lat/lng přímo)
@@ -90,14 +108,15 @@ export function useFlightRoute(
 
     fetch(`/api/flight-route?${params}`, { signal: controller.signal })
       .then(r => r.json())
-      .then((data: { route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null }) => {
+      .then((data: { route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null; schedule?: FlightSchedule | null }) => {
         if (!data.route) { setRoute(null); return }
 
         const dep = apiToAirport(data.route.departure)
         const arr = apiToAirport(data.route.arrival)
+        const schedule = data.schedule ?? null
 
         if (!arr) {
-          setRoute({ departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0, totalDist: 0 })
+          setRoute({ departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0, totalDist: 0, schedule })
           return
         }
 
@@ -108,7 +127,7 @@ export function useFlightRoute(
         const speedKmh      = velocityKmh > 50 ? velocityKmh : 800
         const etaMin        = Math.round(distRemaining / speedKmh * 60)
 
-        setRoute({ departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin, totalDist: Math.round(totalDist) })
+        setRoute({ departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin, totalDist: Math.round(totalDist), schedule })
       })
       .catch((err) => { if ((err as Error).name !== 'AbortError') setRoute(null) })
       .finally(() => setLoading(false))

@@ -54,10 +54,53 @@ interface AeroDataBoxAirport {
   location?: { lat: number; lon: number }
 }
 
+interface AeroDataBoxTime {
+  utc?: string
+  local?: string
+}
+
+interface AeroDataBoxMovement {
+  airport?: AeroDataBoxAirport
+  scheduledTime?: AeroDataBoxTime
+  revisedTime?: AeroDataBoxTime
+  predictedTime?: AeroDataBoxTime
+  terminal?: string
+  gate?: string
+  baggageBelt?: string
+}
+
 interface AeroDataBoxFlight {
-  departure?: { airport?: AeroDataBoxAirport }
-  arrival?:   { airport?: AeroDataBoxAirport }
+  departure?: AeroDataBoxMovement
+  arrival?:   AeroDataBoxMovement
   status?: string
+  number?: string
+  airline?: { name?: string }
+}
+
+// Zpoždění v minutách z rozdílu plánovaného a revidovaného času (kladné = zpoždění)
+function delayMin(scheduled?: AeroDataBoxTime, revised?: AeroDataBoxTime): number | null {
+  const s = scheduled?.utc ?? scheduled?.local
+  const r = revised?.utc ?? revised?.local
+  if (!s || !r) return null
+  const diff = (new Date(r).getTime() - new Date(s).getTime()) / 60000
+  return Number.isFinite(diff) ? Math.round(diff) : null
+}
+
+interface FlightSchedule {
+  number: string | null
+  airline: string | null
+  status: string | null
+  depScheduled: string | null   // ISO local
+  depActual: string | null
+  depTerminal: string | null
+  depGate: string | null
+  depDelayMin: number | null
+  arrScheduled: string | null
+  arrActual: string | null
+  arrTerminal: string | null
+  arrGate: string | null
+  arrBaggageBelt: string | null
+  arrDelayMin: number | null
 }
 
 interface RouteAirport {
@@ -134,7 +177,25 @@ export async function GET(req: NextRequest) {
             lat:  arr?.location?.lat ?? null,
             lng:  arr?.location?.lon ?? null,
           }
-          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, source: 'aerodatabox' })
+          const d = flight?.departure
+          const a = flight?.arrival
+          const schedule: FlightSchedule = {
+            number:  flight?.number ?? null,
+            airline: flight?.airline?.name ?? null,
+            status:  flight?.status ?? null,
+            depScheduled:   d?.scheduledTime?.local ?? null,
+            depActual:      d?.revisedTime?.local ?? d?.predictedTime?.local ?? null,
+            depTerminal:    d?.terminal ?? null,
+            depGate:        d?.gate ?? null,
+            depDelayMin:    delayMin(d?.scheduledTime, d?.revisedTime),
+            arrScheduled:   a?.scheduledTime?.local ?? null,
+            arrActual:      a?.revisedTime?.local ?? a?.predictedTime?.local ?? null,
+            arrTerminal:    a?.terminal ?? null,
+            arrGate:        a?.gate ?? null,
+            arrBaggageBelt: a?.baggageBelt ?? null,
+            arrDelayMin:    delayMin(a?.scheduledTime, a?.revisedTime ?? a?.predictedTime),
+          }
+          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, schedule, source: 'aerodatabox' })
         }
       }
     } catch {
