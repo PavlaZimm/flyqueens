@@ -116,11 +116,9 @@ export async function GET(req: NextRequest) {
       }
     )
 
-    console.log(`[FQ-DIAG] airplanes.live: HTTP=${res.status}`)
     if (res.ok) {
       const data = await res.json()
       const aircraft: Record<string, unknown>[] = data.ac ?? []
-      console.log(`[FQ-DIAG] airplanes.live: ac=${aircraft.length}`)
       if (aircraft.length > 0) {
         const states = aircraft.map((ac) => {
           const row = adsbToOpenSky(ac)
@@ -135,8 +133,8 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
       }
     }
-  } catch (e) {
-    console.log(`[FQ-DIAG] airplanes.live: výjimka — ${e instanceof Error ? e.name : String(e)}`)
+  } catch {
+    // airplanes.live selhal — zkusíme OpenSky
   }
 
   // 2. OpenSky Network — fallback (funguje lokálně, na Vercelu blokovaný).
@@ -155,10 +153,8 @@ export async function GET(req: NextRequest) {
         signal: AbortSignal.timeout(6000),
       })
 
-      console.log(`[FQ-DIAG] OpenSky: token=${!!token} HTTP=${res.status}`)
       if (res.ok) {
         const data = await res.json()
-        console.log(`[FQ-DIAG] OpenSky: states=${data.states?.length ?? 0}`)
         if (data.states?.length) {
           const states = (data.states as unknown[][]).map((row: unknown[]) => {
             const icao = String(row[0] ?? '').toLowerCase()
@@ -174,12 +170,11 @@ export async function GET(req: NextRequest) {
         }
       }
     }
-  } catch (e) {
+  } catch {
     // OpenSky selhal (rate-limit / timeout) — zkusíme adsb.lol
-    console.log(`[FQ-DIAG] OpenSky: výjimka — ${e instanceof Error ? e.name : String(e)}`)
   }
 
-  // 2. Fallback: adsb.lol (bohatší data — mach, OAT, squawk, ale pomalejší)
+  // 3. Fallback: adsb.lol (bohatší data — mach, OAT, squawk, ale pomalejší)
   try {
     const res = await fetch(
       `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
