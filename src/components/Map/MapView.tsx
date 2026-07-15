@@ -329,7 +329,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       if (onMapReady) {
         onMapReady((lat, lng) => {
           if (!Number.isFinite(lat) || !Number.isFinite(lng)) return
-          map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 })
+          try { map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 }) } catch { /* mapa není ready */ }
         })
       }
     })
@@ -383,9 +383,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const { map } = mapRef.current
     // Guard proti nevalidním souřadnicím — jinak Leaflet flyTo shodí celou mapu
     if (!Number.isFinite(selectedFlight.lat) || !Number.isFinite(selectedFlight.lng)) return
-    map.flyTo([selectedFlight.lat, selectedFlight.lng], Math.max(map.getZoom(), 7), {
-      animate: true, duration: 0.8,
-    })
+    // Zoom může být NaN, když mapa ještě nemá ustálenou velikost (deep-link ?flight=)
+    const curZoom = map.getZoom()
+    const targetZoom = Number.isFinite(curZoom) ? Math.max(curZoom, 7) : 7
+    try {
+      map.flyTo([selectedFlight.lat, selectedFlight.lng], targetZoom, {
+        animate: true, duration: 0.8,
+      })
+    } catch { /* mapa ještě není připravená — ignoruj */ }
   }, [selectedFlight])
 
   // Route arc — nakreslí oblouk DEP → letadlo → ARR
