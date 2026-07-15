@@ -100,48 +100,74 @@ export async function GET(req: NextRequest) {
   const regionKey = req.nextUrl.searchParams.get('region') ?? 'europe'
   const region = REGIONS[regionKey] ?? REGIONS.europe
 
+  // 1. Zkus adsb.lol (bohatší data — mach, OAT, squawk)
   try {
-    // adsb.lol — free, bez registrace, bez rate limitu
     const res = await fetch(
       `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
       {
         headers: { 'Accept': 'application/json' },
-        next: { revalidate: 10 }
+        next: { revalidate: 10 },
+        signal: AbortSignal.timeout(3500),
       }
     )
 
-    if (!res.ok) {
-      return NextResponse.json({ ...getMockData(), _mock: true })
-    }
+    if (res.ok) {
+      const data = await res.json()
+      const aircraft: Record<string, unknown>[] = data.ac ?? []
 
-    const data = await res.json()
-    const aircraft: Record<string, unknown>[] = data.ac ?? []
-
-    if (!aircraft.length) {
-      return NextResponse.json({ ...getMockData(), _mock: true })
-    }
-
-    // Převod na OpenSky formát + obohacení z aircraft DB
-    const db = getAircraftDb()
-    const states = aircraft.map((ac) => {
-      const row = adsbToOpenSky(ac)
-      const icao = String(row[0])
-      const entry = db[icao]
-      // model letadla z naší DB (přesnější než adsb.lol type designator)
-      if (entry) {
-        row[17] = entry.m  // model (index 17)
-        row[18] = entry.t  // typ (index 18)
+      if (aircraft.length > 0) {
+        const db = getAircraftDb()
+        const states = aircraft.map((ac) => {
+          const row = adsbToOpenSky(ac)
+          const icao = String(row[0])
+          const entry = db[icao]
+          if (entry) {
+            row[17] = entry.m
+            row[18] = entry.t
+          }
+          return row
+        })
+        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
       }
-      return row
-    })
-
-    return NextResponse.json({
-      time: Math.floor(Date.now() / 1000),
-      states,
-    })
+    }
   } catch {
-    return NextResponse.json({ ...getMockData(), _mock: true })
+    // adsb.lol timeout nebo chyba — zkusíme OpenSky
   }
+
+  // 2. Fallback: OpenSky Network (bez registrace, 10s polling)
+  try {
+    const osky = region.osky
+    if (osky) {
+      const url = `https://opensky-network.org/api/states/all?lamin=${osky.lamin}&lamax=${osky.lamax}&lomin=${osky.lomin}&lomax=${osky.lomax}`
+      const res = await fetch(url, {
+        headers: { 'Accept': 'application/json' },
+        next: { revalidate: 10 },
+        signal: AbortSignal.timeout(6000),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        if (data.states?.length) {
+          const db = getAircraftDb()
+          const states = (data.states as unknown[][]).map((row: unknown[]) => {
+            const icao = String(row[0] ?? '').toLowerCase()
+            const entry = db[icao]
+            const extended = [...row, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
+            if (entry) {
+              extended[17] = entry.m
+              extended[18] = entry.t
+            }
+            return extended
+          })
+          return NextResponse.json({ time: data.time ?? Math.floor(Date.now() / 1000), states })
+        }
+      }
+    }
+  } catch {
+    // OpenSky také selhal — mock data
+  }
+
+  return NextResponse.json({ ...getMockData(), _mock: true })
 }
 
 // Demo letadla nad střední Evropou (fallback)

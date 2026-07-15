@@ -88,7 +88,7 @@ function parseState(state: unknown[]): Flight | null {
 export async function fetchFlights(region = 'europe'): Promise<{ flights: Flight[]; isMock: boolean }> {
   const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}`, {
     cache: 'no-store',
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(12000),
   })
 
   if (!res.ok) {
