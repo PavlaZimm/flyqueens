@@ -107,6 +107,10 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const airline  = getAirportFromCallsign(flight.callsign)
   const logoUrl  = getAirlineLogoUrl(flight.callsign)
 
+  const isLight    = theme === 'light'
+  const panelBg    = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(10, 15, 30, 0.94)'
+  const closeBg    = isLight ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.08)'
+
   return (
     <div
       className="glass-panel fq-detail-panel"
@@ -118,21 +122,22 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
         display: 'flex',
         flexDirection: 'column',
         maxHeight: 'calc(100dvh - 80px)',
-        background: 'rgba(10, 15, 30, 0.94)',
+        background: panelBg,
         backdropFilter: 'blur(20px)',
-        borderColor: 'rgba(255,255,255,0.10)',
+        borderColor: 'var(--glass-border)',
         overflow: 'hidden',
       }}
     >
-      {/* ✕ vždy viditelný — nesrolluje — desktop only */}
+      {/* ✕ vždy viditelný — nesrolluje — desktop only.
+          Vlastní třída (ne fq-close-btn) — ta se v Sidebaru na desktopu skrývá. */}
       <div
-        className="fq-close-btn"
+        className="fq-detail-close"
         style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 10px 0', flexShrink: 0 }}
       >
         <button
           onClick={onClose}
           style={{
-            background: 'rgba(255,255,255,0.08)',
+            background: closeBg,
             border: '1px solid var(--glass-border)',
             borderRadius: 6,
             color: 'var(--text-muted)',
