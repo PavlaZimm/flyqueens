@@ -328,6 +328,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
       if (onMapReady) {
         onMapReady((lat, lng) => {
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return
           map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 })
         })
       }
@@ -380,6 +381,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   useEffect(() => {
     if (!mapRef.current || !selectedFlight) return
     const { map } = mapRef.current
+    // Guard proti nevalidním souřadnicím — jinak Leaflet flyTo shodí celou mapu
+    if (!Number.isFinite(selectedFlight.lat) || !Number.isFinite(selectedFlight.lng)) return
     map.flyTo([selectedFlight.lat, selectedFlight.lng], Math.max(map.getZoom(), 7), {
       animate: true, duration: 0.8,
     })

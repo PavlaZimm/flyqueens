@@ -40,7 +40,8 @@ function parseState(state: unknown[]): Flight | null {
   const lat = arr[IDX_LAT] as number | null
   const lng = arr[IDX_LNG] as number | null
 
-  if (lat === null || lng === null) return null
+  // Odmítni chybějící i NaN souřadnice — jinak spadne Leaflet flyTo/marker
+  if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return null
 
   const icao24 = String(arr[IDX_ICAO24] ?? '')
   const callsign = String(arr[IDX_CALLSIGN] ?? '').trim() || icao24.toUpperCase()
