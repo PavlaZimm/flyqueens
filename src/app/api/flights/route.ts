@@ -103,8 +103,43 @@ export async function GET(req: NextRequest) {
 
   const db = getAircraftDb()
 
-  // 1. OpenSky Network — nejrychlejší a nejspolehlivější zdroj (bez registrace).
-  //    Pořadí: adsb.lol degradoval na 18s+, OpenSky odpovídá do ~1s.
+  // 1. airplanes.live — rychlý (0.1s), stejný formát jako adsb.lol.
+  //    OpenSky i adsb.lol blokují datacenter IP (Vercel) → tohle je primární zdroj.
+  try {
+    const radius = Math.min(region.dist, 250) // airplanes.live max 250 NM
+    const res = await fetch(
+      `https://api.airplanes.live/v2/point/${region.lat}/${region.lon}/${radius}`,
+      {
+        headers: { 'Accept': 'application/json' },
+        next: { revalidate: 10 },
+        signal: AbortSignal.timeout(6000),
+      }
+    )
+
+    console.log(`[FQ-DIAG] airplanes.live: HTTP=${res.status}`)
+    if (res.ok) {
+      const data = await res.json()
+      const aircraft: Record<string, unknown>[] = data.ac ?? []
+      console.log(`[FQ-DIAG] airplanes.live: ac=${aircraft.length}`)
+      if (aircraft.length > 0) {
+        const states = aircraft.map((ac) => {
+          const row = adsbToOpenSky(ac)
+          const icao = String(row[0])
+          const entry = db[icao]
+          if (entry) {
+            row[17] = entry.m
+            row[18] = entry.t
+          }
+          return row
+        })
+        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
+      }
+    }
+  } catch (e) {
+    console.log(`[FQ-DIAG] airplanes.live: výjimka — ${e instanceof Error ? e.name : String(e)}`)
+  }
+
+  // 2. OpenSky Network — fallback (funguje lokálně, na Vercelu blokovaný).
   try {
     const osky = region.osky
     if (osky) {
