@@ -1,7 +1,7 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-04-16 (session 4)
+> Poslední update: 2026-07-15 (session 5)
 
 ---
 
@@ -33,7 +33,10 @@
 
 ## 🔵 Fáze 2 — Mapa & UX
 
-- [ ] **Cluster markery** — seskupení letadel při oddálení → umožní globální pokrytí bez sekání
+- [x] **Viewport culling** (session 5) — markery se renderují jen ve výřezu (+25% okraj), přepočet na moveend/zoomend. z6 ~1480 → z9 ~240 markerů. Náhrada za clustering, bez nové závislosti.
+- [x] **Limit karet v sidebaru** (session 5) — max 60 karet řazených podle výšky + "+N dalších". Dřív se renderovalo 1600+ DOM karet.
+- [x] **OpenSky fallback** (session 5) — adsb.lol byl pomalý (8-15s) → stuck loading. Nyní adsb.lol 3.5s timeout → OpenSky → mock.
+- [ ] **Cluster markery** — číselné bubliny při velkém oddálení (globální pokrytí). Culling zatím stačí, clustering až pro celosvětový režim.
 - [ ] **Region selector** — přepínač Evropa / Amerika / Asie / Celý svět v TopBaru
 - [ ] **Počasí na mapě** — OpenWeatherMap tile overlay (oblačnost, déšť, vítr)
 - [ ] **Letové koridory** — statická vrstva hlavních tras nad Evropou
