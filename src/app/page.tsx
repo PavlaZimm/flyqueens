@@ -112,6 +112,7 @@ export default function Home() {
     selectedFlight?.lng      ?? 0,
     selectedFlight?.velocity ?? 0,
     selectedFlight?.heading  ?? 0,
+    selectedFlight?.callsign ?? '',
   )
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)

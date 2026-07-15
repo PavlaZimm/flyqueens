@@ -114,6 +114,7 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
     flight?.lng      ?? 0,
     flight?.velocity ?? 0,
     flight?.heading  ?? 0,
+    flight?.callsign ?? '',
   )
 
   if (!flight) return null

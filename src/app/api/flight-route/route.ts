@@ -112,6 +112,15 @@ interface RouteAirport {
   lng:  number | null
 }
 
+interface AdsbdbAirport {
+  icao_code?: string
+  iata_code?: string
+  name?: string
+  municipality?: string
+  latitude?: number
+  longitude?: number
+}
+
 interface OpenSkyTrack {
   icao24: string
   startTime: number
@@ -137,6 +146,7 @@ export async function GET(req: NextRequest) {
   const curLat = parseFloat(req.nextUrl.searchParams.get('lat') ?? 'NaN')
   const curLng = parseFloat(req.nextUrl.searchParams.get('lng') ?? 'NaN')
   const curHdg = parseFloat(req.nextUrl.searchParams.get('heading') ?? 'NaN')
+  const callsign = (req.nextUrl.searchParams.get('callsign') ?? '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
 
   const aeroKey  = process.env.AERODATABOX_API_KEY
   const aeroBase = process.env.AERODATABOX_BASE_URL
@@ -196,6 +206,54 @@ export async function GET(req: NextRequest) {
             arrDelayMin:    delayMin(a?.scheduledTime, a?.revisedTime ?? a?.predictedTime),
           }
           return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, schedule, source: 'aerodatabox' })
+        }
+      }
+    } catch {
+      // fallthrough na adsbdb
+    }
+  }
+
+  // ── adsbdb.com — zdarma, callsign → trasa (bez časů/zpoždění) ──
+  // Náhrada za AeroDataBox trasu, když předplatné není aktivní.
+  if (callsign.length >= 3) {
+    try {
+      const res = await fetch(`https://api.adsbdb.com/v0/callsign/${callsign}`, {
+        headers: { 'Accept': 'application/json' },
+        next: { revalidate: 120 },
+        signal: AbortSignal.timeout(6000),
+      })
+      if (res.ok) {
+        const data: {
+          response?: { flightroute?: {
+            airline?: { name?: string }
+            callsign_iata?: string
+            origin?: AdsbdbAirport
+            destination?: AdsbdbAirport
+          } }
+        } = await res.json()
+        const fr = data.response?.flightroute
+        const o = fr?.origin
+        const d = fr?.destination
+        if (o || d) {
+          const depAp: RouteAirport = {
+            icao: o?.icao_code ?? null, iata: o?.iata_code ?? null,
+            name: o?.name ?? null, city: o?.municipality ?? null,
+            lat: o?.latitude ?? null, lng: o?.longitude ?? null,
+          }
+          const arrAp: RouteAirport = {
+            icao: d?.icao_code ?? null, iata: d?.iata_code ?? null,
+            name: d?.name ?? null, city: d?.municipality ?? null,
+            lat: d?.latitude ?? null, lng: d?.longitude ?? null,
+          }
+          // adsbdb nemá časy/brány — jen číslo letu a aerolinku
+          const schedule: FlightSchedule = {
+            number: fr?.callsign_iata ?? null,
+            airline: fr?.airline?.name ?? null,
+            status: null,
+            depScheduled: null, depActual: null, depTerminal: null, depGate: null, depDelayMin: null,
+            arrScheduled: null, arrActual: null, arrTerminal: null, arrGate: null, arrBaggageBelt: null, arrDelayMin: null,
+          }
+          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, schedule, source: 'adsbdb' })
         }
       }
     } catch {

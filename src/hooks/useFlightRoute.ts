@@ -88,6 +88,7 @@ export function useFlightRoute(
   currentLng: number,
   velocityKmh: number,
   headingDeg: number = 0,
+  callsign: string = '',
 ) {
   const [route, setRoute] = useState<FlightRoute | null>(null)
   const [loading, setLoading] = useState(false)
@@ -104,6 +105,7 @@ export function useFlightRoute(
       lat:     String(currentLat),
       lng:     String(currentLng),
       heading: String(headingDeg),
+      callsign,
     })
 
     fetch(`/api/flight-route?${params}`, { signal: controller.signal })
