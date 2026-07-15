@@ -5,6 +5,8 @@ import { useTheme } from '@/hooks/useTheme'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import type { Flight } from '@/types/flight'
+import { getAirlineName } from '@/lib/airlineNames'
+import { getFlightPhase } from '@/lib/flightPhase'
 
 // Kapacity letadel (odhad průměru pasažérů)
 const CAPACITY: Record<string, number> = {
@@ -151,6 +153,26 @@ export default function StatsPage() {
   flights.forEach(f => { const t = f.aircraftType ?? 'narrow-body'; byType[t] = (byType[t] ?? 0) + 1 })
   const topTypes = Object.entries(byType).sort((a, b) => b[1] - a[1])
 
+  // Žebříček aerolinek (jen ve vzduchu, s rozpoznaným callsignem)
+  const byAirline: Record<string, number> = {}
+  airborne.forEach(f => {
+    const name = getAirlineName(f.callsign)
+    if (name && name.length > 1) byAirline[name] = (byAirline[name] ?? 0) + 1
+  })
+  const topAirlines = Object.entries(byAirline).sort((a, b) => b[1] - a[1]).slice(0, 6)
+
+  // Rozložení fází letu
+  const phaseCount: Record<string, number> = {}
+  airborne.forEach(f => { const p = getFlightPhase(f).label; phaseCount[p] = (phaseCount[p] ?? 0) + 1 })
+  const phaseEmoji: Record<string, string> = { 'Stoupá': '↗', 'Klesá': '↘', 'Cestovní': '✈️', 'Startuje': '🛫', 'Přistává': '🛬', 'Pojíždí': '🛞', 'Na zemi': '🛑' }
+  const phaseOrder = ['Startuje', 'Stoupá', 'Cestovní', 'Klesá', 'Přistává']
+  const phases = phaseOrder.filter(p => phaseCount[p]).map(p => ({ label: p, value: phaseCount[p], emoji: phaseEmoji[p] }))
+
+  // Nouzové squawky
+  const emergencyCount = airborne.filter(f =>
+    f.squawk === '7700' || f.squawk === '7500' || f.squawk === '7600' || f.emergency
+  ).length
+
   if (loading && count === 0) {
     return (
       <div style={{ minHeight: '100dvh', background: 'var(--midnight)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
@@ -259,7 +281,7 @@ export default function StatsPage() {
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14, marginBottom: 14 }}>
         <BarChart
           title="🌍 TOP STÁTY"
           color="var(--gold)"
@@ -277,8 +299,41 @@ export default function StatsPage() {
         />
       </div>
 
+      {/* Aerolinky + fáze letu */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+        {topAirlines.length > 0 && (
+          <BarChart
+            title="🏢 NEJVÍC LETADEL VE VZDUCHU"
+            color="var(--lavender)"
+            items={topAirlines.map(([label, value]) => ({ label, value, total: airborne.length }))}
+          />
+        )}
+        {phases.length > 0 && (
+          <BarChart
+            title="📊 FÁZE LETU"
+            color="var(--green-live)"
+            items={phases.map(p => ({ label: p.label, value: p.value, total: airborne.length, emoji: p.emoji }))}
+          />
+        )}
+      </div>
+
+      {/* Nouzový stav */}
+      {emergencyCount > 0 && (
+        <div className="glass-panel" style={{ padding: 16, marginTop: 14, border: '1px solid rgba(239,68,68,0.5)', background: 'rgba(239,68,68,0.08)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 22 }}>🚨</span>
+            <div>
+              <div className="font-display" style={{ fontSize: 15, fontWeight: 800, color: '#ef4444' }}>
+                {emergencyCount} {emergencyCount === 1 ? 'let hlásí' : 'lety hlásí'} nouzový stav
+              </div>
+              <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 2 }}>squawk 7700 / 7600 / 7500</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div style={{ textAlign: 'center', marginTop: 32, fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>
-        DATA SE OBNOVUJÍ KAŽDÝCH 10 SEKUND · ADSB.LOL + AERODATABOX
+        DATA SE OBNOVUJÍ KAŽDÝCH 10 SEKUND · AIRPLANES.LIVE
       </div>
     </div>
   )

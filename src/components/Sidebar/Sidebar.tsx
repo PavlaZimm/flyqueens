@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { Flight } from '@/types/flight'
@@ -23,11 +23,14 @@ const NAV_ITEMS = [
   { id: 'stats',    label: 'Statistiky',      icon: '📊',  href: '/stats' },
 ]
 
+type SortKey = 'altitude' | 'velocity'
+
 export function Sidebar({
   flights, selectedFlight, onFlightSelect, flightCount,
   theme, searchQuery, onSearchChange, onClose,
 }: SidebarProps) {
   const pathname = usePathname()
+  const [sortBy, setSortBy] = useState<SortKey>('altitude')
 
   const filteredFlights = useMemo(() => {
     const q = searchQuery.trim().toUpperCase()
@@ -38,12 +41,12 @@ export function Sidebar({
   }, [flights, searchQuery])
 
   // Výkon: nevykreslujeme 1600 DOM karet — jen prvních 60.
-  // Seřadíme podle výšky (letící nejvýš = nejzajímavější nahoře), search jede nad celým setem.
+  // Řazení podle zvoleného klíče, search jede nad celým setem.
   const MAX_LIST = 60
   const visibleFlights = useMemo(() => {
-    const sorted = [...filteredFlights].sort((a, b) => b.altitude - a.altitude)
+    const sorted = [...filteredFlights].sort((a, b) => b[sortBy] - a[sortBy])
     return sorted.slice(0, MAX_LIST)
-  }, [filteredFlights])
+  }, [filteredFlights, sortBy])
   const hiddenCount = filteredFlights.length - visibleFlights.length
 
   return (
@@ -165,6 +168,28 @@ export function Sidebar({
             {filteredFlights.length}
           </span>
         </div>
+
+        {/* Řazení */}
+        <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+          {([['altitude', 'Výška'], ['velocity', 'Rychlost']] as const).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setSortBy(key)}
+              style={{
+                flex: 1, padding: '4px 6px', borderRadius: 6, cursor: 'pointer',
+                fontFamily: 'Space Grotesk, sans-serif', fontSize: 9, letterSpacing: 0.5,
+                background: sortBy === key ? 'rgba(253,224,71,0.12)' : 'var(--glass-bg)',
+                border: `1px solid ${sortBy === key ? 'rgba(253,224,71,0.35)' : 'var(--border-subtle)'}`,
+                color: sortBy === key ? 'var(--gold)' : 'var(--text-muted)',
+                fontWeight: sortBy === key ? 700 : 400,
+                transition: 'all 0.15s',
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {filteredFlights.length === 0 ? (
             <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '20px 0' }}>
