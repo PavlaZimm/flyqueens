@@ -1,7 +1,26 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-07-15 (session 5)
+> Poslední update: 2026-07-15 (session 6)
+
+---
+
+## ✅ Session 6 (2026-07-15) — živá data na produkci + free featury
+
+- [x] **airplanes.live jako primární zdroj** — OpenSky i adsb.lol blokují Vercel datacenter IP (timeout). airplanes.live jede z Vercelu (0.2s). Doména konečně ukazuje reálná letadla.
+- [x] **OpenSky OAuth2** klient (fallback, funguje jen lokálně) — env OPENSKY_CLIENT_ID/SECRET
+- [x] **Trasy DEP→ARR přes adsbdb.com** (zdarma) — AeroDataBox předplatné vypršelo. Číslo letu + aerolinka.
+- [x] **Letový řád v detailu** — časy/zpoždění/brána (kód hotový, čeká na reaktivaci AeroDataBox)
+- [x] **Fáze letu** — startuje/stoupá/cruising/klesá/přistává (detail + sidebar)
+- [x] **Odznak zajímavých letadel** — A380, jumbo, širokotrupé, vojenské, vrtulník, cargo
+- [x] **Fullscreen mód** — tlačítko + klávesa F
+- [x] **Rozšířené statistiky** — žebříček aerolinek, rozložení fází, nouzové squawky
+- [x] **Řazení sidebaru** — Výška / Rychlost
+- [x] **Oprava pádu mapy** — NaN souřadnice i NaN zoom (deep-link ?flight=)
+
+### ⏳ Blokováno na AeroDataBox předplatném (placené)
+- [ ] Časy/zpoždění/brány v detailu (kód hotový, naskočí po reaktivaci)
+- [ ] Odletová/příletová tabule na letišti
 
 ---
 
