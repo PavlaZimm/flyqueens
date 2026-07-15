@@ -5,6 +5,8 @@ import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getAirportFromCallsign } from '@/lib/airports'
 import { getAirlineLogoUrl } from '@/lib/airlineLogos'
+import { getFlightPhase } from '@/lib/flightPhase'
+import { getAircraftBadge } from '@/lib/aircraftBadge'
 import { useFlightRoute } from '@/hooks/useFlightRoute'
 
 interface DetailPanelProps {
@@ -124,6 +126,8 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
   const label = getAircraftLabel(flight.aircraftType)
   const flag  = getFlagEmoji(flight.origin_country)
   const fl    = getFlightLevel(flight.altitude)
+  const phase = getFlightPhase(flight)
+  const badge = getAircraftBadge(flight)
 
   const airline  = getAirportFromCallsign(flight.callsign)
   const logoUrl  = getAirlineLogoUrl(flight.callsign)
@@ -224,8 +228,21 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
 
       {/* Callsign + registrace */}
       <div>
-        <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
-          {flight.callsign}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+          <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
+            {flight.callsign}
+          </div>
+          {/* Fáze letu */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0,
+            padding: '3px 8px', borderRadius: 20,
+            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+          }}>
+            <span style={{ fontSize: 11, lineHeight: 1 }}>{phase.icon}</span>
+            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase', color: phase.color }}>
+              {phase.label}
+            </span>
+          </div>
         </div>
         <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           <span>{flag} {flight.origin_country ?? 'Neznámá země'}</span>
@@ -236,12 +253,28 @@ export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
       </div>
 
       {/* Typ + model */}
-      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
         {label}
         {flight.model && (
           <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.7 }}>· {flight.model}</span>
         )}
       </div>
+
+      {/* Odznak zajímavého letadla */}
+      {badge && (
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '4px 10px', borderRadius: 20,
+            background: 'linear-gradient(90deg, rgba(253,224,71,0.14), rgba(192,132,252,0.14))',
+            border: '1px solid rgba(253,224,71,0.35)',
+            fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
+          }}>
+            <span style={{ fontSize: 12 }}>{badge.icon}</span>
+            {badge.label}
+          </span>
+        </div>
+      )}
 
       {/* Vibe */}
       <div style={{

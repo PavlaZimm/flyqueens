@@ -140,9 +140,18 @@ export default function Home() {
     if (match) setSelectedFlight(match)
   }, [flights])
 
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {})
+    } else {
+      document.documentElement.requestFullscreen().catch(() => {})
+    }
+  }
+
   useKeyboardShortcuts({
     onEscape: () => setSelectedFlight(null),
     onSlash: () => document.querySelector<HTMLInputElement>('input[type="text"]')?.focus(),
+    onFullscreen: toggleFullscreen,
   })
 
   const handleLocateMe = () => {
@@ -302,6 +311,26 @@ export default function Home() {
           title="Najít mou polohu"
         >
           📍
+        </button>
+
+        {/* Fullscreen button — nad GPS */}
+        <button
+          onClick={toggleFullscreen}
+          className="fq-fullscreen-btn"
+          style={{
+            position: 'absolute',
+            bottom: `calc(${isMock ? 132 : 96}px + env(safe-area-inset-bottom, 0px))`,
+            right: 12, zIndex: 1000,
+            width: 36, height: 36, borderRadius: 8,
+            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+            backdropFilter: 'blur(8px)', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 15,
+          }}
+          aria-label="Celá obrazovka (F)"
+          title="Celá obrazovka (F)"
+        >
+          ⛶
         </button>
 
         {/* StatusBar */}

@@ -3,6 +3,7 @@
 import type { Flight } from '@/types/flight'
 import { getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getAirlineLogoUrl } from '@/lib/airlineLogos'
+import { getFlightPhase } from '@/lib/flightPhase'
 
 interface FlightCardProps {
   flight: Flight
@@ -33,20 +34,8 @@ function headingLabel(heading: number): string {
   return dirs[Math.round(heading / 45) % 8]
 }
 
-function getStatusColor(flight: Flight): string {
-  if (flight.onGround) return 'var(--text-muted)'
-  if (flight.velocity < 200) return 'var(--amber-delay)'
-  return 'var(--green-live)'
-}
-
-function getStatusLabel(flight: Flight): string {
-  if (flight.onGround) return 'Na zemi'
-  if (flight.velocity < 200) return 'Manévruje'
-  return 'Letí'
-}
-
 export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps) {
-  const statusColor = getStatusColor(flight)
+  const phase    = getFlightPhase(flight)
   const acColor  = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
   const logoUrl  = getAirlineLogoUrl(flight.callsign)
 
@@ -82,18 +71,10 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
             {flight.callsign}
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <div
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: statusColor,
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>
-            {getStatusLabel(flight)}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <span style={{ fontSize: 10, lineHeight: 1 }}>{phase.icon}</span>
+          <span style={{ fontSize: 9, color: phase.color, letterSpacing: 0.5, fontWeight: 600 }}>
+            {phase.label}
           </span>
         </div>
       </div>
