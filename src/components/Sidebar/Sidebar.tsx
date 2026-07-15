@@ -37,6 +37,15 @@ export function Sidebar({
     )
   }, [flights, searchQuery])
 
+  // Výkon: nevykreslujeme 1600 DOM karet — jen prvních 60.
+  // Seřadíme podle výšky (letící nejvýš = nejzajímavější nahoře), search jede nad celým setem.
+  const MAX_LIST = 60
+  const visibleFlights = useMemo(() => {
+    const sorted = [...filteredFlights].sort((a, b) => b.altitude - a.altitude)
+    return sorted.slice(0, MAX_LIST)
+  }, [filteredFlights])
+  const hiddenCount = filteredFlights.length - visibleFlights.length
+
   return (
     <div style={{
       width: '100%',
@@ -162,7 +171,7 @@ export function Sidebar({
               {searchQuery ? `Žádný let odpovídá „${searchQuery}"` : 'Načítám lety...'}
             </div>
           ) : (
-            filteredFlights.map((flight) => (
+            visibleFlights.map((flight) => (
               <FlightCard
                 key={flight.icao24}
                 flight={flight}
@@ -171,6 +180,11 @@ export function Sidebar({
                 theme={theme}
               />
             ))
+          )}
+          {hiddenCount > 0 && (
+            <div style={{ fontSize: 10, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0 4px', letterSpacing: 0.3 }}>
+              +{hiddenCount} dalších letů — zpřesni hledáním 🔍
+            </div>
           )}
         </div>
       </div>

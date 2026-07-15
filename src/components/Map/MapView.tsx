@@ -76,6 +76,10 @@ interface MapViewProps {
 const flightHistory = new Map<string, Array<{ lat: number; lng: number }>>()
 const MAX_HISTORY = 12
 
+// Viewport culling — vykresluj jen letadla v aktuálním výřezu (+ okraj)
+// Zásadní pro výkon: přes Evropu je 1600+ letadel, ale ve výřezu obvykle jen zlomek
+const CULL_PADDING = 0.25   // 25 % okraj kolem viewportu (plynulý pan)
+
 // Generuje body velkého oblouku (great circle arc) mezi dvěma body
 function greatCirclePoints(
   lat1: number, lng1: number,
@@ -119,11 +123,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const trailsRef       = useRef<Map<string, Polyline>>(new Map())
   const routeArcRef     = useRef<Polyline | null>(null)
   const showAirportsRef = useRef(showAirports)
+  // Viewport culling — predikát viditelnosti (search+filter) sdílený s moveend handlerem
+  const visiblePredRef  = useRef<(f: Flight) => boolean>(() => true)
+  const flightsRef      = useRef<Flight[]>([])
+  const selectedIdRef   = useRef<string | null>(null)
 
   // Registruj window.__playAtc — volá se z Leaflet popup tlačítek
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(window as any).__playAtc = playAtcStream
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return () => { delete (window as any).__playAtc }
   }, [])
 
@@ -157,6 +166,28 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
       const airportLayer = L.layerGroup()
       mapRef.current = { map, darkTiles, lightTiles, airportLayer, L }
+
+      // Viewport culling — přidá/odebere markery podle výřezu při posunu/zoomu.
+      // Registrováno zde (ne v samostatném efektu), protože mapa vzniká async.
+      const applyCulling = () => {
+        const bounds = map.getBounds().pad(CULL_PADDING)
+        const pred = visiblePredRef.current
+        const selId = selectedIdRef.current
+        flightsRef.current.forEach((flight) => {
+          const marker = markersRef.current.get(flight.icao24)
+          if (!marker) return
+          const isSelected = flight.icao24 === selId
+          const onScreen = isSelected || bounds.contains([flight.lat, flight.lng] as [number, number])
+          const isVisible = pred(flight) && onScreen
+          if (isVisible) {
+            if (!map.hasLayer(marker)) marker.addTo(map)
+          } else if (map.hasLayer(marker)) {
+            map.removeLayer(marker)
+          }
+        })
+      }
+      map.on('moveend', applyCulling)
+      map.on('zoomend', applyCulling)
 
       // Přidej airport markery do airportLayer (data jsou bundlovaná, žádný fetch)
       airports.forEach((a: Airport) => {
@@ -423,11 +454,23 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const { map, L } = mapRef.current
     const q = (searchQuery ?? '').trim().toUpperCase()
 
-    flights.forEach((flight) => {
+    // Predikát search+filter — sdílený s moveend cullingem
+    const matchesQuery = (flight: Flight) => {
       const passesSearch = !q || flight.callsign.includes(q) || flight.icao24.toUpperCase().includes(q)
-      const passesFilter = matchesFilter(flight, activeFilters)
-      const isVisible    = passesSearch && passesFilter
+      return passesSearch && matchesFilter(flight, activeFilters)
+    }
+    visiblePredRef.current = matchesQuery
+    flightsRef.current     = flights
+    selectedIdRef.current  = selectedFlight?.icao24 ?? null
+
+    // Aktuální výřez + okraj — letadla mimo se nevykreslují
+    const bounds = map.getBounds().pad(CULL_PADDING)
+
+    flights.forEach((flight) => {
       const isSelected   = selectedFlight?.icao24 === flight.icao24
+      // Viditelné = projde search/filter A je ve výřezu (vybraný let vždy)
+      const isVisible    = matchesQuery(flight) &&
+        (isSelected || bounds.contains([flight.lat, flight.lng] as [number, number]))
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 34 : 22
 
