@@ -20,8 +20,9 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       // CARTO tiles + Leaflet blob markers + planespotters fotky
       "img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
-      // API calls — adsb.lol, planespotters, aviationweather, LiveATC proxy přes self
-      "connect-src 'self' https://api.adsb.lol https://api.planespotters.net https://aviationweather.gov https://*.liveatc.net http://*.liveatc.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
+      // API calls z klienta jdou přes /api/* (self); externě jen planespotters (fotky) + analytics.
+      // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
+      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
       // Audio proxy běží přes /api/atc-stream (self)
       "media-src 'self'",
       // Leaflet web workers
@@ -39,6 +40,11 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ]
+  },
+  // aircraft-db.json je mimo public/ (aby nebyla veřejně stažitelná 15 MB) —
+  // Vercel ji musí přibalit do serverless funkce /api/flights.
+  outputFileTracingIncludes: {
+    '/api/flights': ['./data/aircraft-db.json'],
   },
   experimental: { optimizeCss: true },
 }

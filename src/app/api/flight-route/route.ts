@@ -1,50 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/rateLimit'
-import { airports } from '@/lib/airportData'
 
 export const revalidate = 120  // cache 2 minuty
-
-// Haversine vzdálenost v km
-function distKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371
-  const dL = (lat2 - lat1) * Math.PI / 180
-  const dG = (lng2 - lng1) * Math.PI / 180
-  const a = Math.sin(dL/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dG/2)**2
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-}
-
-// Nejbližší letiště k dané pozici (v okruhu maxDist km)
-function nearestAirport(lat: number, lng: number, maxDist = 80) {
-  let best: typeof airports[0] | null = null
-  let bestD = Infinity
-  for (const ap of airports) {
-    const d = distKm(lat, lng, ap.lat, ap.lng)
-    if (d < bestD) { bestD = d; best = ap }
-  }
-  return bestD <= maxDist ? best : null
-}
-
-// Projekce pozice dopředu po ortodromě (přibližná)
-function projectPosition(lat: number, lng: number, headingDeg: number, distKmVal: number) {
-  const R = 6371
-  const d = distKmVal / R
-  const h = headingDeg * Math.PI / 180
-  const lat1 = lat * Math.PI / 180
-  const lng1 = lng * Math.PI / 180
-  const lat2 = Math.asin(Math.sin(lat1)*Math.cos(d) + Math.cos(lat1)*Math.sin(d)*Math.cos(h))
-  const lng2 = lng1 + Math.atan2(Math.sin(h)*Math.sin(d)*Math.cos(lat1), Math.cos(d)-Math.sin(lat1)*Math.sin(lat2))
-  return { lat: lat2 * 180/Math.PI, lng: lng2 * 180/Math.PI }
-}
-
-// Odhad příletu z aktuální pozice + kurzu (fallback)
-function estimateArrival(lat: number, lng: number, headingDeg: number) {
-  for (const tryDist of [300, 600, 900, 1500, 2500]) {
-    const proj = projectPosition(lat, lng, headingDeg, tryDist)
-    const ap = nearestAirport(proj.lat, proj.lng, 120)
-    if (ap) return ap
-  }
-  return null
-}
 
 interface AeroDataBoxAirport {
   icao?: string
@@ -121,14 +78,6 @@ interface AdsbdbAirport {
   longitude?: number
 }
 
-interface OpenSkyTrack {
-  icao24: string
-  startTime: number
-  endTime: number
-  callsign: string | null
-  path: [number, number, number, number, number | null, boolean][]
-}
-
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
@@ -143,9 +92,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid icao24' }, { status: 400 })
   }
 
-  const curLat = parseFloat(req.nextUrl.searchParams.get('lat') ?? 'NaN')
-  const curLng = parseFloat(req.nextUrl.searchParams.get('lng') ?? 'NaN')
-  const curHdg = parseFloat(req.nextUrl.searchParams.get('heading') ?? 'NaN')
   const callsign = (req.nextUrl.searchParams.get('callsign') ?? '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
 
   const aeroKey  = process.env.AERODATABOX_API_KEY
@@ -257,71 +203,10 @@ export async function GET(req: NextRequest) {
         }
       }
     } catch {
-      // fallthrough na OpenSky
+      // adsbdb selhal — vrátíme prázdno
     }
   }
 
-  // ── Fallback: OpenSky tracks/all — odhad z GPS stopy ──
-  const user = process.env.OPENSKY_USERNAME
-  const pass = process.env.OPENSKY_PASSWORD
-  if (!user || !pass) {
-    return NextResponse.json({ route: null })
-  }
-
-  const auth = Buffer.from(`${user}:${pass}`).toString('base64')
-  const now  = Math.floor(Date.now() / 1000)
-
-  try {
-    const tracksUrl = `https://opensky-network.org/api/tracks/all?icao24=${icao24}&time=${now}`
-    const res = await fetch(tracksUrl, {
-      headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' },
-      signal: AbortSignal.timeout(8000),
-    })
-
-    if (!res.ok) return NextResponse.json({ route: null })
-
-    const track: OpenSkyTrack = await res.json()
-    if (!track?.path?.length) return NextResponse.json({ route: null })
-
-    // Odlet: první bod na zemi nebo pod 200m
-    let depAirport: typeof airports[0] | null = null
-    for (const point of track.path) {
-      const [, lat, lng, alt, , onGround] = point
-      if (lat == null || lng == null) continue
-      if (onGround || alt < 200) {
-        depAirport = nearestAirport(lat, lng, 60)
-        if (depAirport) break
-      }
-    }
-    if (!depAirport && track.path[0]) {
-      const [, lat, lng] = track.path[0]
-      if (lat != null && lng != null) depAirport = nearestAirport(lat, lng, 150)
-    }
-
-    // Přilet: odhad z aktuální pozice + kurzu
-    let arrAirport: typeof airports[0] | null = null
-    if (!isNaN(curLat) && !isNaN(curLng) && !isNaN(curHdg)) {
-      arrAirport = estimateArrival(curLat, curLng, curHdg)
-    }
-    if (!arrAirport && track.path.length > 0) {
-      const last = track.path[track.path.length - 1]
-      const [, lat, lng, , hdg] = last
-      if (lat != null && lng != null && hdg != null) {
-        arrAirport = estimateArrival(lat, lng, hdg)
-      }
-    }
-
-    if (arrAirport?.icao === depAirport?.icao) arrAirport = null
-
-    return NextResponse.json({
-      route: {
-        departure: depAirport?.icao ?? null,
-        arrival:   arrAirport?.icao ?? null,
-      },
-      source: 'opensky-estimate',
-    })
-
-  } catch {
-    return NextResponse.json({ route: null })
-  }
+  // Žádný zdroj nevrátil trasu
+  return NextResponse.json({ route: null })
 }

@@ -14,12 +14,11 @@ const REGION_LABELS: Record<string, string> = {
 
 interface StatusBarProps {
   flightCount: number
-  visibleCount: number
   isMock?: boolean
   region?: string
 }
 
-export function StatusBar({ flightCount, visibleCount, isMock, region = 'europe' }: StatusBarProps) {
+export function StatusBar({ flightCount, isMock, region = 'europe' }: StatusBarProps) {
   const [time, setTime] = useState('')
   const [tick, setTick] = useState(true)
 

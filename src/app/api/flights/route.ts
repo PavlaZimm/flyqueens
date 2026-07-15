@@ -12,7 +12,8 @@ let aircraftDb: Record<string, { m: string; t: string }> | null = null
 function getAircraftDb() {
   if (!aircraftDb) {
     try {
-      const raw = readFileSync(join(process.cwd(), 'public/aircraft-db.json'), 'utf-8')
+      // Mimo public/ — není veřejně stažitelná. Do serverless bundle přes outputFileTracingIncludes.
+      const raw = readFileSync(join(process.cwd(), 'data/aircraft-db.json'), 'utf-8')
       aircraftDb = JSON.parse(raw)
     } catch {
       aircraftDb = {}

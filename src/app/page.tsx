@@ -137,6 +137,7 @@ export default function Home() {
     const flightParam = params.get('flight')
     if (!flightParam) return
     const match = flights.find(f => f.callsign.trim().toUpperCase() === flightParam.toUpperCase())
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (match) setSelectedFlight(match)
   }, [flights])
 
@@ -334,7 +335,7 @@ export default function Home() {
         </button>
 
         {/* StatusBar */}
-        <StatusBar flightCount={count} visibleCount={count} isMock={isMock} region={region} />
+        <StatusBar flightCount={count} isMock={isMock} region={region} />
       </div>
 
       {/* Emergency radar banner */}

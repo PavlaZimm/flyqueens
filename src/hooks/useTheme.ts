@@ -24,10 +24,13 @@ export function useTheme(): UseThemeResult {
   // Vždy začínáme 'dark' — stejné na serveru i klientu, žádný hydration mismatch
   const [theme, setTheme] = useState<Theme>('dark')
 
-  // Po mount načteme localStorage a aplikujeme uložené téma
+  // Po mount načteme localStorage a aplikujeme uložené téma.
+  // setState v efektu je zde záměr — synchronizace s externím systémem (localStorage),
+  // SSR-safe (server i první render = 'dark', žádný hydration mismatch).
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'light') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme('light')
       applyTheme('light')
     }

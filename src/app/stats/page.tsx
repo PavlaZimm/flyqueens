@@ -4,7 +4,6 @@ import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import type { Flight } from '@/types/flight'
 import { getAirlineName } from '@/lib/airlineNames'
 import { getFlightPhase } from '@/lib/flightPhase'
 

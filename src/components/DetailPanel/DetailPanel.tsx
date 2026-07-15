@@ -26,9 +26,12 @@ function useAircraftPhoto(icao24: string | null) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    // Reset stavu při změně letadla — synchronizace s externím fetchem (planespotters).
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (!icao24) { setPhoto(null); return }
     setLoading(true)
     setPhoto(null)
+    /* eslint-enable react-hooks/set-state-in-effect */
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 8000)
 
