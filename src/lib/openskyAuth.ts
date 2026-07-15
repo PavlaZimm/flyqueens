@@ -22,7 +22,10 @@ export async function getOpenSkyToken(): Promise<string | null> {
   const clientSecret = process.env.OPENSKY_CLIENT_SECRET
 
   // Bez credentials → anonymní přístup
-  if (!clientId || !clientSecret) return null
+  if (!clientId || !clientSecret) {
+    console.log(`[FQ-DIAG] token: chybí creds (id=${!!clientId}, secret=${!!clientSecret})`)
+    return null
+  }
 
   // Platný token v cache?
   const now = Date.now()
@@ -43,20 +46,26 @@ export async function getOpenSkyToken(): Promise<string | null> {
     })
 
     if (!res.ok) {
-      console.warn(`[FlyQueens] OpenSky token error: ${res.status}`)
+      const txt = await res.text().catch(() => '')
+      console.log(`[FQ-DIAG] token: HTTP ${res.status} — ${txt.slice(0, 120)}`)
       return null
     }
 
     const data = (await res.json()) as { access_token?: string; expires_in?: number }
-    if (!data.access_token) return null
+    if (!data.access_token) {
+      console.log('[FQ-DIAG] token: OK ale bez access_token')
+      return null
+    }
+    console.log('[FQ-DIAG] token: ✓ získán')
 
     cachedToken = data.access_token
     // expires_in je v sekundách (typicky 1800 = 30 min); obnov 30 s dřív
     const ttlMs = ((data.expires_in ?? 1800) - 30) * 1000
     tokenExpiresAt = now + ttlMs
     return cachedToken
-  } catch {
+  } catch (e) {
     // Timeout / síťová chyba → anonymní přístup
+    console.log(`[FQ-DIAG] token: výjimka — ${e instanceof Error ? e.name + ': ' + e.message : String(e)}`)
     return null
   }
 }

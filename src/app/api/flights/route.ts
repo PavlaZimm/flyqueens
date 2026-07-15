@@ -120,8 +120,10 @@ export async function GET(req: NextRequest) {
         signal: AbortSignal.timeout(6000),
       })
 
+      console.log(`[FQ-DIAG] OpenSky: token=${!!token} HTTP=${res.status}`)
       if (res.ok) {
         const data = await res.json()
+        console.log(`[FQ-DIAG] OpenSky: states=${data.states?.length ?? 0}`)
         if (data.states?.length) {
           const states = (data.states as unknown[][]).map((row: unknown[]) => {
             const icao = String(row[0] ?? '').toLowerCase()
@@ -137,8 +139,9 @@ export async function GET(req: NextRequest) {
         }
       }
     }
-  } catch {
+  } catch (e) {
     // OpenSky selhal (rate-limit / timeout) — zkusíme adsb.lol
+    console.log(`[FQ-DIAG] OpenSky: výjimka — ${e instanceof Error ? e.name : String(e)}`)
   }
 
   // 2. Fallback: adsb.lol (bohatší data — mach, OAT, squawk, ale pomalejší)
