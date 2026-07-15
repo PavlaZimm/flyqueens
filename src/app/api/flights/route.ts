@@ -100,41 +100,10 @@ export async function GET(req: NextRequest) {
   const regionKey = req.nextUrl.searchParams.get('region') ?? 'europe'
   const region = REGIONS[regionKey] ?? REGIONS.europe
 
-  // 1. Zkus adsb.lol (bohatší data — mach, OAT, squawk)
-  try {
-    const res = await fetch(
-      `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
-      {
-        headers: { 'Accept': 'application/json' },
-        next: { revalidate: 10 },
-        signal: AbortSignal.timeout(3500),
-      }
-    )
+  const db = getAircraftDb()
 
-    if (res.ok) {
-      const data = await res.json()
-      const aircraft: Record<string, unknown>[] = data.ac ?? []
-
-      if (aircraft.length > 0) {
-        const db = getAircraftDb()
-        const states = aircraft.map((ac) => {
-          const row = adsbToOpenSky(ac)
-          const icao = String(row[0])
-          const entry = db[icao]
-          if (entry) {
-            row[17] = entry.m
-            row[18] = entry.t
-          }
-          return row
-        })
-        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
-      }
-    }
-  } catch {
-    // adsb.lol timeout nebo chyba — zkusíme OpenSky
-  }
-
-  // 2. Fallback: OpenSky Network (bez registrace, 10s polling)
+  // 1. OpenSky Network — nejrychlejší a nejspolehlivější zdroj (bez registrace).
+  //    Pořadí: adsb.lol degradoval na 18s+, OpenSky odpovídá do ~1s.
   try {
     const osky = region.osky
     if (osky) {
@@ -148,7 +117,6 @@ export async function GET(req: NextRequest) {
       if (res.ok) {
         const data = await res.json()
         if (data.states?.length) {
-          const db = getAircraftDb()
           const states = (data.states as unknown[][]).map((row: unknown[]) => {
             const icao = String(row[0] ?? '').toLowerCase()
             const entry = db[icao]
@@ -164,10 +132,47 @@ export async function GET(req: NextRequest) {
       }
     }
   } catch {
-    // OpenSky také selhal — mock data
+    // OpenSky selhal (rate-limit / timeout) — zkusíme adsb.lol
   }
 
-  return NextResponse.json({ ...getMockData(), _mock: true })
+  // 2. Fallback: adsb.lol (bohatší data — mach, OAT, squawk, ale pomalejší)
+  try {
+    const res = await fetch(
+      `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
+      {
+        headers: { 'Accept': 'application/json' },
+        next: { revalidate: 10 },
+        signal: AbortSignal.timeout(8000),
+      }
+    )
+
+    if (res.ok) {
+      const data = await res.json()
+      const aircraft: Record<string, unknown>[] = data.ac ?? []
+
+      if (aircraft.length > 0) {
+        const states = aircraft.map((ac) => {
+          const row = adsbToOpenSky(ac)
+          const icao = String(row[0])
+          const entry = db[icao]
+          if (entry) {
+            row[17] = entry.m
+            row[18] = entry.t
+          }
+          return row
+        })
+        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
+      }
+    }
+  } catch {
+    // adsb.lol také selhal — mock data
+  }
+
+  // Oba zdroje selhaly — mock. NECACHOVAT, ať se reálná data můžou objevit hned.
+  return NextResponse.json(
+    { ...getMockData(), _mock: true },
+    { headers: { 'Cache-Control': 'no-store' } }
+  )
 }
 
 // Demo letadla nad střední Evropou (fallback)
