@@ -19,8 +19,9 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'map',      label: 'Živá mapa',      icon: '🗺',  href: '/' },
-  { id: 'stats',    label: 'Statistiky',      icon: '📊',  href: '/stats' },
+  { id: 'map',      label: 'Živá mapa',   icon: '🗺',  href: '/' },
+  { id: 'stats',    label: 'Statistiky',  icon: '📊',  href: '/stats' },
+  { id: 'letiste',  label: 'Letiště',     icon: '🛫',  href: '/letiste' },
 ]
 
 type SortKey = 'altitude' | 'velocity'
