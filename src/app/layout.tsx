@@ -1,24 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["700", "800"],
-  variable: "--font-syne",
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
+// Fonty jsou self-hostované přes @font-face v globals.css (žádný next/font,
+// žádný render-blocking požadavek na Google Fonts).
 
 export const metadata: Metadata = {
   title: "FlyQueens · Track Every Flight",
@@ -72,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="cs"
-      className={`${syne.variable} ${spaceGrotesk.variable} h-full`}
+      className="h-full"
     >
       <body className="min-h-full flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }} suppressHydrationWarning>
         {children}
