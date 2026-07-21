@@ -36,7 +36,7 @@ const S = {
 export default function ZiveArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>
-      {/* eslint-disable-next-line react/no-danger */}
+      { }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>

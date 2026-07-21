@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně (2026)',
@@ -59,7 +60,7 @@ const S = {
 export default function ParkovaniPrahaPage() {
   return (
     <main style={S.page}>
-      {/* eslint-disable-next-line react/no-danger */}
+      { }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <div style={S.wrap}>
@@ -171,6 +172,7 @@ export default function ParkovaniPrahaPage() {
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 24 }}>
           Aktualizováno v červenci 2026. Ceny jsou orientační, aktuální částku vždy ověřte u provozovatele.
         </p>
+        <ParkingCrossLinks current="praha" />
       </div>
     </main>
   )

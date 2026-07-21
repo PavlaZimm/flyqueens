@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
+import { CookieConsent } from "@/components/UI/CookieConsent";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 
@@ -63,16 +63,16 @@ export default function RootLayout({
       className="h-full"
     >
       <body className="min-h-full flex flex-col" style={{ fontFamily: "'Space Grotesk', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }} suppressHydrationWarning>
+        {/* Preload fontů — text se vykreslí bez čekání na objevení @font-face v CSS */}
+        <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/space-grotesk-latin-ext.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/syne-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/syne-latin-ext.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {children}
         <Analytics />
         <SpeedInsights />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-SMFS92YP8L" strategy="afterInteractive" />
-        <Script id="gtag-init" strategy="afterInteractive">{`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-SMFS92YP8L');
-        `}</Script>
+        {/* GA se načítá uvnitř CookieConsent až po souhlasu (GDPR) */}
+        <CookieConsent />
       </body>
     </html>
   );

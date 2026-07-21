@@ -13,6 +13,7 @@ import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS } from '@/lib/constants'
 import { StatusBar } from '@/components/UI/StatusBar'
+import { HomeSeoSection } from '@/components/UI/HomeSeoSection'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
 import { EmergencyBanner } from '@/components/UI/EmergencyBanner'
@@ -166,7 +167,8 @@ export default function Home() {
   const handleDetailClose = () => setSelectedFlight(null)
 
   return (
-    <div style={{ display: 'flex', height: '100dvh', width: '100vw', overflow: 'hidden', background: 'var(--midnight)' }}>
+    <>
+    <div style={{ display: 'flex', height: '100dvh', width: '100%', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
       <div className={`fq-sidebar${sidebarOpen ? ' fq-sidebar-open' : ''}`} style={{ width: 220 }}>
@@ -418,5 +420,9 @@ export default function Home() {
         }
       `}</style>
     </div>
+
+    {/* Indexovatelný obsah pod mapou — SEO + interní odkazy */}
+    <HomeSeoSection />
+    </>
   )
 }

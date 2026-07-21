@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Brno-Tuřany: ceny a kde zaparkovat levně',
@@ -45,7 +46,7 @@ const S = {
 export default function ParkovaniBrnoPage() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>
-      {/* eslint-disable-next-line react/no-danger */}
+      { }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
@@ -119,6 +120,7 @@ export default function ParkovaniBrnoPage() {
             Otevřít živou mapu
           </Link>
         </div>
+        <ParkingCrossLinks current="brno" />
       </div>
     </main>
   )
