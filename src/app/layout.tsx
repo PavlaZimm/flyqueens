@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   metadataBase: new URL("https://www.flyqueens.cz"),
+  // Canonical pro homepage — podstránky si nastavují vlastní přes alternates
+  alternates: { canonical: "https://www.flyqueens.cz" },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
