@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 // Česká letiště s obsahem. hasPage = má vlastní stránku, jinak se připravuje.
 const AIRPORTS = [
   { slug: 'praha', name: 'Letiště Václava Havla', city: 'Praha', iata: 'PRG', hasPage: true },
-  { slug: 'brno', name: 'Letiště Brno-Tuřany', city: 'Brno', iata: 'BRQ', hasPage: false },
-  { slug: 'ostrava', name: 'Letiště Leoše Janáčka', city: 'Ostrava', iata: 'OSR', hasPage: false },
+  { slug: 'brno', name: 'Letiště Brno-Tuřany', city: 'Brno', iata: 'BRQ', hasPage: true },
+  { slug: 'ostrava', name: 'Letiště Leoše Janáčka', city: 'Ostrava', iata: 'OSR', hasPage: true },
   { slug: 'karlovy-vary', name: 'Letiště Karlovy Vary', city: 'Karlovy Vary', iata: 'KLV', hasPage: false },
   { slug: 'pardubice', name: 'Letiště Pardubice', city: 'Pardubice', iata: 'PED', hasPage: false },
 ]
