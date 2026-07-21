@@ -11,6 +11,14 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'letiste-praha-zive',
+    title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
+    excerpt: 'Chcete vidět, co právě přistává v Praze? Webkamery ukážou kus plochy, živá mapa ukáže každé letadlo ve vzduchu. Jak to funguje a co všechno se dá vyčíst.',
+    date: '2026-07-19',
+    dateLabel: '19. července 2026',
+    tag: 'Návod',
+  },
+  {
     slug: 'squawk-nouzove-kody',
     title: 'Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel',
     excerpt: 'Čtyřmístné číslo, které pilot naladí do odpovídače, dokáže během vteřiny říct řízení, že se něco děje. Co který kód znamená a jak nouzový let poznáte na mapě.',
