@@ -11,6 +11,14 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'jak-vysoko-letaji-letadla',
+    title: 'Jak vysoko létají letadla a proč zrovna deset kilometrů',
+    excerpt: 'Dopravní letadla létají v devíti až dvanácti kilometrech. Není to náhoda: řidší vzduch šetří palivo a nad mraky se neklepe. Kolik má které letadlo a jak to vidíte na mapě.',
+    date: '2026-07-20',
+    dateLabel: '20. července 2026',
+    tag: 'Jak to funguje',
+  },
+  {
     slug: 'letiste-praha-zive',
     title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
     excerpt: 'Chcete vidět, co právě přistává v Praze? Webkamery ukážou kus plochy, živá mapa ukáže každé letadlo ve vzduchu. Jak to funguje a co všechno se dá vyčíst.',
