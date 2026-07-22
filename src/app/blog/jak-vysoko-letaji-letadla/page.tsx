@@ -76,7 +76,7 @@ export default function VyskaArticle() {
 
         <h2 style={S.h2}>Proč se létá tak vysoko?</h2>
         <p style={S.p}>
-          Kvůli penězům. Ve výšce deseti kilometrů má vzduch zhruba čtvrtinovou hustotu proti zemi, takže
+          Kvůli penězům. Ve výšce deseti kilometrů má vzduch zhruba třetinovou hustotu proti zemi, takže
           klade menší odpor a letadlo proletí stejnou vzdálenost za výrazně méně paliva. Druhý důvod je
           pohodlí: bouřky, déšť a většina turbulencí se odehrávají pod vámi. A do třetice provoz. Vysoko
           nad zemí je nebe rozdělené do hladin, kde se letadla bezpečně míjejí s rozestupem tři sta metrů.
