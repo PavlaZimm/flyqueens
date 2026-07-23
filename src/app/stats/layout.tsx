@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SiteFooter } from '@/components/UI/SiteFooter'
 
 // Stats stránka je client component, metadata proto žijí v tomhle layoutu.
 export const metadata: Metadata = {
@@ -9,5 +10,10 @@ export const metadata: Metadata = {
 }
 
 export default function StatsLayout({ children }: { children: React.ReactNode }) {
-  return children
+  return (
+    <>
+      {children}
+      <SiteFooter />
+    </>
+  )
 }

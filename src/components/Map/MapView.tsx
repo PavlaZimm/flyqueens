@@ -211,11 +211,24 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           // Popup — bind prázdný, obsah se nastaví po kliknutí
           marker.bindPopup('', { className: 'fq-airport-popup-wrap', maxWidth: 260 })
 
+          // Letiště s vlastní stránkou (parkování, praktické info) → odkaz v popupu.
+          // Hlavní cesta, jak návštěvníci mapy objeví obsahové stránky.
+          const GUIDE_PAGES: Record<string, string> = {
+            LKPR: '/letiste/praha',
+            LKTB: '/letiste/brno',
+            LKMT: '/letiste/ostrava',
+          }
+          const guidePath = GUIDE_PAGES[a.icao]
+          const guideHtml = guidePath
+            ? `<a href="${guidePath}" class="fq-guide-btn">🅿 Parkování a průvodce letištěm</a>`
+            : ''
+
           const buildPopupHtml = (metarHtml: string, atcHtml: string) => `
             <div class="fq-airport-popup">
               <div class="fq-ap-code">${a.iata || a.icao}</div>
               <div class="fq-ap-name">${a.name}</div>
               <div class="fq-ap-meta">${a.city} · ${a.country} · ${a.elev} ft</div>
+              ${guideHtml}
               <div class="fq-ap-metar">${metarHtml}</div>
               ${atcHtml}
             </div>`
@@ -650,6 +663,15 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           text-decoration: none; transition: background 0.15s;
         }
         .fq-atc-link-btn:hover { background: rgba(56,189,248,0.16); }
+        .fq-guide-btn {
+          display: block; margin: 8px 0 4px;
+          background: rgba(253,224,71,0.1); border: 1px solid rgba(253,224,71,0.35);
+          border-radius: 7px; padding: 8px 10px;
+          color: #FDE047; font-family: 'Space Grotesk', sans-serif;
+          font-size: 11px; font-weight: 600; text-align: center;
+          text-decoration: none; transition: background 0.15s;
+        }
+        .fq-guide-btn:hover { background: rgba(253,224,71,0.2); }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>
