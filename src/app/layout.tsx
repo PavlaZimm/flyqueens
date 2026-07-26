@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "MAN4NfQiLcoRVR51idXywyLvfgE5YIfBNh6lnVFQBV0",
+  },
   metadataBase: new URL("https://www.flyqueens.cz"),
   // Canonical pro homepage — podstránky si nastavují vlastní přes alternates
   alternates: { canonical: "https://www.flyqueens.cz" },
