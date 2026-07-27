@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 const post = getPost('squawk-nouzove-kody')!
 
@@ -121,6 +122,15 @@ export default function SquawkArticle() {
             Otevřít živou mapu
           </Link>
         </div>
+
+        <SourcesBox
+          sources={[
+            { label: 'SKYbrary — Transponder (nouzové kódy 7500, 7600, 7700)', href: 'https://www.skybrary.aero/articles/transponder' },
+            { label: 'ICAO — mezinárodní standardy pro odpovídače', href: 'https://www.icao.int/' },
+            { label: 'Řízení letového provozu ČR — letecká informační příručka (AIP)', href: 'https://aim.rlp.cz/' },
+          ]}
+          note="Kódy 7500, 7600 a 7700 jsou dané mezinárodním standardem a nemění se. Postupy řízení se liší podle státu."
+        />
       </div>
     </main>
   )

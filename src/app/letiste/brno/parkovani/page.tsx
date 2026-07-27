@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Brno-Tuřany: ceny a kde zaparkovat levně',
@@ -120,6 +121,14 @@ export default function ParkovaniBrnoPage() {
             Otevřít živou mapu
           </Link>
         </div>
+        <SourcesBox
+          sources={[
+            { label: 'Letiště Brno-Tuřany — oficiální web', href: 'https://www.brno-airport.cz/' },
+            { label: 'Ceníky parkovišť u letiště Brno podle srovnávačů (parkingunit.com)', href: 'https://parkingunit.com/parkovani-u-letiste-brno/' },
+            { label: 'Ceny soukromých parkovišť podle ceníků provozovatelů' },
+          ]}
+          note="Ceny ověřeny v červenci 2026. U soukromých parkovišť se cena mění podle sezóny, ověřte ji před rezervací."
+        />
         <ParkingCrossLinks current="brno" />
       </div>
     </main>

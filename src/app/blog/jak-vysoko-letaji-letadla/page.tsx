@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
@@ -142,6 +143,15 @@ export default function VyskaArticle() {
             </Link>
           </div>
         </div>
+
+        <SourcesBox
+          sources={[
+            { label: 'SKYbrary — letové hladiny a vertikální rozstupy (RVSM)', href: 'https://www.skybrary.aero/articles/reduced-vertical-separation-minima-rvsm' },
+            { label: 'ICAO — standardy pro letové hladiny', href: 'https://www.icao.int/' },
+            { label: 'Výškové stropy podle výrobců (Airbus, Boeing) a typových certifikací' },
+          ]}
+          note="Uvedené výšky jsou obvyklé rozsahy, konkrétní hladinu určuje řízení letového provozu podle trasy, hmotnosti a počasí."
+        />
       </div>
     </main>
   )

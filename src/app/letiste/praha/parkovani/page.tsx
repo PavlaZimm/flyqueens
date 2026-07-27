@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně (2026)',
@@ -172,6 +173,14 @@ export default function ParkovaniPrahaPage() {
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 24 }}>
           Aktualizováno v červenci 2026. Ceny jsou orientační, aktuální částku vždy ověřte u provozovatele.
         </p>
+        <SourcesBox
+          sources={[
+            { label: 'Letiště Praha — oficiální ceník parkování', href: 'https://www.prg.aero/parkovani' },
+            { label: 'AeroParking — ceník krytého parkoviště', href: 'https://www.aeroparking.cz/' },
+            { label: 'Ceny soukromých parkovišť podle srovnávačů a ceníků provozovatelů' },
+          ]}
+          note="Ceny ověřeny v červenci 2026. Parkovné se mění podle sezóny a typu rezervace, aktuální částku vidíte až při rezervaci."
+        />
         <ParkingCrossLinks current="praha" />
       </div>
     </main>

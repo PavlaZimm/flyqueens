@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 const post = getPost('letiste-praha-zive')!
 
@@ -120,6 +121,15 @@ export default function ZiveArticle() {
             </Link>
           </div>
         </div>
+
+        <SourcesBox
+          sources={[
+            { label: 'SKYbrary — ADS-B (jak funguje vysílání polohy letadel)', href: 'https://www.skybrary.aero/articles/automatic-dependent-surveillance-broadcast-ads-b' },
+            { label: 'Letiště Praha — oficiální web', href: 'https://www.prg.aero/' },
+            { label: 'Data o polohách letadel: airplanes.live a OpenSky Network' },
+          ]}
+          note="Popis provozních špiček vychází z pozorování dat na mapě FlyQueens v létě 2026, ne z oficiální statistiky letiště."
+        />
       </div>
     </main>
   )

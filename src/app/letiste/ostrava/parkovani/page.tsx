@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Ostrava (Mošnov): ceny parkovišť P1 až P5',
@@ -139,6 +140,14 @@ export default function ParkovaniOstravaPage() {
             Otevřít živou mapu
           </Link>
         </div>
+        <SourcesBox
+          sources={[
+            { label: 'Letiště Ostrava — oficiální ceník parkování P1 až P5', href: 'https://www.airport-ostrava.cz/p/parkovani' },
+            { label: 'Srovnání parkovišť u letiště Ostrava (parkingunit.com)', href: 'https://parkingunit.com/parkovani-u-letiste-ostrava/' },
+            { label: 'Ceny soukromých parkovišť podle ceníků provozovatelů' },
+          ]}
+          note="Ceny ověřeny v červenci 2026. V letní sezóně bývají soukromá parkoviště dražší, ověřte cenu před rezervací."
+        />
         <ParkingCrossLinks current="ostrava" />
       </div>
     </main>
