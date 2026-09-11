@@ -330,7 +330,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       {/* Trasa — odkud / kam */}
       {(routeLoading || route) && (
         <div style={{ order: 2, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>TRASA</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>TRASA · ORIENTAČNĚ</div>
 
           {routeLoading && (
             <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>Hledám trasu…</div>

@@ -192,7 +192,7 @@ function MobileBottomSheet({
                   </div>
                 </div>
                 <div style={{ marginTop: 8, display: 'flex', justifyContent: 'center', gap: 12, fontSize: 9, color: 'var(--text-muted)' }}>
-                  <span>{route?.progress ?? 0} % trasy</span>
+                  <span>{route?.progress ?? 0} % trasy · orientačně</span>
                   {(route?.remaining ?? 0) > 0 && <span>· {route?.remaining.toLocaleString('cs')} km zbývá</span>}
                 </div>
               </div>

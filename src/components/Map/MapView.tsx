@@ -533,7 +533,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     } catch { /* mapa ještě není připravená — ignoruj */ }
   }, [selectedFlight])
 
-  // Route arc — nakreslí oblouk DEP → letadlo → ARR
+  // Orientační route arc — jedna souvislá spojnice DEP → ARR.
+  // Aktuální poloha letadla do geometrie nevstupuje: ADS-B bod nemusí ležet
+  // na velké kružnici a trasa by pak působila, že začíná nebo se láme u stroje.
   useEffect(() => {
     if (!mapRef.current) return
     const { map, L } = mapRef.current
@@ -547,19 +549,24 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     if (!selectedRoute || !selectedFlight) return
     const { departure, arrival } = selectedRoute
 
-    if (!arrival) return
+    // Když neznáme oba konce, raději žádnou čáru nevymýšlíme.
+    if (!departure || !arrival) return
 
-    // Bod A = odlet (nebo aktuální poloha pokud nemáme DEP)
-    const depLat = departure?.lat ?? selectedFlight.lat
-    const depLng = departure?.lng ?? selectedFlight.lng
-    const arrLat = arrival.lat
-    const arrLng = arrival.lng
-    const curLat = selectedFlight.lat
-    const curLng = selectedFlight.lng
+    const routePts = greatCirclePoints(
+      departure.lat,
+      departure.lng,
+      arrival.lat,
+      arrival.lng,
+      100,
+    )
+    const splitIndex = Math.max(
+      1,
+      Math.min(routePts.length - 2, Math.round((selectedRoute.progress / 100) * (routePts.length - 1))),
+    )
 
-    // Uletěná část je modrá, zbývající zlatá — na první pohled je tak jasné,
-    // kde se vybraný let na trase právě nachází.
-    const flownPts = greatCirclePoints(depLat, depLng, curLat, curLng, 40)
+    // Obě barvy jsou výřezy stejné letiště–letiště křivky, takže na sebe
+    // přesně navazují. Předěl pouze orientačně znázorňuje odhad postupu letu.
+    const flownPts = routePts.slice(0, splitIndex + 1)
     const flownArc = L.polyline(flownPts, {
       color: '#5AA9FF',
       weight: 3,
@@ -569,8 +576,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       className: 'fq-route-line fq-route-flown',
     })
 
-    // Zbývající část (letadlo → ARR) — zlatá plná
-    const remainPts = greatCirclePoints(curLat, curLng, arrLat, arrLng, 60)
+    const remainPts = routePts.slice(splitIndex)
     const remainArc = L.polyline(remainPts, {
       color: '#F5B83D',
       weight: 3.5,
@@ -590,14 +596,12 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     })
 
     const routeLayers: Layer[] = [flownArc, remainArc]
-    if (departure) {
-      const depCode = departure.iata || departure.icao || 'ODLET'
-      routeLayers.push(L.marker([departure.lat, departure.lng], {
-        icon: endpointIcon(depCode, 'departure'), interactive: false,
-      }))
-    }
+    const depCode = departure.iata || departure.icao || 'ODLET'
+    routeLayers.push(L.marker([departure.lat, departure.lng], {
+      icon: endpointIcon(depCode, 'departure'), interactive: false,
+    }))
     const arrCode = arrival.iata || arrival.icao || 'CÍL'
-    routeLayers.push(L.marker([arrLat, arrLng], {
+    routeLayers.push(L.marker([arrival.lat, arrival.lng], {
       icon: endpointIcon(arrCode, 'arrival'), interactive: false,
     }))
 
