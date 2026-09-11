@@ -282,6 +282,173 @@ srovnatelnou tabulkou pro stejný modelový termín. Bez aktuálních cen nepou�
   8–30 a témata, u kterých Google ukazuje FlyQueens na jiné URL, než bylo
   plánováno.
 
+## Snippet plán: co má Google zobrazit ve výsledcích
+
+„Snippet“ zde znamená dvě různé věci:
+
+1. běžný výsledek vyhledávání — modrý title a popis pod ním;
+2. vytažená odpověď nebo sekce „Lidé se také ptají“ — krátký odstavec, seznam
+   nebo tabulka převzatá z viditelného obsahu stránky.
+
+Google může title i popis přepsat podle dotazu a featured snippet nelze ručně
+vynutit. Title proto musí být stručný, jedinečný a shodný s hlavním nadpisem;
+meta description má ve dvou větách pravdivě shrnout konkrétní stránku, ne být
+seznamem klíčových slov. Google skládá title také z H1, výrazného textu a
+odkazů a běžný snippet primárně z obsahu stránky, někdy z meta description.^21 ^22
+
+Neexistuje pevný počet znaků, který by Google garantoval. Praktické pravidlo
+pro FlyQueens: nejdůležitější význam dát na začátek, název značky až na konec,
+žádný clickbait a žádný rok, pokud stránka není opravdu průběžně kontrolována.
+
+### Hotové title a meta description
+
+| URL | SEO title | Meta description |
+|---|---|---|
+| `/radar` | Radar letadel online: živá mapa nad Evropou \| FlyQueens | Sledujte letadla online na živé mapě Evropy. Zjistěte dostupnou polohu, výšku, rychlost, směr a trasu letu zdarma a bez účtu. |
+| `/blog/jak-sledovat-let-podle-cisla` | Sledování letů podle čísla: kde je letadlo online | Zadejte číslo letu a sledujte dostupnou polohu letadla na mapě. Vysvětlujeme callsign, registraci, zpoždění i limity živých dat. |
+| `/blog/co-mi-leti-nad-hlavou` | Co mi letí nad hlavou? Zjistěte letadlo online | Otevřete živou mapu a zjistěte, které letadlo vám právě letí nad hlavou, jak je vysoko, kam míří a proč někdy chybí trasa. |
+| `/blog/jak-vysoko-letaji-letadla` | Jak vysoko létají letadla? Výška v metrech a FL350 | Dopravní letadla obvykle létají ve výšce 9–12 km. Zjistěte proč, co znamená FL350 a jak převést letovou hladinu na metry. |
+| `/blog/squawk-nouzove-kody` | Squawk 7700, 7600 a 7500: význam nouzových kódů | Zjistěte, co znamenají squawk kódy 7700, 7600 a 7500, jak funguje odpovídač a co lze z nouzového kódu poznat na živé mapě. |
+| `/blog/letiste-praha-zive` | Letiště Praha živě: přílety, odlety a letadla na mapě | Sledujte letadla poblíž Letiště Praha na živé mapě a zjistěte, kde ověřit aktuální přílety, odlety a případné zpoždění. |
+| `/letiste/praha/parkovani` | Parkování letiště Praha: ceny a srovnání možností | Porovnejte oficiální a soukromé parkování u Letiště Praha podle ceny, vzdálenosti, transferu a předání klíčů. Údaje pravidelně ověřujeme. |
+| `/blog/jak-rychle-leti-letadlo` | Jak rychle letí letadlo při vzletu a během letu | Dopravní letadlo obvykle letí cestovní rychlostí kolem 800–900 km/h. Porovnejte rychlost při vzletu, letu a přistání i uzly a km/h. |
+| `/blog/proc-letadlo-neni-na-radaru` | Proč letadlo není na radaru? 7 častých důvodů | Letadlo může z mapy zmizet kvůli pokrytí, nízké výšce, chybějícím ADS-B datům nebo omezení zdroje. Vysvětlujeme, co se děje. |
+| `/blog/proc-letadlo-krouzi` | Proč letadlo krouží nad městem nebo letištěm | Kroužení může být vyčkávání, výcvik, měřicí let nebo postup před přistáním. Podle mapy samotné nelze bezpečně určit přesnou příčinu. |
+| `/blog/co-je-ads-b` | Co je ADS-B a jak funguje radar letadel online | ADS-B vysílá polohu, výšku a další údaje letadla pozemním přijímačům. Podívejte se, jak se signál dostane do živé mapy a co v něm chybí. |
+| `/blog/airbus-a320-vs-boeing-737` | Airbus A320 vs. Boeing 737: jak je poznat od sebe | Porovnejte nos, motory, podvozek, okna i zakončení křídel Airbusu A320 a Boeingu 737 na skutečných fotografiích. |
+| `/blog/kondenzacni-stopa-za-letadlem` | Kondenzační stopa za letadlem: proč vzniká a mizí | Bílou stopu za letadlem tvoří ledové krystalky. Zjistěte, jak ji ovlivňuje teplota a vlhkost a proč někdy zmizí, jindy zůstane. |
+| `/letiste/praha/planespotting` | Planespotting Praha: kde bezpečně sledovat letadla | Praktický průvodce spottingem u Letiště Praha: legální místa, přístup, světlo, vhodný čas a bezpečnost podle osobní kontroly. |
+| `/blog/proc-je-zvuk-letadla-pozadu` | Proč slyšíme letadlo jinde, než ho vidíme | Zvuk letadla dorazí z výšky 10 km přibližně o 30 sekund později. Spočítejte zpoždění a zjistěte, proč hledáte letadlo na špatném místě. |
+| `/nastroje/letova-hladina` | Převod letové hladiny: FL na metry a stopy | Převeďte FL350 a další letové hladiny na stopy a přibližné metry. Kalkulačka vysvětluje standardní tlak i rozdíl proti skutečné výšce. |
+
+U parkování musí věta „údaje pravidelně ověřujeme“ na web až ve chvíli, kdy
+existuje skutečný proces kontroly a je vidět datum posledního ověření. U živých
+letištních informací se nesmí směšovat pohyb letadel na mapě s oficiálním
+stavem příletu nebo odletu; ten potřebuje schedule API nebo odkaz na oficiální
+tabuli.
+
+### Připravené odpovědi pro featured snippet a PAA
+
+Každá odpověď má být hned pod odpovídajícím H2, viditelná bez kliknutí a až po
+ní má následovat podrobné vysvětlení, zdroje a příklad. Text se může při odborné
+kontrole zpřesnit, ale nemá se natahovat jen kvůli počtu slov.
+
+#### Jak rychle letí dopravní letadlo?
+
+> Dopravní letadlo během cestovního letu obvykle letí přibližně 800–900 km/h
+> vůči okolnímu vzduchu. Rychlost vůči zemi se mění podle větru. Při vzletu a
+> přistání je rychlost výrazně nižší a závisí na typu letadla, hmotnosti,
+> konfiguraci a počasí.
+
+Doplnit tabulku „fáze letu / typická jednotka / orientační rozsah / co hodnotu
+ovlivňuje“ a kalkulačku uzly ↔ km/h. Rozsahy musí mít primární typový nebo
+letecký zdroj.
+
+#### Proč letadlo není na radaru?
+
+> Letadlo může na online mapě chybět kvůli slabému pokrytí přijímači, nízké
+> výšce, zpoždění dat, chybějícímu kompatibilnímu signálu nebo omezení
+> poskytovatele. Neznamená to automaticky, že letadlo nevysílá nebo je v
+> nebezpečí; veřejná mapa není úplný obraz řízení letového provozu.
+
+Následovat má číslovaný seznam sedmi příčin a u každé jednoduchý způsob, jak
+ji uživatel pozná. Nevytvářet nepodložené závěry o vojenských nebo soukromých
+letech.
+
+#### Proč letadlo krouží?
+
+> Letadlo může kroužit kvůli vyčkávání před přistáním, výcviku, měřicímu letu,
+> počasí, rozestupům v provozu nebo opakování přiblížení. Samotný tvar trasy na
+> veřejné mapě obvykle nestačí k určení přesného důvodu a nemusí znamenat
+> nouzovou situaci.
+
+Ideální doplněk je grafické srovnání holdingu, výcvikového okruhu, měřicího
+letu a go-around. Každý obrázek musí jasně říkat, že jde o typický vzor, ne
+diagnózu konkrétního letu.
+
+#### Co je ADS-B?
+
+> ADS-B je systém, kterým letadlo automaticky vysílá svou identitu, polohu,
+> výšku, rychlost a další dostupné údaje. Pozemní přijímače nebo satelity signál
+> zachytí a poskytovatelé z něj sestavují živé mapy. Trasa, letiště a typ stroje
+> mohou pocházet i z dalších databází.
+
+Přidat sémantickou tabulku „údaj přímo ze signálu / dopočítaný údaj / údaj z
+externí databáze“. To je zároveň citovatelný vlastní prvek článku.
+
+#### Jak poznat Airbus A320 a Boeing 737?
+
+> Airbus A320 a Boeing 737 lze orientačně rozlišit podle tvaru nosu, oken
+> kokpitu, motorů, podvozku a zakončení křídel. Jeden znak sám o sobě nestačí,
+> protože obě rodiny mají více generací a variant; nejspolehlivější je porovnat
+> několik detailů současně.
+
+Pod odpovědí použít skutečné fotografie podobných úhlů a tabulku znaků. Každá
+fotografie potřebuje vlastní popisek a alternativní text popisující to, co je
+na ní opravdu vidět.
+
+#### Proč vzniká kondenzační stopa za letadlem?
+
+> Kondenzační stopa vzniká, když se vodní pára ve studeném vzduchu ve velké
+> výšce změní na drobné ledové krystalky. O tom, zda stopa rychle zmizí, nebo se
+> udrží a rozšíří, rozhodují hlavně teplota a vlhkost okolního vzduchu.
+
+Doplnit jednoduchý diagram podmínek a odkázat na meteorologický a letecký
+primární zdroj. Nepřebírat konspirační formulace do title jen kvůli kliknutí.
+
+#### Proč slyšíme letadlo jinde, než ho vidíme?
+
+> Zvuk se šíří mnohem pomaleji než světlo. Z letadla ve výšce 10 km k nám za
+> běžných podmínek dorazí přibližně za 30 sekund, během nichž se letadlo posune
+> o několik kilometrů. Proto zvuk zdánlivě přichází z místa za jeho aktuální
+> polohou.
+
+Přidat výpočet pro 5, 10 a 12 km a uvést, že teplota, vítr, šikmá vzdálenost a
+rychlost letadla výsledek mění.
+
+#### Jak sledovat let podle čísla?
+
+> Číslo letu zadejte do vyhledávání na živé mapě a otevřete odpovídající
+> letadlo. Zkontrolujte dopravce, trasu a čas, protože stejné číslo se může
+> opakovat v jiné dny. Ve vzduchu se může zobrazit provozní callsign, který se
+> od čísla na letence liší.
+
+Za odpověď vložit tři kroky s přímým odkazem do radaru a skutečnou ukázku.
+Pokud výsledek není nalezen, vysvětlit rozdíl mezi plánovaným letem a aktuálně
+přijatými pozičními daty.
+
+### Otázky, které mají články přirozeně pokrýt
+
+Tyto formulace jsou kandidáti pro mezititulky a budoucí měření, ne pokyn vložit
+všechny dotazy do jednoho textu:
+
+| Stránka | Relevantní otázky |
+|---|---|
+| rychlost letadla | Jak rychle letí letadlo v km/h? Kolik uzlů má dopravní letadlo? Jaká je rychlost při vzletu a přistání? Proč se ground speed liší od airspeed? |
+| letadlo chybí na radaru | Proč letadlo zmizelo z mapy? Jsou na radaru vojenská letadla? Jsou data zpožděná? Znamená chybějící let problém? |
+| kroužící letadlo | Co je holding? Co znamená go-around? Je kroužení nouzový stav? Jak vypadá výcvikový okruh? |
+| ADS-B | Jaký je rozdíl mezi radarem a ADS-B? Co vysílá transpondér? Odkud mapa zná trasu? Jak stará jsou data? |
+| A320 vs. 737 | Jak poznat Airbus od Boeingu? Jak se liší motory? Jsou winglety spolehlivý znak? Které varianty se pletou? |
+| kondenzační stopa | Proč je stopa někdy dlouhá? Z čeho je složená? Ovlivňuje ji počasí? V jaké výšce vzniká? |
+| planespotting Praha | Kde lze bezpečně fotit? Jak se na místo dostat? Kdy je dobré světlo? Jaká pravidla je nutné dodržet? |
+
+### Kontrolní seznam před publikací
+
+- Title, H1 a hlavní odpověď popisují stejnou věc a každá URL je má unikátní.
+- Hledaná otázka má pod H2 přímou odpověď, ne dvouodstavcový úvod bez výsledku.
+- Čísla, ceny, časy a bezpečnostní tvrzení mají zdroj a datum kontroly.
+- Tabulka je skutečná HTML tabulka s hlavičkami; pořadí kroků je číslovaný seznam.
+- Nejdůležitější odpověď je viditelná bez rozbalení. FAQ schema se nepřidává jen
+  kvůli naději na rich result; Google ho běžně zobrazuje jen autoritativním
+  zdravotním a vládním webům.^8
+- Meta description obsahuje důvod ke kliknutí, ale neslibuje funkci nebo data,
+  která stránka nemá.
+- Open Graph title, popis a fotografie jsou připravené zvlášť pro sociální
+  sdílení a významově odpovídají stránce.
+- Po 6–8 týdnech se v GSC porovná dotaz, zobrazená URL, pozice a CTR. Nízké CTR
+  není automaticky problém titulku — nejdřív je potřeba zkontrolovat záměr,
+  pozici a podobu SERPu.
+
 ## Rozšiřující seznam pro Marketing Miner
 
 Před napsáním nových textů je potřeba změřit následující skupiny. Neznámý objem
@@ -577,3 +744,5 @@ o úspěšnou obchodní strategii bez ohledu na počet zobrazení.
 18. Ahrefs, Jenny Abouobaia. [“Link Prospecting: How to Find Quality Backlinks for Your Website.”](https://ahrefs.com/blog/link-prospecting/) Aktualizováno 17. února 2025.
 19. Ahrefs, Si Quan Ong. [“Link Building Outreach for Noobs.”](https://ahrefs.com/blog/link-outreach/) Aktualizováno 17. února 2025.
 20. Ahrefs, Joshua Hardwick. [“Broken Link Building: The Complete Guide.”](https://ahrefs.com/blog/broken-link-building/) 23. května 2022.
+21. Google Search Central. [“Influencing Your Title Links in Search Results.”](https://developers.google.com/search/docs/appearance/title-link) Aktualizováno 10. prosince 2025.
+22. Google Search Central. [“Control Your Snippets in Search Results.”](https://developers.google.com/search/docs/appearance/snippet) Přístup 11. září 2026.
