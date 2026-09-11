@@ -41,7 +41,13 @@ export function SiteFooter() {
         </div>
 
         <div style={{ marginTop: 22, paddingTop: 14, borderTop: '1px solid var(--border-subtle)', fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.6 }}>
-          FlyQueens · dostupná ADS-B data o letadlech nad Českem a okolím. Aktuální zdroj a stav najdete přímo v mapě.
+          <div>FlyQueens · dostupná ADS-B data o letadlech nad Českem a okolím. Aktuální zdroj a stav najdete přímo v mapě.</div>
+          <div style={{ marginTop: 5 }}>
+            Vytvořeno s láskou k létání a při popíjení kávy ·{' '}
+            <a href="https://linklady.cz" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'none' }}>
+              Linklady.cz
+            </a>
+          </div>
         </div>
       </div>
     </footer>

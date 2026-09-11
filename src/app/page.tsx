@@ -230,7 +230,10 @@ export default function HomePage() {
             <Link href="/letiste">Letiště</Link>
             <Link href="/blog">Blog</Link>
           </nav>
-          <small>© 2026 FLYQUEENS.CZ</small>
+          <small>
+            © 2026 FLYQUEENS.CZ · VYTVOŘENO S LÁSKOU K LÉTÁNÍ A PŘI POPÍJENÍ KÁVY ·{' '}
+            <a href="https://linklady.cz" target="_blank" rel="noopener noreferrer">LINKLADY.CZ</a>
+          </small>
         </div>
       </footer>
     </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Map as LeafletMap, Layer, Marker, Polyline, LayerGroup } from 'leaflet'
 import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
@@ -64,8 +64,8 @@ function playAtcStream(url: string, btnId: string) {
 
 interface MapRefs {
   map: LeafletMap
-  darkTiles: Layer
-  lightTiles: Layer
+  darkTiles: Layer | null
+  lightTiles: Layer | null
   airportLayer: LayerGroup
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   L: any  // Leaflet dynamically imported — no static type available at module level
@@ -135,6 +135,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const trailsRef       = useRef<Map<string, Polyline>>(new Map())
   const routeArcRef     = useRef<Polyline | null>(null)
   const showAirportsRef = useRef(showAirports)
+  const themeRef        = useRef(theme)
+  const [mapReady, setMapReady] = useState(false)
   // Viewport culling — predikát viditelnosti (search+filter) sdílený s moveend handlerem
   const visiblePredRef  = useRef<(f: Flight) => boolean>(() => true)
   const flightsRef      = useRef<Flight[]>([])
@@ -152,10 +154,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
-    Promise.all([
-      import('leaflet'),
-      import('@maplibre/maplibre-gl-leaflet'),
-    ]).then(([L, { maplibreGL }]) => {
+    import('leaflet').then((L) => {
       if (!containerRef.current || mapRef.current) return
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -168,21 +167,31 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         zoomControl: false, attributionControl: true,
       })
 
-      // OpenFreeMap poskytuje produkční vektorové podklady bez API klíče.
-      // CARTO raster, který tu byl dříve, nyní místo mapy vrací „API KEY REQUIRED“.
-      const darkTiles = maplibreGL({
-        // Fiord má na radarové mapě čitelnější hranice než téměř černý styl Dark.
-        style: 'https://tiles.openfreemap.org/styles/fiord',
-      })
-      const lightTiles = maplibreGL({
-        style: 'https://tiles.openfreemap.org/styles/positron',
-      })
-
-      if (theme === 'light') { lightTiles.addTo(map) } else { darkTiles.addTo(map) }
       L.control.zoom({ position: 'bottomright' }).addTo(map)
 
       const airportLayer = L.layerGroup()
-      mapRef.current = { map, darkTiles, lightTiles, airportLayer, L }
+      mapRef.current = { map, darkTiles: null, lightTiles: null, airportLayer, L }
+
+      // Letadla nečekají na těžší vektorový renderer. OpenFreeMap se načte
+      // souběžně a doplní podklad až po zprovoznění Leafletu a markerů.
+      import('@maplibre/maplibre-gl-leaflet').then(({ maplibreGL }) => {
+        if (!mapRef.current || mapRef.current.map !== map) return
+
+        const darkTiles = maplibreGL({
+          // Fiord má na radarové mapě čitelnější hranice než téměř černý styl Dark.
+          style: 'https://tiles.openfreemap.org/styles/fiord',
+        })
+        const lightTiles = maplibreGL({
+          style: 'https://tiles.openfreemap.org/styles/positron',
+        })
+        mapRef.current.darkTiles = darkTiles
+        mapRef.current.lightTiles = lightTiles
+
+        if (themeRef.current === 'light') lightTiles.addTo(map)
+        else darkTiles.addTo(map)
+      }).catch(() => {
+        // Radar zůstává použitelný i při výpadku externího mapového podkladu.
+      })
 
       // Viewport culling — přidá/odebere markery podle výřezu při posunu/zoomu.
       // Registrováno zde (ne v samostatném efektu), protože mapa vzniká async.
@@ -362,6 +371,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           try { map.flyTo([lat, lng], 10, { animate: true, duration: 1.2 }) } catch { /* mapa není ready */ }
         })
       }
+
+      // Data mohou dorazit dřív než dynamicky načtená mapa. Změna stavu
+      // okamžitě znovu spustí efekt markerů; bez ní čekaly až na další 10s poll.
+      setMapReady(true)
     })
 
     // Capture refs pro cleanup (eslint react-hooks/exhaustive-deps)
@@ -389,6 +402,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
   // Udržuj ref synchronizovaný s props (pro async Leaflet init callback)
   useEffect(() => { showAirportsRef.current = showAirports }, [showAirports])
+  useEffect(() => { themeRef.current = theme }, [theme])
 
   // Toggle letišť
   useEffect(() => {
@@ -405,6 +419,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   useEffect(() => {
     if (!mapRef.current) return
     const { map, darkTiles, lightTiles } = mapRef.current
+    if (!darkTiles || !lightTiles) return
     if (theme === 'light') {
       if (map.hasLayer(darkTiles))  map.removeLayer(darkTiles)
       if (!map.hasLayer(lightTiles)) lightTiles.addTo(map)
@@ -495,7 +510,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
   // Markery + trail
   useEffect(() => {
-    if (!mapRef.current) return
+    if (!mapReady || !mapRef.current) return
     const { map, L } = mapRef.current
     const q = (searchQuery ?? '').trim().toUpperCase()
 
@@ -599,7 +614,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       }
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flights, selectedFlight, theme, searchQuery, activeFilters])
+  }, [flights, selectedFlight, theme, searchQuery, activeFilters, mapReady])
 
   return (
     <>
