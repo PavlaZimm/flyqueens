@@ -50,11 +50,11 @@ const faqJsonLd = {
 }
 
 const S = {
-  page: { minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' },
+  page: { minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' },
   wrap: { maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' },
-  h1: { fontFamily: 'Syne, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, letterSpacing: 0.3, margin: '18px 0 6px' },
+  h1: { fontFamily: 'Archivo, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, letterSpacing: 0.3, margin: '18px 0 6px' },
   lead: { fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' },
-  h2: { fontFamily: 'Syne, sans-serif', fontSize: 20, fontWeight: 800, margin: '34px 0 10px' },
+  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '34px 0 10px' },
   p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
 } as const
 
@@ -111,7 +111,7 @@ export default function ParkovaniPrahaPage() {
               ].map(([kde, cena, dist], i) => (
                 <tr key={i}>
                   <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', fontWeight: 600 }}>{kde}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{cena}</td>
+                  <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 700 }}>{cena}</td>
                   <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>{dist}</td>
                 </tr>
               ))}
@@ -137,7 +137,7 @@ export default function ParkovaniPrahaPage() {
         </p>
 
         {/* Affiliate CTA — aktivuje se po registraci do partnerského programu (Parkos / ParkVia) */}
-        <div style={{ background: 'rgba(253,224,71,0.06)', border: '1px solid rgba(253,224,71,0.25)', borderRadius: 12, padding: '14px 16px', margin: '14px 0' }}>
+        <div style={{ background: 'rgba(245,184,61,0.06)', border: '1px solid rgba(245,184,61,0.25)', borderRadius: 12, padding: '14px 16px', margin: '14px 0' }}>
           <p style={{ ...S.p, margin: 0, color: 'var(--text-muted)' }}>
             Většina těchto parkovišť jde rezervovat online dopředu za nižší cenu. Srovnat volná místa a ceny
             na konkrétní termín se vyplatí, o prázdninách se blízká parkoviště plní.
@@ -160,12 +160,12 @@ export default function ParkovaniPrahaPage() {
 
         {/* FlyQueens diferenciace — živá data, co konkurence nemá */}
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '30px 0 10px' }}>
-          <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Než vyrazíte na letiště</div>
+          <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Než vyrazíte na letiště</div>
           <p style={{ ...S.p, marginBottom: 12 }}>
             Mrkněte, co se zrovna děje ve vzduchu nad Prahou a jaké je na letišti počasí. Živá mapa ukáže
             letadla v reálném čase, klik na letiště přidá aktuální METAR.
           </p>
-          <Link href="/" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
+          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
             Otevřít živou mapu letadel
           </Link>
         </div>

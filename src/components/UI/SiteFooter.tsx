@@ -11,13 +11,13 @@ export function SiteFooter() {
   const posts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
 
   return (
-    <footer style={{ background: 'var(--midnight)', borderTop: '1px solid var(--border-subtle)', fontFamily: 'Space Grotesk, sans-serif' }}>
+    <footer style={{ background: 'var(--midnight)', borderTop: '1px solid var(--border-subtle)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '28px 18px 34px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 20 }}>
 
           <div>
             <div style={col}>Prozkoumat</div>
-            <Link href="/" style={link}>Živá mapa letadel</Link>
+            <Link href="/radar" style={link}>Živá mapa letadel</Link>
             <Link href="/stats" style={link}>Statistiky provozu</Link>
             <Link href="/blog" style={link}>Blog</Link>
             <Link href="/o-projektu" style={link}>O projektu a zdrojích dat</Link>

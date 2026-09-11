@@ -19,14 +19,14 @@ const AIRPORTS = [
 
 export default function LetisteIndexPage() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>
+    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
           {' · Letiště'}
         </nav>
 
-        <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
+        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
           Letiště v Česku
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
@@ -44,7 +44,7 @@ export default function LetisteIndexPage() {
                 opacity: a.hasPage ? 1 : 0.55,
               }}>
                 <div>
-                  <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 16, fontWeight: 800 }}>
+                  <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16, fontWeight: 800 }}>
                     {a.city} <span style={{ color: 'var(--gold)', fontSize: 13 }}>{a.iata}</span>
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>{a.name}</div>

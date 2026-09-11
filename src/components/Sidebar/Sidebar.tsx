@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import type { Flight, FlightDataMeta } from '@/types/flight'
 import { FlightCard } from './FlightCard'
 import { AtcPanel } from './AtcPanel'
+import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 
 interface SidebarProps {
   flights: Flight[]
@@ -20,7 +21,7 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'map',      label: 'Živá mapa',   icon: '🗺',  href: '/' },
+  { id: 'map',      label: 'Živá mapa',   icon: '🗺',  href: '/radar' },
   { id: 'stats',    label: 'Statistiky',  icon: '📊',  href: '/stats' },
   { id: 'letiste',  label: 'Letiště',     icon: '🛫',  href: '/letiste' },
   { id: 'blog',     label: 'Blog',        icon: '📖',  href: '/blog' },
@@ -71,20 +72,7 @@ export function Sidebar({
       {/* Logo */}
       <div style={{ padding: '14px 12px 10px', borderBottom: '1px solid var(--border-subtle)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: 'var(--gold)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 16, flexShrink: 0, color: 'var(--cta-text)',
-            }}>✈</div>
-            <div>
-              <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 2, textTransform: 'uppercase' }}>
-                FLYQUEENS
-              </div>
-              <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>Živá mapa letadel</div>
-            </div>
-          </div>
+          <FlyQueensLogo compact showTagline />
           {/* Zavřít tlačítko (mobile) */}
           <button
             onClick={onClose}
@@ -102,7 +90,7 @@ export function Sidebar({
         }}>
           <div className={dataMeta.status === 'live' ? 'live-dot' : undefined} style={{
             width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-            background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+            background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
           }} />
           <span style={{ fontSize: 10, color: 'var(--text-muted)', flex: 1 }}>
             {dataMeta.status === 'live' ? 'Živá data' : dataMeta.status === 'stale' ? 'Poslední známá data' : 'Data nedostupná'}
@@ -129,9 +117,9 @@ export function Sidebar({
             aria-label="Hledat podle letu, registrace nebo ICAO adresy"
             style={{
               width: '100%', paddingLeft: 28, paddingRight: 10, paddingTop: 7, paddingBottom: 7,
-              background: 'var(--glass-bg)', border: `1px solid ${searchQuery ? 'rgba(253,224,71,0.3)' : 'var(--border-subtle)'}`,
+              background: 'var(--glass-bg)', border: `1px solid ${searchQuery ? 'rgba(245,184,61,0.3)' : 'var(--border-subtle)'}`,
               borderRadius: 8, color: 'var(--text-primary)',
-              fontFamily: 'Space Grotesk, sans-serif', fontSize: 11, outline: 'none', boxSizing: 'border-box',
+              fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, outline: 'none', boxSizing: 'border-box',
               transition: 'border-color 0.15s',
             }}
           />
@@ -154,9 +142,9 @@ export function Sidebar({
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 width: '100%', padding: '7px 8px', borderRadius: 7,
-                background: active ? 'rgba(253,224,71,0.08)' : 'none',
+                background: active ? 'rgba(245,184,61,0.08)' : 'none',
                 color: active ? 'var(--gold)' : 'var(--text-muted)',
-                cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif',
+                cursor: 'pointer', fontFamily: 'IBM Plex Sans, sans-serif',
                 fontSize: 12, fontWeight: active ? 600 : 400,
               }}>
                 <span style={{ fontSize: 13 }}>{item.icon}</span>
@@ -191,9 +179,9 @@ export function Sidebar({
               onClick={() => setSortBy(key)}
               style={{
                 flex: 1, padding: '4px 6px', borderRadius: 6, cursor: 'pointer',
-                fontFamily: 'Space Grotesk, sans-serif', fontSize: 9, letterSpacing: 0.5,
-                background: sortBy === key ? 'rgba(253,224,71,0.12)' : 'var(--glass-bg)',
-                border: `1px solid ${sortBy === key ? 'rgba(253,224,71,0.35)' : 'var(--border-subtle)'}`,
+                fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 9, letterSpacing: 0.5,
+                background: sortBy === key ? 'rgba(245,184,61,0.12)' : 'var(--glass-bg)',
+                border: `1px solid ${sortBy === key ? 'rgba(245,184,61,0.35)' : 'var(--border-subtle)'}`,
                 color: sortBy === key ? 'var(--gold)' : 'var(--text-muted)',
                 fontWeight: sortBy === key ? 700 : 400,
                 transition: 'all 0.15s',
@@ -232,7 +220,7 @@ export function Sidebar({
       <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{
           width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-          background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+          background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
         }} />
         <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>
           Zdroj: {dataMeta.source ?? 'nedostupný'}

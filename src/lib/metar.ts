@@ -52,9 +52,9 @@ export function degToCompass(deg: number): string {
 /** Barva kategorie letu */
 export function categoryColor(cat: string | null): string {
   switch (cat) {
-    case 'VFR':  return '#22C55E'   // zelená
-    case 'MVFR': return '#38BDF8'   // modrá
-    case 'IFR':  return '#F87171'   // červená
+    case 'VFR':  return '#4FE0B0'   // zelená
+    case 'MVFR': return '#5AA9FF'   // modrá
+    case 'IFR':  return '#FF5C63'   // červená
     case 'LIFR': return '#C084FC'   // fialová
     default:     return '#6B7280'
   }

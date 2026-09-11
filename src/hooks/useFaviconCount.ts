@@ -23,7 +23,7 @@ export function useFaviconCount(count: number, hasEmergency: boolean) {
     ctx.fill()
 
     // ✈ symbol
-    ctx.fillStyle = hasEmergency ? '#ffffff' : '#FDE047'
+    ctx.fillStyle = hasEmergency ? '#ffffff' : '#F5B83D'
     ctx.font      = 'bold 16px sans-serif'
     ctx.textAlign    = 'center'
     ctx.textBaseline = 'middle'
@@ -32,7 +32,7 @@ export function useFaviconCount(count: number, hasEmergency: boolean) {
     // Počet letadel — malý text dole
     if (count > 0) {
       const label = count >= 10000 ? `${Math.floor(count / 1000)}k` : String(count)
-      ctx.fillStyle    = hasEmergency ? '#ffffff' : '#FDE047'
+      ctx.fillStyle    = hasEmergency ? '#ffffff' : '#F5B83D'
       ctx.font         = `bold ${label.length > 3 ? 7 : 8}px sans-serif`
       ctx.textAlign    = 'center'
       ctx.textBaseline = 'middle'

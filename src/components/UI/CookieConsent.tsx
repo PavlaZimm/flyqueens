@@ -71,7 +71,7 @@ export function CookieConsent() {
               onClick={() => decide('denied')}
               style={{
                 background: 'none', border: '1px solid var(--glass-border)', borderRadius: 8,
-                color: 'rgba(255,255,255,0.6)', fontFamily: 'Space Grotesk, sans-serif',
+                color: 'rgba(255,255,255,0.6)', fontFamily: 'IBM Plex Sans, sans-serif',
                 fontSize: 11, padding: '7px 10px', cursor: 'pointer',
               }}
             >
@@ -81,7 +81,7 @@ export function CookieConsent() {
               onClick={() => decide('granted')}
               style={{
                 background: 'var(--gold)', border: 'none', borderRadius: 8,
-                color: '#0F172A', fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                color: '#0F172A', fontFamily: 'Archivo, sans-serif', fontWeight: 800,
                 fontSize: 11, letterSpacing: 0.5, padding: '7px 12px', cursor: 'pointer',
               }}
             >

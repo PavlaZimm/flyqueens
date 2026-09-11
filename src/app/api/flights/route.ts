@@ -152,15 +152,23 @@ async function fetchEnabledAirplanesLive(region: (typeof REGION_CONFIGS)[string]
   }
 }
 
-function liveResponse(result: SourceResult, regionKey: string) {
+function liveResponse(result: SourceResult, regionKey: string, summaryOnly: boolean) {
   return NextResponse.json(
-    {
-      states: result.states,
-      source: result.source,
-      fetchedAt: result.fetchedAt,
-      status: 'live',
-      region: regionKey,
-    },
+    summaryOnly
+      ? {
+          count: result.states.length,
+          source: result.source,
+          fetchedAt: result.fetchedAt,
+          status: 'live',
+          region: regionKey,
+        }
+      : {
+          states: result.states,
+          source: result.source,
+          fetchedAt: result.fetchedAt,
+          status: 'live',
+          region: regionKey,
+        },
     {
       headers: {
         'Cache-Control': 'public, s-maxage=8, stale-while-revalidate=30',
@@ -196,7 +204,8 @@ export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'
-  const { allowed, retryAfter } = checkRateLimit(ip, 'flights')
+  const summaryOnly = req.nextUrl.searchParams.get('summary') === '1'
+  const { allowed, retryAfter } = checkRateLimit(ip, summaryOnly ? 'flight-summary' : 'flights')
   if (!allowed) {
     return NextResponse.json(
       { error: 'Too many requests', code: 'RATE_LIMITED', retryAfter },
@@ -210,14 +219,14 @@ export async function GET(req: NextRequest) {
   try {
     // Zdroje běží souběžně. Výpadek jednoho už nezablokuje uživatele součtem timeoutů.
     const result = await getLiveSnapshot(regionKey, region)
-    return liveResponse(result, regionKey)
+    return liveResponse(result, regionKey, summaryOnly)
   } catch (error) {
     console.error(`[FlyQueens] All live flight sources failed for ${regionKey}`, error)
     const cached = lastGoodSnapshots.get(regionKey)
     if (cached && Date.now() - cached.cachedAt <= MAX_STALE_MS) {
       return NextResponse.json(
         {
-          states: cached.states,
+          ...(summaryOnly ? { count: cached.states.length } : { states: cached.states }),
           source: cached.source,
           fetchedAt: cached.fetchedAt,
           status: 'stale',
@@ -230,7 +239,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        states: [],
+        ...(summaryOnly ? { count: 0 } : { states: [] }),
         source: null,
         fetchedAt: null,
         status: 'unavailable',

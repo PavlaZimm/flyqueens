@@ -25,7 +25,7 @@ export function LoadingScreen() {
         {/* Tečkovaná čára */}
         <div style={{
           position: 'absolute', bottom: 10, left: 0, right: 0, height: 1,
-          background: 'repeating-linear-gradient(90deg, rgba(253,224,71,0.4) 0px, rgba(253,224,71,0.4) 6px, transparent 6px, transparent 12px)',
+          background: 'repeating-linear-gradient(90deg, rgba(245,184,61,0.4) 0px, rgba(245,184,61,0.4) 6px, transparent 6px, transparent 12px)',
           animation: 'fq-trail 2s ease-in-out infinite',
         }} />
       </div>

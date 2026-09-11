@@ -57,7 +57,7 @@ export function EmergencyBanner({ flights, onSelect }: Props) {
         >
           <span style={{ fontSize: 20, flexShrink: 0 }}>🚨</span>
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#ef4444', fontFamily: 'Syne, sans-serif', letterSpacing: 1 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#ef4444', fontFamily: 'Archivo, sans-serif', letterSpacing: 1 }}>
               SQUAWK {f.squawk ? squawkLabel(f.squawk) : f.emergency?.toUpperCase()}
             </div>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginTop: 1 }}>

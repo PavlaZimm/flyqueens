@@ -9,6 +9,7 @@ const AIRPORTS = ['praha', 'brno', 'ostrava']
 export default function sitemap(): MetadataRoute.Sitemap {
   const core: MetadataRoute.Sitemap = [
     { url: BASE, changeFrequency: 'daily', priority: 1 },
+    { url: `${BASE}/radar`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${BASE}/stats`, changeFrequency: 'daily', priority: 0.8 },
     { url: `${BASE}/o-projektu`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/letiste`, changeFrequency: 'weekly', priority: 0.7 },

@@ -4,8 +4,8 @@ import type { FlightDataStatus } from '@/types/flight'
 
 const STATUS = {
   live: { label: 'ŽIVĚ', color: 'var(--green-live)', background: 'rgba(34, 197, 94, 0.12)', border: 'rgba(34, 197, 94, 0.25)' },
-  stale: { label: 'STARŠÍ DATA', color: '#FDE047', background: 'rgba(253, 224, 71, 0.12)', border: 'rgba(253, 224, 71, 0.25)' },
-  unavailable: { label: 'OFFLINE', color: '#F87171', background: 'rgba(248, 113, 113, 0.12)', border: 'rgba(248, 113, 113, 0.25)' },
+  stale: { label: 'STARŠÍ DATA', color: '#F5B83D', background: 'rgba(245, 184, 61, 0.12)', border: 'rgba(245, 184, 61, 0.25)' },
+  unavailable: { label: 'OFFLINE', color: '#FF5C63', background: 'rgba(248, 113, 113, 0.12)', border: 'rgba(248, 113, 113, 0.25)' },
 } as const
 
 export function LiveBadge({ status }: { status: FlightDataStatus }) {
@@ -41,7 +41,7 @@ export function LiveBadge({ status }: { status: FlightDataStatus }) {
           letterSpacing: 1.5,
           textTransform: 'uppercase',
           color: config.color,
-          fontFamily: 'Space Grotesk, sans-serif',
+          fontFamily: 'IBM Plex Sans, sans-serif',
         }}
       >
         {config.label}

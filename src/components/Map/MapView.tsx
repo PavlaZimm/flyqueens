@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import type { Map as LeafletMap, TileLayer, Marker, Polyline, LayerGroup } from 'leaflet'
+import type { Map as LeafletMap, Layer, Marker, Polyline, LayerGroup } from 'leaflet'
 import type { Flight, AircraftType } from '@/types/flight'
 import { getAircraftColor } from './AircraftIcon'
 import { airports, airportDisplayName } from '@/lib/airportData'
@@ -64,8 +64,8 @@ function playAtcStream(url: string, btnId: string) {
 
 interface MapRefs {
   map: LeafletMap
-  darkTiles: TileLayer
-  lightTiles: TileLayer
+  darkTiles: Layer
+  lightTiles: Layer
   airportLayer: LayerGroup
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   L: any  // Leaflet dynamically imported — no static type available at module level
@@ -152,7 +152,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
 
-    import('leaflet').then((L) => {
+    Promise.all([
+      import('leaflet'),
+      import('@maplibre/maplibre-gl-leaflet'),
+    ]).then(([L, { maplibreGL }]) => {
       if (!containerRef.current || mapRef.current) return
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -165,14 +168,15 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         zoomControl: false, attributionControl: true,
       })
 
-      const darkTiles = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        { attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>', subdomains: 'abcd', maxZoom: 19 }
-      )
-      const lightTiles = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-        { attribution: '© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>', subdomains: 'abcd', maxZoom: 19 }
-      )
+      // OpenFreeMap poskytuje produkční vektorové podklady bez API klíče.
+      // CARTO raster, který tu byl dříve, nyní místo mapy vrací „API KEY REQUIRED“.
+      const darkTiles = maplibreGL({
+        // Fiord má na radarové mapě čitelnější hranice než téměř černý styl Dark.
+        style: 'https://tiles.openfreemap.org/styles/fiord',
+      })
+      const lightTiles = maplibreGL({
+        style: 'https://tiles.openfreemap.org/styles/positron',
+      })
 
       if (theme === 'light') { lightTiles.addTo(map) } else { darkTiles.addTo(map) }
       L.control.zoom({ position: 'bottomright' }).addTo(map)
@@ -269,7 +273,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                 if (!m.error) {
                   const qnh = m.altimeter ? Math.round(m.altimeter) : null
                   const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
-                  const catColor = m.category === 'VFR' ? '#22C55E' : m.category === 'MVFR' ? '#38BDF8' : m.category === 'IFR' ? '#F87171' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
+                  const catColor = m.category === 'VFR' ? '#4FE0B0' : m.category === 'MVFR' ? '#5AA9FF' : m.category === 'IFR' ? '#FF5C63' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
                   const wxLabel = m.weather ? escapeHtml(wxMap[m.weather] ?? m.weather) : null
                   metarHtml = `
                     <div class="fq-metar-divider"></div>
@@ -462,7 +466,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     // Zbývající část (letadlo → ARR) — zlatá plná
     const remainPts = greatCirclePoints(curLat, curLng, arrLat, arrLng, 60)
     const remainArc = L.polyline(remainPts, {
-      color: '#FDE047',
+      color: '#F5B83D',
       weight: 2,
       opacity: 0.55,
       dashArray: '6 4',
@@ -473,7 +477,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const arrIcon = L.divIcon({
       html: `<div style="
         width:32px;height:32px;display:flex;align-items:center;justify-content:center;
-        background:rgba(253,224,71,0.15);border:1.5px solid rgba(253,224,71,0.5);
+        background:rgba(245,184,61,0.15);border:1.5px solid rgba(245,184,61,0.5);
         border-radius:50%;font-size:14px;
       ">🛬</div>`,
       className: '',
@@ -602,10 +606,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       <style>{`
         .fq-tooltip {
           background: rgba(15,23,42,0.92) !important;
-          border: 1px solid rgba(253,224,71,0.3) !important;
+          border: 1px solid rgba(245,184,61,0.3) !important;
           border-radius: 6px !important;
           color: var(--gold) !important;
-          font-family: 'Syne', sans-serif !important;
+          font-family: 'Archivo', sans-serif !important;
           font-size: 11px !important;
           font-weight: 700 !important;
           letter-spacing: 1px !important;
@@ -636,7 +640,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           border: 1px solid rgba(56,189,248,0.35) !important;
           border-radius: 6px !important;
           color: var(--accent-blue) !important;
-          font-family: 'Space Grotesk', sans-serif !important;
+          font-family: 'IBM Plex Sans', sans-serif !important;
           font-size: 10px !important;
           font-weight: 600 !important;
           letter-spacing: 0.5px !important;
@@ -654,17 +658,17 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-airport-popup-wrap .leaflet-popup-tip { background: rgba(15,23,42,0.96) !important; }
         .fq-airport-popup-wrap .leaflet-popup-content { margin: 0 !important; }
         .fq-airport-popup { padding: 12px 14px; }
-        .fq-ap-code { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent-blue); letter-spacing: 2px; }
+        .fq-ap-code { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent-blue); letter-spacing: 2px; }
         .fq-ap-name { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
         .fq-ap-meta { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; letter-spacing: 0.5px; }
         .fq-ap-metar { margin-top: 2px; }
         .fq-ap-metar-loading { font-size: 9px; color: rgba(255,255,255,0.3); padding: 6px 0; }
         .fq-metar-divider { height: 1px; background: rgba(56,189,248,0.15); margin: 8px 0; }
-        .fq-metar-cat { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .fq-metar-cat { font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 8px; }
         .fq-metar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
         .fq-metar-tile { background: rgba(255,255,255,0.05); border-radius: 6px; padding: 5px 7px; }
         .fq-mt-label { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
-        .fq-mt-val { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
+        .fq-mt-val { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
         .fq-metar-wx { font-size: 11px; color: rgba(255,255,255,0.75); margin: 4px 0; }
         .fq-metar-raw { font-size: 8px; color: rgba(255,255,255,0.2); margin-top: 6px; font-family: monospace; word-break: break-all; line-height: 1.4; }
         .fq-atc-label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
@@ -674,30 +678,30 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           display: block; width: 100%; margin-bottom: 4px;
           background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.35);
           border-radius: 7px; padding: 7px 10px;
-          color: var(--green-live); font-family: 'Space Grotesk', sans-serif;
+          color: var(--green-live); font-family: 'IBM Plex Sans', sans-serif;
           font-size: 11px; font-weight: 600; cursor: pointer; text-align: left;
           transition: background 0.15s;
         }
         .fq-atc-btn:hover { background: rgba(34,197,94,0.2); }
-        .fq-atc-btn.playing { background: rgba(253,224,71,0.12); border-color: rgba(253,224,71,0.4); color: var(--gold); }
+        .fq-atc-btn.playing { background: rgba(245,184,61,0.12); border-color: rgba(245,184,61,0.4); color: var(--gold); }
         .fq-atc-link-btn {
           display: block; margin-top: 5px;
           background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25);
           border-radius: 7px; padding: 7px 10px;
-          color: var(--accent-blue); font-family: 'Space Grotesk', sans-serif;
+          color: var(--accent-blue); font-family: 'IBM Plex Sans', sans-serif;
           font-size: 11px; font-weight: 600; text-align: center;
           text-decoration: none; transition: background 0.15s;
         }
         .fq-atc-link-btn:hover { background: rgba(56,189,248,0.16); }
         .fq-guide-btn {
           display: block; margin: 8px 0 4px;
-          background: rgba(253,224,71,0.1); border: 1px solid rgba(253,224,71,0.35);
+          background: rgba(245,184,61,0.1); border: 1px solid rgba(245,184,61,0.35);
           border-radius: 7px; padding: 8px 10px;
-          color: #FDE047; font-family: 'Space Grotesk', sans-serif;
+          color: #F5B83D; font-family: 'IBM Plex Sans', sans-serif;
           font-size: 11px; font-weight: 600; text-align: center;
           text-decoration: none; transition: background 0.15s;
         }
-        .fq-guide-btn:hover { background: rgba(253,224,71,0.2); }
+        .fq-guide-btn:hover { background: rgba(245,184,61,0.2); }
       `}</style>
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>
@@ -739,7 +743,7 @@ function createAircraftSVG(color: string, size: number, heading: number, selecte
 
 function createAirportSVG(size: number, isLarge: boolean): string {
   const r = size
-  const stroke = isLarge ? '#38BDF8' : '#38BDF888'
+  const stroke = isLarge ? '#5AA9FF' : '#5AA9FF88'
   const fill = isLarge ? 'rgba(56,189,248,0.15)' : 'rgba(56,189,248,0.08)'
   const s = r * 2
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">

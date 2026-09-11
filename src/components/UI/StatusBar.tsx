@@ -37,10 +37,10 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
       {dataMeta.status !== 'live' && (
         <div style={{
           position: 'absolute', bottom: 32, left: 0, right: 0,
-          background: dataMeta.status === 'stale' ? 'rgba(253,224,71,0.12)' : 'rgba(248,113,113,0.12)',
-          borderTop: `1px solid ${dataMeta.status === 'stale' ? 'rgba(253,224,71,0.25)' : 'rgba(248,113,113,0.25)'}`,
+          background: dataMeta.status === 'stale' ? 'rgba(245,184,61,0.12)' : 'rgba(248,113,113,0.12)',
+          borderTop: `1px solid ${dataMeta.status === 'stale' ? 'rgba(245,184,61,0.25)' : 'rgba(248,113,113,0.25)'}`,
           padding: '4px 16px', display: 'flex', alignItems: 'center', gap: 8,
-          fontFamily: 'Space Grotesk, sans-serif', zIndex: 1000,
+          fontFamily: 'IBM Plex Sans, sans-serif', zIndex: 1000,
         }}>
           <span style={{ fontSize: 10, color: dataMeta.status === 'stale' ? 'var(--gold)' : '#FCA5A5', letterSpacing: 0.5 }}>
             ⚠ {dataMeta.message ?? (dataMeta.status === 'stale'
@@ -59,7 +59,7 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
         backdropFilter: 'blur(8px)',
         display: 'flex', alignItems: 'center',
         padding: '0 16px', gap: 12, zIndex: 1000,
-        fontFamily: 'Space Grotesk, sans-serif',
+        fontFamily: 'IBM Plex Sans, sans-serif',
       }}>
         {/* UTC čas */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -78,7 +78,7 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
 
         <div className="fq-sb-col" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>LETÍ</span>
-          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{flightCount}</span>
+          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 700 }}>{flightCount}</span>
         </div>
 
         <div style={{ flex: 1 }} />
@@ -87,12 +87,12 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
           <div style={{
             width: 5, height: 5, borderRadius: '50%',
             background: dataMeta.status === 'live' && tick ? 'var(--green-live)' : 'transparent',
-            border: `1px solid ${dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171'}`,
+            border: `1px solid ${dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63'}`,
             transition: 'background 0.3s',
           }} />
           <span style={{
             fontSize: 9, letterSpacing: 1.5,
-            color: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+            color: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
             fontWeight: 700,
           }}>
             {dataMeta.status === 'live' ? 'LIVE' : dataMeta.status === 'stale' ? 'STALE' : 'OFFLINE'}

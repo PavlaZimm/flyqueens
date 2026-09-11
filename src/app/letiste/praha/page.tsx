@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 
 const LINKS = [
   { href: '/letiste/praha/parkovani', title: 'Parkování a ceny', desc: 'Kde zaparkovat levně, srovnání parkovišť a tipy na rezervaci.', ready: true },
-  { href: '/', title: 'Živá mapa nad Prahou', desc: 'Co zrovna letí ve vzduchu, v reálném čase. Klik na letadlo ukáže detail.', ready: true },
+  { href: '/radar', title: 'Živá mapa nad Prahou', desc: 'Co zrovna letí ve vzduchu, v reálném čase. Klik na letadlo ukáže detail.', ready: true },
   { href: '/letiste/praha/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
 ]
 
 export default function PrahaHubPage() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>
+    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
@@ -25,7 +25,7 @@ export default function PrahaHubPage() {
           {' · Praha'}
         </nav>
 
-        <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
+        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
           Letiště Václava Havla Praha
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
@@ -42,7 +42,7 @@ export default function PrahaHubPage() {
                 borderRadius: 12, padding: '14px 16px', opacity: l.ready ? 1 : 0.55,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                  <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 16, fontWeight: 800 }}>{l.title}</div>
+                  <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16, fontWeight: 800 }}>{l.title}</div>
                   <div style={{ fontSize: 12, color: l.ready ? 'var(--gold)' : 'var(--text-dim)', flexShrink: 0 }}>
                     {l.ready ? 'Otevřít →' : 'Brzy'}
                   </div>

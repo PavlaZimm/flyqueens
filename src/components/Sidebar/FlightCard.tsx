@@ -101,14 +101,14 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
       <div style={{ display: 'flex', gap: 8 }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1.5, textTransform: 'uppercase' }}>km/h</span>
-          <span style={{ fontSize: 11, color: acColor, fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>
+          <span style={{ fontSize: 11, color: acColor, fontFamily: 'Archivo, sans-serif', fontWeight: 700 }}>
             {flight.velocity}
           </span>
         </div>
         <div style={{ width: 1, background: 'var(--border-subtle)' }} />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1.5, textTransform: 'uppercase' }}>výška</span>
-          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>
+          <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 700 }}>
             {Math.round(flight.altitude / 100) * 100}m
           </span>
         </div>

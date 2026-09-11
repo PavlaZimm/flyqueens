@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 }
 
 const section = { marginTop: 28 } as const
-const heading = { fontFamily: 'Syne, sans-serif', fontSize: 21, margin: '0 0 10px' } as const
+const heading = { fontFamily: 'Archivo, sans-serif', fontSize: 21, margin: '0 0 10px' } as const
 const paragraph = { color: 'var(--text-muted)', fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' } as const
 
 export default function AboutProjectPage() {
   return (
     <>
-      <main style={{ minHeight: '70dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>
+      <main style={{ minHeight: '70dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
         <article style={{ maxWidth: 760, margin: '0 auto', padding: '42px 18px 56px' }}>
-          <Link href="/" style={{ color: 'var(--gold)', textDecoration: 'none', fontSize: 13 }}>← Zpět na mapu</Link>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: 34, lineHeight: 1.15, margin: '24px 0 14px' }}>
+          <Link href="/radar" style={{ color: 'var(--gold)', textDecoration: 'none', fontSize: 13 }}>← Zpět na mapu</Link>
+          <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 34, lineHeight: 1.15, margin: '24px 0 14px' }}>
             O projektu a datech
           </h1>
           <p style={paragraph}>

@@ -28,7 +28,7 @@ const CHIP_BASE: React.CSSProperties = {
   borderRadius: 8,
   padding: '0 10px',
   cursor: 'pointer',
-  fontFamily: 'Space Grotesk, sans-serif',
+  fontFamily: 'IBM Plex Sans, sans-serif',
   fontSize: 11,
   fontWeight: 500,
   backdropFilter: 'blur(10px)',
@@ -131,8 +131,8 @@ export function TopBar({
           aria-label="Zobrazit všechna letadla"
           style={{
             ...CHIP_BASE,
-            background: activeFilters.size === 0 ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
-            border: `1px solid ${activeFilters.size === 0 ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
+            background: activeFilters.size === 0 ? 'rgba(245,184,61,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${activeFilters.size === 0 ? 'rgba(245,184,61,0.4)' : 'var(--glass-border)'}`,
             color: activeFilters.size === 0 ? 'var(--gold)' : 'var(--text-muted)',
           }}
         >
@@ -150,8 +150,8 @@ export function TopBar({
               aria-label={filter.label}
               style={{
                 ...CHIP_BASE,
-                background: active ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
-                border: `1px solid ${active ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
+                background: active ? 'rgba(245,184,61,0.13)' : 'var(--glass-bg)',
+                border: `1px solid ${active ? 'rgba(245,184,61,0.4)' : 'var(--glass-border)'}`,
                 color: active ? 'var(--gold)' : 'var(--text-muted)',
                 fontWeight: active ? 600 : 400,
               }}

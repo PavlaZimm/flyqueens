@@ -10,13 +10,13 @@ interface AircraftIconProps {
 // Barvy dle BRAND_MANUAL.md
 export function getAircraftColor(type: AircraftType, theme: 'dark' | 'light'): string {
   const dark: Record<AircraftType, string> = {
-    'narrow-body': '#FDE047',
+    'narrow-body': '#F5B83D',
     'wide-body':   '#C084FC',
     'turboprop':   '#34D399',
     'private-jet': '#FBB724',
     'cargo':       '#FB923C',
-    'military':    '#F87171',
-    'helicopter':  '#38BDF8',
+    'military':    '#FF5C63',
+    'helicopter':  '#5AA9FF',
     'ga':          '#6EE7B7',
     'unknown':     '#CBD5E1',
   }

@@ -29,7 +29,7 @@ function TopList({ title, items, color = 'var(--gold)' }: {
             {item.sub && <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 1 }}>{item.sub}</div>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: 'Syne, sans-serif' }}>{item.value}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color, fontFamily: 'Archivo, sans-serif' }}>{item.value}</div>
             {item.callsign && <div style={{ fontSize: 9, color: 'var(--text-dim)' }}>→</div>}
           </div>
         </Link>
@@ -66,7 +66,7 @@ function BarChart({ title, items, color = 'var(--gold)' }: {
   )
 }
 
-function Sparkline({ data, color = '#FDE047' }: { data: number[]; color?: string }) {
+function Sparkline({ data, color = '#F5B83D' }: { data: number[]; color?: string }) {
   if (data.length < 2) return null
   const w = 200, h = 48
   const max = Math.max(...data, 1)
@@ -182,7 +182,7 @@ export default function StatsPage() {
   }
 
   return (
-    <div style={{ minHeight: '100dvh', background: 'var(--midnight)', padding: '24px 16px 40px', fontFamily: 'Space Grotesk, sans-serif', maxWidth: 900, margin: '0 auto' }}>
+    <div style={{ minHeight: '100dvh', background: 'var(--midnight)', padding: '24px 16px 40px', fontFamily: 'IBM Plex Sans, sans-serif', maxWidth: 900, margin: '0 auto' }}>
 
       {/* Nav */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
@@ -200,7 +200,7 @@ export default function StatsPage() {
       {dataMeta.status !== 'live' && (
         <div role="status" className="glass-panel" style={{
           padding: '10px 14px', marginBottom: 16,
-          borderColor: dataMeta.status === 'stale' ? 'rgba(253,224,71,0.35)' : 'rgba(248,113,113,0.4)',
+          borderColor: dataMeta.status === 'stale' ? 'rgba(245,184,61,0.35)' : 'rgba(248,113,113,0.4)',
           color: dataMeta.status === 'stale' ? 'var(--gold)' : '#FCA5A5', fontSize: 12,
         }}>
           {dataMeta.message ?? 'Živá data nejsou momentálně dostupná.'}

@@ -264,8 +264,8 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '4px 10px', borderRadius: 20,
-            background: 'linear-gradient(90deg, rgba(253,224,71,0.14), rgba(192,132,252,0.14))',
-            border: '1px solid rgba(253,224,71,0.35)',
+            background: 'linear-gradient(90deg, rgba(245,184,61,0.14), rgba(192,132,252,0.14))',
+            border: '1px solid rgba(245,184,61,0.35)',
             fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
           }}>
             <span style={{ fontSize: 12 }}>{badge.icon}</span>
@@ -507,7 +507,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
         {flight.baroRate != null && (
           <div className="metric-tile">
             <div className="label">Stoupání</div>
-            <div className="value" style={{ color: flight.baroRate > 100 ? '#4ade80' : flight.baroRate < -100 ? '#f87171' : 'var(--gold)' }}>
+            <div className="value" style={{ color: flight.baroRate > 100 ? '#4ade80' : flight.baroRate < -100 ? '#ff5c63' : 'var(--gold)' }}>
               {flight.baroRate > 100 ? '↑' : flight.baroRate < -100 ? '↓' : '→'}
               {' '}{Math.abs(Math.round(flight.baroRate))}
             </div>
@@ -546,7 +546,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
             background: 'var(--glass-bg)',
             border: '1px solid var(--glass-border)',
             color: 'var(--text-muted)',
-            fontFamily: "'Syne', sans-serif",
+            fontFamily: "'Archivo', sans-serif",
             fontWeight: 700,
             fontSize: 10,
             letterSpacing: 2,

@@ -91,7 +91,7 @@ export function AtcPanel() {
           display: 'flex', alignItems: 'center', gap: 8, width: '100%',
           padding: '7px 16px', background: 'none', border: 'none', cursor: 'pointer',
           color: open ? 'var(--gold)' : 'var(--text-muted)',
-          fontFamily: 'Space Grotesk, sans-serif', fontSize: 12,
+          fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 12,
           fontWeight: open ? 600 : 400,
         }}
       >
@@ -99,7 +99,7 @@ export function AtcPanel() {
         <span style={{ flex: 1, textAlign: 'left' }}>ATC Online</span>
         {onlineFeeds.length > 0 && (
           <span style={{
-            fontSize: 9, fontWeight: 700, color: '#22C55E',
+            fontSize: 9, fontWeight: 700, color: '#4FE0B0',
             background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)',
             borderRadius: 4, padding: '1px 5px',
           }}>
@@ -135,7 +135,7 @@ export function AtcPanel() {
           {/* Online streams */}
           {onlineFeeds.length > 0 && (
             <>
-              <div style={{ fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', color: '#22C55E', marginBottom: 5, opacity: 0.7 }}>
+              <div style={{ fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', color: '#4FE0B0', marginBottom: 5, opacity: 0.7 }}>
                 Live nyní
               </div>
               {onlineFeeds.map(f => {
@@ -148,8 +148,8 @@ export function AtcPanel() {
                     style={{
                       display: 'flex', alignItems: 'center', gap: 8,
                       width: '100%', marginBottom: 4,
-                      background: isPlaying ? 'rgba(253,224,71,0.08)' : 'rgba(34,197,94,0.07)',
-                      border: `1px solid ${isPlaying ? 'rgba(253,224,71,0.3)' : 'rgba(34,197,94,0.25)'}`,
+                      background: isPlaying ? 'rgba(245,184,61,0.08)' : 'rgba(34,197,94,0.07)',
+                      border: `1px solid ${isPlaying ? 'rgba(245,184,61,0.3)' : 'rgba(34,197,94,0.25)'}`,
                       borderRadius: 7, padding: '7px 9px', cursor: 'pointer',
                       transition: 'all 0.15s',
                     }}
@@ -157,8 +157,8 @@ export function AtcPanel() {
                     <span style={{ fontSize: 12 }}>{isPlaying ? '⏹' : '▶'}</span>
                     <div style={{ flex: 1, textAlign: 'left' }}>
                       <div style={{
-                        fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: 10,
-                        color: isPlaying ? 'var(--gold)' : '#22C55E', letterSpacing: 0.5,
+                        fontFamily: 'Archivo, sans-serif', fontWeight: 700, fontSize: 10,
+                        color: isPlaying ? 'var(--gold)' : '#4FE0B0', letterSpacing: 0.5,
                       }}>
                         {f.icao}
                       </div>

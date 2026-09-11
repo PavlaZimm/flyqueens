@@ -1,442 +1,238 @@
-'use client'
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
+import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
+import { POSTS } from '@/lib/blog'
+import styles from './page.module.css'
 
-import React, { useState, useRef, useEffect } from 'react'
-import dynamic from 'next/dynamic'
-import { useFlights } from '@/hooks/useFlights'
-import { useTheme } from '@/hooks/useTheme'
-import { useFlightRoute } from '@/hooks/useFlightRoute'
-import { useFaviconCount } from '@/hooks/useFaviconCount'
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { useNearbyFlights } from '@/hooks/useNearbyFlights'
-import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
-import { TopBar, type FilterType } from '@/components/UI/TopBar'
-import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS } from '@/lib/constants'
-import { StatusBar } from '@/components/UI/StatusBar'
-import { HomeSeoSection } from '@/components/UI/HomeSeoSection'
-import { LoadingScreen } from '@/components/UI/LoadingScreen'
-import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
-import { EmergencyBanner } from '@/components/UI/EmergencyBanner'
-import type { Flight } from '@/types/flight'
+export const metadata: Metadata = {
+  title: 'Živá mapa letadel nad Českem | FlyQueens',
+  description: 'Zjistěte, co vám právě letí nad hlavou. FlyQueens zobrazuje dostupná živá ADS-B data o letadlech nad Českem a okolím.',
+  alternates: { canonical: 'https://www.flyqueens.cz' },
+}
 
-// Leaflet (~800 KB) se nesmí renderovat na serveru — SSR crash
-const MapView = dynamic(() => import('@/components/Map/MapView').then(m => ({ default: m.MapView })), { ssr: false })
+const AIRPORTS = [
+  { code: 'PRG', city: 'Praha', note: 'provoz, počasí a parkování', href: '/letiste/praha' },
+  { code: 'BRQ', city: 'Brno', note: 'Tuřany prakticky', href: '/letiste/brno' },
+  { code: 'OSR', city: 'Ostrava', note: 'Mošnov a parkoviště', href: '/letiste/ostrava' },
+]
 
-function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
-  const touchStartY = useRef(0)
-  const scrollRef = useRef<HTMLDivElement>(null)
+function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {
+  const paths = {
+    nearby: <><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></>,
+    detail: <><path d="M5 19V9M12 19V5M19 19v-7" /><path d="m4 8 7-4 8 7" /></>,
+    status: <><path d="M4 12.5 9 17l11-11" /><circle cx="12" cy="12" r="9" /></>,
+  }
+  return <svg aria-hidden="true" viewBox="0 0 24 24">{paths[type]}</svg>
+}
 
+function RadarPreview() {
   return (
-    <>
-      {/* Backdrop — klik zavře sheet */}
-      <div
-        className="fq-detail-mobile"
-        style={{
-          position: 'absolute', inset: 0,
-          zIndex: 1499,
-          background: 'rgba(0,0,0,0.4)',
-        }}
-        onClick={onClose}
-      />
-
-      {/* Sheet */}
-      <div
-        className="fq-detail-mobile bottom-sheet-enter"
-        style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          background: 'var(--midnight-2)',
-          borderTop: '1px solid var(--glass-border)',
-          borderRadius: '20px 20px 0 0',
-          zIndex: 1500,
-          maxHeight: '72dvh',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {/* Handle — swipe area + close (vždy nahoře, nescrolluje) */}
-        <div
-          style={{ padding: '12px 16px 4px', flexShrink: 0, cursor: 'grab', display: 'flex', alignItems: 'center', gap: 8 }}
-          onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
-          onTouchEnd={(e) => {
-            const dy = e.changedTouches[0].clientY - touchStartY.current
-            if (dy > 50) onClose()
-          }}
-        >
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-            <div className="handle-bar" style={{ margin: 0 }} />
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Zavřít"
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: 6,
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              fontSize: 13,
-              width: 28,
-              height: 28,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              lineHeight: 1,
-            }}
-          >✕</button>
-        </div>
-
-        {/* Scrollovatelný obsah */}
-        <div
-          ref={scrollRef}
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            padding: '0 16px calc(16px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
-          {children}
-        </div>
+    <div className={styles.radarCard} aria-hidden="true">
+      <svg className={styles.radarGraphic} viewBox="0 0 680 520" role="presentation">
+        <defs>
+          <radialGradient id="radar-glow" cx="70%" cy="40%" r="55%">
+            <stop offset="0" stopColor="#4FE0B0" stopOpacity=".2" />
+            <stop offset="1" stopColor="#4FE0B0" stopOpacity="0" />
+          </radialGradient>
+          <pattern id="radar-grid" width="58" height="58" patternUnits="userSpaceOnUse">
+            <path d="M58 0H0V58" fill="none" stroke="#22304A" strokeOpacity=".62" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="680" height="520" fill="url(#radar-grid)" />
+        <rect width="680" height="520" fill="url(#radar-glow)" />
+        <circle cx="420" cy="270" r="82" fill="none" stroke="#4FE0B0" strokeOpacity=".28" />
+        <circle cx="420" cy="270" r="150" fill="none" stroke="#4FE0B0" strokeOpacity=".14" />
+        <path d="M42 425C160 390 235 342 330 280S510 165 652 142" fill="none" stroke="#5AA9FF" strokeOpacity=".7" strokeDasharray="7 10" strokeWidth="2" />
+        <path d="M70 110C185 145 290 218 400 266S555 350 645 430" fill="none" stroke="#F5B83D" strokeOpacity=".62" strokeDasharray="7 10" strokeWidth="2" />
+        <g transform="translate(318 276) rotate(-31)" fill="#E9EEF6">
+          <path d="M0-17 4-4l16 8v5L4 6 2 19h-4L-4 6l-16 3V4l16-8 4-13Z" />
+        </g>
+        <g transform="translate(495 219) rotate(36)" fill="#4FE0B0">
+          <path d="M0-13 3-3l12 6v4L3 5 1 14h-2L-3 5l-12 2V3l12-6 3-10Z" />
+        </g>
+        <g transform="translate(190 356) rotate(52)" fill="#8698B0">
+          <path d="M0-11 3-2l10 5v3L3 4 1 12h-2L-3 4l-10 2V3l10-5 3-9Z" />
+        </g>
+      </svg>
+      <div className={styles.radarStatus}>
+        <span className={styles.radarStatusDot} />
+        ADS-B LIVE
       </div>
-    </>
+      <div className={styles.radarLabel}>
+        <span>AKTUÁLNÍ OBLAST</span>
+        <strong>Česko + okolí</strong>
+        <small>obnova mapy každých 10 s</small>
+      </div>
+      <div className={styles.radarScale}>250 NM</div>
+    </div>
   )
 }
 
-export default function Home() {
-  const { flights, loading, count, dataMeta, region } = useFlights()
-  const { theme, toggleTheme } = useTheme()
-  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
-  const { route: selectedRoute, loading: selectedRouteLoading } = useFlightRoute(
-    selectedFlight?.icao24   ?? null,
-    selectedFlight?.lat      ?? 0,
-    selectedFlight?.lng      ?? 0,
-    selectedFlight?.velocity ?? 0,
-    selectedFlight?.heading  ?? 0,
-    selectedFlight?.callsign ?? '',
-  )
-  const [searchQuery, setSearchQuery] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set())
-  const [showAirports, setShowAirports] = useState(false)
-  const { nearbyFlights, showNearby, locateMe, dismiss: dismissNearby } = useNearbyFlights()
-  const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
-  const hasDataWarning = dataMeta.status !== 'live'
+export default function HomePage() {
+  const latestPosts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
 
-  // Emergency detection
-  const emergencyFlights = flights.filter(
-    f => (f.squawk && EMERGENCY_SQUAWKS.includes(f.squawk as typeof EMERGENCY_SQUAWKS[number])) || f.emergency
-  )
-  const hasEmergency = emergencyFlights.length > 0
-
-  // Favicon — živý počet + červená při emergency
-  useFaviconCount(count, hasEmergency)
-
-  // Auto-select flight from URL param ?flight=CSA123
-  useEffect(() => {
-    if (flights.length === 0) return
-    const params = new URLSearchParams(window.location.search)
-    const flightParam = params.get('flight')
-    if (!flightParam) return
-    const match = flights.find(f => f.callsign.trim().toUpperCase() === flightParam.toUpperCase())
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (match) setSelectedFlight(match)
-  }, [flights])
-
-  // Vybraný detail musí sledovat nové snapshoty, jinak po prvním kliknutí zamrzne.
-  useEffect(() => {
-    if (!selectedFlight) return
-    const updated = flights.find((flight) => flight.icao24 === selectedFlight.icao24)
-    if (updated && updated !== selectedFlight) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedFlight(updated)
-    }
-  }, [flights, selectedFlight])
-
-  const toggleFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {})
-    } else {
-      document.documentElement.requestFullscreen().catch(() => {})
-    }
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'FlyQueens',
+    url: 'https://www.flyqueens.cz',
+    description: 'Živá mapa dostupných ADS-B dat o letadlech nad Českem a okolím.',
   }
-
-  useKeyboardShortcuts({
-    onEscape: () => setSelectedFlight(null),
-    onSlash: () => document.querySelector<HTMLInputElement>('input[type="text"]')?.focus(),
-    onFullscreen: toggleFullscreen,
-  })
-
-  const handleLocateMe = () => {
-    locateMe(flights, (lat, lng) => mapLocateFnRef.current?.(lat, lng))
-  }
-
-  const handleFlightSelect = (flight: Flight) => {
-    setSelectedFlight(flight)
-    setSidebarOpen(false)   // na mobile zavřeme sidebar při výběru
-  }
-  const handleDetailClose = () => setSelectedFlight(null)
 
   return (
-    <>
-    <h1 className="sr-only">Živá mapa letadel nad Českem a Evropou</h1>
-    <div style={{ display: 'flex', height: '100dvh', width: '100%', overflow: 'hidden', background: 'var(--midnight)' }}>
-
-      {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
-      <div className={`fq-sidebar${sidebarOpen ? ' fq-sidebar-open' : ''}`} style={{ width: 220 }}>
-        <Sidebar
-          flights={flights}
-          selectedFlight={selectedFlight}
-          onFlightSelect={handleFlightSelect}
-          flightCount={count}
-          theme={theme}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          onClose={() => setSidebarOpen(false)}
-          dataMeta={dataMeta}
-        />
-      </div>
-
-      {/* Mobile overlay pod sidebarem */}
-      {sidebarOpen && (
-        <div
-          className="fq-sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Mapová plocha */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-
-        {/* Mapa */}
-        {loading && flights.length === 0 ? (
-          <LoadingScreen />
-        ) : (
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <ErrorBoundary>
-            <MapView
-              flights={flights}
-              selectedFlight={selectedFlight}
-              onFlightSelect={handleFlightSelect}
-              theme={theme}
-              searchQuery={searchQuery}
-              activeFilters={activeFilters}
-              showAirports={showAirports}
-              onMapReady={(fn) => { mapLocateFnRef.current = fn }}
-              selectedRoute={selectedRoute}
-              region={region}
-            />
-            </ErrorBoundary>
-          </div>
-        )}
-
-        {/* TopBar */}
-        <div style={{
-          position: 'absolute',
-          top: 'calc(12px + env(safe-area-inset-top, 0px))',
-          left: 12, right: selectedFlight ? 12 + DETAIL_PANEL_WIDTH + 8 : 12,
-          zIndex: 1000, pointerEvents: 'none',
-          transition: 'right 0.2s ease',
-        }}>
-          <TopBar
-            flightCount={count}
-            theme={theme}
-            onToggleTheme={toggleTheme}
-            onHamburger={() => setSidebarOpen(true)}
-            activeFilters={activeFilters}
-            onFilterChange={setActiveFilters}
-            showAirports={showAirports}
-            onToggleAirports={() => setShowAirports(v => !v)}
-            region={region}
-            dataStatus={dataMeta.status}
-          />
-        </div>
-
-        {/* Detail Panel — desktop */}
-        {selectedFlight && (
-          <div className="fq-detail-desktop" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1000, pointerEvents: 'none' }}>
-            <div style={{ pointerEvents: 'all' }}>
-              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
-            </div>
-          </div>
-        )}
-
-        {/* Mobile bottom sheet */}
-        {selectedFlight && (
-          <MobileBottomSheet onClose={handleDetailClose}>
-            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
-          </MobileBottomSheet>
-        )}
-
-        {/* Letadla nad hlavou panel */}
-        {showNearby && (
-          <div style={{
-            position: 'absolute',
-            bottom: `calc(${hasDataWarning ? 128 : 96}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
-            width: 220, background: 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)',
-            border: '1px solid var(--glass-border)', borderRadius: 12, padding: '10px 12px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontSize: 9, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-                Letadla nad tebou
-              </span>
-              <button onClick={dismissNearby} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
-            </div>
-            {nearbyFlights.length === 0 ? (
-              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Žádná letadla v okruhu 30 km ✈️</div>
-            ) : (
-              <>
-                <div style={{ fontSize: 11, color: 'var(--gold)', fontWeight: 700, marginBottom: 6 }}>
-                  {nearbyFlights.length} letadel v okruhu 30 km
-                </div>
-                {nearbyFlights.slice(0, 5).map(f => (
-                  <div
-                    key={f.icao24}
-                    onClick={() => { handleFlightSelect(f); dismissNearby() }}
-                    style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '4px 0', borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer',
-                    }}
-                  >
-                    <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 11, color: 'var(--text-primary)' }}>{f.callsign}</span>
-                    <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>{Math.round(f.altitude).toLocaleString('cs')} m</span>
-                  </div>
-                ))}
-                {nearbyFlights.length > 5 && (
-                  <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 4 }}>+{nearbyFlights.length - 5} dalších</div>
-                )}
-              </>
-            )}
-          </div>
-        )}
-
-        {/* GPS button */}
-        <button
-          onClick={handleLocateMe}
-          style={{
-            position: 'absolute',
-            bottom: `calc(${hasDataWarning ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
-            width: 36, height: 36, borderRadius: 8,
-            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
-            backdropFilter: 'blur(8px)', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16,
-          }}
-          aria-label="Najít mou polohu"
-          title="Najít mou polohu"
-        >
-          📍
-        </button>
-
-        {/* Fullscreen button — nad GPS */}
-        <button
-          onClick={toggleFullscreen}
-          className="fq-fullscreen-btn"
-          style={{
-            position: 'absolute',
-            bottom: `calc(${hasDataWarning ? 132 : 96}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
-            width: 36, height: 36, borderRadius: 8,
-            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
-            backdropFilter: 'blur(8px)', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 15,
-          }}
-          aria-label="Celá obrazovka (F)"
-          title="Celá obrazovka (F)"
-        >
-          ⛶
-        </button>
-
-        {/* StatusBar */}
-        <StatusBar flightCount={count} dataMeta={dataMeta} region={region} />
-      </div>
-
-      {/* Emergency radar banner */}
-      <EmergencyBanner
-        flights={flights}
-        onSelect={(f) => {
-          setSelectedFlight(f)
-          mapLocateFnRef.current?.(f.lat, f.lng)
-        }}
+    <div className={styles.page}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, '\\u003c') }}
       />
 
-      <style>{`
-        /* ── Desktop ── */
-        .fq-sidebar {
-          display: flex;
-          height: 100%;
-          flex-shrink: 0;
-        }
-        .fq-sidebar-overlay { display: none; }
-        .fq-detail-mobile  { display: none !important; }
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <FlyQueensLogo compact />
+          <nav className={styles.nav} aria-label="Hlavní navigace">
+            <Link href="/radar">Živá mapa</Link>
+            <Link href="/letiste">Letiště</Link>
+            <Link href="/stats">Statistiky</Link>
+            <Link href="/blog">Blog</Link>
+          </nav>
+          <Link href="/radar" className={styles.headerCta}>Otevřít radar</Link>
+        </div>
+      </header>
 
-        /* ── Mobile (≤ 768 px) ── */
-        @media (max-width: 768px) {
-          /* Sidebar jako drawer zprava */
-          .fq-sidebar {
-            display: flex;
-            position: fixed;
-            top: 0; left: 0;
-            height: 100dvh;
-            z-index: 2000;
-            width: min(300px, 82vw) !important;
-            transform: translateX(-100%);
-            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-          }
-          .fq-sidebar.fq-sidebar-open {
-            transform: translateX(0);
-            box-shadow: 8px 0 32px rgba(0,0,0,0.6);
-          }
-          .fq-sidebar-overlay {
-            display: block;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.55);
-            z-index: 1999;
-            backdrop-filter: blur(3px);
-          }
+      <main>
+        <section className={styles.hero}>
+          <div className={styles.heroGrid} aria-hidden="true" />
+          <div className={styles.heroGlow} aria-hidden="true" />
+          <div className={styles.container}>
+            <div className={styles.heroLayout}>
+              <div className={styles.heroCopy}>
+                <LiveFlightCount className={styles.liveFlightCount} dotClassName={styles.liveDot} />
+                <h1>
+                  Víš, co ti právě letí <span>nad hlavou.</span>
+                </h1>
+                <p>
+                  Živá mapa dostupného leteckého provozu nad Českem a okolím.
+                  Sleduj let, registraci nebo ICAO adresu v ADS-B datech — zdarma a bez registrace.
+                </p>
+                <form action="/radar" method="get" className={styles.search}>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>
+                  <input
+                    name="search"
+                    maxLength={10}
+                    autoComplete="off"
+                    aria-label="Číslo letu, registrace nebo ICAO adresa"
+                    placeholder="Číslo letu, registrace nebo ICAO — např. TVS123"
+                  />
+                  <button type="submit">Najít</button>
+                </form>
+                <div className={styles.popular}>
+                  <span>PROZKOUMAT:</span>
+                  <Link href="/letiste/praha">LKPR Praha</Link>
+                  <Link href="/letiste/brno">LKTB Brno</Link>
+                  <Link href="/stats">Statistiky</Link>
+                </div>
+              </div>
+              <RadarPreview />
+            </div>
+          </div>
+        </section>
 
-          /* Desktop detail panel skrytý, zobrazuje se bottom sheet */
-          .fq-detail-desktop { display: none !important; }
-          .fq-detail-mobile  { display: flex !important; }
+        <section className={styles.metrics} aria-label="Parametry živé mapy">
+          <div className={styles.metric}><strong>10 s</strong><span>obnova mapy</span></div>
+          <div className={styles.metric}><strong>250 NM</strong><span>poloměr oblasti</span></div>
+          <div className={styles.metric}><strong>30 km</strong><span>letadla nad tebou</span></div>
+          <div className={styles.metric}><strong>Zdarma</strong><span>bez registrace</span></div>
+        </section>
 
-          /* TopBar hamburger viditelný */
-          .fq-hamburger { display: inline-flex !important; }
+        <section className={styles.features}>
+          <div className={styles.container}>
+            <div className={styles.sectionHeading}>
+              <span>CO UMÍ DNES</span>
+              <h2>Mapa, která ukazuje to podstatné.</h2>
+              <p>Žádná vymyšlená síť ani falešné sliby. Jen funkce, které můžeš opravdu použít.</p>
+            </div>
+            <div className={styles.featureGrid}>
+              <article className={styles.featureCard}>
+                <div className={`${styles.featureIcon} ${styles.goldIcon}`}><FeatureIcon type="nearby" /></div>
+                <h3>Letadla nad tebou</h3>
+                <p>Najdi svou polohu a zobraz stroje v okruhu 30 km přímo na mapě.</p>
+              </article>
+              <article className={styles.featureCard}>
+                <div className={`${styles.featureIcon} ${styles.mintIcon}`}><FeatureIcon type="detail" /></div>
+                <h3>Detail bez hádání</h3>
+                <p>Výška, rychlost, kurz, registrace a další údaje jen tehdy, když je zdroj skutečně poskytne.</p>
+              </article>
+              <article className={styles.featureCard}>
+                <div className={`${styles.featureIcon} ${styles.blueIcon}`}><FeatureIcon type="status" /></div>
+                <h3>Stav dat bez mlžení</h3>
+                <p>Vždy vidíš zdroj i to, zda jsou data živá, poslední známá, nebo nedostupná.</p>
+              </article>
+            </div>
+            <div className={styles.featureAction}>
+              <div>
+                <span>ŽIVÝ RADAR</span>
+                <h3>Podívej se, co je ve vzduchu právě teď.</h3>
+              </div>
+              <Link href="/radar">Otevřít mapu <span aria-hidden="true">→</span></Link>
+            </div>
+          </div>
+        </section>
 
-          /* Filter chips + region — jen emoji/vlajka, text skrytý */
-          .fq-chip-label  { display: none !important; }
-          .fq-region-label { display: none !important; }
-          .fq-filters {
-            gap: 5px !important;
-          }
-        }
+        <section className={styles.contentSection}>
+          <div className={styles.container}>
+            <div className={styles.sectionHeading}>
+              <span>PŘED ODLETEM</span>
+              <h2>Letiště bez zbytečného hledání.</h2>
+              <p>Praktické průvodce, parkování a živý provoz pro hlavní česká letiště.</p>
+            </div>
+            <div className={styles.airportGrid}>
+              {AIRPORTS.map((airport) => (
+                <Link href={airport.href} key={airport.code} className={styles.airportCard}>
+                  <span className={styles.airportCode}>{airport.code}</span>
+                  <span><strong>{airport.city}</strong><small>{airport.note}</small></span>
+                  <span className={styles.arrow} aria-hidden="true">↗</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        @media (min-width: 769px) {
-          .fq-hamburger { display: none !important; }
-        }
+        <section className={styles.journal}>
+          <div className={styles.container}>
+            <div className={styles.journalTop}>
+              <div className={styles.sectionHeading}>
+                <span>LETECKÝ DENÍK</span>
+                <h2>Rozuměj tomu, co vidíš.</h2>
+              </div>
+              <Link href="/blog">Všechny články →</Link>
+            </div>
+            <div className={styles.articleGrid}>
+              {latestPosts.map((post, index) => (
+                <Link href={`/blog/${post.slug}`} key={post.slug} className={styles.articleCard}>
+                  <span className={styles.articleNumber}>0{index + 1}</span>
+                  <h3>{post.title}</h3>
+                  <span className={styles.articleLink}>Číst článek →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
 
-        /* Bottom sheet animace */
-        @keyframes slideUp {
-          from { transform: translateY(100%); opacity: 0; }
-          to   { transform: translateY(0);   opacity: 1; }
-        }
-        .bottom-sheet-enter {
-          animation: slideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .handle-bar {
-          width: 36px; height: 4px;
-          background: var(--border-mid);
-          border-radius: 2px;
-          margin: 0 auto 14px;
-        }
-      `}</style>
+      <footer className={styles.footer}>
+        <div className={styles.footerInner}>
+          <FlyQueensLogo showTagline />
+          <p>Dostupná ADS-B data pro zajímavost. Nejsou určena pro navigaci ani krizové rozhodování.</p>
+          <nav aria-label="Odkazy v patičce">
+            <Link href="/radar">Živá mapa</Link>
+            <Link href="/o-projektu">O projektu a datech</Link>
+            <Link href="/letiste">Letiště</Link>
+            <Link href="/blog">Blog</Link>
+          </nav>
+          <small>© 2026 FLYQUEENS.CZ</small>
+        </div>
+      </footer>
     </div>
-
-    {/* Indexovatelný obsah pod mapou — SEO + interní odkazy */}
-    <HomeSeoSection />
-    </>
   )
 }
