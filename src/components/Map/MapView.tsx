@@ -533,9 +533,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     } catch { /* mapa ještě není připravená — ignoruj */ }
   }, [selectedFlight])
 
-  // Orientační route arc — jedna souvislá spojnice DEP → ARR.
-  // Aktuální poloha letadla do geometrie nevstupuje: ADS-B bod nemusí ležet
-  // na velké kružnici a trasa by pak působila, že začíná nebo se láme u stroje.
+  // Orientační route arc — souvislá spojnice DEP → aktuální ADS-B bod → ARR.
+  // Díky tomu je vždy jasné, ke kterému letadlu trasa patří, ale současně
+  // zůstává zřetelně ukotvená v obou letištích.
   useEffect(() => {
     if (!mapRef.current) return
     const { map, L } = mapRef.current
@@ -552,21 +552,32 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     // Když neznáme oba konce, raději žádnou čáru nevymýšlíme.
     if (!departure || !arrival) return
 
-    const routePts = greatCirclePoints(
+    const flownPts = greatCirclePoints(
       departure.lat,
       departure.lng,
+      selectedFlight.lat,
+      selectedFlight.lng,
+      50,
+    )
+    const remainPts = greatCirclePoints(
+      selectedFlight.lat,
+      selectedFlight.lng,
       arrival.lat,
       arrival.lng,
-      100,
+      70,
     )
-    const splitIndex = Math.max(
-      1,
-      Math.min(routePts.length - 2, Math.round((selectedRoute.progress / 100) * (routePts.length - 1))),
-    )
+    const routePts = [...flownPts, ...remainPts.slice(1)]
 
-    // Obě barvy jsou výřezy stejné letiště–letiště křivky, takže na sebe
-    // přesně navazují. Předěl pouze orientačně znázorňuje odhad postupu letu.
-    const flownPts = routePts.slice(0, splitIndex + 1)
+    // Jemný podklad spojí celou trasu do jednoho vizuálního celku. Barevné
+    // části se potkají přesně pod markerem letadla.
+    const routeBase = L.polyline(routePts, {
+      color: '#172033',
+      weight: 6,
+      opacity: 0.28,
+      smoothFactor: 1,
+      className: 'fq-route-line fq-route-base',
+    })
+
     const flownArc = L.polyline(flownPts, {
       color: '#5AA9FF',
       weight: 3,
@@ -576,7 +587,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       className: 'fq-route-line fq-route-flown',
     })
 
-    const remainPts = routePts.slice(splitIndex)
     const remainArc = L.polyline(remainPts, {
       color: '#F5B83D',
       weight: 3.5,
@@ -595,7 +605,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       iconAnchor: [42, 12],
     })
 
-    const routeLayers: Layer[] = [flownArc, remainArc]
+    const routeLayers: Layer[] = [routeBase, flownArc, remainArc]
     const depCode = departure.iata || departure.icao || 'ODLET'
     routeLayers.push(L.marker([departure.lat, departure.lng], {
       icon: endpointIcon(depCode, 'departure'), interactive: false,
