@@ -186,9 +186,7 @@ export default function StatsPage() {
 
       {/* Nav */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <button className="btn-cta" style={{ fontSize: 10, padding: '5px 14px' }}>← MAPA</button>
-        </Link>
+        <Link href="/radar" className="btn-cta" style={{ fontSize: 10, padding: '5px 14px', textDecoration: 'none' }}>← MAPA</Link>
         <span className="font-display" style={{ fontSize: 20, fontWeight: 800, color: 'var(--gold)', letterSpacing: 2 }}>STATISTIKY</span>
         <div style={{ flex: 1 }} />
         <button onClick={toggleTheme} style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 14 }}>

@@ -39,7 +39,7 @@ export default function BlogIndexPage() {
                 <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>{p.tag}</div>
                 <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 18, fontWeight: 800, lineHeight: 1.25, marginBottom: 6 }}>{p.title}</div>
                 <div style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 8 }}>{p.excerpt}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{p.dateLabel} · Číst →</div>
+                <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{p.dateLabel} · {p.readingTime} · Číst →</div>
               </article>
             </Link>
           ))}

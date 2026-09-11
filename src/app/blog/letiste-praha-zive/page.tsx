@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { RelatedReading } from '@/components/UI/RelatedReading'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('letiste-praha-zive')!
@@ -25,8 +26,13 @@ const jsonLd = {
   headline: post.title,
   datePublished: post.date,
   dateModified: '2026-09-11',
+  description: 'Praktický návod ke sledování letadel u pražského letiště pomocí živé ADS-B mapy, webkamery a oficiální tabule letů.',
+  image: 'https://www.flyqueens.cz/social-preview.png',
+  inLanguage: 'cs-CZ',
+  timeRequired: 'PT6M',
   author: { '@type': 'Organization', name: 'FlyQueens' },
   publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
 }
 
@@ -38,7 +44,6 @@ const S = {
 export default function ZiveArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      { }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
@@ -52,7 +57,7 @@ export default function ZiveArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Letiště Praha živě: jak sledovat letadla nad Ruzyní online
         </h1>
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
 
         <p style={S.p}>
           Někdo čeká na babičku z Barcelony a chce vědět, jestli už doletěla. Někoho jen baví koukat, co se
@@ -76,6 +81,38 @@ export default function ZiveArticle() {
           deset kilometrů daleko ve tmě, protože nepracuje s obrazem, ale s daty.
         </p>
 
+        <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead>
+              <tr style={{ textAlign: 'left', color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Zdroj</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Ukáže</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Nejlepší použití</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Živá mapa', 'polohu, výšku, rychlost', 'kde letadlo právě je'],
+                ['Webkamera', 'skutečný obraz části letiště', 'počasí a atmosféra'],
+                ['Tabule letiště', 'stav, čas a terminál', 'cesta na letiště'],
+              ].map(([source, shows, use]) => (
+                <tr key={source}>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontWeight: 700 }}>{source}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)' }}>{shows}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>{use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style={S.h2}>PRG, LKPR nebo Ruzyně: jaký je mezi nimi rozdíl?</h2>
+        <p style={S.p}>
+          PRG je třípísmenný IATA kód používaný cestujícími, aerolinkami a rezervačními systémy. LKPR je
+          čtyřpísmenný ICAO kód používaný v leteckém provozu. Ruzyně je původní a stále běžně používané
+          místní označení. Všechny tři názvy odkazují na Letiště Václava Havla Praha.
+        </p>
+
         <h2 style={S.h2}>Jak vlastně mapa ví, kde letadlo je?</h2>
         <p style={S.p}>
           Vybavené letadlo vysílá přes ADS-B identitu, polohu a další údaje odvozené z palubních systémů.
@@ -91,6 +128,14 @@ export default function ZiveArticle() {
           sama ale nepotvrzuje, na které letiště míří.
         </p>
 
+        <h2 style={S.h2}>Jak najít konkrétní let</h2>
+        <p style={S.p}>
+          Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru OK123 nebo
+          FR1234. Vyhledávání umí pracovat také s registrací letadla a ICAO adresou. Pokud číslo nic nenajde,
+          letadlo ještě nemusí být ve sledované oblasti, nemusí vysílat použitelnou polohu nebo používá jiný
+          volací znak. V takovém případě ověřte stav na oficiální tabuli letiště.
+        </p>
+
         <h2 style={S.h2}>Kdy je nad Prahou nejvíc rušno</h2>
         <p style={S.p}>
           Intenzita se mění podle aktuálního letového řádu, dne a sezóny. Nejspolehlivější je otevřít živou
@@ -102,6 +147,14 @@ export default function ZiveArticle() {
           Mapa je dobrá pro orientaci, kde se zachycené letadlo nachází. Pro vyzvednutí cestujícího ale berte
           jako autoritativní oficiální tabuli letiště: veřejná ADS-B data mohou mít zpoždění, výpadek pokrytí
           nebo chybné přiřazení trasy.
+        </p>
+
+        <h2 style={S.h2}>Co řešit před cestou na letiště</h2>
+        <p style={S.p}>
+          Živá mapa pomůže zjistit, zda se letadlo blíží, nenahrazuje ale potvrzený čas příletu ani číslo
+          terminálu. Před odjezdem zkontrolujte oficiální stav letu. Pokud jedete autem, podívejte se také na
+          náš <Link href="/letiste/praha/parkovani" style={{ color: 'var(--gold)' }}>přehled parkování u Letiště Praha</Link>;
+          rozdíl mezi krátkým vyzvednutím a vícedenním stáním může být výrazný.
         </p>
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
@@ -119,6 +172,23 @@ export default function ZiveArticle() {
             </Link>
           </div>
         </div>
+
+        <RelatedReading
+          items={[
+            {
+              href: '/letiste/praha/parkovani',
+              eyebrow: 'Prakticky před cestou',
+              title: 'Parkování u Letiště Praha: možnosti a ceny',
+              description: 'Kde zastavit při vyzvednutí a co porovnat při delším stání.',
+            },
+            {
+              href: '/blog/jak-vysoko-letaji-letadla',
+              eyebrow: 'Jak to funguje',
+              title: 'Jak vysoko létají letadla a co znamená FL350',
+              description: 'Výška v metrech, stopách a letových hladinách bez zbytečných zkratek.',
+            },
+          ]}
+        />
 
         <SourcesBox
           sources={[

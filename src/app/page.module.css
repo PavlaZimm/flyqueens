@@ -243,7 +243,80 @@
   box-shadow: 0 34px 100px rgba(0, 0, 0, .38);
 }
 
-.radarGraphic { width: 100%; height: 100%; display: block; }
+.radarGraphic {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scopeGrid circle,
+.scopeGrid path {
+  fill: none;
+  stroke: #4fe0b0;
+  stroke-opacity: .17;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.scopeGrid path {
+  stroke-opacity: .08;
+  stroke-dasharray: 3 8;
+}
+
+.radarSweep {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: radarRotation 6.8s linear infinite;
+}
+
+.radarSweep > path:last-child {
+  fill: none;
+  stroke: #4fe0b0;
+  stroke-linecap: round;
+  stroke-opacity: .8;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 5px rgba(79, 224, 176, .7));
+}
+
+.radarPulse {
+  fill: none;
+  stroke: #4fe0b0;
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: radarPulse 2.8s ease-out infinite;
+}
+
+.liveAircraft {
+  fill: #91a3ba;
+  opacity: .76;
+  transform-box: view-box;
+  transform-origin: 0 0;
+  transition: transform 1.8s linear, opacity 300ms ease;
+}
+
+.liveAircraft path {
+  filter: drop-shadow(0 0 4px rgba(145, 163, 186, .46));
+}
+
+.primaryAircraft {
+  fill: #f5b83d;
+  opacity: 1;
+}
+
+.primaryAircraft path {
+  filter: drop-shadow(0 0 6px rgba(245, 184, 61, .75));
+}
+
+.aircraftPing {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: .42;
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: aircraftPing 2.4s ease-out infinite;
+}
 
 .radarStatus {
   position: absolute;
@@ -264,15 +337,24 @@
 
 .radarStatusDot { width: 6px; height: 6px; border-radius: 50%; background: #4fe0b0; }
 
+.radarStatus[data-status='stale'] {
+  border-color: rgba(245, 184, 61, .28);
+  color: #f5b83d;
+}
+
+.radarStatus[data-status='stale'] .radarStatusDot { background: #f5b83d; }
+.radarStatus[data-status='unavailable'] { border-color: #22304a; color: #8698b0; }
+.radarStatus[data-status='unavailable'] .radarStatusDot { background: #61728a; }
+
 .radarLabel {
   position: absolute;
   right: 20px;
-  bottom: 20px;
-  min-width: 205px;
+  top: 18px;
+  min-width: 190px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 17px;
+  padding: 12px 14px;
   border: 1px solid #22304a;
   border-radius: 9px;
   background: rgba(11, 17, 27, .94);
@@ -287,8 +369,79 @@
 }
 .radarLabel span { color: #61728a; font-size: 9px; letter-spacing: .14em; }
 .radarLabel strong { font-family: var(--font-archivo), Archivo, sans-serif; font-size: 17px; }
-.radarLabel small { color: #8698b0; font-size: 9px; }
-.radarScale { position: absolute; left: 20px; bottom: 20px; color: #61728a; font-size: 9px; letter-spacing: .14em; }
+.radarLabel small { color: #8698b0; font-size: 8px; }
+
+.trafficProfile {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(34, 48, 74, .9);
+  border-radius: 9px;
+  background: rgba(7, 12, 20, .91);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .24);
+  backdrop-filter: blur(10px);
+}
+
+.profileHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 9px;
+  color: #61728a;
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+
+.profileHeader > span:last-child { color: #a8b6c8; letter-spacing: .02em; }
+.profileHeader i { margin: 0 5px; color: #4a5a72; font-style: normal; }
+
+.profileBars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.profileRow {
+  display: grid;
+  grid-template-columns: auto minmax(32px, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  color: #8698b0;
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.profileRow > div {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #172236;
+}
+
+.profileRow > div i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #4fe0b0;
+  box-shadow: 0 0 8px rgba(79, 224, 176, .32);
+  transition: width 600ms ease;
+}
+
+.profileRow strong { min-width: 15px; color: #e9eef6; font-weight: 500; text-align: right; }
+
+.radarScale {
+  position: absolute;
+  left: 20px;
+  bottom: 105px;
+  color: #61728a;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
 
 .metrics {
   display: grid;
@@ -429,6 +582,20 @@
   50% { opacity: .52; transform: scale(.86); }
 }
 
+@keyframes radarRotation {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes radarPulse {
+  0% { opacity: .72; transform: scale(.35); }
+  75%, 100% { opacity: 0; transform: scale(5.2); }
+}
+
+@keyframes aircraftPing {
+  0%, 45% { opacity: .45; transform: scale(.65); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
 @media (max-width: 960px) {
   .heroLayout { grid-template-columns: 1fr; gap: 52px; }
   .heroCopy { max-width: 690px; }
@@ -455,8 +622,15 @@
   .search button { width: 100%; min-height: 43px; }
   .radarCard { aspect-ratio: .96; }
   .radarGraphic { width: 128%; max-width: none; transform: translateX(-11%); }
-  .radarLabel { right: 13px; bottom: 13px; min-width: 180px; }
-  .radarScale { left: 13px; bottom: 13px; }
+  .radarStatus { top: 13px; left: 13px; }
+  .radarLabel { top: 13px; right: 13px; min-width: 148px; padding: 10px 11px; }
+  .radarLabel strong { font-size: 14px; }
+  .radarLabel small { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trafficProfile { right: 13px; bottom: 13px; left: 13px; padding: 11px; }
+  .profileHeader { gap: 8px; }
+  .profileBars { gap: 7px; }
+  .profileRow { grid-template-columns: minmax(42px, auto) minmax(20px, 1fr) auto; gap: 4px; font-size: 7px; }
+  .radarScale { display: none; }
   .metrics { grid-template-columns: repeat(2, 1fr); }
   .metric { min-height: 105px; border-bottom: 1px solid #22304a; }
   .metric:nth-child(2) { border-right: 0; }
@@ -477,4 +651,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .liveDot[data-status='live'] { animation: none; }
+  .radarSweep,
+  .radarPulse,
+  .aircraftPing { animation: none; }
+  .liveAircraft,
+  .profileRow > div i { transition: none; }
 }

@@ -12,10 +12,121 @@ type SourceResult = {
 }
 type CachedSnapshot = SourceResult & { cachedAt: number }
 
+type FlightSummary = {
+  count: number
+  airborne: number
+  onGround: number
+  avgAltitude: number
+  avgSpeed: number
+  phases: {
+    climbing: number
+    cruising: number
+    descending: number
+  }
+  altitudeBands: {
+    low: number
+    medium: number
+    high: number
+  }
+  radar: Array<{
+    id: string
+    callsign: string
+    x: number
+    y: number
+    heading: number
+    altitude: number
+  }>
+}
+
 const lastGoodSnapshots = new Map<string, CachedSnapshot>()
 const inFlightRequests = new Map<string, Promise<SourceResult>>()
 const LIVE_CACHE_MS = 10_000
 const MAX_STALE_MS = 5 * 60_000
+
+function finiteNumber(value: unknown): number | null {
+  if (value == null || value === '') return null
+  const number = Number(value)
+  return Number.isFinite(number) ? number : null
+}
+
+function summarizeStates(
+  states: unknown[][],
+  region: (typeof REGION_CONFIGS)[string],
+): FlightSummary {
+  const valid = states.flatMap((state) => {
+    const lat = finiteNumber(state[6])
+    const lon = finiteNumber(state[5])
+    if (lat == null || lon == null) return []
+
+    const altitude = Math.max(0, finiteNumber(state[7]) ?? 0)
+    const speed = Math.max(0, (finiteNumber(state[9]) ?? 0) * 3.6)
+    const extendedRate = finiteNumber(state[22])
+    // Nativní OpenSky má vertical_rate na indexu 11 v m/s, rozšířený ADS-B
+    // formát ukládá barometrické stoupání na indexu 22 ve ft/min.
+    const verticalRate = extendedRate ?? ((finiteNumber(state[11]) ?? 0) * 196.85)
+
+    return [{
+      id: String(state[0] ?? ''),
+      callsign: String(state[1] ?? '').trim() || String(state[0] ?? '').toUpperCase(),
+      lat,
+      lon,
+      altitude,
+      speed,
+      heading: finiteNumber(state[10]) ?? 0,
+      onGround: Boolean(state[8]),
+      verticalRate,
+    }]
+  })
+
+  const airborne = valid.filter((flight) => !flight.onGround)
+  const sum = (values: number[]) => values.reduce((total, value) => total + value, 0)
+  const average = (values: number[]) => values.length ? Math.round(sum(values) / values.length) : 0
+
+  const phases = airborne.reduce((result, flight) => {
+    if (flight.verticalRate > 300) result.climbing += 1
+    else if (flight.verticalRate < -300) result.descending += 1
+    else result.cruising += 1
+    return result
+  }, { climbing: 0, cruising: 0, descending: 0 })
+
+  const altitudeBands = airborne.reduce((result, flight) => {
+    if (flight.altitude < 3_000) result.low += 1
+    else if (flight.altitude < 9_000) result.medium += 1
+    else result.high += 1
+    return result
+  }, { low: 0, medium: 0, high: 0 })
+
+  // Stabilní malý vzorek skutečných letadel pro náhled. Kružnice v SVG má
+  // poloměr 150 px a představuje poloměr dotazované oblasti v námořních mílích.
+  const radar = airborne
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .filter((_, index, flights) => index % Math.max(1, Math.floor(flights.length / 12)) === 0)
+    .slice(0, 12)
+    .map((flight) => {
+      const longitudeNm = (flight.lon - region.lon) * 60 * Math.cos(region.lat * Math.PI / 180)
+      const latitudeNm = (flight.lat - region.lat) * 60
+      return {
+        id: flight.id,
+        callsign: flight.callsign,
+        x: Math.round((420 + longitudeNm * 150 / region.dist) * 10) / 10,
+        y: Math.round((270 - latitudeNm * 150 / region.dist) * 10) / 10,
+        heading: Math.round(flight.heading),
+        altitude: Math.round(flight.altitude),
+      }
+    })
+    .filter((flight) => Math.hypot(flight.x - 420, flight.y - 270) <= 153)
+
+  return {
+    count: valid.length,
+    airborne: airborne.length,
+    onGround: valid.length - airborne.length,
+    avgAltitude: average(airborne.map((flight) => flight.altitude)),
+    avgSpeed: average(airborne.map((flight) => flight.speed)),
+    phases,
+    altitudeBands,
+    radar,
+  }
+}
 
 function unixSeconds(value: number | undefined): number {
   const timestamp = value ?? Date.now()
@@ -153,11 +264,16 @@ async function fetchEnabledAirplanesLive(region: (typeof REGION_CONFIGS)[string]
   }
 }
 
-function liveResponse(result: SourceResult, regionKey: string, summaryOnly: boolean) {
+function liveResponse(
+  result: SourceResult,
+  regionKey: string,
+  region: (typeof REGION_CONFIGS)[string],
+  summaryOnly: boolean,
+) {
   return NextResponse.json(
     summaryOnly
       ? {
-          count: result.states.length,
+          ...summarizeStates(result.states, region),
           source: result.source,
           fetchedAt: result.fetchedAt,
           status: 'live',
@@ -220,14 +336,14 @@ export async function GET(req: NextRequest) {
   try {
     // Zdroje běží souběžně. Výpadek jednoho už nezablokuje uživatele součtem timeoutů.
     const result = await getLiveSnapshot(regionKey, region)
-    return liveResponse(result, regionKey, summaryOnly)
+    return liveResponse(result, regionKey, region, summaryOnly)
   } catch (error) {
     console.error(`[FlyQueens] All live flight sources failed for ${regionKey}`, error)
     const cached = lastGoodSnapshots.get(regionKey)
     if (cached && Date.now() - cached.cachedAt <= MAX_STALE_MS) {
       return NextResponse.json(
         {
-          ...(summaryOnly ? { count: cached.states.length } : { states: cached.states }),
+          ...(summaryOnly ? summarizeStates(cached.states, region) : { states: cached.states }),
           source: cached.source,
           fetchedAt: cached.fetchedAt,
           status: 'stale',

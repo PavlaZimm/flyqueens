@@ -7,6 +7,7 @@ export interface BlogPost {
   date: string        // ISO, pro řazení a schema
   dateLabel: string   // hezky česky
   tag: string
+  readingTime: string
 }
 
 export const POSTS: BlogPost[] = [
@@ -17,6 +18,7 @@ export const POSTS: BlogPost[] = [
     date: '2026-07-20',
     dateLabel: '20. července 2026',
     tag: 'Jak to funguje',
+    readingTime: '6 min čtení',
   },
   {
     slug: 'letiste-praha-zive',
@@ -25,6 +27,7 @@ export const POSTS: BlogPost[] = [
     date: '2026-07-19',
     dateLabel: '19. července 2026',
     tag: 'Návod',
+    readingTime: '6 min čtení',
   },
   {
     slug: 'squawk-nouzove-kody',
@@ -33,6 +36,7 @@ export const POSTS: BlogPost[] = [
     date: '2026-07-19',
     dateLabel: '19. července 2026',
     tag: 'Jak to funguje',
+    readingTime: '5 min čtení',
   },
 ]
 

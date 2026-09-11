@@ -2,17 +2,18 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
+import { LiveRadarPreview } from '@/components/Landing/LiveRadarPreview'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Živá mapa letadel nad Evropou | FlyQueens',
-  description: 'Zjistěte, co vám právě letí nad hlavou. FlyQueens zobrazuje dostupná živá ADS-B data ve vybraných oblastech Evropy.',
+  description: 'Sledujte letadla online na živé mapě. Zjistěte dostupnou polohu, výšku, rychlost a trasu letů ve vybraných oblastech Evropy.',
   alternates: { canonical: 'https://www.flyqueens.cz' },
   ...socialMetadata({
     title: 'Živá mapa letadel nad Evropou | FlyQueens',
-    description: 'Zjistěte, co vám právě letí nad hlavou. Živá mapa dostupných ADS-B dat ve vybraných oblastech Evropy.',
+    description: 'Zjistěte, co vám právě letí nad hlavou. Poloha, výška, rychlost a dostupná trasa na živé mapě letadel.',
     url: 'https://www.flyqueens.cz',
   }),
 }
@@ -30,49 +31,6 @@ function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {
     status: <><path d="M4 12.5 9 17l11-11" /><circle cx="12" cy="12" r="9" /></>,
   }
   return <svg aria-hidden="true" viewBox="0 0 24 24">{paths[type]}</svg>
-}
-
-function RadarPreview() {
-  return (
-    <div className={styles.radarCard} aria-hidden="true">
-      <svg className={styles.radarGraphic} viewBox="0 0 680 520" role="presentation">
-        <defs>
-          <radialGradient id="radar-glow" cx="70%" cy="40%" r="55%">
-            <stop offset="0" stopColor="#4FE0B0" stopOpacity=".2" />
-            <stop offset="1" stopColor="#4FE0B0" stopOpacity="0" />
-          </radialGradient>
-          <pattern id="radar-grid" width="58" height="58" patternUnits="userSpaceOnUse">
-            <path d="M58 0H0V58" fill="none" stroke="#22304A" strokeOpacity=".62" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="680" height="520" fill="url(#radar-grid)" />
-        <rect width="680" height="520" fill="url(#radar-glow)" />
-        <circle cx="420" cy="270" r="82" fill="none" stroke="#4FE0B0" strokeOpacity=".28" />
-        <circle cx="420" cy="270" r="150" fill="none" stroke="#4FE0B0" strokeOpacity=".14" />
-        <path d="M42 425C160 390 235 342 330 280S510 165 652 142" fill="none" stroke="#5AA9FF" strokeOpacity=".7" strokeDasharray="7 10" strokeWidth="2" />
-        <path d="M70 110C185 145 290 218 400 266S555 350 645 430" fill="none" stroke="#F5B83D" strokeOpacity=".62" strokeDasharray="7 10" strokeWidth="2" />
-        <g transform="translate(318 276) rotate(-31)" fill="#E9EEF6">
-          <path d="M0-17 4-4l16 8v5L4 6 2 19h-4L-4 6l-16 3V4l16-8 4-13Z" />
-        </g>
-        <g transform="translate(495 219) rotate(36)" fill="#4FE0B0">
-          <path d="M0-13 3-3l12 6v4L3 5 1 14h-2L-3 5l-12 2V3l12-6 3-10Z" />
-        </g>
-        <g transform="translate(190 356) rotate(52)" fill="#8698B0">
-          <path d="M0-11 3-2l10 5v3L3 4 1 12h-2L-3 4l-10 2V3l10-5 3-9Z" />
-        </g>
-      </svg>
-      <div className={styles.radarStatus}>
-        <span className={styles.radarStatusDot} />
-        ADS-B LIVE
-      </div>
-      <div className={styles.radarLabel}>
-        <span>AKTUÁLNÍ OBLAST</span>
-        <strong>Česko + okolí</strong>
-        <small>obnova mapy každých 10 s</small>
-      </div>
-      <div className={styles.radarScale}>250 NM</div>
-    </div>
-  )
 }
 
 export default function HomePage() {
@@ -118,8 +76,8 @@ export default function HomePage() {
                   Víš, co ti právě letí <span>nad hlavou.</span>
                 </h1>
                 <p>
-                  Živá mapa dostupného leteckého provozu nad Českem a okolím.
-                  Sleduj let, registraci nebo ICAO adresu v ADS-B datech — zdarma a bez registrace.
+                  Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.
+                  Sleduj živá ADS-B data ve vybraných oblastech Evropy — zdarma a bez účtu.
                 </p>
                 <form action="/radar" method="get" className={styles.search}>
                   <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>
@@ -128,18 +86,18 @@ export default function HomePage() {
                     maxLength={10}
                     autoComplete="off"
                     aria-label="Číslo letu, registrace nebo ICAO adresa"
-                    placeholder="Číslo letu, registrace nebo ICAO — např. TVS123"
+                    placeholder="Let, registrace nebo ICAO — např. TVS123"
                   />
                   <button type="submit">Najít</button>
                 </form>
                 <div className={styles.popular}>
-                  <span>PROZKOUMAT:</span>
+                  <span>RYCHLÉ ODKAZY:</span>
                   <Link href="/letiste/praha">LKPR Praha</Link>
                   <Link href="/letiste/brno">LKTB Brno</Link>
                   <Link href="/stats">Statistiky</Link>
                 </div>
               </div>
-              <RadarPreview />
+              <LiveRadarPreview />
             </div>
           </div>
         </section>
@@ -155,8 +113,8 @@ export default function HomePage() {
           <div className={styles.container}>
             <div className={styles.sectionHeading}>
               <span>CO UMÍ DNES</span>
-              <h2>Mapa, která ukazuje to podstatné.</h2>
-              <p>Žádná vymyšlená síť ani falešné sliby. Jen funkce, které můžeš opravdu použít.</p>
+              <h2>Živá data bez zbytečného hledání.</h2>
+              <p>Poloha, výška, rychlost, směr a dostupná trasa letadla na jednom místě — včetně informace o zdroji a čerstvosti dat.</p>
             </div>
             <div className={styles.featureGrid}>
               <article className={styles.featureCard}>
@@ -229,7 +187,7 @@ export default function HomePage() {
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
           <FlyQueensLogo showTagline />
-          <p>Dostupná ADS-B data pro zajímavost. Nejsou určena pro navigaci ani krizové rozhodování.</p>
+          <p>FlyQueens zobrazuje dostupná veřejná ADS-B data. Mapa je informační a není určena pro navigaci ani bezpečnostní rozhodování.</p>
           <nav aria-label="Odkazy v patičce">
             <Link href="/radar">Živá mapa</Link>
             <Link href="/o-projektu">O projektu a datech</Link>

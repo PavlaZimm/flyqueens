@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { RelatedReading } from '@/components/UI/RelatedReading'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('squawk-nouzove-kody')!
@@ -25,8 +26,13 @@ const jsonLd = {
   headline: post.title,
   datePublished: post.date,
   dateModified: '2026-09-11',
+  description: 'Význam nouzových squawk kódů 7700, 7600 a 7500, princip odpovídače a správné čtení upozornění na živé mapě.',
+  image: 'https://www.flyqueens.cz/social-preview.png',
+  inLanguage: 'cs-CZ',
+  timeRequired: 'PT5M',
   author: { '@type': 'Organization', name: 'FlyQueens' },
   publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody',
 }
 
@@ -38,7 +44,6 @@ const S = {
 export default function SquawkArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      { }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
@@ -52,7 +57,7 @@ export default function SquawkArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel
         </h1>
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
 
         <p style={S.p}>
           Když se ztratí rádiové spojení, posádka může na odpovídači nastavit vyhrazený čtyřmístný kód.
@@ -66,6 +71,31 @@ export default function SquawkArticle() {
             <b>7700</b> označuje obecnou nouzi, <b>7600</b> poruchu rádiového spojení a <b>7500</b>
             protiprávní zásah. Jde o mezinárodně vyhrazené kódy; samotný kód ale neříká všechny okolnosti události.
           </p>
+        </div>
+
+        <div style={{ overflowX: 'auto', margin: '18px 0 8px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+            <thead>
+              <tr style={{ textAlign: 'left', color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Squawk</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Význam</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Co z něj nepoznáte</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['7700', 'obecná nouze', 'konkrétní příčinu'],
+                ['7600', 'porucha spojení', 'zda selhal příjem, vysílání, nebo obojí'],
+                ['7500', 'protiprávní zásah', 'okolnosti a reakci bezpečnostních složek'],
+              ].map(([code, meaning, limit]) => (
+                <tr key={code}>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>{code}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', fontWeight: 600 }}>{meaning}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>{limit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         <h2 style={S.h2}>Co je squawk a odpovídač</h2>
@@ -109,6 +139,20 @@ export default function SquawkArticle() {
           určit příčinu, proto je upozornění informační, ne oficiální bezpečnostní hlášení.
         </p>
 
+        <h2 style={S.h2}>Znamená squawk 7700, že letadlo havaruje?</h2>
+        <p style={S.p}>
+          Ne. Kód 7700 pouze říká, že posádka nebo systém signalizuje obecnou nouzovou situaci. Veřejná mapa
+          neukazuje komunikaci s řízením ani důvod nastavení kódu. Let může pokračovat, změnit trasu, vrátit se
+          nebo bezpečně přistát. Bez potvrzení aerolinky, letiště či úřadů proto není správné domýšlet příčinu.
+        </p>
+
+        <h2 style={S.h2}>Proč se upozornění může rychle ztratit?</h2>
+        <p style={S.p}>
+          Posádka může po pokynu řízení nastavit jiný kód, letadlo může opustit pokrytou oblast nebo může
+          vypadnout veřejný datový zdroj. Krátké zobrazení tedy samo o sobě nepotvrzuje ani nevyvrací událost.
+          FlyQueens ukazuje poslední dostupný signál a jeho stav, nikoli oficiální závěr vyšetřování.
+        </p>
+
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Podívejte se, co letí právě teď</div>
           <p style={{ ...S.p, marginBottom: 12 }}>
@@ -118,6 +162,23 @@ export default function SquawkArticle() {
             Otevřít živou mapu
           </Link>
         </div>
+
+        <RelatedReading
+          items={[
+            {
+              href: '/blog/jak-vysoko-letaji-letadla',
+              eyebrow: 'Jak to funguje',
+              title: 'Výška letadel, letové hladiny a FL350',
+              description: 'Co přesně znamená číslo výšky zobrazené u letadla na mapě.',
+            },
+            {
+              href: '/blog/letiste-praha-zive',
+              eyebrow: 'Praktický návod',
+              title: 'Jak sledovat letadla nad Prahou online',
+              description: 'Jak kombinovat živou mapu, webkameru a oficiální tabuli letiště.',
+            },
+          ]}
+        />
 
         <SourcesBox
           sources={[

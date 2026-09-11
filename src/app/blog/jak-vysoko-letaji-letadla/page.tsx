@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { RelatedReading } from '@/components/UI/RelatedReading'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
@@ -25,8 +26,13 @@ const jsonLd = {
   headline: post.title,
   datePublished: post.date,
   dateModified: '2026-09-11',
+  description: 'Obvyklé výšky dopravních i malých letadel, význam letové hladiny a rozdíl mezi výškou nad mořem a nad zemí.',
+  image: 'https://www.flyqueens.cz/social-preview.png',
+  inLanguage: 'cs-CZ',
+  timeRequired: 'PT6M',
   author: { '@type': 'Organization', name: 'FlyQueens' },
   publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
 }
 
@@ -59,7 +65,7 @@ export default function VyskaArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Jak vysoko létají letadla a proč zrovna deset kilometrů
         </h1>
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
 
         <p style={S.p}>
           Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte.
@@ -113,11 +119,47 @@ export default function VyskaArticle() {
           Není to totéž co přesná geometrická výška nad terénem, protože skutečný tlak a teplota se mění.
         </p>
 
+        <h2 style={S.h2}>Kolik metrů je jedna stopa a FL350?</h2>
+        <p style={S.p}>
+          Jedna stopa má přesně 0,3048 metru. Výška 35 000 stop tedy odpovídá přibližně 10 668 metrům.
+          Označení FL350 ale není prostý údaj z výškoměru nad zemí: jde o tlakovou hladinu při standardním
+          nastavení tlaku. Proto se údaj může lišit od skutečné geometrické výšky.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 8, margin: '16px 0 8px' }}>
+          {[
+            ['FL100', '3,0 km'],
+            ['FL250', '7,6 km'],
+            ['FL350', '10,7 km'],
+          ].map(([level, height]) => (
+            <div key={level} style={{ padding: '12px 10px', border: '1px solid var(--border-mid)', borderRadius: 9, background: 'var(--midnight-2)', textAlign: 'center' }}>
+              <strong style={{ display: 'block', color: 'var(--gold)', fontFamily: 'IBM Plex Mono, monospace', fontSize: 15 }}>{level}</strong>
+              <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 12, marginTop: 3 }}>≈ {height}</span>
+            </div>
+          ))}
+        </div>
+
         <h2 style={S.h2}>Proč ne ještě výš?</h2>
         <p style={S.p}>
           Každý typ má certifikované limity. Pro rodinu A320 výrobce uvádí maximální provozní výšku kolem
           39 800 stop, tedy asi 12,1 kilometru. Limit souvisí s aerodynamikou, výkonem, přetlakováním i
           certifikací; není to jedna univerzální hranice pro všechna letadla.
+        </p>
+
+        <h2 style={S.h2}>Je výška na mapě nad zemí?</h2>
+        <p style={S.p}>
+          Většinou ne. FlyQueens zobrazuje dostupnou barometrickou výšku vztaženou k tlakové hladině nebo
+          hladině moře, nikoli přesnou vzdálenost od terénu přímo pod letadlem. Nad horami proto může být
+          skutečná výška nad zemí výrazně menší než číslo zobrazené na mapě. U nízko letících strojů a při
+          chybějících datech je potřeba údaj brát zvlášť opatrně.
+        </p>
+
+        <h2 style={S.h2}>Proč letadlo během cesty ještě stoupá?</h2>
+        <p style={S.p}>
+          Dopravní letadlo je po startu kvůli palivu těžší. Jak palivo spotřebovává, může být hospodárnější
+          vystoupat do vyšší letové hladiny. Takzvané postupné stoupání proto nemusí znamenat problém ani
+          změnu cíle. Na <Link href="/stats" style={{ color: 'var(--gold)' }}>živých statistikách</Link> můžete
+          porovnat průměrnou výšku s nejvýše letícími stroji v právě sledované oblasti.
         </p>
 
         <h2 style={S.h2}>Jak zjistím výšku letadla nad hlavou?</h2>
@@ -142,6 +184,23 @@ export default function VyskaArticle() {
             </Link>
           </div>
         </div>
+
+        <RelatedReading
+          items={[
+            {
+              href: '/blog/squawk-nouzove-kody',
+              eyebrow: 'Jak to funguje',
+              title: 'Co znamenají squawk kódy 7700, 7600 a 7500',
+              description: 'Jak odpovídač hlásí nouzi, výpadek rádia nebo protiprávní zásah.',
+            },
+            {
+              href: '/blog/letiste-praha-zive',
+              eyebrow: 'Praktický návod',
+              title: 'Jak sledovat letadla nad Letištěm Praha',
+              description: 'Rozdíl mezi webkamerou, živou mapou a oficiální tabulí letiště.',
+            },
+          ]}
+        />
 
         <SourcesBox
           sources={[
