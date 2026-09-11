@@ -131,7 +131,7 @@ export default function VyskaArticle() {
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Kolik letadel je teď nad Českem?</div>
           <p style={{ ...S.p, marginBottom: 12 }}>
-            Živá mapa ukáže každé letadlo i s výškou. Ve statistikách najdete průměrnou výšku a rychlost
+            Živá mapa ukáže letadla zachycená dostupnými ADS-B přijímači včetně výšky. Ve statistikách najdete průměrnou výšku a rychlost
             všech letů právě teď.
           </p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

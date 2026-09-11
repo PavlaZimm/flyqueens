@@ -21,7 +21,7 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'letiste-praha-zive',
     title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
-    excerpt: 'Chcete vidět, co právě přistává v Praze? Webkamery ukážou kus plochy, živá mapa ukáže každé letadlo ve vzduchu. Jak to funguje a co všechno se dá vyčíst.',
+    excerpt: 'Chcete vidět provoz u Prahy? Webkamery ukážou kus plochy, ADS-B mapa letadla zachycená dostupnými přijímači. Jak to funguje a jaké má pokrytí limity.',
     date: '2026-07-19',
     dateLabel: '19. července 2026',
     tag: 'Návod',

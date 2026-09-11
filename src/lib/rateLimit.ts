@@ -14,11 +14,11 @@ const WINDOW_MS = 60_000
 
 // Limity per endpoint (req/min per IP)
 const LIMITS: Record<string, number> = {
-  flights:      120,  // polling každých 10s = 6/min, 120 = 20× rezerva
+  flights:       30,
   'flight-route': 30, // kliknutí na letadlo — max 30/min
   metar:         20,
   'atc-stream':  10,
-  'atc-check':   30,
+  'atc-check':   10,
   default:       60,
 }
 

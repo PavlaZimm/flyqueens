@@ -1,24 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-
-const REGION_LABELS: Record<string, string> = {
-  europe:     'Europe',
-  namerica:   'N. America',
-  samerica:   'S. America',
-  asia:       'Asia',
-  middleeast: 'Middle East',
-  africa:     'Africa',
-  oceania:    'Oceania',
-}
+import type { FlightDataMeta } from '@/types/flight'
+import { REGION_CONFIGS } from '@/lib/constants'
 
 interface StatusBarProps {
   flightCount: number
-  isMock?: boolean
+  dataMeta: FlightDataMeta
   region?: string
 }
 
-export function StatusBar({ flightCount, isMock, region = 'europe' }: StatusBarProps) {
+export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBarProps) {
   const [time, setTime] = useState('')
   const [tick, setTick] = useState(true)
 
@@ -41,16 +33,19 @@ export function StatusBar({ flightCount, isMock, region = 'europe' }: StatusBarP
 
   return (
     <>
-      {/* Mock data banner */}
-      {isMock && (
+      {/* Výpadek nikdy nemaskujeme jako živá data. */}
+      {dataMeta.status !== 'live' && (
         <div style={{
           position: 'absolute', bottom: 32, left: 0, right: 0,
-          background: 'rgba(253,224,71,0.1)', borderTop: '1px solid rgba(253,224,71,0.2)',
+          background: dataMeta.status === 'stale' ? 'rgba(253,224,71,0.12)' : 'rgba(248,113,113,0.12)',
+          borderTop: `1px solid ${dataMeta.status === 'stale' ? 'rgba(253,224,71,0.25)' : 'rgba(248,113,113,0.25)'}`,
           padding: '4px 16px', display: 'flex', alignItems: 'center', gap: 8,
           fontFamily: 'Space Grotesk, sans-serif', zIndex: 1000,
         }}>
-          <span style={{ fontSize: 10, color: 'var(--gold)', letterSpacing: 0.5 }}>
-            ⚠ Demo data — OpenSky API dočasně nedostupné. Zobrazuji ukázková letadla.
+          <span style={{ fontSize: 10, color: dataMeta.status === 'stale' ? 'var(--gold)' : '#FCA5A5', letterSpacing: 0.5 }}>
+            ⚠ {dataMeta.message ?? (dataMeta.status === 'stale'
+              ? 'Živý zdroj má výpadek. Zobrazená data mohou být zastaralá.'
+              : 'Živá data jsou momentálně nedostupná. Ukázková data nezobrazujeme.')}
           </span>
         </div>
       )}
@@ -76,7 +71,7 @@ export function StatusBar({ flightCount, isMock, region = 'europe' }: StatusBarP
 
         <div className="fq-sb-col" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>OBLAST</span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{REGION_LABELS[region] ?? region}</span>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{REGION_CONFIGS[region]?.label ?? region}</span>
         </div>
 
         <div className="fq-sb-sep" style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
@@ -91,10 +86,17 @@ export function StatusBar({ flightCount, isMock, region = 'europe' }: StatusBarP
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <div style={{
             width: 5, height: 5, borderRadius: '50%',
-            background: tick ? 'var(--green-live)' : 'transparent',
-            border: '1px solid var(--green-live)', transition: 'background 0.3s',
+            background: dataMeta.status === 'live' && tick ? 'var(--green-live)' : 'transparent',
+            border: `1px solid ${dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171'}`,
+            transition: 'background 0.3s',
           }} />
-          <span style={{ fontSize: 9, letterSpacing: 1.5, color: 'var(--green-live)', fontWeight: 700 }}>LIVE</span>
+          <span style={{
+            fontSize: 9, letterSpacing: 1.5,
+            color: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+            fontWeight: 700,
+          }}>
+            {dataMeta.status === 'live' ? 'LIVE' : dataMeta.status === 'stale' ? 'STALE' : 'OFFLINE'}
+          </span>
         </div>
       </div>
 

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import type { Flight } from '@/types/flight'
+import type { Flight, FlightDataMeta } from '@/types/flight'
 import { FlightCard } from './FlightCard'
 import { AtcPanel } from './AtcPanel'
 
@@ -16,6 +16,7 @@ interface SidebarProps {
   searchQuery: string
   onSearchChange: (q: string) => void
   onClose: () => void
+  dataMeta: FlightDataMeta
 }
 
 const NAV_ITEMS = [
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { id: 'stats',    label: 'Statistiky',  icon: '📊',  href: '/stats' },
   { id: 'letiste',  label: 'Letiště',     icon: '🛫',  href: '/letiste' },
   { id: 'blog',     label: 'Blog',        icon: '📖',  href: '/blog' },
+  { id: 'about',    label: 'O projektu',  icon: 'ℹ️',  href: '/o-projektu' },
 ]
 
 type SortKey = 'altitude' | 'velocity'
@@ -30,6 +32,7 @@ type SortKey = 'altitude' | 'velocity'
 export function Sidebar({
   flights, selectedFlight, onFlightSelect, flightCount,
   theme, searchQuery, onSearchChange, onClose,
+  dataMeta,
 }: SidebarProps) {
   const pathname = usePathname()
   const [sortBy, setSortBy] = useState<SortKey>('altitude')
@@ -38,7 +41,9 @@ export function Sidebar({
     const q = searchQuery.trim().toUpperCase()
     if (!q) return flights
     return flights.filter((f) =>
-      f.callsign.includes(q) || (f.origin_country ?? '').toUpperCase().includes(q)
+      f.callsign.includes(q)
+      || f.icao24.toUpperCase().includes(q)
+      || (f.registration ?? '').toUpperCase().includes(q)
     )
   }, [flights, searchQuery])
 
@@ -77,7 +82,7 @@ export function Sidebar({
               <div className="font-display" style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 2, textTransform: 'uppercase' }}>
                 FLYQUEENS
               </div>
-              <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>Track Every Flight</div>
+              <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>Živá mapa letadel</div>
             </div>
           </div>
           {/* Zavřít tlačítko (mobile) */}
@@ -95,8 +100,13 @@ export function Sidebar({
           background: 'var(--glass-bg)', border: '1px solid var(--border-subtle)',
           borderRadius: 6, padding: '5px 8px', marginTop: 10,
         }}>
-          <div className="live-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green-live)', flexShrink: 0 }} />
-          <span style={{ fontSize: 10, color: 'var(--text-muted)', flex: 1 }}>Živě sledováno</span>
+          <div className={dataMeta.status === 'live' ? 'live-dot' : undefined} style={{
+            width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+            background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+          }} />
+          <span style={{ fontSize: 10, color: 'var(--text-muted)', flex: 1 }}>
+            {dataMeta.status === 'live' ? 'Živá data' : dataMeta.status === 'stale' ? 'Poslední známá data' : 'Data nedostupná'}
+          </span>
           <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>{flightCount}</span>
         </div>
       </div>
@@ -115,7 +125,8 @@ export function Sidebar({
               const clean = e.target.value.replace(/[^A-Za-z0-9\- ]/g, '').slice(0, 10)
               onSearchChange(clean)
             }}
-            placeholder="Hledat let nebo letiště..."
+            placeholder="Let, registrace nebo ICAO..."
+            aria-label="Hledat podle letu, registrace nebo ICAO adresy"
             style={{
               width: '100%', paddingLeft: 28, paddingRight: 10, paddingTop: 7, paddingBottom: 7,
               background: 'var(--glass-bg)', border: `1px solid ${searchQuery ? 'rgba(253,224,71,0.3)' : 'var(--border-subtle)'}`,
@@ -127,6 +138,7 @@ export function Sidebar({
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
+              aria-label="Vymazat hledání"
               style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}
             >✕</button>
           )}
@@ -218,8 +230,13 @@ export function Sidebar({
 
       {/* Footer */}
       <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--green-live)', flexShrink: 0 }} />
-        <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>Data: OpenSky Network</span>
+        <div style={{
+          width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+          background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#FDE047' : '#F87171',
+        }} />
+        <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>
+          Zdroj: {dataMeta.source ?? 'nedostupný'}
+        </span>
       </div>
 
       <style>{`

@@ -5,6 +5,10 @@ export const runtime = 'nodejs'
 
 // Proxy pro LiveATC audio stream — vyřeší CORS problém
 export async function GET(req: NextRequest) {
+  if (process.env.ENABLE_ATC_PROXY !== 'true') {
+    return new NextResponse('ATC proxy is disabled', { status: 503 })
+  }
+
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'

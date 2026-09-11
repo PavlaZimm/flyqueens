@@ -1,14 +1,25 @@
 'use client'
 
-export function LiveBadge() {
+import type { FlightDataStatus } from '@/types/flight'
+
+const STATUS = {
+  live: { label: 'ŽIVĚ', color: 'var(--green-live)', background: 'rgba(34, 197, 94, 0.12)', border: 'rgba(34, 197, 94, 0.25)' },
+  stale: { label: 'STARŠÍ DATA', color: '#FDE047', background: 'rgba(253, 224, 71, 0.12)', border: 'rgba(253, 224, 71, 0.25)' },
+  unavailable: { label: 'OFFLINE', color: '#F87171', background: 'rgba(248, 113, 113, 0.12)', border: 'rgba(248, 113, 113, 0.25)' },
+} as const
+
+export function LiveBadge({ status }: { status: FlightDataStatus }) {
+  const config = STATUS[status]
   return (
     <div
+      role="status"
+      aria-label={`Stav dat: ${config.label}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: 5,
-        background: 'rgba(34, 197, 94, 0.12)',
-        border: '1px solid rgba(34, 197, 94, 0.25)',
+        background: config.background,
+        border: `1px solid ${config.border}`,
         borderRadius: 6,
         padding: '3px 8px',
       }}
@@ -19,7 +30,7 @@ export function LiveBadge() {
           width: 6,
           height: 6,
           borderRadius: '50%',
-          background: 'var(--green-live)',
+          background: config.color,
           flexShrink: 0,
         }}
       />
@@ -29,11 +40,11 @@ export function LiveBadge() {
           fontWeight: 700,
           letterSpacing: 1.5,
           textTransform: 'uppercase',
-          color: 'var(--green-live)',
+          color: config.color,
           fontFamily: 'Space Grotesk, sans-serif',
         }}
       >
-        ŽIVĚ
+        {config.label}
       </span>
     </div>
   )

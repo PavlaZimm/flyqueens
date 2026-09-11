@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
 import { REGION_CONFIGS } from '@/lib/constants'
+import type { FlightDataStatus } from '@/types/flight'
 
 export type FilterType = 'passenger' | 'cargo' | 'private' | 'military' | 'helicopter'
 
@@ -17,10 +17,8 @@ interface TopBarProps {
   showAirports: boolean
   onToggleAirports: () => void
   region: string
-  onRegionChange: (r: string) => void
+  dataStatus: FlightDataStatus
 }
-
-const REGIONS = Object.entries(REGION_CONFIGS).map(([id, r]) => ({ id, label: r.label, flag: r.flag }))
 
 const CHIP_BASE: React.CSSProperties = {
   display: 'inline-flex',
@@ -67,22 +65,9 @@ export function TopBar({
   showAirports,
   onToggleAirports,
   region,
-  onRegionChange,
+  dataStatus,
 }: TopBarProps) {
-  const [regionOpen, setRegionOpen] = useState(false)
-  const regionRef = useRef<HTMLDivElement>(null)
-  const currentRegion = REGIONS.find(r => r.id === region) ?? REGIONS[0]
-
-  useEffect(() => {
-    if (!regionOpen) return
-    const handler = (e: MouseEvent) => {
-      if (regionRef.current && !regionRef.current.contains(e.target as Node)) {
-        setRegionOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [regionOpen])
+  const currentRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
 
   const toggleFilter = (f: FilterType) => {
     const next = new Set(activeFilters)
@@ -96,9 +81,7 @@ export function TopBar({
 
   const filters: { id: FilterType; label: string; emoji: string }[] = [
     { id: 'passenger', label: 'Pasažérské', emoji: '✈️' },
-    { id: 'cargo',     label: 'Nákladní',   emoji: '📦' },
     { id: 'private',   label: 'Soukromé',   emoji: '🛩️' },
-    { id: 'military',  label: 'Vojenské',   emoji: '🪖' },
     { id: 'helicopter',label: 'Vrtulníky',  emoji: '🚁' },
   ]
 
@@ -112,15 +95,15 @@ export function TopBar({
         style={{ ...ICON_BTN }}
         aria-label="Otevřít menu"
       >
-        <div style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <span style={{ width: 16, display: 'flex', flexDirection: 'column', gap: 3 }} aria-hidden="true">
           {[0, 1, 2].map((i) => (
-            <div key={i} style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }} />
+            <span key={i} style={{ height: 2, background: 'var(--text-primary)', borderRadius: 1 }} />
           ))}
-        </div>
+        </span>
       </button>
 
       {/* Live badge + počet letadel */}
-      <LiveBadge />
+      <LiveBadge status={dataStatus} />
       <div style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default', flexShrink: 0 }}>
         <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
         <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>
@@ -142,6 +125,21 @@ export function TopBar({
           padding: '2px 0',
         }}
       >
+        <button
+          onClick={() => onFilterChange(new Set())}
+          aria-pressed={activeFilters.size === 0}
+          aria-label="Zobrazit všechna letadla"
+          style={{
+            ...CHIP_BASE,
+            background: activeFilters.size === 0 ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${activeFilters.size === 0 ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
+            color: activeFilters.size === 0 ? 'var(--gold)' : 'var(--text-muted)',
+          }}
+        >
+          <span aria-hidden="true">◎</span>
+          <span className="fq-chip-label" style={{ marginLeft: 5 }}>Všechna</span>
+        </button>
+
         {filters.map((filter) => {
           const active = activeFilters.has(filter.id)
           return (
@@ -149,6 +147,7 @@ export function TopBar({
               key={filter.id}
               onClick={() => toggleFilter(filter.id)}
               aria-pressed={active}
+              aria-label={filter.label}
               style={{
                 ...CHIP_BASE,
                 background: active ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
@@ -181,73 +180,15 @@ export function TopBar({
         </button>
       </div>
 
-      {/* Region selector */}
-      <div ref={regionRef} style={{ position: 'relative', flexShrink: 0 }}>
-        <button
-          onClick={() => setRegionOpen(v => !v)}
-          aria-label="Vybrat region"
-          style={{
-            ...CHIP_BASE,
-            padding: '0 10px',
-            gap: 5,
-            background: regionOpen ? 'rgba(253,224,71,0.13)' : 'var(--glass-bg)',
-            border: `1px solid ${regionOpen ? 'rgba(253,224,71,0.4)' : 'var(--glass-border)'}`,
-            color: regionOpen ? 'var(--gold)' : 'var(--text-muted)',
-          }}
-        >
-          <span style={{ fontSize: 15 }}>{currentRegion.flag}</span>
-          <span className="fq-region-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
-          <span className="fq-region-label" style={{ fontSize: 8, marginLeft: 2, opacity: 0.6 }}>▼</span>
-        </button>
-        {regionOpen && (
-          <div style={{
-            position: 'absolute',
-            top: 'calc(100% + 6px)',
-            right: 0,
-            background: 'rgba(10,15,30,0.97)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: 10,
-            padding: 6,
-            minWidth: 155,
-            zIndex: 3000,
-            backdropFilter: 'blur(20px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-          }}>
-            {REGIONS.map(r => (
-              <button
-                key={r.id}
-                onClick={() => { onRegionChange(r.id); setRegionOpen(false) }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '7px 10px',
-                  borderRadius: 7,
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'Space Grotesk, sans-serif',
-                  fontSize: 12,
-                  fontWeight: r.id === region ? 600 : 400,
-                  background: r.id === region ? 'rgba(253,224,71,0.12)' : 'transparent',
-                  color: r.id === region ? 'var(--gold)' : 'var(--text-primary)',
-                  width: '100%',
-                  textAlign: 'left',
-                }}
-              >
-                <span style={{ fontSize: 15 }}>{r.flag}</span>
-                {r.label}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Aktuálně podporujeme jednu pravdivě vymezenou oblast. */}
+      <div style={{ ...CHIP_BASE, cursor: 'default', gap: 5 }} aria-label={`Oblast: ${currentRegion.label}`}>
+        <span style={{ fontSize: 15 }}>{currentRegion.flag}</span>
+        <span className="fq-region-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
       </div>
 
       {/* Stats link */}
-      <Link href="/stats" style={{ textDecoration: 'none', flexShrink: 0 }}>
-        <div style={{ ...ICON_BTN }} title="Statistiky" aria-label="Statistiky">📊</div>
+      <Link href="/stats" aria-label="Statistiky" title="Statistiky" style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>
+        <span aria-hidden="true">📊</span>
       </Link>
 
       {/* Theme toggle */}

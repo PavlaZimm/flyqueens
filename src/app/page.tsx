@@ -104,10 +104,10 @@ function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; o
 }
 
 export default function Home() {
-  const { flights, loading, count, isMock, region, setRegion } = useFlights()
+  const { flights, loading, count, dataMeta, region } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
-  const { route: selectedRoute } = useFlightRoute(
+  const { route: selectedRoute, loading: selectedRouteLoading } = useFlightRoute(
     selectedFlight?.icao24   ?? null,
     selectedFlight?.lat      ?? 0,
     selectedFlight?.lng      ?? 0,
@@ -117,10 +117,11 @@ export default function Home() {
   )
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set(['passenger']))
+  const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set())
   const [showAirports, setShowAirports] = useState(false)
   const { nearbyFlights, showNearby, locateMe, dismiss: dismissNearby } = useNearbyFlights()
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+  const hasDataWarning = dataMeta.status !== 'live'
 
   // Emergency detection
   const emergencyFlights = flights.filter(
@@ -141,6 +142,16 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (match) setSelectedFlight(match)
   }, [flights])
+
+  // Vybraný detail musí sledovat nové snapshoty, jinak po prvním kliknutí zamrzne.
+  useEffect(() => {
+    if (!selectedFlight) return
+    const updated = flights.find((flight) => flight.icao24 === selectedFlight.icao24)
+    if (updated && updated !== selectedFlight) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedFlight(updated)
+    }
+  }, [flights, selectedFlight])
 
   const toggleFullscreen = () => {
     if (document.fullscreenElement) {
@@ -168,6 +179,7 @@ export default function Home() {
 
   return (
     <>
+    <h1 className="sr-only">Živá mapa letadel nad Českem a Evropou</h1>
     <div style={{ display: 'flex', height: '100dvh', width: '100%', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
@@ -181,6 +193,7 @@ export default function Home() {
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           onClose={() => setSidebarOpen(false)}
+          dataMeta={dataMeta}
         />
       </div>
 
@@ -211,6 +224,7 @@ export default function Home() {
               showAirports={showAirports}
               onMapReady={(fn) => { mapLocateFnRef.current = fn }}
               selectedRoute={selectedRoute}
+              region={region}
             />
             </ErrorBoundary>
           </div>
@@ -234,7 +248,7 @@ export default function Home() {
             showAirports={showAirports}
             onToggleAirports={() => setShowAirports(v => !v)}
             region={region}
-            onRegionChange={setRegion}
+            dataStatus={dataMeta.status}
           />
         </div>
 
@@ -242,7 +256,7 @@ export default function Home() {
         {selectedFlight && (
           <div className="fq-detail-desktop" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1000, pointerEvents: 'none' }}>
             <div style={{ pointerEvents: 'all' }}>
-              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} />
+              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
             </div>
           </div>
         )}
@@ -250,7 +264,7 @@ export default function Home() {
         {/* Mobile bottom sheet */}
         {selectedFlight && (
           <MobileBottomSheet onClose={handleDetailClose}>
-            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} />
+            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
           </MobileBottomSheet>
         )}
 
@@ -258,7 +272,7 @@ export default function Home() {
         {showNearby && (
           <div style={{
             position: 'absolute',
-            bottom: `calc(${isMock ? 128 : 96}px + env(safe-area-inset-bottom, 0px))`,
+            bottom: `calc(${hasDataWarning ? 128 : 96}px + env(safe-area-inset-bottom, 0px))`,
             right: 12, zIndex: 1000,
             width: 220, background: 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)',
             border: '1px solid var(--glass-border)', borderRadius: 12, padding: '10px 12px',
@@ -302,7 +316,7 @@ export default function Home() {
           onClick={handleLocateMe}
           style={{
             position: 'absolute',
-            bottom: `calc(${isMock ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
+            bottom: `calc(${hasDataWarning ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
             right: 12, zIndex: 1000,
             width: 36, height: 36, borderRadius: 8,
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
@@ -322,7 +336,7 @@ export default function Home() {
           className="fq-fullscreen-btn"
           style={{
             position: 'absolute',
-            bottom: `calc(${isMock ? 132 : 96}px + env(safe-area-inset-bottom, 0px))`,
+            bottom: `calc(${hasDataWarning ? 132 : 96}px + env(safe-area-inset-bottom, 0px))`,
             right: 12, zIndex: 1000,
             width: 36, height: 36, borderRadius: 8,
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
@@ -337,7 +351,7 @@ export default function Home() {
         </button>
 
         {/* StatusBar */}
-        <StatusBar flightCount={count} isMock={isMock} region={region} />
+        <StatusBar flightCount={count} dataMeta={dataMeta} region={region} />
       </div>
 
       {/* Emergency radar banner */}

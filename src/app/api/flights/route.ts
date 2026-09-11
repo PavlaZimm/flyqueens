@@ -1,234 +1,244 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { headers } from 'next/headers'
-import { readFileSync } from 'fs'
-import { join } from 'path'
 import { checkRateLimit } from '@/lib/rateLimit'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { getOpenSkyToken } from '@/lib/openskyAuth'
+import type { AircraftType, FlightDataSource } from '@/types/flight'
 
-// Načteme aircraft DB jednou při startu serveru (module-level cache)
-let aircraftDb: Record<string, { m: string; t: string }> | null = null
+type SourceResult = {
+  source: FlightDataSource
+  states: unknown[][]
+  fetchedAt: number
+}
+type CachedSnapshot = SourceResult & { cachedAt: number }
 
-function getAircraftDb() {
-  if (!aircraftDb) {
-    try {
-      // Mimo public/ — není veřejně stažitelná. Do serverless bundle přes outputFileTracingIncludes.
-      const raw = readFileSync(join(process.cwd(), 'data/aircraft-db.json'), 'utf-8')
-      aircraftDb = JSON.parse(raw)
-    } catch {
-      aircraftDb = {}
-    }
-  }
-  return aircraftDb!
+const lastGoodSnapshots = new Map<string, CachedSnapshot>()
+const inFlightRequests = new Map<string, Promise<SourceResult>>()
+const LIVE_CACHE_MS = 10_000
+const MAX_STALE_MS = 5 * 60_000
+
+function unixSeconds(value: number | undefined): number {
+  const timestamp = value ?? Date.now()
+  return Math.floor(timestamp > 10_000_000_000 ? timestamp / 1000 : timestamp)
 }
 
-// ICAO hex prefix → země
-const ICAO_COUNTRY: Record<string, string> = {
-  '3c': 'Germany', '3d': 'Germany', '3e': 'Germany', '3f': 'Germany',
-  '4b': 'Switzerland',
-  '4c': 'France', '4d': 'France', '01': 'France',
-  '40': 'United Kingdom', '41': 'United Kingdom', '42': 'United Kingdom', '43': 'United Kingdom',
-  '49': 'Czech Republic',
-  '50': 'Poland', '51': 'Poland',
-  '44': 'Austria',
-  '46': 'Belgium',
-  '47': 'Netherlands',
-  '48': 'Hungary',
-  '38': 'Sweden', '39': 'Sweden',
-  '36': 'Norway', '37': 'Norway',
-  '45': 'Denmark',
-  '4a': 'Ireland',
-  '30': 'Italy', '31': 'Italy', '32': 'Italy', '33': 'Italy',
-  '34': 'Spain', '35': 'Spain',
-  '70': 'Russia', '72': 'Russia', '73': 'Russia',
-  '71': 'Turkey',
-  'ae': 'United States', 'a0': 'United States', 'a2': 'United States',
-  'a3': 'United States', 'a4': 'United States', 'a5': 'United States',
-  'e4': 'China', 'e5': 'China', 'e6': 'China',
-  '80': 'India', '81': 'India',
+function normalizeRows(states: unknown[][]): unknown[][] {
+  return states.map((input) => {
+    const row = [...input]
+    while (row.length < 26) row.push(undefined)
+    return row
+  })
 }
 
-function getCountry(icao: string): string {
-  const prefix2 = icao.substring(0, 2).toLowerCase()
-  return ICAO_COUNTRY[prefix2] ?? ''
+function classifyAircraft(ac: Record<string, unknown>): AircraftType | null {
+  const designator = String(ac.t ?? '').toUpperCase()
+  const category = String(ac.category ?? '').toUpperCase()
+
+  if (category === 'A7') return 'helicopter'
+  if (/^(A3(0[06]|1[08]|3[0-9]|4[0-9]|5[0-9]|80)|B74|B76|B77|B78|DC10|MD11)/.test(designator)) return 'wide-body'
+  if (/^(AT[467]|DH8|DHC6|SF34|E120|C208|PC12|BE20|L410|AN2[468]|AN3[028])/.test(designator)) return 'turboprop'
+  if (/^(C25|C5[1256]|C6[058]|C7[05]|GLF|LJ|FA[12578]|CL3[05]|CL60|E5[05]P|PC24|H25B)/.test(designator)) return 'private-jet'
+  if (category === 'A5') return 'wide-body'
+  if (category === 'A3' || category === 'A4') return 'narrow-body'
+  if (category === 'A1' || category === 'A2') return 'ga'
+  return null
 }
 
-// adsb.lol formát → OpenSky formát
-// OpenSky: [icao24, callsign, origin_country, time_position, last_contact, longitude, latitude, baro_altitude, on_ground, velocity, true_track, ...]
+// adsb.lol / airplanes.live formát → rozšířený OpenSky formát.
+// Zemi z ICAO adresy nehádáme: dvouznakové prefixy nejsou hranice států a
+// předchozí implementace proto zobrazovala pro řadu letadel nesprávné vlajky.
 function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
-  const icao    = String(ac.hex ?? '').toLowerCase()
-  const cs      = String(ac.flight ?? '').trim()
-  const lat     = Number(ac.lat ?? 0)
-  const lon     = Number(ac.lon ?? 0)
-  const alt     = ac.alt_baro === 'ground' ? 0 : Number(ac.alt_baro ?? 0) * 0.3048 // ft → m
-  const gs      = Number(ac.gs ?? 0) * 0.514444 // knots → m/s
-  const track   = Number(ac.track ?? 0)
-  const onGnd   = ac.alt_baro === 'ground' || alt < 10
-  const now     = Math.floor(Date.now() / 1000)
-  const country = getCountry(icao)
-  const reg     = String(ac.r ?? '').trim()
-  const oat      = ac.oat       != null ? Number(ac.oat)       : null
-  const ws       = ac.ws        != null ? Number(ac.ws)        : null
-  const mach     = ac.mach      != null ? Number(ac.mach)      : null
-  const baroRate = ac.baro_rate != null ? Number(ac.baro_rate) : null  // ft/min
-  const squawk   = ac.squawk    != null ? String(ac.squawk)    : null
+  const icao = String(ac.hex ?? '').toLowerCase()
+  const callsign = String(ac.flight ?? '').trim()
+  const lat = Number(ac.lat)
+  const lon = Number(ac.lon)
+  const alt = ac.alt_baro === 'ground' ? 0 : Number(ac.alt_baro ?? 0) * 0.3048
+  const velocity = Number(ac.gs ?? 0) * 0.514444
+  const heading = Number(ac.track ?? 0)
+  const onGround = ac.alt_baro === 'ground' || alt < 10
+  const now = Math.floor(Date.now() / 1000)
+  const registration = String(ac.r ?? '').trim()
+  const oat = ac.oat != null ? Number(ac.oat) : null
+  const windSpeed = ac.ws != null ? Number(ac.ws) : null
+  const mach = ac.mach != null ? Number(ac.mach) : null
+  const baroRate = ac.baro_rate != null ? Number(ac.baro_rate) : null
+  const squawk = ac.squawk != null ? String(ac.squawk) : null
   const emergency = ac.emergency != null && ac.emergency !== 'none' ? String(ac.emergency) : null
-  const navAlt   = ac.nav_altitude_mcp != null ? Number(ac.nav_altitude_mcp) : null // ft
-  // Layout: [0-15 standard OpenSky] [16]=reg [17]=model(db) [18]=type(db) [19]=oat [20]=ws [21]=mach [22]=baroRate [23]=squawk [24]=emergency [25]=navAlt
-  return [icao, cs, country, now, now, lon, lat, alt, onGnd, gs, track, 0, null, alt, null, false, reg, null, null, oat, ws, mach, baroRate, squawk, emergency, navAlt]
+  const navAltitude = ac.nav_altitude_mcp != null ? Number(ac.nav_altitude_mcp) : null
+  const model = String(ac.t ?? '').trim() || null
+  const aircraftType = classifyAircraft(ac)
+
+  return [
+    icao, callsign, '', now, now, lon, lat, alt, onGround, velocity, heading,
+    0, null, alt, squawk, false, registration, model, aircraftType, oat, windSpeed,
+    mach, baroRate, squawk, emergency, navAltitude,
+  ]
 }
 
-// Vercel CDN cache — 1 request na adsb.lol za 10 sekund
-export const revalidate = 10
+async function fetchAdsbLol(region: (typeof REGION_CONFIGS)[string]): Promise<SourceResult> {
+  const response = await fetch(
+    `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'FlyQueens/1.0 (+https://www.flyqueens.cz/o-projektu)',
+      },
+      cache: 'no-store',
+      signal: AbortSignal.timeout(4500),
+    },
+  )
+  if (!response.ok) throw new Error(`adsb.lol HTTP ${response.status}`)
 
-// Regiony — střed + radius pro adsb.lol (sdíleno s TopBar přes constants.ts)
-const REGIONS = REGION_CONFIGS
+  const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
+  return {
+    source: 'adsb.lol',
+    states: normalizeRows((data.ac ?? []).map(adsbToOpenSky)),
+    fetchedAt: unixSeconds(data.now),
+  }
+}
 
-export async function GET(req: NextRequest) {
-  // Rate limiting — max 30 req/min per IP
-  const reqHeaders = await headers()
-  const ip = reqHeaders.get('x-forwarded-for')?.split(',')[0]?.trim()
-    ?? reqHeaders.get('x-real-ip')
-    ?? '127.0.0.1'
-
-  const { allowed, retryAfter } = checkRateLimit(ip, 'flights')
-  if (!allowed) {
-    return NextResponse.json(
-      { error: 'Too many requests', retryAfter },
-      { status: 429, headers: { 'Retry-After': String(retryAfter) } }
-    )
+async function fetchLicensedOpenSky(region: (typeof REGION_CONFIGS)[string]): Promise<SourceResult> {
+  if (process.env.OPENSKY_LICENSED !== 'true' || !region.osky) {
+    throw new Error('OpenSky is not enabled as a licensed source')
   }
 
-  const regionKey = req.nextUrl.searchParams.get('region') ?? 'europe'
-  const region = REGIONS[regionKey] ?? REGIONS.europe
+  const token = await getOpenSkyToken()
+  if (!token) throw new Error('OpenSky credentials are missing or invalid')
 
-  const db = getAircraftDb()
+  const box = region.osky
+  const response = await fetch(
+    `https://opensky-network.org/api/states/all?lamin=${box.lamin}&lamax=${box.lamax}&lomin=${box.lomin}&lomax=${box.lomax}`,
+    {
+      headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+      signal: AbortSignal.timeout(4500),
+    },
+  )
+  if (!response.ok) throw new Error(`OpenSky HTTP ${response.status}`)
 
-  // 1. airplanes.live — rychlý (0.1s), stejný formát jako adsb.lol.
-  //    OpenSky i adsb.lol blokují datacenter IP (Vercel) → tohle je primární zdroj.
-  try {
-    const radius = Math.min(region.dist, 250) // airplanes.live max 250 NM
-    const res = await fetch(
-      `https://api.airplanes.live/v2/point/${region.lat}/${region.lon}/${radius}`,
-      {
-        headers: { 'Accept': 'application/json' },
-        next: { revalidate: 10 },
-        signal: AbortSignal.timeout(6000),
-      }
-    )
+  const data = (await response.json()) as { states?: unknown[][]; time?: number }
+  return {
+    source: 'opensky',
+    states: normalizeRows(data.states ?? []),
+    fetchedAt: data.time ?? Math.floor(Date.now() / 1000),
+  }
+}
 
-    if (res.ok) {
-      const data = await res.json()
-      const aircraft: Record<string, unknown>[] = data.ac ?? []
-      if (aircraft.length > 0) {
-        const states = aircraft.map((ac) => {
-          const row = adsbToOpenSky(ac)
-          const icao = String(row[0])
-          const entry = db[icao]
-          if (entry) {
-            row[17] = entry.m
-            row[18] = entry.t
-          }
-          return row
-        })
-        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
-      }
-    }
-  } catch {
-    // airplanes.live selhal — zkusíme OpenSky
+async function fetchEnabledAirplanesLive(region: (typeof REGION_CONFIGS)[string]): Promise<SourceResult> {
+  if (process.env.AIRPLANES_LIVE_ENABLED !== 'true') {
+    throw new Error('airplanes.live is not enabled')
+  }
+  if (region.dist > 250) {
+    throw new Error('airplanes.live cannot truthfully cover this region')
   }
 
-  // 2. OpenSky Network — fallback (funguje lokálně, na Vercelu blokovaný).
-  try {
-    const osky = region.osky
-    if (osky) {
-      // OAuth2 token (pokud jsou nastavené credentials) — nutné pro přístup z Vercelu
-      const token = await getOpenSkyToken()
-      const url = `https://opensky-network.org/api/states/all?lamin=${osky.lamin}&lamax=${osky.lamax}&lomin=${osky.lomin}&lomax=${osky.lomax}`
-      const res = await fetch(url, {
-        headers: {
-          'Accept': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        },
-        next: { revalidate: 10 },
-        signal: AbortSignal.timeout(6000),
-      })
+  const response = await fetch(
+    `https://api.airplanes.live/v2/point/${region.lat}/${region.lon}/${region.dist}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'FlyQueens/1.0 (+https://www.flyqueens.cz/o-projektu)',
+      },
+      cache: 'no-store',
+      signal: AbortSignal.timeout(4500),
+    },
+  )
+  if (!response.ok) throw new Error(`airplanes.live HTTP ${response.status}`)
 
-      if (res.ok) {
-        const data = await res.json()
-        if (data.states?.length) {
-          const states = (data.states as unknown[][]).map((row: unknown[]) => {
-            const icao = String(row[0] ?? '').toLowerCase()
-            const entry = db[icao]
-            const extended = [...row, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
-            if (entry) {
-              extended[17] = entry.m
-              extended[18] = entry.t
-            }
-            return extended
-          })
-          return NextResponse.json({ time: data.time ?? Math.floor(Date.now() / 1000), states })
-        }
-      }
-    }
-  } catch {
-    // OpenSky selhal (rate-limit / timeout) — zkusíme adsb.lol
+  const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
+  return {
+    source: 'airplanes.live',
+    states: normalizeRows((data.ac ?? []).map(adsbToOpenSky)),
+    fetchedAt: unixSeconds(data.now),
   }
+}
 
-  // 3. Fallback: adsb.lol (bohatší data — mach, OAT, squawk, ale pomalejší)
-  try {
-    const res = await fetch(
-      `https://api.adsb.lol/v2/lat/${region.lat}/lon/${region.lon}/dist/${region.dist}`,
-      {
-        headers: { 'Accept': 'application/json' },
-        next: { revalidate: 10 },
-        signal: AbortSignal.timeout(8000),
-      }
-    )
-
-    if (res.ok) {
-      const data = await res.json()
-      const aircraft: Record<string, unknown>[] = data.ac ?? []
-
-      if (aircraft.length > 0) {
-        const states = aircraft.map((ac) => {
-          const row = adsbToOpenSky(ac)
-          const icao = String(row[0])
-          const entry = db[icao]
-          if (entry) {
-            row[17] = entry.m
-            row[18] = entry.t
-          }
-          return row
-        })
-        return NextResponse.json({ time: Math.floor(Date.now() / 1000), states })
-      }
-    }
-  } catch {
-    // adsb.lol také selhal — mock data
-  }
-
-  // Oba zdroje selhaly — mock. NECACHOVAT, ať se reálná data můžou objevit hned.
+function liveResponse(result: SourceResult, regionKey: string) {
   return NextResponse.json(
-    { ...getMockData(), _mock: true },
-    { headers: { 'Cache-Control': 'no-store' } }
+    {
+      states: result.states,
+      source: result.source,
+      fetchedAt: result.fetchedAt,
+      status: 'live',
+      region: regionKey,
+    },
+    {
+      headers: {
+        'Cache-Control': 'public, s-maxage=8, stale-while-revalidate=30',
+        'X-FlyQueens-Data-Source': result.source,
+      },
+    },
   )
 }
 
-// Demo letadla nad střední Evropou (fallback)
-function getMockData() {
-  const now = Math.floor(Date.now() / 1000)
-  return {
-    time: now,
-    states: [
-      ['3c6444', 'DLH123',  'Germany',       now, now, 14.42, 50.08, 10972, false, 245, 95,  0, null, 10972, '1000', false, 0],
-      ['4b1902', 'CSA456',  'Czech Republic', now, now, 16.61, 49.19, 9144,  false, 220, 270, 0, null, 9144,  '2200', false, 0],
-      ['3c4b8f', 'EZY789',  'Germany',        now, now, 13.40, 52.51, 11278, false, 260, 180, 0, null, 11278, '3300', false, 0],
-      ['440800', 'RYR321',  'Ireland',        now, now, 18.00, 47.50, 8534,  false, 235, 45,  0, null, 8534,  '4400', false, 0],
-      ['3c6585', 'AUA555',  'Austria',        now, now, 16.36, 48.21, 10668, false, 215, 315, 0, null, 10668, '5500', false, 0],
-      ['49d3f4', 'LOT201',  'Poland',         now, now, 21.01, 52.22, 9754,  false, 240, 200, 0, null, 9754,  '7700', false, 0],
-      ['406544', 'BAW452',  'United Kingdom', now, now, 12.33, 51.34, 11887, false, 270, 85,  0, null, 11887, '2300', false, 0],
-      ['3c6701', 'SWR190',  'Switzerland',    now, now, 8.55,  47.37, 9450,  false, 225, 240, 0, null, 9450,  '3400', false, 0],
-    ]
+async function getLiveSnapshot(regionKey: string, region: (typeof REGION_CONFIGS)[string]): Promise<SourceResult> {
+  const cached = lastGoodSnapshots.get(regionKey)
+  if (cached && Date.now() - cached.cachedAt < LIVE_CACHE_MS) return cached
+
+  const existing = inFlightRequests.get(regionKey)
+  if (existing) return existing
+
+  const request = Promise.any([
+    fetchAdsbLol(region),
+    fetchLicensedOpenSky(region),
+    fetchEnabledAirplanesLive(region),
+  ]).then((result) => {
+    lastGoodSnapshots.set(regionKey, { ...result, cachedAt: Date.now() })
+    return result
+  }).finally(() => {
+    inFlightRequests.delete(regionKey)
+  })
+
+  inFlightRequests.set(regionKey, request)
+  return request
+}
+
+export async function GET(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? req.headers.get('x-real-ip')
+    ?? '127.0.0.1'
+  const { allowed, retryAfter } = checkRateLimit(ip, 'flights')
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests', code: 'RATE_LIMITED', retryAfter },
+      { status: 429, headers: { 'Retry-After': String(retryAfter) } },
+    )
+  }
+
+  const requestedRegion = req.nextUrl.searchParams.get('region') ?? 'europe'
+  const regionKey = Object.hasOwn(REGION_CONFIGS, requestedRegion) ? requestedRegion : 'europe'
+  const region = REGION_CONFIGS[regionKey]
+  try {
+    // Zdroje běží souběžně. Výpadek jednoho už nezablokuje uživatele součtem timeoutů.
+    const result = await getLiveSnapshot(regionKey, region)
+    return liveResponse(result, regionKey)
+  } catch (error) {
+    console.error(`[FlyQueens] All live flight sources failed for ${regionKey}`, error)
+    const cached = lastGoodSnapshots.get(regionKey)
+    if (cached && Date.now() - cached.cachedAt <= MAX_STALE_MS) {
+      return NextResponse.json(
+        {
+          states: cached.states,
+          source: cached.source,
+          fetchedAt: cached.fetchedAt,
+          status: 'stale',
+          region: regionKey,
+          message: 'Živý zdroj je dočasně nedostupný. Zobrazujeme poslední známá data.',
+        },
+        { headers: { 'Cache-Control': 'no-store', 'X-FlyQueens-Data-Source': cached.source } },
+      )
+    }
+
+    return NextResponse.json(
+      {
+        states: [],
+        source: null,
+        fetchedAt: null,
+        status: 'unavailable',
+        region: regionKey,
+        code: 'LIVE_DATA_UNAVAILABLE',
+        message: 'Živá data jsou momentálně nedostupná. Zkuste to prosím za chvíli.',
+      },
+      { status: 503, headers: { 'Cache-Control': 'no-store', 'Retry-After': '15' } },
+    )
   }
 }

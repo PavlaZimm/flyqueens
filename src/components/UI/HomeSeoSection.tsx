@@ -29,15 +29,14 @@ export function HomeSeoSection() {
 
         <h2 style={S.h2}>Sledování letů online nad Českem</h2>
         <p style={S.p}>
-          FlyQueens je živá mapa letadel. Každé dopravní letadlo vysílá několikrát za vteřinu svoji polohu,
-          výšku a rychlost signálem ADS-B a mapa je vykresluje v reálném čase. Kliknete na letadlo a vidíte
-          volací znak, typ stroje, trasu i to, jestli zrovna stoupá nebo klesá na přistání. Zdarma a bez
-          registrace, nad Prahou i zbytkem Evropy.
+          FlyQueens je mapa dostupného leteckého provozu. Letadla vybavená odpovídačem mohou vysílat polohu,
+          výšku a rychlost signálem ADS-B a mapa zobrazuje údaje zachycené přijímači. Kliknete na letadlo a vidíte
+          volací znak, typ stroje a odhad trasy i fáze letu. Zdarma a bez registrace, pro Česko a okolí.
         </p>
         <p style={S.p}>
-          Nouzové squawk kódy se na mapě zvýrazní automaticky, takže když nad Českem něco hlásí problém,
-          víte o tom dřív než ze zpráv. K tomu <Link href="/stats" style={{ color: 'var(--gold)', textDecoration: 'none' }}>živé statistiky</Link>:
-          kolik letadel je ve vzduchu, které aerolinky vedou a jaké typy strojů převažují.
+          Nouzové squawk kódy se zvýrazní, pokud je zdroj dat poskytne. Samotný kód není potvrzením nehody
+          a mapa není určená pro navigaci ani krizové rozhodování. K tomu <Link href="/stats" style={{ color: 'var(--gold)', textDecoration: 'none' }}>statistiky aktuálního vzorku</Link>:
+          kolik zachycených letadel je ve vzduchu a jaké typy strojů v datech převažují.
         </p>
 
         <h2 style={{ ...S.h2, marginTop: 30 }}>Letiště: parkování a praktické info</h2>
@@ -63,7 +62,7 @@ export function HomeSeoSection() {
         </div>
 
         <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 30, lineHeight: 1.6 }}>
-          Data o polohách letadel: airplanes.live a OpenSky Network. Počasí na letištích: METAR.
+          Polohy letadel vycházejí z dostupných ADS-B zdrojů; aktuální zdroj a stav vždy uvádíme přímo v mapě. Počasí na letištích: METAR.
           Polohy mají zpoždění několik vteřin a slouží pro zajímavost, ne pro navigaci.
         </p>
       </div>

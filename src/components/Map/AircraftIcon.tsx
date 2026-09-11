@@ -18,6 +18,7 @@ export function getAircraftColor(type: AircraftType, theme: 'dark' | 'light'): s
     'military':    '#F87171',
     'helicopter':  '#38BDF8',
     'ga':          '#6EE7B7',
+    'unknown':     '#CBD5E1',
   }
   const light: Record<AircraftType, string> = {
     'narrow-body': '#0F172A',
@@ -28,6 +29,7 @@ export function getAircraftColor(type: AircraftType, theme: 'dark' | 'light'): s
     'military':    '#DC2626',
     'helicopter':  '#0284C7',
     'ga':          '#10B981',
+    'unknown':     '#475569',
   }
   return theme === 'light' ? light[type] : dark[type]
 }

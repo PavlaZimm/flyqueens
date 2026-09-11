@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.flyqueens.cz/blog/letiste-praha-zive' },
   openGraph: {
     title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
-    description: 'Webkamera ukáže kus plochy, živá mapa každé letadlo ve vzduchu. Jak to funguje.',
+    description: 'Webkamera ukáže kus plochy, ADS-B mapa letadla zachycená přijímači. Jak to funguje.',
     url: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
     type: 'article',
   },
@@ -56,7 +56,7 @@ export default function ZiveArticle() {
         <p style={S.p}>
           Někdo čeká na babičku z Barcelony a chce vědět, jestli už doletěla. Někoho jen baví koukat, co se
           nad hlavou děje. Sledovat Ruzyň online jde dvěma způsoby a každý ukáže něco jiného. Webkamera vám dá
-          obrázek kusu plochy. Živá mapa vám ukáže úplně každé letadlo ve vzduchu, i to, co je zrovna nad Kladnem.
+          obrázek kusu plochy. Živá mapa ukáže letadla zachycená ADS-B přijímači, včetně provozu nad širším okolím Prahy. Pokrytí ale není stoprocentní.
         </p>
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
@@ -126,7 +126,7 @@ export default function ZiveArticle() {
           sources={[
             { label: 'SKYbrary — ADS-B (jak funguje vysílání polohy letadel)', href: 'https://www.skybrary.aero/articles/automatic-dependent-surveillance-broadcast-ads-b' },
             { label: 'Letiště Praha — oficiální web', href: 'https://www.prg.aero/' },
-            { label: 'Data o polohách letadel: airplanes.live a OpenSky Network' },
+            { label: 'Data o polohách: dostupné ADS-B zdroje uvedené přímo v mapě' },
           ]}
           note="Popis provozních špiček vychází z pozorování dat na mapě FlyQueens v létě 2026, ne z oficiální statistiky letiště."
         />

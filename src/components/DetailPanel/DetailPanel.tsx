@@ -7,12 +7,14 @@ import { getAirportFromCallsign } from '@/lib/airports'
 import { getAirlineLogoUrl } from '@/lib/airlineLogos'
 import { getFlightPhase } from '@/lib/flightPhase'
 import { getAircraftBadge } from '@/lib/aircraftBadge'
-import { useFlightRoute } from '@/hooks/useFlightRoute'
+import type { FlightRoute } from '@/hooks/useFlightRoute'
 
 interface DetailPanelProps {
   flight: Flight | null
   theme: 'dark' | 'light'
   onClose: () => void
+  route: FlightRoute | null
+  routeLoading: boolean
 }
 
 interface PlanePhoto {
@@ -68,6 +70,7 @@ function getAircraftLabel(type: Flight['aircraftType']): string {
     'military':    'Vojenský letoun',
     'helicopter':  'Vrtulník',
     'ga':          'Malé letadlo (GA)',
+    'unknown':     'Typ letadla neuveden',
   }
   return labels[type ?? 'narrow-body'] ?? 'Letoun'
 }
@@ -111,16 +114,8 @@ function statusLabel(status: string | null): string | null {
   return map[status] ?? status
 }
 
-export function DetailPanel({ flight, theme, onClose }: DetailPanelProps) {
+export function DetailPanel({ flight, theme, onClose, route, routeLoading }: DetailPanelProps) {
   const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
-  const { route, loading: routeLoading  } = useFlightRoute(
-    flight?.icao24   ?? null,
-    flight?.lat      ?? 0,
-    flight?.lng      ?? 0,
-    flight?.velocity ?? 0,
-    flight?.heading  ?? 0,
-    flight?.callsign ?? '',
-  )
 
   if (!flight) return null
 

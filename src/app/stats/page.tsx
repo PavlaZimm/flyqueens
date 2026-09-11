@@ -7,13 +7,6 @@ import Link from 'next/link'
 import { getAirlineName } from '@/lib/airlineNames'
 import { getFlightPhase } from '@/lib/flightPhase'
 
-// Kapacity letadel (odhad průměru pasažérů)
-const CAPACITY: Record<string, number> = {
-  'narrow-body': 165, 'wide-body': 350, 'turboprop': 50,
-  'private-jet': 8,   'cargo': 0,       'military': 4,
-  'helicopter': 6,    'ga': 2,
-}
-
 function TopList({ title, items, color = 'var(--gold)' }: {
   title: string
   items: { label: string; value: string; sub?: string; callsign?: string }[]
@@ -96,17 +89,25 @@ function Sparkline({ data, color = '#FDE047' }: { data: number[]; color?: string
 }
 
 export default function StatsPage() {
-  const { flights, count, loading } = useFlights()
+  const { flights, count, loading, dataMeta } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const historyRef = useRef<number[]>([])
+  const countRef = useRef(0)
   const [history, setHistory] = useState<number[]>([])
 
-  // Snapshot počtu letadel každých 15s → sparkline
+  useEffect(() => { countRef.current = count }, [count])
+
+  // Pravidelný snapshot každých 15 s. Graf je pouze z této otevřené relace.
   useEffect(() => {
-    if (count === 0) return
-    historyRef.current = [...historyRef.current.slice(-39), count]
-    setHistory([...historyRef.current])
-  }, [count])
+    const sample = () => {
+      if (countRef.current === 0) return
+      historyRef.current = [...historyRef.current.slice(-39), countRef.current]
+      setHistory([...historyRef.current])
+    }
+    sample()
+    const id = setInterval(sample, 15_000)
+    return () => clearInterval(id)
+  }, [])
 
   const airborne = flights.filter(f => !f.onGround)
   const onGround = flights.filter(f => f.onGround).length
@@ -129,9 +130,6 @@ export default function StatsPage() {
     ? (airborne.filter(f => f.mach).reduce((s, f) => s + (f.mach ?? 0), 0) / airborne.filter(f => f.mach).length).toFixed(3)
     : null
 
-  // Odhadovaný počet cestujících
-  const passengers = airborne.reduce((s, f) => s + (CAPACITY[f.aircraftType ?? 'narrow-body'] ?? 0), 0)
-
   // Top státy
   const byCountry: Record<string, number> = {}
   flights.forEach(f => { const c = f.origin_country ?? 'Neznámá'; byCountry[c] = (byCountry[c] ?? 0) + 1 })
@@ -142,11 +140,13 @@ export default function StatsPage() {
     'narrow-body': '✈️', 'wide-body': '🛫', 'turboprop': '🛩',
     'private-jet': '💼', 'cargo': '📦', 'military': '🎖',
     'helicopter': '🚁', 'ga': '🛸',
+    'unknown': '✈️',
   }
   const typeLabels: Record<string, string> = {
     'narrow-body': 'Úzkotrupé', 'wide-body': 'Širokotrupé', 'turboprop': 'Turbovrtulové',
     'private-jet': 'Privátní', 'cargo': 'Nákladní', 'military': 'Vojenské',
     'helicopter': 'Vrtulník', 'ga': 'Malá GA',
+    'unknown': 'Neurčený typ',
   }
   const byType: Record<string, number> = {}
   flights.forEach(f => { const t = f.aircraftType ?? 'narrow-body'; byType[t] = (byType[t] ?? 0) + 1 })
@@ -197,12 +197,20 @@ export default function StatsPage() {
       </div>
 
       {/* Hero tiles */}
+      {dataMeta.status !== 'live' && (
+        <div role="status" className="glass-panel" style={{
+          padding: '10px 14px', marginBottom: 16,
+          borderColor: dataMeta.status === 'stale' ? 'rgba(253,224,71,0.35)' : 'rgba(248,113,113,0.4)',
+          color: dataMeta.status === 'stale' ? 'var(--gold)' : '#FCA5A5', fontSize: 12,
+        }}>
+          {dataMeta.message ?? 'Živá data nejsou momentálně dostupná.'}
+        </div>
+      )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 10, marginBottom: 20 }}>
         {[
           { label: 'Celkem letadel', value: count.toLocaleString('cs'), sub: 've sledované oblasti' },
           { label: 'Ve vzduchu', value: airborne.length.toLocaleString('cs'), sub: 'aktivní lety' },
           { label: 'Na zemi', value: onGround.toLocaleString('cs'), sub: 'na letišti' },
-          { label: 'Cestující', value: `~${Math.round(passengers / 1000)}k`, sub: 'odhadovaný počet' },
           { label: 'Prům. výška', value: `${avgAlt.toLocaleString('cs')}m`, sub: 'metrů MSL' },
           { label: 'Prům. rychlost', value: `${avgSpd}`, sub: 'km/h' },
         ].map(s => (
@@ -332,7 +340,7 @@ export default function StatsPage() {
       )}
 
       <div style={{ textAlign: 'center', marginTop: 32, fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1 }}>
-        DATA SE OBNOVUJÍ KAŽDÝCH 10 SEKUND · AIRPLANES.LIVE
+        {dataMeta.status === 'live' ? `DATA SE OBNOVUJÍ PŘIBLIŽNĚ KAŽDÝCH 10 SEKUND · ${dataMeta.source}` : 'ŽIVÁ DATA NEJSOU DOSTUPNÁ'}
       </div>
     </div>
   )

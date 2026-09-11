@@ -8,9 +8,20 @@ import { airports, airportDisplayName } from '@/lib/airportData'
 import type { Airport } from '@/lib/airportData'
 import { getAtcFeeds, getLiveAtcUrl } from '@/lib/liveatc'
 import type { FlightRoute } from '@/hooks/useFlightRoute'
+import { REGION_CONFIGS } from '@/lib/constants'
 
 // Globální audio instance — jen jeden stream hraje naráz
 let globalAudio: HTMLAudioElement | null = null
+
+function escapeHtml(value: unknown): string {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+}
+
 function playAtcStream(url: string, btnId: string) {
   // Zastav předchozí stream
   if (globalAudio) {
@@ -70,6 +81,7 @@ interface MapViewProps {
   showAirports: boolean
   onMapReady?: (flyTo: (lat: number, lng: number) => void) => void
   selectedRoute?: FlightRoute | null   // trasa pro kreslení oblouku
+  region: string
 }
 
 // Historie pozic — max 12 bodů na letadlo
@@ -116,7 +128,7 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   return false
 }
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute }: MapViewProps) {
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region }: MapViewProps) {
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
@@ -147,8 +159,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       delete (L.Icon.Default.prototype as any)._getIconUrl
       L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' })
 
+      const initialRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
       const map = L.map(containerRef.current, {
-        center: [50.0, 15.5], zoom: 6,
+        center: [initialRegion.lat, initialRegion.lon], zoom: initialRegion.dist > 1000 ? 3 : 6,
         zoomControl: false, attributionControl: true,
       })
 
@@ -225,9 +238,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
           const buildPopupHtml = (metarHtml: string, atcHtml: string) => `
             <div class="fq-airport-popup">
-              <div class="fq-ap-code">${a.iata || a.icao}</div>
-              <div class="fq-ap-name">${a.name}</div>
-              <div class="fq-ap-meta">${a.city} · ${a.country} · ${a.elev} ft</div>
+              <div class="fq-ap-code">${escapeHtml(a.iata || a.icao)}</div>
+              <div class="fq-ap-name">${escapeHtml(a.name)}</div>
+              <div class="fq-ap-meta">${escapeHtml(a.city)} · ${escapeHtml(a.country)} · ${escapeHtml(a.elev)} ft</div>
               ${guideHtml}
               <div class="fq-ap-metar">${metarHtml}</div>
               ${atcHtml}
@@ -257,7 +270,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   const qnh = m.altimeter ? Math.round(m.altimeter) : null
                   const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
                   const catColor = m.category === 'VFR' ? '#22C55E' : m.category === 'MVFR' ? '#38BDF8' : m.category === 'IFR' ? '#F87171' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
-                  const wxLabel = m.weather ? (wxMap[m.weather] ?? m.weather) : null
+                  const wxLabel = m.weather ? escapeHtml(wxMap[m.weather] ?? m.weather) : null
                   metarHtml = `
                     <div class="fq-metar-divider"></div>
                     ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}</div>` : ''}
@@ -268,7 +281,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                       ${m.visibility != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">DOHLEDNOST</div><div class="fq-mt-val">${m.visibility >= 6 ? '10+ km' : (m.visibility * 1.609).toFixed(1) + ' km'}</div></div>` : ''}
                     </div>
                     ${wxLabel ? `<div class="fq-metar-wx">${wxLabel}</div>` : ''}
-                    ${m.rawMetar ? `<div class="fq-metar-raw">${m.rawMetar}</div>` : ''}`
+                    ${m.rawMetar ? `<div class="fq-metar-raw">${escapeHtml(m.rawMetar)}</div>` : ''}`
                 }
 
                 const feeds = getAtcFeeds(a.icao)
@@ -301,9 +314,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                       const btnId = `atc-btn-${a.icao}-${i}`
                       const proxyUrl = `/api/atc-stream?feed=${encodeURIComponent(f.feed)}`
                       if (f.online) {
-                        return `<button id="${btnId}" class="fq-atc-btn online" data-label="${f.label}" onclick="window.__playAtc('${proxyUrl}','${btnId}')">🟢 ▶ ${f.label}</button>`
+                        return `<button id="${btnId}" class="fq-atc-btn online" data-label="${escapeHtml(f.label)}" onclick="window.__playAtc('${proxyUrl}','${btnId}')">🟢 ▶ ${escapeHtml(f.label)}</button>`
                       } else {
-                        return `<div class="fq-atc-feed-offline">⚫ ${f.label} — offline</div>`
+                        return `<div class="fq-atc-feed-offline">⚫ ${escapeHtml(f.label)} — offline</div>`
                       }
                     }).join('')
 
@@ -362,6 +375,13 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Přepnutí regionu musí změnit i výřez mapy, nejen datový dotaz.
+  useEffect(() => {
+    const config = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
+    const zoom = config.dist > 1000 ? 3 : config.dist > 500 ? 4 : 6
+    mapRef.current?.map.setView([config.lat, config.lon], zoom, { animate: true })
+  }, [region])
 
   // Udržuj ref synchronizovaný s props (pro async Leaflet init callback)
   useEffect(() => { showAirportsRef.current = showAirports }, [showAirports])
@@ -477,7 +497,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
     // Predikát search+filter — sdílený s moveend cullingem
     const matchesQuery = (flight: Flight) => {
-      const passesSearch = !q || flight.callsign.includes(q) || flight.icao24.toUpperCase().includes(q)
+      const passesSearch = !q
+        || flight.callsign.includes(q)
+        || flight.icao24.toUpperCase().includes(q)
+        || (flight.registration ?? '').toUpperCase().includes(q)
       return passesSearch && matchesFilter(flight, activeFilters)
     }
     visiblePredRef.current = matchesQuery
@@ -540,6 +563,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           animateMarker(existing, cur, { lat: flight.lat, lng: flight.lng })
         }
         existing.setIcon(icon)
+        existing.off('click')
+        existing.on('click', () => onFlightSelect(flight))
+        existing.setTooltipContent(flight.callsign)
         if (isVisible) {
           if (!map.hasLayer(existing)) existing.addTo(map)
         } else {

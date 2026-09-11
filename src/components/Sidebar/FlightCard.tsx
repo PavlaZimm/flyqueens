@@ -45,7 +45,12 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
       onClick={() => onClick(flight)}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick(flight)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick(flight)
+        }
+      }}
       aria-pressed={selected}
     >
       {/* Row 1: logo + callsign + status */}

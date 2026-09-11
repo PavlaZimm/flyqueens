@@ -1,7 +1,9 @@
 import { ImageResponse } from 'next/og'
 
+// Edge runtime nechává OG obrázek generovat až při požadavku; Node prerender
+// během buildu stahuje externí emoji font a v izolovaném CI může selhat.
 export const runtime = 'edge'
-export const alt = 'FlyQueens · Track Every Flight'
+export const alt = 'FlyQueens — živá mapa letadel'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -85,14 +87,14 @@ export default function Image() {
             letterSpacing: 1,
             marginTop: 4,
           }}>
-            Real-time flight tracker · Střední Evropa
+            Živá mapa letadel · Česko a okolí
           </div>
 
           {/* Feature badges */}
           <div style={{ display: 'flex', gap: 14, marginTop: 20 }}>
             {[
               { icon: '✈', text: 'Živá ADS-B data' },
-              { icon: '🎙', text: 'ATC audio' },
+              { icon: '🌦', text: 'Počasí METAR' },
               { icon: '📍', text: 'Letadla nad tebou' },
               { icon: '🗺', text: 'Interaktivní mapa' },
             ].map(({ icon, text }) => (
@@ -122,7 +124,7 @@ export default function Image() {
           color: 'rgba(255,255,255,0.25)',
           letterSpacing: 3,
         }}>
-          flyqueens-app.vercel.app
+          www.flyqueens.cz
         </div>
 
         {/* Bottom accent line */}

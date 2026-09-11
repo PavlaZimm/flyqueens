@@ -7,19 +7,18 @@ const BASE = 'https://www.flyqueens.cz'
 const AIRPORTS = ['praha', 'brno', 'ostrava']
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date()
-
   const core: MetadataRoute.Sitemap = [
-    { url: BASE, lastModified: now, changeFrequency: 'always', priority: 1 },
-    { url: `${BASE}/stats`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${BASE}/letiste`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${BASE}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
+    { url: BASE, changeFrequency: 'daily', priority: 1 },
+    { url: `${BASE}/stats`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/o-projektu`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/letiste`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${BASE}/blog`, changeFrequency: 'weekly', priority: 0.6 },
   ]
 
   // Hub + parkování pro každé letiště
   const airports: MetadataRoute.Sitemap = AIRPORTS.flatMap((slug) => [
-    { url: `${BASE}/letiste/${slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
-    { url: `${BASE}/letiste/${slug}/parkovani`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${BASE}/letiste/${slug}`, changeFrequency: 'weekly' as const, priority: 0.7 },
+    { url: `${BASE}/letiste/${slug}/parkovani`, changeFrequency: 'monthly' as const, priority: 0.9 },
   ])
 
   // Blogové články se přidají automaticky z registru

@@ -1,4 +1,4 @@
-import type { Flight, AircraftType } from '@/types/flight'
+import type { Flight, AircraftType, FlightDataMeta, FlightDataSource, FlightDataStatus } from '@/types/flight'
 
 // OpenSky state vector indexes
 const IDX_ICAO24 = 0
@@ -10,30 +10,6 @@ const IDX_ALT_BARO = 7
 const IDX_ON_GROUND = 8
 const IDX_VELOCITY = 9
 const IDX_HEADING = 10
-
-// Heuristika pro typ letadla z ICAO prefixu
-function guessAircraftType(icao24: string): AircraftType {
-  const prefix = icao24.substring(0, 2).toLowerCase()
-
-  // Vojenské — specifické prefixy
-  if (['ae', 'ad'].includes(prefix)) return 'military'
-
-  // Vrtulníky — obecně nelze z ICAO odvodit, ale zkusíme délku
-  // Náhodná heuristika — pro full implementaci by bylo třeba databázi
-  const hex = parseInt(icao24, 16)
-
-  // GA letadla — Cessna, Piper apod. (obvykle nižší hex hodnoty v daných registrech)
-  // CZ: OK prefix = 0x49C000–0x49FFFF
-  if (hex >= 0x49C000 && hex <= 0x49FFFF) return 'ga'
-
-  // Wide-body — obvykle velcí dopravci
-  if (['4c', '4d', 'a8', 'a9', 'aa', 'ab', 'ac'].includes(prefix)) return 'wide-body'
-
-  // Turboprop
-  if (['06', '07', '08'].includes(prefix)) return 'turboprop'
-
-  return 'narrow-body'
-}
 
 function parseState(state: unknown[]): Flight | null {
   const arr = state as Array<unknown>
@@ -59,7 +35,8 @@ function parseState(state: unknown[]): Flight | null {
   const windSpeed = arr[20] != null ? Number(arr[20]) : undefined
   const mach     = arr[21] != null ? Number(arr[21]) : undefined
   const baroRate = arr[22] != null ? Number(arr[22]) : undefined  // ft/min, + = stoupání
-  const squawk   = arr[23] ? String(arr[23]) : undefined
+  // OpenSky vrací squawk na indexu 14, rozšířený ADS-B formát ho duplikuje na 23.
+  const squawk   = arr[23] ? String(arr[23]) : (arr[14] ? String(arr[14]) : undefined)
   const emergency = arr[24] ? String(arr[24]) : undefined
   const navAltFt = arr[25] != null ? Number(arr[25]) : undefined  // autopilot target ft
 
@@ -72,7 +49,7 @@ function parseState(state: unknown[]): Flight | null {
     velocity: Math.round(velocity),
     heading: Math.round(heading),
     onGround,
-    aircraftType: dbType ?? guessAircraftType(icao24),
+    aircraftType: dbType ?? 'unknown',
     model: dbModel,
     registration: registration || undefined,
     origin_country,
@@ -86,21 +63,31 @@ function parseState(state: unknown[]): Flight | null {
   }
 }
 
-export async function fetchFlights(region = 'europe'): Promise<{ flights: Flight[]; isMock: boolean }> {
+export async function fetchFlights(region = 'europe'): Promise<{ flights: Flight[]; meta: FlightDataMeta }> {
   const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}`, {
     cache: 'no-store',
-    signal: AbortSignal.timeout(12000),
+    signal: AbortSignal.timeout(6500),
   })
 
-  if (!res.ok) {
-    throw new Error(`OpenSky API error: ${res.status}`)
+  const data = await res.json() as {
+    states?: unknown[][]
+    source?: FlightDataSource | null
+    fetchedAt?: number | null
+    status?: FlightDataStatus
+    message?: string
   }
 
-  const data = await res.json() as { states?: unknown[][]; _mock?: boolean }
-  if (!data.states) return { flights: [], isMock: false }
+  if (!res.ok) {
+    throw new Error(data.message ?? `Live data API error: ${res.status}`)
+  }
 
   return {
-    flights: data.states.map(parseState).filter((f): f is Flight => f !== null),
-    isMock: data._mock === true,
+    flights: (data.states ?? []).map(parseState).filter((f): f is Flight => f !== null),
+    meta: {
+      status: data.status ?? 'unavailable',
+      source: data.source ?? null,
+      fetchedAt: data.fetchedAt ?? null,
+      message: data.message,
+    },
   }
 }

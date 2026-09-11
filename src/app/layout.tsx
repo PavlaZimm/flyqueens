@@ -9,22 +9,22 @@ import "leaflet/dist/leaflet.css";
 // žádný render-blocking požadavek na Google Fonts).
 
 export const metadata: Metadata = {
-  title: "FlyQueens · Track Every Flight",
-  description: "Sleduj lety živě na mapě. Real-time flight tracking pro střední Evropu — letadla, výšky, rychlosti, trasy.",
+  title: "Živá mapa letadel nad Českem | FlyQueens",
+  description: "Sledujte dostupná ADS-B data o letadlech nad Českem a okolím — polohu, výšku, rychlost a odhad trasy.",
   keywords: ["flight tracker", "letadla live", "sledování letů", "mapa letadel", "ADS-B"],
   openGraph: {
-    title: "FlyQueens · Track Every Flight",
-    description: "Sleduj lety živě na mapě. Real-time flight tracking pro střední Evropu.",
+    title: "Živá mapa letadel nad Českem | FlyQueens",
+    description: "Dostupná ADS-B data o letadlech nad Českem a okolím na interaktivní mapě.",
     type: "website",
     locale: "cs_CZ",
     siteName: "FlyQueens",
     url: "https://www.flyqueens.cz",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FlyQueens · Track Every Flight" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FlyQueens — živá mapa letadel" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FlyQueens · Track Every Flight",
-    description: "Real-time mapa letadel nad střední Evropou.",
+    title: "Živá mapa letadel nad Českem | FlyQueens",
+    description: "Dostupná ADS-B data o letadlech nad Českem a okolím.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },

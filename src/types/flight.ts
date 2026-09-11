@@ -7,6 +7,11 @@ export type AircraftType =
   | 'military'
   | 'helicopter'
   | 'ga'
+  | 'unknown'
+
+export type FlightDataSource = 'adsb.lol' | 'opensky' | 'airplanes.live'
+
+export type FlightDataStatus = 'live' | 'stale' | 'unavailable'
 
 export interface Flight {
   icao24: string        // unikátní ID (ICAO24 hex)
@@ -28,4 +33,11 @@ export interface Flight {
   squawk?: string           // transponder kód (7700=emergency, 7500=hijack, 7600=radio)
   emergency?: string        // emergency typ z adsb.lol
   navAltitudeFt?: number    // autopilot target altitude v ft
+}
+
+export interface FlightDataMeta {
+  status: FlightDataStatus
+  source: FlightDataSource | null
+  fetchedAt: number | null  // Unix timestamp v sekundách
+  message?: string
 }

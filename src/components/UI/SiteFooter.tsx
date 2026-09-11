@@ -20,6 +20,7 @@ export function SiteFooter() {
             <Link href="/" style={link}>Živá mapa letadel</Link>
             <Link href="/stats" style={link}>Statistiky provozu</Link>
             <Link href="/blog" style={link}>Blog</Link>
+            <Link href="/o-projektu" style={link}>O projektu a zdrojích dat</Link>
           </div>
 
           <div>
@@ -40,7 +41,7 @@ export function SiteFooter() {
         </div>
 
         <div style={{ marginTop: 22, paddingTop: 14, borderTop: '1px solid var(--border-subtle)', fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.6 }}>
-          FlyQueens · živé sledování letů nad Českem a Evropou. Data: airplanes.live, OpenSky Network, METAR.
+          FlyQueens · dostupná ADS-B data o letadlech nad Českem a okolím. Aktuální zdroj a stav najdete přímo v mapě.
         </div>
       </div>
     </footer>

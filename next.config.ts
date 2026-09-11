@@ -1,5 +1,7 @@
 import type { NextConfig } from 'next'
 
+const isDev = process.env.NODE_ENV === 'development'
+
 const securityHeaders = [
   { key: 'X-DNS-Prefetch-Control',   value: 'on' },
   { key: 'X-Frame-Options',          value: 'DENY' },
@@ -14,8 +16,8 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // Next.js hydration + Leaflet potřebují unsafe-eval/inline
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com",
+      // React používá eval jen při vývoji; v produkci ho nepovolujeme.
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       // CARTO tiles + Leaflet blob markers + planespotters fotky
@@ -27,7 +29,11 @@ const securityHeaders = [
       "media-src 'self'",
       // Leaflet web workers
       "worker-src blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
       "frame-ancestors 'none'",
+      "upgrade-insecure-requests",
     ].join('; '),
   },
 ]
@@ -40,11 +46,6 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ]
-  },
-  // aircraft-db.json je mimo public/ (aby nebyla veřejně stažitelná 15 MB) —
-  // Vercel ji musí přibalit do serverless funkce /api/flights.
-  outputFileTracingIncludes: {
-    '/api/flights': ['./data/aircraft-db.json'],
   },
   experimental: { optimizeCss: true },
 }

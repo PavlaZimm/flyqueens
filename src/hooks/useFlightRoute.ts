@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { Airport } from '@/lib/airportData'
 import { airports } from '@/lib/airportData'
 
@@ -135,8 +135,31 @@ export function useFlightRoute(
       .finally(() => setLoading(false))
 
     return () => controller.abort()
+  // Trasu znovu hledáme jen při změně identity letu. Průběh a ETA se níže
+  // přepočítávají lokálně při každé nové poloze, takže nevzniká placené API
+  // volání každých deset sekund.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [icao24])
+  }, [icao24, callsign])
 
-  return { route, loading }
+  const updatedRoute = useMemo(() => {
+    if (!route?.arrival) return route
+
+    const distFlown = route.departure
+      ? distKm(route.departure.lat, route.departure.lng, currentLat, currentLng)
+      : 0
+    const distRemaining = distKm(currentLat, currentLng, route.arrival.lat, route.arrival.lng)
+    const totalDist = distFlown + distRemaining
+    const progress = totalDist > 0 ? Math.min(100, Math.round((distFlown / totalDist) * 100)) : 0
+    const speedKmh = velocityKmh > 50 ? velocityKmh : 800
+
+    return {
+      ...route,
+      progress,
+      remaining: Math.round(distRemaining),
+      etaMin: Math.round(distRemaining / speedKmh * 60),
+      totalDist: Math.round(totalDist),
+    }
+  }, [route, currentLat, currentLng, velocityKmh])
+
+  return { route: updatedRoute, loading }
 }

@@ -25,6 +25,10 @@ async function checkFeed(feed: string): Promise<boolean> {
 // Zkontroluje jeden nebo více feedů najednou
 // ?feed=eidw8  nebo  ?feeds=eidw8,kjfk_twr,epwa_app
 export async function GET(req: NextRequest) {
+  if (process.env.ENABLE_ATC_PROXY !== 'true') {
+    return NextResponse.json({ online: false, disabled: true }, { status: 503 })
+  }
+
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'
@@ -45,7 +49,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (multi) {
-    const feeds = multi.split(',').filter(f => /^[a-z0-9_]+$/i.test(f)).slice(0, 30)
+    const feeds = multi.split(',').filter(f => /^[a-z0-9_]+$/i.test(f)).slice(0, 10)
     const results = await Promise.all(feeds.map(f => checkFeed(f).then(online => [f, online] as [string, boolean])))
     return NextResponse.json(Object.fromEntries(results))
   }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchFlights } from '@/lib/opensky'
-import type { Flight } from '@/types/flight'
+import type { Flight, FlightDataMeta } from '@/types/flight'
 import { POLL_INTERVAL_MS, MAX_BACKOFF_MS } from '@/lib/constants'
 
 interface UseFlightsResult {
@@ -10,7 +10,7 @@ interface UseFlightsResult {
   loading: boolean
   error: string | null
   count: number
-  isMock: boolean
+  dataMeta: FlightDataMeta
   region: string
   setRegion: (r: string) => void
 }
@@ -23,7 +23,9 @@ export function useFlights(): UseFlightsResult {
   const [flights, setFlights] = useState<Flight[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState<string | null>(null)
-  const [isMock, setIsMock]   = useState(false)
+  const [dataMeta, setDataMeta] = useState<FlightDataMeta>({
+    status: 'unavailable', source: null, fetchedAt: null,
+  })
   const [region, setRegionState] = useState('europe')
   const backoffRef = useRef(POLL_INTERVAL)
   const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -36,14 +38,19 @@ export function useFlights(): UseFlightsResult {
 
   const load = useCallback(async () => {
     try {
-      const { flights: data, isMock: mock } = await fetchFlights(regionRef.current)
+      const { flights: data, meta } = await fetchFlights(regionRef.current)
       setFlights(data)
-      setIsMock(mock)
+      setDataMeta(meta)
       setError(null)
       backoffRef.current = POLL_INTERVAL
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Chyba při načítání letů'
       setError(msg)
+      setDataMeta((previous) => ({
+        ...previous,
+        status: previous.fetchedAt ? 'stale' : 'unavailable',
+        message: msg,
+      }))
       backoffRef.current = Math.min(backoffRef.current * BACKOFF_FACTOR, MAX_BACKOFF)
     } finally {
       setLoading(false)
@@ -67,5 +74,5 @@ export function useFlights(): UseFlightsResult {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { flights, loading, error, count: flights.length, isMock, region, setRegion }
+  return { flights, loading, error, count: flights.length, dataMeta, region, setRegion }
 }
