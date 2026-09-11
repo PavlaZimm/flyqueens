@@ -20,15 +20,13 @@ const securityHeaders = [
       `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      // Leaflet/MapLibre markery, mapové assety a planespotters fotky.
-      "img-src 'self' data: blob: https://tiles.openfreemap.org https://assets.openfreemap.com https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
-      // API calls z klienta jdou přes /api/* (self); externě mapové podklady, fotky a analytika.
+      // Leaflet markery, mapové dlaždice a planespotters fotky.
+      "img-src 'self' data: blob: https://*.tile.opentopomap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
+      // API calls z klienta jdou přes /api/* (self); externě fotky a analytika.
       // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
-      "connect-src 'self' https://tiles.openfreemap.org https://assets.openfreemap.com https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
+      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
       // Audio proxy běží přes /api/atc-stream (self)
       "media-src 'self'",
-      // MapLibre web workers
-      "worker-src blob:",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

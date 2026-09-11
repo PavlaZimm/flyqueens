@@ -155,7 +155,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Init mapy
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
-    let basemapTimer: ReturnType<typeof setTimeout> | null = null
 
     import('leaflet').then((L) => {
       if (!containerRef.current || mapRef.current) return
@@ -174,9 +173,27 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       })
 
       L.control.zoom({ position: 'bottomright' }).addTo(map)
+      map.attributionControl.setPrefix(false)
+
+      // Rasterový podklad se načítá přímo přes Leaflet. Oproti předchozí
+      // MapLibre vrstvě nevyžaduje další velký JS bundle ani WebGL a názvy měst
+      // jsou součástí každé dlaždice, takže se nemohou ztratit při renderování.
+      const basemapUrl = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+      const basemapOptions = {
+        subdomains: 'abc',
+        maxZoom: 17,
+        maxNativeZoom: 17,
+        updateWhenIdle: true,
+        keepBuffer: 2,
+        attribution: 'Mapová data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>, SRTM | styl © <a href="https://opentopomap.org" target="_blank" rel="noopener noreferrer">OpenTopoMap</a> (CC-BY-SA)',
+      }
+      const darkTiles = L.tileLayer(basemapUrl, { ...basemapOptions, className: 'fq-basemap-dark' })
+      const lightTiles = L.tileLayer(basemapUrl, { ...basemapOptions, className: 'fq-basemap-light' })
+      if (themeRef.current === 'light') lightTiles.addTo(map)
+      else darkTiles.addTo(map)
 
       const airportLayer = L.layerGroup()
-      mapRef.current = { map, darkTiles: null, lightTiles: null, airportLayer, L }
+      mapRef.current = { map, darkTiles, lightTiles, airportLayer, L }
 
       // Viewport culling — přidá/odebere markery podle výřezu při posunu/zoomu.
       // Registrováno zde (ne v samostatném efektu), protože mapa vzniká async.
@@ -371,24 +388,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       // Data mohou dorazit dřív než dynamicky načtená mapa. Změna stavu
       // okamžitě znovu spustí efekt markerů; bez ní čekaly až na další 10s poll.
       setMapReady(true)
-
-      // MapLibre má téměř 1 MB JS. Spustíme ho až po prvním vykreslení letadel,
-      // aby jeho stažení a parsování neblokovalo nejdůležitější obsah radaru.
-      basemapTimer = setTimeout(() => {
-        import('@maplibre/maplibre-gl-leaflet').then(({ maplibreGL }) => {
-          if (!mapRef.current || mapRef.current.map !== map) return
-
-          const darkTiles = maplibreGL({ style: 'https://tiles.openfreemap.org/styles/fiord' })
-          const lightTiles = maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron' })
-          mapRef.current.darkTiles = darkTiles
-          mapRef.current.lightTiles = lightTiles
-
-          if (themeRef.current === 'light') lightTiles.addTo(map)
-          else darkTiles.addTo(map)
-        }).catch(() => {
-          // Radar zůstává použitelný i při výpadku externího mapového podkladu.
-        })
-      }, 3_000)
     })
 
     // Capture refs pro cleanup (eslint react-hooks/exhaustive-deps)
@@ -396,7 +395,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const trails  = trailsRef.current
 
     return () => {
-      if (basemapTimer) clearTimeout(basemapTimer)
       if (mapRef.current) {
         mapRef.current.map.remove()
         mapRef.current = null
@@ -666,8 +664,18 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         }
         .leaflet-control-zoom-in:hover,
         .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: var(--gold) !important; }
-        .leaflet-control-attribution { font-size: 9px !important; background: rgba(10,15,30,0.55) !important; color: rgba(255,255,255,0.2) !important; }
-        .leaflet-control-attribution a { color: rgba(255,255,255,0.25) !important; }
+        .leaflet-tile-pane { background: #141923; }
+        .fq-basemap-dark {
+          filter: invert(1) hue-rotate(180deg) brightness(0.78) saturate(0.82) contrast(1.02);
+        }
+        .leaflet-control-attribution {
+          max-width: min(82vw, 560px);
+          font-size: 8px !important;
+          line-height: 1.25 !important;
+          background: rgba(10,15,30,0.78) !important;
+          color: rgba(255,255,255,0.68) !important;
+        }
+        .leaflet-control-attribution a { color: rgba(255,255,255,0.82) !important; }
         .fq-airport-tooltip {
           background: rgba(15,23,42,0.92) !important;
           border: 1px solid rgba(56,189,248,0.35) !important;

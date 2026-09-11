@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieConsent } from "@/components/UI/CookieConsent";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
-import "maplibre-gl/dist/maplibre-gl.css";
 
 const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
