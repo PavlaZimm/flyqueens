@@ -24,6 +24,9 @@ Primární zdroj poloh je ADSB.lol. Aktuální zdroj a čerstvost se posílají 
 Podrobný stav zdrojů, přesnosti, výkonových úprav a další doporučené investice
 shrnuje [audit dat a rychlosti](docs/data-performance-audit-2026-09-11.md).
 
+Výzkum klíčových slov, publikační plán a bezpečný linkbuilding shrnuje
+[obsahová a linkbuildingová strategie](docs/seo-content-linkbuilding-strategy-2026-09-11.md).
+
 Volitelné zdroje a funkce jsou výchozím stavem vypnuté:
 
 - `OPENSKY_LICENSED=true` pouze po získání písemné licence a s `OPENSKY_CLIENT_ID` + `OPENSKY_CLIENT_SECRET`.

@@ -3,6 +3,9 @@
 Datum: 11. září 2026  
 Trh: Česko, český jazyk
 
+Navazující rozhodnutí, publikační kalendář, zadání článků a linkbuilding jsou
+v dokumentu [Obsahová a linkbuildingová strategie FlyQueens](./seo-content-linkbuilding-strategy-2026-09-11.md).
+
 ## Datový stav
 
 Datová část byla 11. září 2026 doplněna přímo z Marketing Mineru pro český trh. Obsahuje měsíční hledanost, CPC, meziroční změnu, sezónnost a tam, kde byla analýza SERPu dostupná, také obtížnost. Kompletní měřený výstup je v souboru [`marketing-miner-keywords-2026-09-11.csv`](./marketing-miner-keywords-2026-09-11.csv).
