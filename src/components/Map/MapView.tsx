@@ -178,6 +178,11 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   return false
 }
 
+function flightLevelLabel(flight: Flight): string {
+  if (flight.onGround || flight.altitude < 10) return 'GND'
+  return `FL${Math.round(flight.altitude * 3.28084 / 100)}`
+}
+
 export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region, displayMode }: MapViewProps) {
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
@@ -552,40 +557,52 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const curLat = selectedFlight.lat
     const curLng = selectedFlight.lng
 
-    // Uletěná část (DEP → letadlo) — šedá přerušovaná
+    // Uletěná část je modrá, zbývající zlatá — na první pohled je tak jasné,
+    // kde se vybraný let na trase právě nachází.
     const flownPts = greatCirclePoints(depLat, depLng, curLat, curLng, 40)
     const flownArc = L.polyline(flownPts, {
-      color: 'rgba(255,255,255,0.18)',
-      weight: 1.5,
-      dashArray: '4 6',
+      color: '#5AA9FF',
+      weight: 3,
+      opacity: 0.82,
+      dashArray: '5 7',
       smoothFactor: 1,
+      className: 'fq-route-line fq-route-flown',
     })
 
     // Zbývající část (letadlo → ARR) — zlatá plná
     const remainPts = greatCirclePoints(curLat, curLng, arrLat, arrLng, 60)
     const remainArc = L.polyline(remainPts, {
       color: '#F5B83D',
-      weight: 2,
-      opacity: 0.55,
-      dashArray: '6 4',
+      weight: 3.5,
+      opacity: 0.96,
+      dashArray: '7 5',
       smoothFactor: 1,
+      className: 'fq-route-line fq-route-remaining',
     })
 
-    // Marker cílového letiště
-    const arrIcon = L.divIcon({
-      html: `<div style="
-        width:32px;height:32px;display:flex;align-items:center;justify-content:center;
-        background:rgba(245,184,61,0.15);border:1.5px solid rgba(245,184,61,0.5);
-        border-radius:50%;font-size:14px;
-      ">🛬</div>`,
+    const endpointIcon = (code: string, kind: 'departure' | 'arrival') => L.divIcon({
+      html: `<div class="fq-route-endpoint fq-route-${kind}">
+        <span>${kind === 'departure' ? '□' : '◇'}</span><strong>${escapeHtml(code)}</strong>
+      </div>`,
       className: '',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
+      iconSize: [84, 24],
+      iconAnchor: [42, 12],
     })
-    const arrMarker = L.marker([arrLat, arrLng], { icon: arrIcon, interactive: false })
 
-    // Seskup vše do jedné vrstvy pro snadné mazání
-    const group = L.layerGroup([flownArc, remainArc, arrMarker])
+    const routeLayers: Layer[] = [flownArc, remainArc]
+    if (departure) {
+      const depCode = departure.iata || departure.icao || 'ODLET'
+      routeLayers.push(L.marker([departure.lat, departure.lng], {
+        icon: endpointIcon(depCode, 'departure'), interactive: false,
+      }))
+    }
+    const arrCode = arrival.iata || arrival.icao || 'CÍL'
+    routeLayers.push(L.marker([arrLat, arrLng], {
+      icon: endpointIcon(arrCode, 'arrival'), interactive: false,
+    }))
+
+    // Seskup vše do jedné vrstvy pro snadné mazání.
+    const group = L.layerGroup(routeLayers)
     group.addTo(map)
     // Ulož jako polyline (group nemá Polyline typ, ale máme ref)
     routeArcRef.current = group as unknown as Polyline
@@ -625,6 +642,15 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const isVisible    = visibleIds.has(flight.icao24)
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 30 : 20
+      const tooltipContent = isSelected
+        ? `<div class="fq-selected-callout"><strong>${escapeHtml(flight.callsign)}</strong><span>${flightLevelLabel(flight)}</span><span>${Math.round(flight.velocity)} km/h</span></div>`
+        : escapeHtml(flight.callsign)
+      const tooltipOptions = {
+        permanent: isSelected,
+        direction: (isSelected ? 'right' : 'top') as 'right' | 'top',
+        offset: (isSelected ? [size / 2 + 5, 0] : [0, -size / 2 - 4]) as [number, number],
+        className: isSelected ? 'fq-tooltip fq-tooltip-selected' : 'fq-tooltip',
+      }
 
       // --- Historie trasy ---
       const hist = flightHistory.get(flight.icao24) ?? []
@@ -673,7 +699,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         existing.setIcon(icon)
         existing.off('click')
         existing.on('click', () => onFlightSelect(flight))
-        existing.setTooltipContent(flight.callsign)
+        const tooltip = existing.getTooltip()
+        // Převazuj eventy pouze při změně vybraného stavu, ne u každého
+        // desetisekundového datového snapshotu.
+        if (!tooltip || Boolean(tooltip.options.permanent) !== isSelected) {
+          existing.unbindTooltip()
+          existing.bindTooltip(tooltipContent, tooltipOptions)
+        } else {
+          existing.setTooltipContent(tooltipContent)
+        }
+        if (isSelected) existing.openTooltip()
         if (isVisible) {
           if (!map.hasLayer(existing)) existing.addTo(map)
         } else {
@@ -682,11 +717,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       } else if (isVisible) {
         const marker = L.marker([flight.lat, flight.lng], { icon })
         marker.on('click', () => onFlightSelect(flight))
-        marker.bindTooltip(flight.callsign, {
-          permanent: false, direction: 'top',
-          offset: [0, -size / 2 - 4], className: 'fq-tooltip',
-        })
+        marker.bindTooltip(tooltipContent, tooltipOptions)
         if (isVisible) marker.addTo(map)
+        if (isSelected) marker.openTooltip()
         markersRef.current.set(flight.icao24, marker)
       }
     })
@@ -721,6 +754,38 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           box-shadow: none !important;
         }
         .fq-tooltip::before { display: none !important; }
+        .fq-tooltip-selected {
+          padding: 5px 8px !important;
+          border-color: rgba(245,184,61,0.8) !important;
+          background: rgba(10,15,30,0.96) !important;
+          box-shadow: 0 8px 22px rgba(0,0,0,0.34) !important;
+        }
+        .fq-selected-callout { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+        .fq-selected-callout strong { color: var(--text-primary); font-size: 11px; letter-spacing: 0.8px; }
+        .fq-selected-callout span { color: var(--text-muted); font: 600 9px 'IBM Plex Sans', sans-serif; letter-spacing: 0; }
+        .fq-selected-callout span:first-of-type { color: var(--green-live); }
+        .fq-route-endpoint {
+          width: 84px; height: 24px;
+          display: flex; align-items: center; justify-content: center; gap: 5px;
+          box-sizing: border-box;
+          padding: 0 7px;
+          border: 1px solid rgba(90,169,255,0.45);
+          border-radius: 6px;
+          background: rgba(10,15,30,0.84);
+          box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+          color: rgba(233,238,246,0.8);
+          font: 700 9px 'IBM Plex Sans', sans-serif;
+          letter-spacing: 1.1px;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+          white-space: nowrap;
+        }
+        .fq-route-endpoint span { color: var(--accent-blue); font-size: 13px; }
+        .fq-route-arrival { border-color: rgba(245,184,61,0.58); }
+        .fq-route-arrival strong, .fq-route-arrival span { color: var(--gold); }
+        .fq-route-line {
+          filter: drop-shadow(0 1px 2px rgba(10,15,30,0.95));
+          stroke-linecap: round;
+        }
         .leaflet-control-zoom {
           border: 1px solid rgba(255,255,255,0.12) !important;
           border-radius: 8px !important;

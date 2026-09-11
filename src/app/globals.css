@@ -163,6 +163,7 @@ body {
 .flight-card.selected {
   border-color: rgba(245, 184, 61, 0.35);
   background: rgba(245, 184, 61, 0.05);
+  box-shadow: inset 3px 0 0 var(--gold);
 }
 .flight-card .callsign {
   font-family: 'Archivo', sans-serif;
