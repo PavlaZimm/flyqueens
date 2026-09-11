@@ -3,18 +3,19 @@ import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny P1 až P6',
   description:
     'Aktuální oficiální ceny parkování u letiště Leoše Janáčka v Mošnově. Rozdíly mezi P1, P3, P4, P5 a P6 a vzdálenost od terminálu.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/ostrava/parkovani' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny P1 až P6',
     description: 'Ověřené ceny oficiálních parkovišť a vzdálenost od terminálu.',
     url: 'https://www.flyqueens.cz/letiste/ostrava/parkovani',
     type: 'article',
-  },
+  }),
 }
 
 const faqJsonLd = {

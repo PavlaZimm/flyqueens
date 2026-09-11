@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Letiště v Česku: odlety, parkování a živá mapa | FlyQueens',
   description:
     'Přehled českých letišť. Parkování, odlety a přílety, počasí a poslední dostupné polohy letadel nad Prahou, Brnem, Ostravou a dalšími.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste' },
+  ...socialMetadata({
+    title: 'Letiště v Česku: odlety, parkování a živá mapa | FlyQueens',
+    description: 'Přehled českých letišť, praktické informace a živá mapa dostupných letových dat.',
+    url: 'https://www.flyqueens.cz/letiste',
+  }),
 }
 
 // Česká letiště s obsahem. hasPage = má vlastní stránku, jinak se připravuje.

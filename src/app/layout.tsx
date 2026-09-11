@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieConsent } from "@/components/UI/CookieConsent";
+import { socialMetadata } from "@/lib/socialMetadata";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 
@@ -29,21 +30,11 @@ export const metadata: Metadata = {
   title: "Živá mapa letadel nad Českem | FlyQueens",
   description: "Sledujte dostupná ADS-B data o letadlech nad Českem a okolím — polohu, výšku, rychlost a odhad trasy.",
   keywords: ["flight tracker", "letadla live", "sledování letů", "mapa letadel", "ADS-B"],
-  openGraph: {
+  ...socialMetadata({
     title: "Živá mapa letadel nad Českem | FlyQueens",
     description: "Dostupná ADS-B data o letadlech nad Českem a okolím na interaktivní mapě.",
-    type: "website",
-    locale: "cs_CZ",
-    siteName: "FlyQueens",
     url: "https://www.flyqueens.cz",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FlyQueens — živá mapa letadel" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Živá mapa letadel nad Českem | FlyQueens",
-    description: "Dostupná ADS-B data o letadlech nad Českem a okolím.",
-    images: ["/opengraph-image"],
-  },
+  }),
   robots: { index: true, follow: true },
   verification: {
     google: "MAN4NfQiLcoRVR51idXywyLvfgE5YIfBNh6lnVFQBV0",

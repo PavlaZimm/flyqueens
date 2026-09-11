@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SiteFooter } from '@/components/UI/SiteFooter'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'O projektu a zdrojích dat | FlyQueens',
   description: 'Jak FlyQueens získává polohy letadel, jak číst odhady a jaké limity mají veřejná ADS-B data.',
   alternates: { canonical: 'https://www.flyqueens.cz/o-projektu' },
+  ...socialMetadata({
+    title: 'O projektu a zdrojích dat | FlyQueens',
+    description: 'Jak FlyQueens získává polohy letadel, jak číst odhady a jaké limity mají veřejná ADS-B data.',
+    url: 'https://www.flyqueens.cz/o-projektu',
+  }),
 }
 
 const section = { marginTop: 28 } as const

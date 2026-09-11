@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Letiště Brno-Tuřany: parkování, odlety a živá mapa',
   description: 'Vše k letišti Brno-Tuřany na jednom místě: parkování a ceny, odlety a přílety a poslední dostupné polohy letadel nad Brnem.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/brno' },
+  ...socialMetadata({
+    title: 'Letiště Brno-Tuřany: parkování a živá mapa | FlyQueens',
+    description: 'Parkování, odlety, přílety a dostupná živá data o letadlech nad Brnem.',
+    url: 'https://www.flyqueens.cz/letiste/brno',
+  }),
 }
 
 const LINKS = [

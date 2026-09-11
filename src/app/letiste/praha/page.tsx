@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Letiště Praha (Václava Havla): parkování, odlety a živá mapa',
   description:
     'Vše k Letišti Václava Havla na jednom místě: parkování a ceny, odlety a přílety, počasí a poslední dostupné polohy letadel nad Prahou.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha' },
+  ...socialMetadata({
+    title: 'Letiště Praha: parkování, odlety a živá mapa | FlyQueens',
+    description: 'Parkování, odlety, přílety, počasí a dostupná živá data o letadlech nad Prahou.',
+    url: 'https://www.flyqueens.cz/letiste/praha',
+  }),
 }
 
 const LINKS = [

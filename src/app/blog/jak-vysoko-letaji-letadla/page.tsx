@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
@@ -10,12 +11,12 @@ export const metadata: Metadata = {
   description:
     'Dopravní letadla létají v 9 až 12 kilometrech, malé stroje mnohem níž. Proč se létá tak vysoko, co je letová hladina FL a jak výšku každého letadla vidíte živě na mapě.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Jak vysoko létají letadla a proč zrovna deset kilometrů',
     description: 'Proč dopravní letadla létají v 10 km, co je letová hladina a jak to vidíte na mapě.',
     url: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
     type: 'article',
-  },
+  }),
 }
 
 const jsonLd = {

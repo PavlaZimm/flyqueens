@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Letiště Ostrava (Leoše Janáčka): parkování, odlety a živá mapa',
   description: 'Vše k letišti Leoše Janáčka v Mošnově: ověřené parkování a ceny P1 až P6 a živá mapa dostupných letových dat nad Moravou.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/ostrava' },
+  ...socialMetadata({
+    title: 'Letiště Ostrava: parkování a živá mapa | FlyQueens',
+    description: 'Parkování, ceny a dostupná živá data o letadlech nad Ostravou a Moravou.',
+    url: 'https://www.flyqueens.cz/letiste/ostrava',
+  }),
 }
 
 const LINKS = [

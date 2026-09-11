@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('squawk-nouzove-kody')!
 
@@ -10,12 +11,12 @@ export const metadata: Metadata = {
   description:
     'Co znamená squawk 7700, 7600 a 7500, jak funguje odpovídač v letadle a jak nouzový let poznáte na živé mapě. Srozumitelně a s příklady.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel',
     description: 'Co znamenají nouzové squawk kódy a jak nouzový let poznáte na mapě.',
     url: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody',
     type: 'article',
-  },
+  }),
 }
 
 const jsonLd = {

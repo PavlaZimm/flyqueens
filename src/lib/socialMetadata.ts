@@ -1,0 +1,41 @@
+import type { Metadata } from 'next'
+
+export const SOCIAL_IMAGE = {
+  url: '/social-preview.png',
+  width: 1200,
+  height: 630,
+  alt: 'FlyQueens — co právě letí nad tebou?',
+}
+
+type SocialMetadataInput = {
+  title: string
+  description: string
+  url: string
+  type?: 'website' | 'article'
+}
+
+/** Stejný, spolehlivý náhled a správný titulek pro Facebook, LinkedIn i X. */
+export function socialMetadata({
+  title,
+  description,
+  url,
+  type = 'website',
+}: SocialMetadataInput): Pick<Metadata, 'openGraph' | 'twitter'> {
+  return {
+    openGraph: {
+      title,
+      description,
+      url,
+      type,
+      locale: 'cs_CZ',
+      siteName: 'FlyQueens',
+      images: [SOCIAL_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/social-preview.png'],
+    },
+  }
+}

@@ -3,19 +3,20 @@ import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně (2026)',
   description:
     'Ověřené možnosti parkování u Letiště Václava Havla, expresní stání zdarma, vzdálenosti a proč cenu dlouhodobého parkování ověřit pro konkrétní termín.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha/parkovani' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně',
     description:
       'Ověřené možnosti parkování, vzdálenosti, expresní stání a tipy na rezervaci.',
     url: 'https://www.flyqueens.cz/letiste/praha/parkovani',
     type: 'article',
-  },
+  }),
 }
 
 // FAQ schema — bohatší výsledek v Googlu

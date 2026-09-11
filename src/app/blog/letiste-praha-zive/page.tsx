@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('letiste-praha-zive')!
 
@@ -10,12 +11,12 @@ export const metadata: Metadata = {
   description:
     'Jak sledovat letiště Praha online. Rozdíl mezi webkamerou a živou mapou letadel, co všechno se dá vyčíst z letu a kde to vidíte zdarma.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/letiste-praha-zive' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
     description: 'Webkamera ukáže kus plochy, ADS-B mapa letadla zachycená přijímači. Jak to funguje.',
     url: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
     type: 'article',
-  },
+  }),
 }
 
 const jsonLd = {

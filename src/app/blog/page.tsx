@@ -1,11 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { POSTS } from '@/lib/blog'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Blog o letadlech a létání | FlyQueens',
   description: 'Jak funguje sledování letadel, co znamenají kódy a signály, a co se děje ve vzduchu nad Českem. Srozumitelně a bez omáčky.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog' },
+  ...socialMetadata({
+    title: 'Blog o letadlech a létání | FlyQueens',
+    description: 'Sledování letadel, kódy, signály a zajímavosti ze vzduchu srozumitelně a bez omáčky.',
+    url: 'https://www.flyqueens.cz/blog',
+  }),
 }
 
 export default function BlogIndexPage() {

@@ -3,12 +3,18 @@ import Link from 'next/link'
 import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
 import { POSTS } from '@/lib/blog'
+import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Živá mapa letadel nad Českem | FlyQueens',
   description: 'Zjistěte, co vám právě letí nad hlavou. FlyQueens zobrazuje dostupná živá ADS-B data o letadlech nad Českem a okolím.',
   alternates: { canonical: 'https://www.flyqueens.cz' },
+  ...socialMetadata({
+    title: 'Živá mapa letadel nad Českem | FlyQueens',
+    description: 'Zjistěte, co vám právě letí nad hlavou. Živá mapa dostupných ADS-B dat nad Českem a okolím.',
+    url: 'https://www.flyqueens.cz',
+  }),
 }
 
 const AIRPORTS = [

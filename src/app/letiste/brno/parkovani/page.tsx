@@ -3,18 +3,19 @@ import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
+import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Brno-Tuřany: ceny a kde zaparkovat levně',
   description:
     'Aktuální oficiální ceník parkování u letiště Brno-Tuřany, krátkodobé stání zdarma a sazby pro 1 až 21 dní.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/brno/parkovani' },
-  openGraph: {
+  ...socialMetadata({
     title: 'Parkování u letiště Brno-Tuřany: ceny a kde zaparkovat levně',
     description: 'Ověřený oficiální ceník, krátkodobé stání a sazby pro delší pobyt.',
     url: 'https://www.flyqueens.cz/letiste/brno/parkovani',
     type: 'article',
-  },
+  }),
 }
 
 const faqJsonLd = {
