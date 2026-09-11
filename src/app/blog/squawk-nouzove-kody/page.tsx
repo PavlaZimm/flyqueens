@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
+import { ArticleHero } from '@/components/UI/ArticleHero'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('squawk-nouzove-kody')!
 
 export const metadata: Metadata = {
-  title: 'Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel',
+  title: 'Squawk 7700, 7600 a 7500: význam nouzových kódů',
   description:
-    'Co znamená squawk 7700, 7600 a 7500, jak funguje odpovídač v letadle a jak nouzový let poznáte na živé mapě. Srozumitelně a s příklady.',
+    'Co znamená squawk 7700, 7600 nebo 7500? Přehled nouzových kódů, funkce palubního odpovídače a vysvětlení, co lze poznat na mapě.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody' },
   ...socialMetadata({
-    title: 'Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel',
-    description: 'Co znamenají nouzové squawk kódy a jak nouzový let poznáte na mapě.',
+    title: 'Squawk 7700, 7600 a 7500: význam nouzových kódů',
+    description: 'Co znamenají nouzové squawk kódy, jak funguje transpondér a co lze poznat na mapě.',
     url: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody',
     type: 'article',
+    publishedTime: post.date,
+    modifiedTime: post.updatedAt,
+    image: { url: '/blog/squawk-nouzove-kody.jpg', width: 1920, height: 1285, alt: post.imageAlt },
   }),
 }
 
@@ -27,11 +31,11 @@ const jsonLd = {
   datePublished: post.date,
   dateModified: post.updatedAt,
   description: 'Význam nouzových squawk kódů 7700, 7600 a 7500, princip odpovídače a správné čtení upozornění na živé mapě.',
-  image: 'https://www.flyqueens.cz/social-preview.png',
+  image: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT5M',
-  author: { '@type': 'Organization', name: 'FlyQueens' },
-  publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/squawk-nouzove-kody',
 }
@@ -55,9 +59,19 @@ export default function SquawkArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Squawk 7700, 7600, 7500: co znamenají nouzové kódy letadel
+          Squawk 7700, 7600 a 7500: význam nouzových kódů
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
+
+        <ArticleHero
+          src={post.image}
+          alt={post.imageAlt}
+          caption="Skutečný ovládací panel transpondéru v letadle McDonnell Douglas DC-9."
+          creditLabel="Rainmaker47 / Wikimedia Commons"
+          creditHref="https://commons.wikimedia.org/wiki/File:DC9_ATC_Transponder.JPG"
+          licenseLabel="CC BY-SA 3.0"
+          licenseHref="https://creativecommons.org/licenses/by-sa/3.0/"
+        />
 
         <p style={S.p}>
           Když se ztratí rádiové spojení, posádka může na odpovídači nastavit vyhrazený čtyřmístný kód.

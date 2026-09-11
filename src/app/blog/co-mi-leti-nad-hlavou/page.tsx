@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { ArticleHero } from '@/components/UI/ArticleHero'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('co-mi-leti-nad-hlavou')!
 
 export const metadata: Metadata = {
-  title: 'Co mi právě letí nad hlavou? Poznejte letadlo online',
+  title: 'Co mi letí nad hlavou? Zjistěte letadlo online',
   description:
-    'Zjistěte zdarma, které letadlo vám právě letí nad hlavou. Praktický návod k živé mapě, údajům o letu a důvodům, proč někdy chybí trasa.',
+    'Otevřete živou mapu a zjistěte, které letadlo vám právě letí nad hlavou, kam míří, jak je vysoko a proč někdy chybí trasa.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/co-mi-leti-nad-hlavou' },
   ...socialMetadata({
-    title: 'Co mi právě letí nad hlavou?',
+    title: 'Co mi letí nad hlavou? Zjistěte letadlo online',
     description: 'Najděte letadlo na živé mapě a zjistěte jeho výšku, rychlost i dostupnou trasu.',
     url: 'https://www.flyqueens.cz/blog/co-mi-leti-nad-hlavou',
     type: 'article',
+    publishedTime: post.date,
+    modifiedTime: post.updatedAt,
+    image: { url: '/blog/co-mi-leti-nad-hlavou.jpg', width: 1800, height: 1013, alt: post.imageAlt },
   }),
 }
 
@@ -27,11 +31,11 @@ const jsonLd = {
   datePublished: post.date,
   dateModified: post.updatedAt,
   description: 'Praktický návod, jak pomocí živé ADS-B mapy poznat letadlo nad hlavou a správně číst dostupné údaje.',
-  image: 'https://www.flyqueens.cz/social-preview.png',
+  image: 'https://www.flyqueens.cz/blog/co-mi-leti-nad-hlavou.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
-  author: { '@type': 'Organization', name: 'FlyQueens' },
-  publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/co-mi-leti-nad-hlavou',
 }
@@ -55,9 +59,17 @@ export default function OverheadAircraftArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Co mi právě letí nad hlavou? Jak poznat letadlo online
+          Co mi letí nad hlavou? Zjistěte letadlo online
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · {post.readingTime}</div>
+
+        <ArticleHero
+          src={post.image}
+          alt={post.imageAlt}
+          caption="Skutečný pohled na dopravní letadlo přímo ze země."
+          creditLabel="Hieu / Unsplash"
+          creditHref="https://unsplash.com/photos/an-airplane-flying-directly-overhead-against-a-clear-blue-sky-b4fWpI7a0Kc"
+        />
 
         <p style={S.p}>
           Uslyšíte hluboký hukot, podíváte se vzhůru a mezi mraky zahlédnete letadlo. Kam letí, jak je vysoko

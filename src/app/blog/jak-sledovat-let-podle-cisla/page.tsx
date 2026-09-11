@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { ArticleHero } from '@/components/UI/ArticleHero'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('jak-sledovat-let-podle-cisla')!
 
 export const metadata: Metadata = {
-  title: 'Jak sledovat let podle čísla letu a zjistit, kde právě je',
+  title: 'Sledování letu podle čísla: kde je letadlo online',
   description:
-    'Praktický návod ke sledování letu podle čísla. Vysvětlení rozdílu mezi číslem letu, volacím znakem a registrací i důvody, proč let nemusí být na mapě.',
+    'Zadejte číslo letu a zjistěte, kde je letadlo. Vysvětlíme rozdíl mezi číslem letu, volacím znakem a registrací i kde ověřit zpoždění.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla' },
   ...socialMetadata({
-    title: 'Jak sledovat let podle čísla letu',
+    title: 'Sledování letu podle čísla: kde je letadlo online',
     description: 'Co zadat do živé mapy, kde ověřit zpoždění a proč se některý let nemusí zobrazit.',
     url: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla',
     type: 'article',
+    publishedTime: post.date,
+    modifiedTime: post.updatedAt,
+    image: { url: '/blog/jak-sledovat-let-podle-cisla.jpg', width: 1800, height: 1013, alt: post.imageAlt },
   }),
 }
 
@@ -27,11 +31,11 @@ const jsonLd = {
   datePublished: post.date,
   dateModified: post.updatedAt,
   description: 'Návod ke sledování letu podle čísla a vysvětlení rozdílu mezi číslem letu, volacím znakem, registrací a ICAO adresou.',
-  image: 'https://www.flyqueens.cz/social-preview.png',
+  image: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT7M',
-  author: { '@type': 'Organization', name: 'FlyQueens' },
-  publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla',
 }
@@ -55,9 +59,17 @@ export default function TrackFlightNumberArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Jak sledovat let podle čísla letu a zjistit, kde právě je
+          Sledování letu podle čísla: kde je letadlo online
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · {post.readingTime}</div>
+
+        <ArticleHero
+          src={post.image}
+          alt={post.imageAlt}
+          caption="Číslo letu označuje spoj; registrace patří konkrétnímu letadlu."
+          creditLabel="whereslugo / Unsplash"
+          creditHref="https://unsplash.com/photos/airplane-from-above-Fk35BtkRO7g"
+        />
 
         <p style={S.p}>
           Čekáte na někoho na letišti, sledujete cestu rodiny nebo chcete zjistit, kudy letí konkrétní spoj? Obvykle

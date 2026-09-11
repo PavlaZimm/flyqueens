@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
+import { ArticleHero } from '@/components/UI/ArticleHero'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
 export const metadata: Metadata = {
-  title: 'Jak vysoko létají letadla a proč zrovna deset kilometrů',
+  title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
   description:
-    'Dopravní letadla létají v 9 až 12 kilometrech, malé stroje mnohem níž. Proč se létá tak vysoko, co je letová hladina FL a jak výšku každého letadla vidíte živě na mapě.',
+    'Dopravní letadla obvykle létají ve výšce 9–12 km. Zjistěte proč, co znamená FL350 a jak převést letovou hladinu na metry.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla' },
   ...socialMetadata({
-    title: 'Jak vysoko létají letadla a proč zrovna deset kilometrů',
+    title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
     description: 'Proč dopravní letadla létají v 10 km, co je letová hladina a jak to vidíte na mapě.',
     url: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
     type: 'article',
+    publishedTime: post.date,
+    modifiedTime: post.updatedAt,
+    image: { url: '/blog/jak-vysoko-letaji-letadla.jpg', width: 1800, height: 1013, alt: post.imageAlt },
   }),
 }
 
@@ -27,11 +31,11 @@ const jsonLd = {
   datePublished: post.date,
   dateModified: post.updatedAt,
   description: 'Obvyklé výšky dopravních i malých letadel, význam letové hladiny a rozdíl mezi výškou nad mořem a nad zemí.',
-  image: 'https://www.flyqueens.cz/social-preview.png',
+  image: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
-  author: { '@type': 'Organization', name: 'FlyQueens' },
-  publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
 }
@@ -63,9 +67,17 @@ export default function VyskaArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Jak vysoko létají letadla a proč zrovna deset kilometrů
+          Jak vysoko létají letadla? Výška v metrech a FL350
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
+
+        <ArticleHero
+          src={post.image}
+          alt={post.imageAlt}
+          caption="Dopravní letadla běžně cestují nad většinou oblačnosti."
+          creditLabel="Danist Soh / Unsplash"
+          creditHref="https://unsplash.com/photos/flying-airplane-above-clouds-58MKf-UXjaA"
+        />
 
         <p style={S.p}>
           Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte.

@@ -14,6 +14,32 @@ Marketing Miner je v účtu nainstalovaný, ale jeho MCP nástroje nebyly v aktu
 
 Jakmile bude Marketing Miner dostupný, je potřeba doplnit měsíční hledanost, trend, CPC a SERP konkurenci. Až podle těchto čísel má smysl měnit pořadí druhé a třetí vlny obsahu.
 
+## Výzkum snippetů a změny provedené 11. září 2026
+
+Aktuální dokumentace Google Search Central potvrzuje, že Google vytváří title link z více zdrojů: `<title>`, hlavního nadpisu, výrazného textu, `og:title` a textu odkazů. Snippet skládá primárně z viditelného obsahu stránky a meta description použije jen tehdy, když stránku popisuje přesněji. Proto nestačí upravit samotná metadata.
+
+Pro všech pět článků bylo provedeno:
+
+- sjednocení SEO titulku, H1, OG titulku a názvu v registru článků;
+- unikátní popisek postavený jako stručná odpověď na konkrétní záměr hledání;
+- hlavní klíčová fráze přirozeně na začátku titulku, bez opakování a keyword stuffingu;
+- skutečná tematická fotografie s popisným alternativním textem a dohledatelnou licencí;
+- vlastní velký OG obrázek pro sdílení každého článku;
+- `Article` data s datem vydání, aktualizace, autorem, kanonickou URL a konkrétním obrázkem;
+- povolení `max-image-preview:large`, aby Google mohl nabídnout velký obrazový náhled;
+- zachování viditelné rychlé odpovědi u začátku textu, ze které lze vytvořit relevantní snippet.
+
+Finální titulky mají 46–50 znaků a popisky 121–133 znaků. Nejde o mechanický limit Googlu — titulky i snippety se zkracují podle zařízení a dotazu — ale tyto varianty jsou stručné, rozlišitelné a nesou hlavní informaci před případným ořezem.
+
+Zdroje metodiky:
+
+- [Google Search Central — Influencing title links](https://developers.google.com/search/docs/appearance/title-link)
+- [Google Search Central — Control your snippets](https://developers.google.com/search/docs/appearance/snippet)
+- [Google Search Central — Article structured data](https://developers.google.com/search/docs/appearance/structured-data/article)
+- [Google Search Central — SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
+
+Poznámka: žádný title ani meta description nezaručí přesné zobrazení v SERPu. Google je může podle dotazu přepsat. Výsledek je nutné po indexaci vyhodnocovat ve vlastní Search Console FlyQueens podle impresí, CTR a konkrétních dotazů.
+
 ## Strategická pozice
 
 FlyQueens nemá rozumnou šanci porazit Flightradar24 jen kopií obecného „flight trackeru“. Má ale dobrou pozici pro české dotazy, na které může dát rychlejší a srozumitelnější odpověď:

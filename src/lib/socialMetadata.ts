@@ -14,6 +14,14 @@ type SocialMetadataInput = {
   description: string
   url: string
   type?: 'website' | 'article'
+  publishedTime?: string
+  modifiedTime?: string
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt: string
+  }
 }
 
 /** Stejný, spolehlivý náhled a správný titulek pro Facebook, LinkedIn i X. */
@@ -22,6 +30,9 @@ export function socialMetadata({
   description,
   url,
   type = 'website',
+  publishedTime,
+  modifiedTime,
+  image = SOCIAL_IMAGE,
 }: SocialMetadataInput): Pick<Metadata, 'openGraph' | 'twitter'> {
   return {
     openGraph: {
@@ -31,13 +42,14 @@ export function socialMetadata({
       type,
       locale: 'cs_CZ',
       siteName: 'FlyQueens',
-      images: [SOCIAL_IMAGE],
+      images: [image],
+      ...(type === 'article' ? { publishedTime, modifiedTime } : {}),
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [SOCIAL_IMAGE_URL],
+      images: [image.url],
     },
   }
 }

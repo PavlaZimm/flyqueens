@@ -35,7 +35,17 @@ export const metadata: Metadata = {
     description: "Dostupná ADS-B data o letadlech ve vybraných oblastech Evropy na interaktivní mapě.",
     url: "https://www.flyqueens.cz",
   }),
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   verification: {
     google: "MAN4NfQiLcoRVR51idXywyLvfgE5YIfBNh6lnVFQBV0",
   },

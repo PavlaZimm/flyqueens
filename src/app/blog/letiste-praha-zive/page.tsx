@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
+import { ArticleHero } from '@/components/UI/ArticleHero'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 const post = getPost('letiste-praha-zive')!
 
 export const metadata: Metadata = {
-  title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
+  title: 'Letiště Praha živě: přílety, odlety a mapa letadel',
   description:
-    'Jak sledovat letiště Praha online. Rozdíl mezi webkamerou a živou mapou letadel, co všechno se dá vyčíst z letu a kde to vidíte zdarma.',
+    'Sledujte letadla nad Ruzyní na živé mapě a ověřte přílety či odlety na oficiální tabuli. Jak se liší radar, webkamera a stav letu.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/letiste-praha-zive' },
   ...socialMetadata({
-    title: 'Letiště Praha živě: jak sledovat letadla nad Ruzyní online',
-    description: 'Webkamera ukáže kus plochy, ADS-B mapa letadla zachycená přijímači. Jak to funguje.',
+    title: 'Letiště Praha živě: přílety, odlety a mapa letadel',
+    description: 'Sledujte provoz nad Ruzyní a zjistěte, kde správně ověřit přílet, odlet nebo zpoždění.',
     url: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
     type: 'article',
+    publishedTime: post.date,
+    modifiedTime: post.updatedAt,
+    image: { url: '/blog/letiste-praha-zive.jpg', width: 1920, height: 1278, alt: post.imageAlt },
   }),
 }
 
@@ -27,11 +31,11 @@ const jsonLd = {
   datePublished: post.date,
   dateModified: post.updatedAt,
   description: 'Praktický návod ke sledování letadel u pražského letiště pomocí živé ADS-B mapy, webkamery a oficiální tabule letů.',
-  image: 'https://www.flyqueens.cz/social-preview.png',
+  image: 'https://www.flyqueens.cz/blog/letiste-praha-zive.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
-  author: { '@type': 'Organization', name: 'FlyQueens' },
-  publisher: { '@type': 'Organization', name: 'FlyQueens' },
+  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
 }
@@ -55,9 +59,19 @@ export default function ZiveArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Letiště Praha živě: jak sledovat letadla nad Ruzyní online
+          Letiště Praha živě: přílety, odlety a mapa letadel
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
+
+        <ArticleHero
+          src={post.image}
+          alt={post.imageAlt}
+          caption="Learjet 75 na Letišti Václava Havla Praha; ilustrační fotografie provozu."
+          creditLabel="Sefjo / Wikimedia Commons"
+          creditHref="https://commons.wikimedia.org/wiki/File:Learjet_75_N446LJ_at_PRG_01.JPG"
+          licenseLabel="CC BY-SA 3.0"
+          licenseHref="https://creativecommons.org/licenses/by-sa/3.0/"
+        />
 
         <p style={S.p}>
           Někdo čeká na babičku z Barcelony a chce vědět, jestli už doletěla. Někoho jen baví koukat, co se
