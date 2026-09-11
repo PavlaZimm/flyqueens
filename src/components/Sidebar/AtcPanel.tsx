@@ -12,6 +12,12 @@ interface FeedStatus extends AtcFeed {
   online: boolean | null  // null = loading
 }
 
+interface AtcCheckResponse {
+  disabled?: boolean
+  error?: string
+  [feed: string]: boolean | string | undefined
+}
+
 let panelAudio: HTMLAudioElement | null = null
 
 export function AtcPanel() {
@@ -19,23 +25,46 @@ export function AtcPanel() {
   const [feeds, setFeeds] = useState<FeedStatus[]>([])
   const [playingId, setPlayingId] = useState<string | null>(null)
   const [checking, setChecking] = useState(false)
+  const [proxyDisabled, setProxyDisabled] = useState(false)
+  const [checkError, setCheckError] = useState<string | null>(null)
+  const [playError, setPlayError] = useState<string | null>(null)
   const playingRef = useRef<string | null>(null)
 
   const checkFeeds = async () => {
     setChecking(true)
+    setCheckError(null)
     try {
       const allFeeds: FeedStatus[] = ALL_ICAO.flatMap(icao =>
         getAtcFeeds(icao).map(f => ({ ...f, icao, online: null }))
       )
       setFeeds(allFeeds)
 
-      const feedList = allFeeds.map(f => f.feed).join(',')
-      const res = await fetch(`/api/atc-check?feeds=${encodeURIComponent(feedList)}`)
-      const data: Record<string, boolean> = await res.json()
-      setFeeds(allFeeds.map(f => ({ ...f, online: data[f.feed] ?? false })))
+      // Endpoint záměrně omezuje velikost dotazu. Kontrola po menších dávkách
+      // navíc zabrání tomu, aby se část feedů tvářila falešně jako offline.
+      const chunks: string[][] = []
+      for (let i = 0; i < allFeeds.length; i += 8) {
+        chunks.push(allFeeds.slice(i, i + 8).map(feed => feed.feed))
+      }
+      const responses = await Promise.all(chunks.map(async (chunk) => {
+        const res = await fetch(`/api/atc-check?feeds=${encodeURIComponent(chunk.join(','))}`)
+        const data = await res.json() as AtcCheckResponse
+        return { res, data }
+      }))
+
+      if (responses.some(({ data }) => data.disabled === true)) {
+        setProxyDisabled(true)
+        setFeeds([])
+        return
+      }
+      if (responses.some(({ res }) => !res.ok)) throw new Error('ATC status is unavailable')
+
+      const statuses = Object.assign({}, ...responses.map(({ data }) => data)) as AtcCheckResponse
+      setProxyDisabled(false)
+      setFeeds(allFeeds.map(f => ({ ...f, online: statuses[f.feed] === true })))
     } catch (err) {
       console.error('[ATC] error:', err)
-      setFeeds(prev => prev.map(f => ({ ...f, online: false })))
+      setCheckError('Dostupnost poslechu se teď nepodařilo ověřit.')
+      setFeeds([])
     } finally {
       setChecking(false)
     }
@@ -43,13 +72,15 @@ export function AtcPanel() {
 
   useEffect(() => {
     if (!open) return
+    if (proxyDisabled) return
     checkFeeds()
     const interval = setInterval(checkFeeds, 60_000)
     return () => clearInterval(interval)
-  }, [open])
+  }, [open, proxyDisabled])
 
   const play = (feed: FeedStatus) => {
     const id = `${feed.icao}-${feed.feed}`
+    setPlayError(null)
 
     // Zastav aktuální stream
     if (panelAudio) {
@@ -66,7 +97,14 @@ export function AtcPanel() {
     }
 
     const audio = new Audio(`/api/atc-stream?feed=${encodeURIComponent(feed.feed)}`)
-    audio.play().catch(() => setPlayingId(null))
+    const handlePlaybackError = () => {
+      playingRef.current = null
+      setPlayingId(null)
+      setPlayError('Stream se nepodařilo spustit. Může být právě nedostupný.')
+      panelAudio = null
+    }
+    audio.play().catch(handlePlaybackError)
+    audio.onerror = handlePlaybackError
     panelAudio = audio
     playingRef.current = id
     setPlayingId(id)
@@ -86,7 +124,9 @@ export function AtcPanel() {
     <div style={{ borderTop: '1px solid var(--border-subtle)' }}>
       {/* Hlavní tlačítko */}
       <button
+        type="button"
         onClick={() => setOpen(v => !v)}
+        aria-expanded={open}
         style={{
           display: 'flex', alignItems: 'center', gap: 8, width: '100%',
           padding: '7px 16px', background: 'none', border: 'none', cursor: 'pointer',
@@ -96,7 +136,7 @@ export function AtcPanel() {
         }}
       >
         <span style={{ fontSize: 13 }}>🎙</span>
-        <span style={{ flex: 1, textAlign: 'left' }}>ATC Online</span>
+        <span style={{ flex: 1, textAlign: 'left' }}>ATC poslech</span>
         {onlineFeeds.length > 0 && (
           <span style={{
             fontSize: 9, fontWeight: 700, color: '#4FE0B0',
@@ -111,9 +151,29 @@ export function AtcPanel() {
 
       {open && (
         <div style={{ padding: '0 10px 10px' }}>
+          {proxyDisabled && (
+            <div style={{ padding: '8px 6px 4px', textAlign: 'center' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                Poslech přímo ve FlyQueens není aktivní. Dostupné vysílání otevřeme na webu poskytovatele.
+              </div>
+              <a
+                href="https://www.liveatc.net/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-flex', marginTop: 9, minHeight: 36, padding: '0 12px', alignItems: 'center', borderRadius: 8, background: 'rgba(245,184,61,0.12)', border: '1px solid rgba(245,184,61,0.35)', color: 'var(--gold)', fontSize: 10, fontWeight: 700, textDecoration: 'none' }}
+              >
+                Otevřít LiveATC.net ↗
+              </a>
+              <div style={{ fontSize: 8, color: 'var(--text-dim)', lineHeight: 1.45, marginTop: 7 }}>
+                Pokrytí závisí na zemi, letišti a dobrovolných přijímačích.
+              </div>
+            </div>
+          )}
+
           {/* Refresh */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 6 }}>
+          {!proxyDisabled && <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 6 }}>
             <button
+              type="button"
               onClick={checkFeeds}
               disabled={checking}
               style={{
@@ -123,17 +183,17 @@ export function AtcPanel() {
             >
               {checking ? '⏳ Kontroluji…' : '↻ Obnovit'}
             </button>
-          </div>
+          </div>}
 
           {/* Loading */}
-          {loadingFeeds.length > 0 && (
+          {!proxyDisabled && loadingFeeds.length > 0 && (
             <div style={{ fontSize: 10, color: 'var(--text-dim)', padding: '4px 0' }}>
               ⏳ Zjišťuji status {loadingFeeds.length} streamů…
             </div>
           )}
 
           {/* Online streams */}
-          {onlineFeeds.length > 0 && (
+          {!proxyDisabled && onlineFeeds.length > 0 && (
             <>
               <div style={{ fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', color: '#4FE0B0', marginBottom: 5, opacity: 0.7 }}>
                 Live nyní
@@ -143,6 +203,7 @@ export function AtcPanel() {
                 const isPlaying = playingId === id
                 return (
                   <button
+                    type="button"
                     key={id}
                     onClick={() => play(f)}
                     style={{
@@ -176,7 +237,7 @@ export function AtcPanel() {
           )}
 
           {/* Offline streams — kompaktně */}
-          {offlineFeeds.length > 0 && (
+          {!proxyDisabled && offlineFeeds.length > 0 && (
             <>
               <div style={{ fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', margin: '8px 0 4px', opacity: 0.6 }}>
                 Offline
@@ -196,7 +257,16 @@ export function AtcPanel() {
           )}
 
           {/* Prázdný stav */}
-          {!checking && feeds.length > 0 && onlineFeeds.length === 0 && loadingFeeds.length === 0 && (
+          {!proxyDisabled && checkError && (
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', padding: '8px 4px', textAlign: 'center', lineHeight: 1.5 }}>
+              {checkError}<br />
+              <a href="https://www.liveatc.net/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)', textDecoration: 'none' }}>
+                Zkusit LiveATC.net ↗
+              </a>
+            </div>
+          )}
+
+          {!proxyDisabled && !checkError && !checking && feeds.length > 0 && onlineFeeds.length === 0 && loadingFeeds.length === 0 && (
             <div style={{ fontSize: 10, color: 'var(--text-dim)', padding: '6px 0', textAlign: 'center' }}>
               Žádný stream není právě online.<br />
               <span style={{ fontSize: 9 }}>Vysílání zajišťují dobrovolníci – zkus to za chvíli nebo</span><br />
@@ -208,6 +278,12 @@ export function AtcPanel() {
               >
                 otevři LiveATC.net →
               </a>
+            </div>
+          )}
+
+          {!proxyDisabled && playError && (
+            <div role="status" style={{ fontSize: 9, color: 'var(--gold)', padding: '6px 4px 0', textAlign: 'center' }}>
+              {playError}
             </div>
           )}
         </div>

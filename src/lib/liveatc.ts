@@ -1,6 +1,6 @@
-// LiveATC.net stream databáze pro středoevropská letiště
-// Stream URLs: https://s1.liveatc.net/{feed} — formát MP3 live stream
-// Záložní odkaz: https://www.liveatc.net/search/?icao={ICAO}
+// Historicky nakonfigurované LiveATC feedy. Slug ani jeho přítomnost nejsou
+// zárukou dostupnosti; stav se smí ověřovat a audio přehrávat jen při výslovně
+// povoleném serverovém proxy režimu. Bez něj UI odkazuje na web poskytovatele.
 
 export interface AtcFeed {
   label: string          // název frekvenece / pásma
@@ -11,7 +11,7 @@ export interface AtcFeed {
 const BASE = 'http://audio.liveatc.net'
 
 const ATC_FEEDS: Record<string, AtcFeed[]> = {
-  // Ověřené funkční feedy (mount pointy přímo z Icecast serveru)
+  // Dostupnost feedů se může kdykoliv změnit podle přijímačů poskytovatele.
   'EIDW': [
     { label: 'Dublin Gnd/Věž/Přibl.', feed: 'eidw8',          url: `${BASE}/eidw8` },
   ],

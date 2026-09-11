@@ -364,7 +364,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                 // Nejdřív zobraz popup s "Zjišťuji status streamů..."
                 const atcLoading = `
                   <div class="fq-metar-divider"></div>
-                  <div class="fq-atc-label">🎙 LIVE ATC</div>
+                  <div class="fq-atc-label">🎙 ATC POSLECH</div>
                   <div class="fq-atc-feed-item" style="color:rgba(255,255,255,0.3)">⏳ Zjišťuji dostupné streamy…</div>`
                 marker.setPopupContent(buildPopupHtml(metarHtml, atcLoading))
                 marker.getPopup()?.update()
@@ -373,7 +373,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   // Letiště bez known feedů — rovnou zobraz odkaz
                   const atcHtml = `
                     <div class="fq-metar-divider"></div>
-                    <div class="fq-atc-label">🎙 LIVE ATC</div>
+                    <div class="fq-atc-label">🎙 ATC POSLECH</div>
                     <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
                   marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
                   marker.getPopup()?.update()
@@ -382,9 +382,21 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   Promise.all(feeds.map(f =>
                     fetch(`/api/atc-check?feed=${encodeURIComponent(f.feed)}`)
                       .then(r => r.json())
-                      .then((d: { online: boolean }) => ({ ...f, online: d.online }))
-                      .catch(() => ({ ...f, online: false }))
+                      .then((d: { online: boolean; disabled?: boolean }) => ({ ...f, online: d.online, disabled: d.disabled === true }))
+                      .catch(() => ({ ...f, online: false, disabled: false }))
                   )).then(results => {
+                    const proxyDisabled = results.some(f => f.disabled)
+                    if (proxyDisabled) {
+                      const atcHtml = `
+                        <div class="fq-metar-divider"></div>
+                        <div class="fq-atc-label">🎙 ATC POSLECH</div>
+                        <div class="fq-atc-feed-item">Poslech přímo ve FlyQueens není aktivní.</div>
+                        <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Otevřít LiveATC.net ↗</a>`
+                      marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
+                      marker.getPopup()?.update()
+                      return
+                    }
+
                     const feedBtns = results.map((f, i) => {
                       const btnId = `atc-btn-${a.icao}-${i}`
                       const proxyUrl = `/api/atc-stream?feed=${encodeURIComponent(f.feed)}`
@@ -398,7 +410,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                     const anyOnline = results.some(f => f.online)
                     const atcHtml = `
                       <div class="fq-metar-divider"></div>
-                      <div class="fq-atc-label">🎙 LIVE ATC</div>
+                      <div class="fq-atc-label">🎙 ATC POSLECH</div>
                       ${feedBtns}
                       ${!anyOnline ? `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>` : ''}`
 
