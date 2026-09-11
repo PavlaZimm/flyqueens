@@ -2,32 +2,32 @@ import type { MetadataRoute } from 'next'
 import { POSTS } from '@/lib/blog'
 
 const BASE = 'https://www.flyqueens.cz'
+const LAST_SIGNIFICANT_UPDATE = '2026-09-11'
 
 // Letiště, která mají hub + podstránky
 const AIRPORTS = ['praha', 'brno', 'ostrava']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const core: MetadataRoute.Sitemap = [
-    { url: BASE, changeFrequency: 'daily', priority: 1 },
-    { url: `${BASE}/radar`, changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE}/stats`, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${BASE}/o-projektu`, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/letiste`, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${BASE}/blog`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: BASE, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/radar`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/stats`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/o-projektu`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/letiste`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/blog`, lastModified: LAST_SIGNIFICANT_UPDATE },
   ]
 
   // Hub + parkování pro každé letiště
   const airports: MetadataRoute.Sitemap = AIRPORTS.flatMap((slug) => [
-    { url: `${BASE}/letiste/${slug}`, changeFrequency: 'weekly' as const, priority: 0.7 },
-    { url: `${BASE}/letiste/${slug}/parkovani`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${BASE}/letiste/${slug}`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/letiste/${slug}/parkovani`, lastModified: LAST_SIGNIFICANT_UPDATE },
   ])
 
   // Blogové články se přidají automaticky z registru
   const posts: MetadataRoute.Sitemap = POSTS.map((p) => ({
     url: `${BASE}/blog/${p.slug}`,
     lastModified: new Date(p.updatedAt),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    images: [`${BASE}${p.image}`],
   }))
 
   return [...core, ...airports, ...posts]

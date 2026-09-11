@@ -10,7 +10,7 @@ v dokumentu [Obsahová a linkbuildingová strategie FlyQueens](./seo-content-lin
 
 Datová část byla 11. září 2026 doplněna přímo z Marketing Mineru pro český trh. Obsahuje měsíční hledanost, CPC, meziroční změnu, sezónnost a tam, kde byla analýza SERPu dostupná, také obtížnost. Původní export radarových, letištních a parkovacích dotazů je v souboru [`marketing-miner-keywords-2026-09-11.csv`](./marketing-miner-keywords-2026-09-11.csv). Doplňující měření letišť a aerolinek je uvedené níže v tomto dokumentu.
 
-Marketing Miner pro samotný nový web FlyQueens zatím eviduje 0 rankingových klíčových slov a odhadovanou organickou návštěvnost 0. To není chyba webu, ale normální výchozí stav nové domény. Google Search Console property FlyQueens nebyla přes konektor dostupná (403), takže reálné imprese a prokliky zatím nelze vyhodnotit.
+Marketing Miner pro samotný nový web FlyQueens zatím eviduje 0 rankingových klíčových slov a odhadovanou organickou návštěvnost 0. Kontrola byla zopakovaná 11. září 2026 po publikaci nových článků a výsledek byl stále prázdný. To neznamená, že web není v Googlu. Některé stránky už lze najít přes veřejné vyhledávání, ale indexace není totéž jako měřitelná pozice v databázi Marketing Mineru. Google Search Console property FlyQueens nebyla přes konektor dostupná (403), takže reálné imprese, prokliky a pozice zatím nelze spolehlivě vyhodnotit.
 
 Hledanost je modelovaný měsíční údaj Marketing Mineru, nikoli garantovaná návštěvnost. Prázdná obtížnost znamená „SERP nebyl analyzován“, nikoli snadné klíčové slovo.
 
@@ -152,6 +152,110 @@ FlyQueens nemá rozumnou šanci porazit Flightradar24 jen kopií obecného „fl
 
 Výhoda značky má být: české vysvětlení, okamžité použití bez účtu, poctivě popsané limity dat a propojení radaru s praktickými informacemi.
 
+## Realistický plán pro nový web: nejen velká klíčová slova
+
+Spoléhat pouze na „letiště Praha“, „radar letadel“ a další velké výrazy by byla chyba. Nová doména na ně může čekat měsíce nebo déle. FlyQueens proto potřebuje širokou obsahovou základnu: několik velkých tematických hubů a pod nimi konkrétní dotazy, které mají menší konkurenci, jasný záměr a dohromady mohou přivést podstatně více lidí.
+
+Nové měření v Marketing Mineru ukázalo silný sousední cluster „cestování letadlem“. Je tematicky blízko letištím a aerolinkám, má vyšší hledanost než většina leteckých zajímavostí a nabízí přirozenou monetizaci přes zavazadla, cestovní doplňky, pojištění nebo eSIM. Tento cluster původní pomalý plán doplňuje a rozšiřuje.
+
+### Dosažitelnější a obchodně zajímavé dotazy
+
+| Klíčové slovo | Hledání / měsíc | CPC | Obtížnost | Cílová stránka nebo cluster |
+|---|---:|---:|---:|---|
+| batoh do letadla | 6 200 | 2,98 Kč | 18 | samostatný průvodce a výběr rozměrů |
+| kufr do letadla | 3 400 | 3,97 Kč | 10 | samostatný průvodce s velikostmi |
+| příruční zavazadlo do letadla | 2 600 | 2,16 Kč | 40 | hlavní hub o příručních zavazadlech |
+| příruční zavazadlo | 2 500 | 2,24 Kč | 15 | stejný hub, nevytvářet duplicitní URL |
+| ryanair příruční zavazadlo | 2 200 | 1,04 Kč | 17 | profil Ryanairu, sekce nebo podstránka zavazadel |
+| batoh do letadla 40x30x20 | 2 100 | 3,55 Kč | neznámá | stránka „batoh do letadla“, vlastní tabulka |
+| cestovní batoh do letadla | 1 800 | 3,67 Kč | 17 | stejná stránka jako „batoh do letadla“ |
+| kočárek do letadla | 1 400 | 2,01 Kč | 17 | praktický průvodce pro cestování s dětmi |
+| powerbanka do letadla | 1 200 | 0,36 Kč | 40 | samostatný bezpečnostní průvodce |
+| smartwings příruční zavazadlo | 1 000 | 2,67 Kč | 52 | profil Smartwings, pravidelně aktualizovat |
+| tekutiny do letadla | 860 | 0,58 Kč | 58 | samostatný aktuální průvodce |
+| příruční kufr do letadla | 810 | 3,14 Kč | 10 | stránka „kufr do letadla“ |
+| velikost příručního zavazadla do letadla | 550 | 0,44 Kč | 42 | hub příručních zavazadel |
+| rozměry příručního zavazadla do letadla | 510 | 0,65 Kč | 41 | hub příručních zavazadel |
+| wizzair příruční zavazadlo | 350 | 0,89 Kč | 36 | profil Wizz Air |
+| easyjet příruční zavazadlo | 270 | 1,32 Kč | 36 | profil easyJetu |
+| lufthansa příruční zavazadlo | 130 | 0,46 Kč | 6 | profil Lufthansy |
+
+Obtížnost „neznámá“ znamená, že Marketing Miner neměl hotovou analýzu výsledků. Neznamená to snadné klíčové slovo. U variant bez diakritiky se hledanosti nesčítají s hlavní frází, protože jde často o stejné uživatele a stejný záměr.
+
+Číslo obtížnosti z Marketing Mineru je pouze orientační filtr. Skutečná dosažitelnost se musí před napsáním každé stránky ověřit v aktuálních výsledcích Googlu. Rozhoduje síla a relevance prvních výsledků, převládající typ stránky, přítomnost oficiálních webů, kvalita jejich obsahu, značky, odkazy a to, zda FlyQueens dokáže nabídnout něco užitečnějšího. Označení „dosažitelnější“ v této analýze proto znamená kandidát k ruční kontrole, ne slib pozice.
+
+Před schválením každé nové URL musí proběhnout tento rychlý SERP test:
+
+1. Zkontrolovat prvních deset organických výsledků na mobilu i počítači.
+2. Ověřit, zda Google preferuje článek, nástroj, produkt, kategorii nebo oficiální stránku.
+3. Porovnat stáří, přesnost, fotografie, tabulky, zdroje a použitelnost výsledků.
+4. Popsat konkrétní důvod, proč bude stránka FlyQueens lepší nebo praktičtější.
+5. Pokud tento důvod nemáme, URL zatím nevytvářet ani ji nedávat do sitemap.
+
+### Menší dotazy, které posilují hlavní produkt
+
+| Klíčové slovo | Hledání / měsíc | Obtížnost | Vlastník tématu |
+|---|---:|---:|---|
+| radar letadel online | 360 | neznámá | `/radar` |
+| sledování letů zdarma | 360 | neznámá | `/radar` |
+| sledování letů Praha | 200 | neznámá | Praha hub a radar |
+| sledování letů na mapě | 120 | neznámá | `/radar` |
+| smartwings sledování letu | 80 | neznámá | článek o čísle letu a profil Smartwings |
+| sledování letu Ryanair | 50 | neznámá | článek o čísle letu a profil Ryanair |
+| radar letadel nad Evropou | 40 | neznámá | `/radar` |
+| radar vojenských letadel | 30 | neznámá | vysvětlující článek o limitech veřejných dat |
+
+Tyto fráze většinou nepotřebují vlastní krátkou stránku. Mají být přirozeně pokryté v hlavním radaru, letištním hubu nebo kvalitním návodu. Tím jedna silná URL získá možnost zobrazovat se na desítky blízkých formulací a nevznikne kanibalizace.
+
+### Long-tail pod letištěm Praha
+
+Marketing Miner naměřil také konkrétní otázky, které mohou být samostatnou sekcí nebo článkem podle výsledků vyhledávání:
+
+- „jak se dostat na letiště Praha“, 140 hledání měsíčně, obtížnost 76;
+- „kolik stojí parkování na letišti Praha“, 80 hledání, obtížnost neznámá;
+- „kde parkovat na letišti Praha“, 60 hledání, obtížnost neznámá;
+- „jak se dostat z hlavního nádraží na letiště Praha“, 50 hledání, obtížnost neznámá;
+- „jak dlouho před odletem být na letišti Praha“, 40 hledání, obtížnost neznámá;
+- „jak se dostat v noci na letiště Praha“, 10 hledání, obtížnost neznámá.
+
+Nízké jednotlivé objemy nejsou důvodem dotazy zahodit. Jedna důkladná stránka o dopravě na letiště může pokrýt desítky podobných variant. Samostatné URL se vytvoří jen tehdy, když má dotaz odlišný záměr a stránka dokáže nabídnout vlastní praktickou hodnotu.
+
+### Cílová struktura, ke které má web postupně dojít
+
+1. `Radar a sledování`: 8 až 12 kvalitních stránek a nástrojů.
+2. `Česká letiště`: šest hlavních komerčních letišť, následně adresář a vybraná regionální letiště.
+3. `Aerolinky`: nejdřív 8 až 12 dopravců relevantních pro česká letiště.
+4. `Cestování letadlem`: zavazadla, tekutiny, elektronika, cestování s dětmi, odbavení a zpoždění.
+5. `Jak funguje létání`: výška, rychlost, ADS-B, squawk, typy letadel, počasí a spotting.
+6. `Nástroje`: převod letové hladiny, převod uzlů, vyhledání letu a časem přílety a odlety.
+
+Reálný první cíl není pět článků, ale přibližně 30 opravdu užitečných indexovatelných URL během prvních 90 dnů. Rozumné tempo jsou dvě kvalitní publikace týdně plus průběžné rozšiřování existujících hubů. Nesmí jít o automaticky generované texty. Každá stránka potřebuje ověřené zdroje, datum kontroly, vlastní tabulku, příklad, fotografii nebo funkční nástroj.
+
+### Pořadí prvních 20 nových URL
+
+1. `/cestovani-letadlem/prirucni-zavazadlo`
+2. `/cestovani-letadlem/batoh-do-letadla`
+3. `/cestovani-letadlem/kufr-do-letadla`
+4. `/letecke-spolecnosti/ryanair`
+5. `/letecke-spolecnosti/smartwings`
+6. `/cestovani-letadlem/powerbanka-do-letadla`
+7. `/cestovani-letadlem/tekutiny-do-letadla`
+8. `/cestovani-s-detmi/kocarek-do-letadla`
+9. `/letiste/pardubice`
+10. `/letiste/ceske-budejovice`
+11. `/letiste/karlovy-vary`
+12. `/letiste/praha/doprava`
+13. `/letiste/praha/planespotting`
+14. `/letecke-spolecnosti/qatar-airways`
+15. `/letecke-spolecnosti/emirates`
+16. `/letecke-spolecnosti/turkish-airlines`
+17. `/blog/jak-rychle-leti-letadlo`
+18. `/blog/co-je-ads-b`
+19. `/blog/proc-letadlo-neni-na-radaru`
+20. `/nastroje/letova-hladina`
+
+Toto není seznam URL, které se mají vložit do sitemap předem. Do sitemap se stránka přidá až po publikaci, když vrací stav 200, má vlastní canonical, je indexovatelná a vede na ni alespoň jeden běžný interní odkaz.
+
 ## Mapa klíčových témat a cílových URL
 
 | Priorita | Cluster a záměr | Hlavní cílová URL | Stav | Obchodní potenciál |
@@ -168,6 +272,11 @@ Výhoda značky má být: české vysvětlení, okamžité použití bez účtu,
 | P1 | letiště České Budějovice | `/letiste/ceske-budejovice` | chybí | regionální informační a sezonní potenciál |
 | P1 | letiště Karlovy Vary | `/letiste/karlovy-vary` | chybí | regionální informační potenciál |
 | P1 | Ryanair, Qatar Airways, Emirates a další velké aerolinky v Praze | `/letecke-spolecnosti/{aerolina}` | chybí | informační návštěvnost, proklik do radaru a letišť |
+| P1 | příruční zavazadlo, rozměry, co lze vzít na palubu | `/cestovani-letadlem/prirucni-zavazadlo` | chybí | vysoká návštěvnost, affiliate cestovních doplňků |
+| P1 | batoh do letadla, 40x30x20 | `/cestovani-letadlem/batoh-do-letadla` | chybí | vysoký a přímo obchodní potenciál |
+| P1 | kufr a příruční kufr do letadla | `/cestovani-letadlem/kufr-do-letadla` | chybí | vysoký a přímo obchodní potenciál |
+| P1 | powerbanka a elektronika do letadla | `/cestovani-letadlem/powerbanka-do-letadla` | chybí | informační návštěvnost, opatrná affiliate monetizace |
+| P1 | kočárek do letadla | `/cestovani-s-detmi/kocarek-do-letadla` | chybí | návštěvnost a affiliate pro rodiny |
 | P1 | letadla nad Prahou / Ruzyní živě | `/blog/letiste-praha-zive` | existuje | vstup do radaru a letiště |
 | P1 | jak vysoko létají letadla, letová hladina, FL350 | `/blog/jak-vysoko-letaji-letadla` | existuje | informační návštěvnost |
 | P1 | squawk 7700 / 7600 / 7500 | `/blog/squawk-nouzove-kody` | existuje | událostní špičky a sdílení |
@@ -270,6 +379,22 @@ Výhoda značky má být: české vysvětlení, okamžité použití bez účtu,
 - parkování letiště brno
 - parkování letiště ostrava
 
+### Cestování letadlem
+
+- příruční zavazadlo do letadla
+- batoh do letadla
+- batoh do letadla 40x30x20
+- kufr do letadla
+- příruční kufr do letadla
+- rozměry příručního zavazadla
+- powerbanka do letadla
+- tekutiny do letadla
+- kočárek do letadla
+- ryanair příruční zavazadlo
+- smartwings příruční zavazadlo
+- wizzair příruční zavazadlo
+- easyjet příruční zavazadlo
+
 ### Vysvětlující obsah
 
 - jak vysoko létají letadla
@@ -285,32 +410,23 @@ Výhoda značky má být: české vysvětlení, okamžité použití bez účtu,
 
 ## Doporučená další obsahová vlna
 
-Nejdřív doplnit hlavní letištní huby, protože mají násobně větší hledanost než jednotlivá vysvětlující témata:
+Konkrétní pořadí určuje seznam prvních 20 URL výše. Publikace se mají střídat mezi čtyřmi větvemi, aby web nerostl jen v jednom těžkém tématu:
 
-1. Letiště Pardubice
-2. Letiště České Budějovice
-3. Letiště Karlovy Vary
-4. Rozšíření existujících hubů Praha, Brno a Ostrava
-5. První profily Ryanair, Qatar Airways, Emirates a Turkish Airlines
+1. jedna stránka cestovatelského clusteru s měřitelnou hledaností;
+2. jeden letištní hub nebo jeho praktická podstránka;
+3. jeden profil aerolinky propojený s letišti a zavazadly;
+4. jeden článek nebo nástroj, který podporuje živý radar.
 
-Následně publikovat vysvětlující články až po kontrole hledanosti a překryvu dotazů:
-
-1. Proč letadlo krouží nad městem a kdy je to normální
-2. Jak rychle létá dopravní letadlo při startu a během letu
-3. Co je letová hladina a proč se výška udává ve stopách
-4. Jak poznat Airbus A320 a Boeing 737 na obloze i na mapě
-5. Co znamená codeshare a proč má jeden let dvě čísla
-6. Proč na mapě někdy není vojenské nebo soukromé letadlo
-
-Nevytvářet desítky krátkých článků najednou. Každý nový text musí odpovědět na konkrétní otázku, obsahovat vlastní tabulku nebo příklad, odkazovat na primární zdroj a vést uživatele k relevantní živé funkci.
+Nevytvářet desítky krátkých článků jedním automatickým importem. Širší záběr ano, slabé stránky ne. Každý nový text musí odpovědět na konkrétní otázku, obsahovat vlastní tabulku nebo příklad, odkazovat na primární zdroj a vést uživatele k relevantnímu hubu, aerolince, letišti nebo živé funkci.
 
 ## Monetizace podle přirozenosti
 
 1. **Parkování:** první volba. Affiliate odkaz je přirozenou součástí srovnání a uživatel má nákupní záměr.
-2. **Letištní stránky:** eSIM, cestovní pojištění, půjčovna auta nebo hotel pouze v kontextu konkrétní potřeby.
-3. **Stav letu:** nabídka kompenzace za zpožděný nebo zrušený let až ve chvíli, kdy umíme zobrazit důvěryhodný stav.
-4. **Obsahové články:** reklamní plochy až po dosažení stabilní návštěvnosti; nesmí zpomalit radar ani zakrývat mapu.
-5. **Retence:** oblíbené lety, upozornění na zajímavé stroje nebo denní přehled. To už bude vyžadovat databázi a souhlas s notifikacemi.
+2. **Zavazadla a cestovní vybavení:** affiliate na skutečně vyhovující batohy, kufry, obaly a cestovní doplňky. Rozměry vždy ověřit u aerolinky a uvést datum kontroly.
+3. **Letištní stránky:** eSIM, cestovní pojištění, půjčovna auta nebo hotel pouze v kontextu konkrétní potřeby.
+4. **Stav letu:** nabídka kompenzace za zpožděný nebo zrušený let až ve chvíli, kdy umíme zobrazit důvěryhodný stav.
+5. **Obsahové články:** reklamní plochy až po dosažení stabilní návštěvnosti; nesmí zpomalit radar ani zakrývat mapu.
+6. **Retence:** oblíbené lety, upozornění na zajímavé stroje nebo denní přehled. To už bude vyžadovat databázi a souhlas s notifikacemi.
 
 ## Co měřit od prvního dne
 
@@ -329,3 +445,35 @@ Pro FlyQueens musí být vytvořena nebo ověřena vlastní Search Console prope
 - **Datový poskytovatel je potřeba:** skutečné přílety, odlety, zpoždění, terminály a brány.
 - **Databáze zatím není potřeba:** statické články, interní odkazy, sitemap a běžná SEO metadata.
 - **Databáze bude potřeba:** uživatelské účty, oblíbené lety, upozornění, historie, komentáře nebo vlastní redakční systém s více autory.
+
+## Technický audit sitemap a robots.txt pro rok 2026
+
+Kontrola proběhla 11. září 2026 ve zdrojovém kódu i na produkční doméně.
+
+### Výsledek kontroly
+
+- `https://www.flyqueens.cz/robots.txt` vrací stav 200 a správný typ `text/plain`.
+- Robots.txt povoluje procházení veřejného webu, blokuje pouze `/api/` a obsahuje absolutní adresu sitemap.
+- `https://www.flyqueens.cz/sitemap.xml` vrací stav 200 a správný typ `application/xml`.
+- Sitemap před úpravou obsahovala všech 17 existujících veřejných indexovatelných stránek. Neobsahovala API, neexistující autorskou stránku, přesměrování ani URL se stavem 404.
+- Všechny veřejné stránky mají vlastní canonical na HTTPS variantě s `www`. Varianta domény bez `www` se přesměrovává stavem 301 na hlavní adresu.
+- XML po úpravě prošlo syntaktickou validací.
+
+### Provedené úpravy
+
+- Odstraněny hodnoty `priority` a `changefreq`. [Google je při zpracování sitemap ignoruje](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+- Doplněno pravdivé `lastmod` ke všem obsahovým URL. Datum se má změnit pouze při významné změně hlavního obsahu, strukturovaných dat nebo interních odkazů, ne automaticky při každém buildu.
+- Ke všem pěti článkům byly do XML přidány jejich hlavní fotografie pomocí image sitemap rozšíření podporovaného Next.js a Googlem.
+- Budoucí stránky se do sitemap přidají až po skutečné publikaci. Google doporučuje uvádět pouze kanonické URL, které chceme zobrazovat ve výsledcích.
+
+### Co se nemá přidávat
+
+- `Disallow: /_next/`, protože Google potřebuje CSS, JavaScript a obrázky ke správnému vykreslení stránky.
+- `Crawl-delay`, který Google nepodporuje a pro takto malý web není potřeba.
+- Prázdné budoucí URL, výsledky interního vyhledávání, parametry mapy ani API endpointy.
+- Automaticky dnešní datum do `lastmod` při každém nasazení. Nepravdivé datum by časem přestalo být důvěryhodným signálem.
+- Rozdělení na více sitemap. Limit jedné sitemap je 50 000 URL nebo 50 MB a FlyQueens je hluboko pod ním.
+
+### Další krok mimo kód
+
+Sitemap je potřeba jednou odeslat ve vlastní Google Search Console property a zkontrolovat její stav. Pro Bing, Copilot a Seznam dává smysl přidat Bing Webmaster Tools a později IndexNow. [Bing pro rok 2026 doporučuje kombinaci XML sitemap, crawlable interních odkazů a IndexNow](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a). IndexNow nenahrazuje sitemap ani kvalitní interní prolinkování.
