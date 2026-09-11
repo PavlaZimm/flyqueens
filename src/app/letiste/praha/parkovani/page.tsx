@@ -6,12 +6,12 @@ import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
-  title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně (2026)',
+  title: 'Parkování letiště Praha: ceny a kde zaparkovat levně (2026)',
   description:
     'Ověřené možnosti parkování u Letiště Václava Havla, expresní stání zdarma, vzdálenosti a proč cenu dlouhodobého parkování ověřit pro konkrétní termín.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha/parkovani' },
   ...socialMetadata({
-    title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně',
+    title: 'Parkování letiště Praha: ceny a kde zaparkovat levně',
     description:
       'Ověřené možnosti parkování, vzdálenosti, expresní stání a tipy na rezervaci.',
     url: 'https://www.flyqueens.cz/letiste/praha/parkovani',
@@ -74,7 +74,7 @@ export default function ParkovaniPrahaPage() {
           {' · Parkování'}
         </nav>
 
-        <h1 style={S.h1}>Parkování u letiště Praha: kolik stojí a kde zaparkovat levně</h1>
+        <h1 style={S.h1}>Parkování letiště Praha: kolik stojí a kde zaparkovat levně</h1>
         <p style={S.lead}>
           U Letiště Václava Havla si můžete vybrat expresní stání, několik oficiálních dlouhodobých
           parkovišť i služby třetích stran. Dlouhodobé ceny jsou dynamické, takže je porovnáváme podle

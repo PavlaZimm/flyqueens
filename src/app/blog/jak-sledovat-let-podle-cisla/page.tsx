@@ -9,12 +9,12 @@ import { socialMetadata } from '@/lib/socialMetadata'
 const post = getPost('jak-sledovat-let-podle-cisla')!
 
 export const metadata: Metadata = {
-  title: 'Sledování letu podle čísla: kde je letadlo online',
+  title: 'Sledování letů podle čísla: kde je letadlo online',
   description:
     'Zadejte číslo letu a zjistěte, kde je letadlo. Vysvětlíme rozdíl mezi číslem letu, volacím znakem a registrací i kde ověřit zpoždění.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla' },
   ...socialMetadata({
-    title: 'Sledování letu podle čísla: kde je letadlo online',
+    title: 'Sledování letů podle čísla: kde je letadlo online',
     description: 'Co zadat do živé mapy, kde ověřit zpoždění a proč se některý let nemusí zobrazit.',
     url: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla',
     type: 'article',
@@ -59,7 +59,7 @@ export default function TrackFlightNumberArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Sledování letu podle čísla: kde je letadlo online
+          Sledování letů podle čísla: kde je letadlo online
         </h1>
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · {post.readingTime}</div>
 

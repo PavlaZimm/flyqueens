@@ -5,14 +5,39 @@ Trh: Česko, český jazyk
 
 ## Datový stav
 
-Marketing Miner je v účtu nainstalovaný, ale jeho MCP nástroje nebyly v aktuální úloze dostupné. Tento dokument proto záměrně neobsahuje odhadované objemy hledanosti ani smyšlenou obtížnost. Priority vycházejí z:
+Datová část byla 11. září 2026 doplněna přímo z Marketing Mineru pro český trh. Obsahuje měsíční hledanost, CPC, meziroční změnu, sezónnost a tam, kde byla analýza SERPu dostupná, také obtížnost. Kompletní měřený výstup je v souboru [`marketing-miner-keywords-2026-09-11.csv`](./marketing-miner-keywords-2026-09-11.csv).
 
-- skutečných funkcí a současných URL FlyQueens;
-- veřejných českých výsledků vyhledávání;
-- síly a typu konkurence v jednotlivých záměrech;
-- blízkosti dotazu k použití produktu nebo budoucímu výnosu.
+Marketing Miner pro samotný nový web FlyQueens zatím eviduje 0 rankingových klíčových slov a odhadovanou organickou návštěvnost 0. To není chyba webu, ale normální výchozí stav nové domény. Google Search Console property FlyQueens nebyla přes konektor dostupná (403), takže reálné imprese a prokliky zatím nelze vyhodnotit.
 
-Jakmile bude Marketing Miner dostupný, je potřeba doplnit měsíční hledanost, trend, CPC a SERP konkurenci. Až podle těchto čísel má smysl měnit pořadí druhé a třetí vlny obsahu.
+Hledanost je modelovaný měsíční údaj Marketing Mineru, nikoli garantovaná návštěvnost. Prázdná obtížnost znamená „SERP nebyl analyzován“, nikoli snadné klíčové slovo.
+
+## Nejdůležitější naměřená data z Marketing Mineru
+
+| Záměr | Klíčové slovo | Hledání / měsíc | CPC | Obtížnost | Meziročně | Rozhodnutí |
+|---|---|---:|---:|---:|---:|---|
+| Radar | radar letadel | 2 900 | 1,68 Kč | 16 | +22 % | hlavní dotaz pro `/radar` |
+| Radar | letecký radar | 4 700 | 2,04 Kč | neznámá | +18 % | silný sekundární český výraz |
+| Radar | letadla online | 1 700 | 1,60 Kč | neznámá | +1 % | přirozeně použít v popisu produktu |
+| Radar | letový radar | 860 | 1,33 Kč | neznámá | +16 % | sekundární výraz pro radar |
+| Sledování | sledování letů | 5 500 | 1,68 Kč | 20 | +5 % | silný obecný cluster |
+| Sledování | sledování letů online zdarma | 4 200 | 1,61 Kč | neznámá | −9 % | zdůraznit „zdarma a bez účtu“ |
+| Sledování | sledování letů podle čísla | 700 | 1,55 Kč | 20 | +11 % | primární dotaz článku; upraven title a H1 |
+| Sledování | sledování letadel podle čísla letu | 640 | 1,20 Kč | 10 | −52 % | přirozená sekundární varianta |
+| Praha | letiště praha odlety | 12 000 | 1,85 Kč | neznámá | −20 % | vysoká priorita, až se spolehlivými daty |
+| Praha | letiště praha přílety | 8 400 | 0,23 Kč | neznámá | +20 % | vysoká priorita, až se spolehlivými daty |
+| Praha | letiště praha online | 890 | 2,22 Kč | 54 | −18 % | stávající průvodce / budoucí hub |
+| Praha | webkamera letiště praha | 700 | 0 Kč | 32 | −11 % | samostatná sekce pouze s funkčním streamem |
+| Výnos | parkování letiště praha | 12 000 | 9,39 Kč | 47 | −14 % | nejvyšší monetizační priorita |
+| Výnos | parkování u letiště praha | 1 700 | 9,97 Kč | 29 | −6 % | sekundární výraz stejné stránky |
+| Výnos | nejlevnější parkování letiště praha | 590 | 8,06 Kč | 26 | −37 % | skutečné srovnání cen, ne reklamní sliby |
+| Brno | parkování letiště brno | 1 200 | 1,36 Kč | neznámá | −10 % | rozvíjet existující stránku |
+| Ostrava | parkování letiště ostrava | 680 | 6,16 Kč | neznámá | −1 % | zajímavější komerčně než objem naznačuje |
+| Edu | jak vysoko létají letadla | 240 | 0 Kč | neznámá | −24 % | existující článek odpovídá dotazu |
+| Edu | squawk 7700 | 190 | 0 Kč | neznámá | −2 % | existující článek; dobrý eventový obsah |
+
+Pozor na přesnou formulaci: jednotné „sledování letu podle čísla“ má pouze 10 hledání měsíčně, zatímco množné „sledování letů podle čísla“ má 700. Titulek článku byl proto změněn na množnou variantu. Přesná fráze „živá mapa letadel“ v databázi měřitelná nebyla; mnohem silnější je „radar letadel“.
+
+Dotaz „flight radar“ má sice 68 000 hledání měsíčně, ale jeho SERP a formulace ukazují převážně navigační záměr spojený se zavedenými globálními trackery. Pro nový český web proto není realistickou krátkodobou prioritou. Content Gap vůči Flightradar24, Flightradar.flights a webu Letiště Praha potvrdil relevantní témata „letecký radar“, „radar letadel“, „letadla online“ a „sledování letů online“. U některých výrazů vracel Content Gap jiné objemy než přímá analýza klíčových slov; v tomto dokumentu a CSV proto používáme konzistentně hodnoty z přímého měření `keyword_search_volume`.
 
 ## Výzkum snippetů a změny provedené 11. září 2026
 

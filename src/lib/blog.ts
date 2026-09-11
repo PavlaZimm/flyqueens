@@ -28,7 +28,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'jak-sledovat-let-podle-cisla',
-    title: 'Sledování letu podle čísla: kde je letadlo online',
+    title: 'Sledování letů podle čísla: kde je letadlo online',
     excerpt: 'Číslo letu, volací znak a registrace nejsou totéž. Ukážeme, co zadat do mapy, kde ověřit zpoždění a proč se některý let nemusí zobrazit.',
     date: '2026-09-11',
     updatedAt: '2026-09-11',

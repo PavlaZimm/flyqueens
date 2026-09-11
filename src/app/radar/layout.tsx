@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
-  title: 'Živá mapa letadel nad Evropou | FlyQueens',
-  description: 'Interaktivní mapa dostupných ADS-B dat ve vybraných oblastech Evropy. Vyhledejte let, registraci nebo ICAO adresu.',
+  title: 'Radar letadel online: živá mapa nad Evropou',
+  description: 'Sledujte letadla online na živém radaru nad Evropou. Vyhledejte let, registraci nebo ICAO adresu a zobrazte dostupnou výšku, rychlost a trasu.',
   alternates: { canonical: 'https://www.flyqueens.cz/radar' },
   ...socialMetadata({
-    title: 'Živá mapa letadel nad Evropou | FlyQueens',
-    description: 'Sledujte dostupná ADS-B data o letadlech na přehledné interaktivní mapě.',
+    title: 'Radar letadel online: živá mapa nad Evropou',
+    description: 'Sledujte dostupná ADS-B data o letadlech na přehledné interaktivní mapě Evropy.',
     url: 'https://www.flyqueens.cz/radar',
   }),
 }

@@ -361,7 +361,7 @@ export default function RadarPage() {
 
   return (
     <>
-    <h1 className="sr-only">Živá mapa letadel nad Českem a v oblastech Evropy</h1>
+    <h1 className="sr-only">Radar letadel online: živá mapa nad Evropou</h1>
     <div style={{ display: 'flex', height: '100dvh', width: '100%', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
