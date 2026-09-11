@@ -27,6 +27,14 @@ Volitelné zdroje a funkce jsou výchozím stavem vypnuté:
 - `AIRPLANES_LIVE_ENABLED=true` pouze po odsouhlasení přístupu provozovatelem API.
 - `ENABLE_ATC_PROXY=true` pouze pokud máte oprávnění stream dále přenášet.
 - `AERODATABOX_API_KEY` aktivuje přesnější letový řád a trasová data.
+- `AFFILIATE_PARKING_PRG_URL`, `AFFILIATE_PARKING_BRQ_URL` a
+  `AFFILIATE_PARKING_OSR_URL` aktivují transparentně označené partnerské CTA na
+  příslušných parkovacích stránkách. Bez platné HTTPS adresy se CTA nevykreslí.
+
+Radar nabízí Evropu po předem vymezených oblastech. Jeden dotaz záměrně
+nenačítá celý kontinent: bodové ADS-B rozhraní má omezený dosah a menší výřez je
+rychlejší i čitelnější na mobilu. Každá oblast se ukládá do krátké samostatné
+cache a při přepnutí se stará letadla nezobrazují jako data nové oblasti.
 
 Výchozí hodnoty jsou v [`.env.example`](.env.example). Tajné klíče nikdy nepojmenovávejte s prefixem `NEXT_PUBLIC_`.
 

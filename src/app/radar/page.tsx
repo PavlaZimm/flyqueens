@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute } from '@/hooks/useFlightRoute'
@@ -10,13 +10,15 @@ import { useNearbyFlights } from '@/hooks/useNearbyFlights'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
-import { DETAIL_PANEL_WIDTH, EMERGENCY_SQUAWKS } from '@/lib/constants'
+import { DETAIL_PANEL_WIDTH } from '@/lib/constants'
 import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
 import { EmergencyBanner } from '@/components/UI/EmergencyBanner'
 import { MapView } from '@/components/Map/MapView'
 import type { Flight } from '@/types/flight'
+import { isEmergencyFlight } from '@/lib/emergency'
+import { trackEvent } from '@/lib/analytics'
 
 function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   const touchStartY = useRef(0)
@@ -100,7 +102,7 @@ function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; o
 }
 
 export default function RadarPage() {
-  const { flights, loading, count, dataMeta, region } = useFlights()
+  const { flights, loading, count, dataMeta, region, setRegion } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
   const { route: selectedRoute, loading: selectedRouteLoading } = useFlightRoute(
@@ -115,38 +117,65 @@ export default function RadarPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(new Set())
   const [showAirports, setShowAirports] = useState(false)
-  const { nearbyFlights, showNearby, locateMe, dismiss: dismissNearby } = useNearbyFlights()
+  const [displayMode, setDisplayMode] = useState<'overview' | 'all'>('overview')
+  const { nearbyFlights, showNearby, locationError, locateMe, dismiss: dismissNearby } = useNearbyFlights()
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
+  const autoOpenedQueryRef = useRef('')
+  const trackedQueryRef = useRef('')
   const hasDataWarning = dataMeta.status !== 'live'
 
+  const normalizedSearch = searchQuery.trim().toUpperCase()
+  const searchMatches = useMemo(() => {
+    if (!normalizedSearch) return []
+    return flights.filter((flight) =>
+      flight.callsign.trim().toUpperCase().includes(normalizedSearch)
+      || flight.icao24.toUpperCase().includes(normalizedSearch)
+      || (flight.registration ?? '').toUpperCase().includes(normalizedSearch)
+    )
+  }, [flights, normalizedSearch])
+
   // Emergency detection
-  const emergencyFlights = flights.filter(
-    f => (f.squawk && EMERGENCY_SQUAWKS.includes(f.squawk as typeof EMERGENCY_SQUAWKS[number])) || f.emergency
-  )
+  const emergencyFlights = flights.filter(isEmergencyFlight)
   const hasEmergency = emergencyFlights.length > 0
 
   // Favicon — živý počet + červená při emergency
   useFaviconCount(count, hasEmergency)
 
-  // Hledání z landing page: /radar?search=TVS123
+  // Hledání a sdílený detail z URL. Oba vstupy používají stejnou UX cestu,
+  // takže uživatel vždy vidí, co se na mapě hledá.
   useEffect(() => {
-    const searchParam = new URLSearchParams(window.location.search).get('search')
-    if (!searchParam) return
-    const clean = searchParam.replace(/[^A-Za-z0-9\- ]/g, '').slice(0, 10)
+    const params = new URLSearchParams(window.location.search)
+    const queryParam = params.get('flight') ?? params.get('search')
+    if (!queryParam) return
+    const clean = queryParam.replace(/[^A-Za-z0-9\- ]/g, '').slice(0, 10)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSearchQuery(clean)
   }, [])
 
-  // Auto-select flight from URL param ?flight=CSA123
+  // Přesná shoda (nebo jediný výsledek) se sama otevře a MapView na ni přiletí.
+  // Ref brání opakovanému otevírání detailu při každém 10s datovém snapshotu.
   useEffect(() => {
-    if (flights.length === 0) return
-    const params = new URLSearchParams(window.location.search)
-    const flightParam = params.get('flight')
-    if (!flightParam) return
-    const match = flights.find(f => f.callsign.trim().toUpperCase() === flightParam.toUpperCase())
+    if (!normalizedSearch || flights.length === 0 || autoOpenedQueryRef.current === normalizedSearch) return
+    const exactMatch = searchMatches.find((flight) =>
+      flight.callsign.trim().toUpperCase() === normalizedSearch
+      || flight.icao24.toUpperCase() === normalizedSearch
+      || (flight.registration ?? '').toUpperCase() === normalizedSearch
+    )
+    const match = exactMatch ?? (searchMatches.length === 1 ? searchMatches[0] : null)
+    if (!match) return
+    autoOpenedQueryRef.current = normalizedSearch
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (match) setSelectedFlight(match)
-  }, [flights])
+    setSelectedFlight(match)
+  }, [flights, normalizedSearch, searchMatches])
+
+  useEffect(() => {
+    if (!normalizedSearch || loading || trackedQueryRef.current === normalizedSearch) return
+    trackedQueryRef.current = normalizedSearch
+    trackEvent('Radar Search Result', {
+      resultCount: searchMatches.length,
+      outcome: searchMatches.length === 0 ? 'none' : searchMatches.length === 1 ? 'single' : 'multiple',
+    })
+  }, [loading, normalizedSearch, searchMatches.length])
 
   // Vybraný detail musí sledovat nové snapshoty, jinak po prvním kliknutí zamrzne.
   useEffect(() => {
@@ -173,18 +202,39 @@ export default function RadarPage() {
   })
 
   const handleLocateMe = () => {
-    locateMe(flights, (lat, lng) => mapLocateFnRef.current?.(lat, lng))
+    trackEvent('Nearby Flights Requested')
+    locateMe(flights, (lat, lng) => {
+      trackEvent('Nearby Flights Located')
+      mapLocateFnRef.current?.(lat, lng)
+    }, () => trackEvent('Nearby Flights Location Failed'))
   }
 
   const handleFlightSelect = (flight: Flight) => {
+    trackEvent('Flight Detail Opened', { aircraftType: flight.aircraftType ?? 'unknown' })
     setSelectedFlight(flight)
     setSidebarOpen(false)   // na mobile zavřeme sidebar při výběru
   }
   const handleDetailClose = () => setSelectedFlight(null)
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query)
+    trackedQueryRef.current = ''
+    if (query.trim().toUpperCase() !== autoOpenedQueryRef.current) {
+      autoOpenedQueryRef.current = ''
+    }
+  }
+  const clearSearch = () => {
+    setSearchQuery('')
+    setSelectedFlight(null)
+    autoOpenedQueryRef.current = ''
+    const url = new URL(window.location.href)
+    url.searchParams.delete('search')
+    url.searchParams.delete('flight')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }
 
   return (
     <>
-    <h1 className="sr-only">Živá mapa letadel nad Českem a okolím</h1>
+    <h1 className="sr-only">Živá mapa letadel nad Českem a v oblastech Evropy</h1>
     <div style={{ display: 'flex', height: '100dvh', width: '100%', overflow: 'hidden', background: 'var(--midnight)' }}>
 
       {/* Sidebar — desktop vždy viditelný, mobile přes overlay */}
@@ -196,7 +246,7 @@ export default function RadarPage() {
           flightCount={count}
           theme={theme}
           searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onSearchChange={handleSearchChange}
           onClose={() => setSidebarOpen(false)}
           dataMeta={dataMeta}
         />
@@ -227,13 +277,14 @@ export default function RadarPage() {
               onMapReady={(fn) => { mapLocateFnRef.current = fn }}
               selectedRoute={selectedRoute}
               region={region}
+              displayMode={displayMode}
             />
           </ErrorBoundary>
           {loading && flights.length === 0 && <LoadingScreen />}
         </div>
 
         {/* TopBar */}
-        <div style={{
+        <div className="fq-topbar-wrap" style={{
           position: 'absolute',
           top: 'calc(12px + env(safe-area-inset-top, 0px))',
           left: 12, right: selectedFlight ? 12 + DETAIL_PANEL_WIDTH + 8 : 12,
@@ -251,8 +302,34 @@ export default function RadarPage() {
             onToggleAirports={() => setShowAirports(v => !v)}
             region={region}
             dataStatus={dataMeta.status}
+            displayMode={displayMode}
+            onDisplayModeChange={setDisplayMode}
+            onRegionChange={(nextRegion) => {
+              trackEvent('Radar Region Changed', { region: nextRegion })
+              clearSearch()
+              setRegion(nextRegion)
+            }}
           />
         </div>
+
+        {/* Stav hledání musí být pochopitelný i na mobilu se zavřeným sidebarem. */}
+        {normalizedSearch && !loading && (
+          <div className="fq-search-status" role="status" aria-live="polite">
+            <div style={{ minWidth: 0 }}>
+              <div style={{ color: searchMatches.length ? 'var(--text-primary)' : 'var(--gold)', fontWeight: 700, fontSize: 12 }}>
+                {dataMeta.status === 'unavailable' && flights.length === 0
+                  ? 'Živá data jsou teď nedostupná'
+                  : searchMatches.length
+                  ? `${searchMatches.length} ${searchMatches.length === 1 ? 'nalezený let' : 'nalezených letů'}`
+                  : 'Let jsme v aktuálních datech nenašli'}
+              </div>
+              <div style={{ color: 'var(--text-dim)', fontSize: 10, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                Hledání „{searchQuery}“{searchMatches.length === 0 ? ' · zkus číslo letu nebo registraci' : ''}
+              </div>
+            </div>
+            <button onClick={clearSearch} aria-label="Zrušit hledání">Zrušit</button>
+          </div>
+        )}
 
         {/* Detail Panel — desktop */}
         {selectedFlight && (
@@ -285,7 +362,9 @@ export default function RadarPage() {
               </span>
               <button onClick={dismissNearby} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
             </div>
-            {nearbyFlights.length === 0 ? (
+            {locationError ? (
+              <div style={{ fontSize: 11, color: 'var(--gold)', lineHeight: 1.45 }}>{locationError}</div>
+            ) : nearbyFlights.length === 0 ? (
               <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Žádná letadla v okruhu 30 km ✈️</div>
             ) : (
               <>
@@ -316,20 +395,24 @@ export default function RadarPage() {
         {/* GPS button */}
         <button
           onClick={handleLocateMe}
+          className="fq-nearby-btn"
           style={{
             position: 'absolute',
             bottom: `calc(${hasDataWarning ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
             right: 12, zIndex: 1000,
-            width: 36, height: 36, borderRadius: 8,
-            background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
+            minWidth: 36, height: 40, borderRadius: 10,
+            background: 'rgba(245,184,61,0.94)', border: '1px solid rgba(245,184,61,0.75)',
             backdropFilter: 'blur(8px)', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16,
+            gap: 7, padding: '0 12px', color: '#0F172A',
+            font: "800 11px 'Archivo', sans-serif",
+            boxShadow: '0 6px 20px rgba(0,0,0,0.24)',
           }}
-          aria-label="Najít mou polohu"
-          title="Najít mou polohu"
+          aria-label="Zjistit, co letí nade mnou"
+          title="Zjistit, co letí nade mnou"
         >
-          📍
+          <span aria-hidden="true">📍</span>
+          <span>Co letí nade mnou?</span>
         </button>
 
         {/* Fullscreen button — nad GPS */}
@@ -351,6 +434,16 @@ export default function RadarPage() {
         >
           ⛶
         </button>
+
+        <details className="fq-map-legend">
+          <summary aria-label="Vysvětlivky mapy">Barvy letadel</summary>
+          <div>
+            <span><i style={{ background: 'var(--gold)' }} /> Linková</span>
+            <span><i style={{ background: 'var(--green-live)' }} /> Soukromá / vrtulová</span>
+            <span><i style={{ background: 'var(--accent-blue)' }} /> Cargo / vrtulník</span>
+            <span><i style={{ background: '#FF5C63' }} /> Vojenská / nouze</span>
+          </div>
+        </details>
 
         {/* StatusBar */}
         <StatusBar flightCount={count} dataMeta={dataMeta} region={region} />
@@ -377,6 +470,7 @@ export default function RadarPage() {
 
         /* ── Mobile (≤ 768 px) ── */
         @media (max-width: 768px) {
+          .fq-topbar-wrap { right: 12px !important; }
           /* Sidebar jako drawer zprava */
           .fq-sidebar {
             display: flex;
@@ -414,6 +508,14 @@ export default function RadarPage() {
           .fq-filters {
             gap: 5px !important;
           }
+          .fq-search-status {
+            top: calc(100px + env(safe-area-inset-top, 0px)) !important;
+            left: 12px;
+            right: 12px;
+            width: auto !important;
+            max-width: none !important;
+          }
+          .fq-map-legend { left: 8px !important; bottom: calc(42px + env(safe-area-inset-bottom, 0px)) !important; }
         }
 
         @media (min-width: 769px) {
@@ -434,6 +536,67 @@ export default function RadarPage() {
           border-radius: 2px;
           margin: 0 auto 14px;
         }
+        .fq-search-status {
+          position: absolute;
+          top: calc(60px + env(safe-area-inset-top, 0px));
+          left: 12px;
+          z-index: 1001;
+          width: min(360px, calc(100% - 24px));
+          padding: 10px 10px 10px 12px;
+          border-radius: 10px;
+          border: 1px solid var(--glass-border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(16px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .fq-search-status button {
+          min-height: 36px;
+          padding: 0 11px;
+          border-radius: 8px;
+          border: 1px solid rgba(245,184,61,0.35);
+          background: rgba(245,184,61,0.12);
+          color: var(--gold);
+          font: 600 10px 'IBM Plex Sans', sans-serif;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+        .fq-map-legend {
+          position: absolute;
+          left: 12px;
+          bottom: calc(42px + env(safe-area-inset-bottom, 0px));
+          z-index: 1000;
+          color: var(--text-muted);
+          font: 600 9px 'IBM Plex Sans', sans-serif;
+        }
+        .fq-map-legend summary {
+          list-style: none;
+          cursor: pointer;
+          padding: 7px 9px;
+          border: 1px solid var(--glass-border);
+          border-radius: 8px;
+          background: var(--glass-bg);
+          backdrop-filter: blur(12px);
+        }
+        .fq-map-legend summary::-webkit-details-marker { display: none; }
+        .fq-map-legend > div {
+          position: absolute;
+          left: 0;
+          bottom: 34px;
+          width: 166px;
+          display: grid;
+          gap: 7px;
+          padding: 10px;
+          border: 1px solid var(--glass-border);
+          border-radius: 9px;
+          background: rgba(10,15,30,0.94);
+          backdrop-filter: blur(16px);
+        }
+        .fq-map-legend span { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+        .fq-map-legend i { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(15,23,42,0.65); }
       `}</style>
     </div>
 

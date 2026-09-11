@@ -7,19 +7,28 @@ import { NEARBY_RADIUS_KM, EARTH_RADIUS_KM } from '@/lib/constants'
 interface UseNearbyFlightsResult {
   nearbyFlights: Flight[]
   showNearby: boolean
-  locateMe: (flights: Flight[], onLocated: (lat: number, lng: number) => void) => void
+  locationError: string | null
+  locateMe: (flights: Flight[], onLocated: (lat: number, lng: number) => void, onError?: () => void) => void
   dismiss: () => void
 }
 
 export function useNearbyFlights(): UseNearbyFlightsResult {
   const [nearbyFlights, setNearbyFlights] = useState<Flight[]>([])
   const [showNearby, setShowNearby] = useState(false)
+  const [locationError, setLocationError] = useState<string | null>(null)
 
   const locateMe = useCallback((
     flights: Flight[],
     onLocated: (lat: number, lng: number) => void,
+    onError?: () => void,
   ) => {
-    if (!navigator.geolocation) return
+    setLocationError(null)
+    if (!navigator.geolocation) {
+      setLocationError('Tento prohlížeč neumí zjistit polohu.')
+      setShowNearby(true)
+      onError?.()
+      return
+    }
     navigator.geolocation.getCurrentPosition((pos) => {
       const { latitude, longitude } = pos.coords
       onLocated(latitude, longitude)
@@ -35,10 +44,17 @@ export function useNearbyFlights(): UseNearbyFlightsResult {
       })
       setNearbyFlights(nearby)
       setShowNearby(true)
-    })
+    }, (error) => {
+      const message = error.code === error.PERMISSION_DENIED
+        ? 'Poloha je vypnutá. Povol ji pro tento web v nastavení prohlížeče.'
+        : 'Polohu se nepodařilo zjistit. Zkus to prosím znovu.'
+      setLocationError(message)
+      setShowNearby(true)
+      onError?.()
+    }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 })
   }, [])
 
   const dismiss = useCallback(() => setShowNearby(false), [])
 
-  return { nearbyFlights, showNearby, locateMe, dismiss }
+  return { nearbyFlights, showNearby, locationError, locateMe, dismiss }
 }

@@ -18,7 +18,7 @@ function TopList({ title, items, color = 'var(--gold)' }: {
       {items.map((item, i) => (
         <Link
           key={i}
-          href={item.callsign ? `/?flight=${encodeURIComponent(item.callsign)}` : '#'}
+          href={item.callsign ? `/radar?flight=${encodeURIComponent(item.callsign)}` : '#'}
           style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10, marginBottom: i < items.length - 1 ? 10 : 0, borderRadius: 8, padding: '4px 6px', margin: `0 -6px ${i < items.length - 1 ? '6px' : '0'} -6px`, transition: 'background 0.15s', cursor: item.callsign ? 'pointer' : 'default' }}
           onMouseEnter={e => { if (item.callsign) (e.currentTarget as HTMLElement).style.background = 'var(--glass-bg)' }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}

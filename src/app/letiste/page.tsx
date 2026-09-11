@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Letiště v Česku: odlety, parkování a živá mapa | FlyQueens',
   description:
-    'Přehled českých letišť. Parkování, odlety a přílety, počasí a lety v reálném čase nad Prahou, Brnem, Ostravou a dalšími.',
+    'Přehled českých letišť. Parkování, odlety a přílety, počasí a poslední dostupné polohy letadel nad Prahou, Brnem, Ostravou a dalšími.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste' },
 }
 

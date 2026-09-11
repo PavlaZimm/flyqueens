@@ -30,6 +30,7 @@ export function useFlights(): UseFlightsResult {
   const backoffRef = useRef(POLL_INTERVAL)
   const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
   const regionRef  = useRef('europe')
+  const requestIdRef = useRef(0)
 
   const schedule = useCallback((delay: number, fn: () => void) => {
     if (timerRef.current) clearTimeout(timerRef.current)
@@ -37,13 +38,17 @@ export function useFlights(): UseFlightsResult {
   }, [])
 
   const load = useCallback(async () => {
+    const requestId = ++requestIdRef.current
+    const requestedRegion = regionRef.current
     try {
-      const { flights: data, meta } = await fetchFlights(regionRef.current)
+      const { flights: data, meta } = await fetchFlights(requestedRegion)
+      if (requestId !== requestIdRef.current) return
       setFlights(data)
       setDataMeta(meta)
       setError(null)
       backoffRef.current = POLL_INTERVAL
     } catch (err) {
+      if (requestId !== requestIdRef.current) return
       const msg = err instanceof Error ? err.message : 'Chyba při načítání letů'
       setError(msg)
       setDataMeta((previous) => ({
@@ -53,6 +58,7 @@ export function useFlights(): UseFlightsResult {
       }))
       backoffRef.current = Math.min(backoffRef.current * BACKOFF_FACTOR, MAX_BACKOFF)
     } finally {
+      if (requestId !== requestIdRef.current) return
       setLoading(false)
       schedule(backoffRef.current, load)
     }
@@ -61,6 +67,8 @@ export function useFlights(): UseFlightsResult {
   const setRegion = useCallback((r: string) => {
     regionRef.current = r
     setRegionState(r)
+    setFlights([])
+    setDataMeta({ status: 'unavailable', source: null, fetchedAt: null })
     setLoading(true)
     if (timerRef.current) clearTimeout(timerRef.current)
     load()

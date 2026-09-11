@@ -165,7 +165,7 @@ export function Sidebar({
           color: 'var(--text-dim)', marginBottom: 8,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
-          <span>Lety v okolí</span>
+          <span>Lety v oblasti</span>
           <span style={{ color: searchQuery ? 'var(--gold)' : 'var(--text-dim)', fontSize: 9 }}>
             {filteredFlights.length}
           </span>

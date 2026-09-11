@@ -1,6 +1,7 @@
 'use client'
 
 import type { Flight } from '@/types/flight'
+import { isEmergencyFlight, normalizeEmergency } from '@/lib/emergency'
 
 const EMERGENCY_SQUAWKS = new Set(['7700', '7500', '7600'])
 
@@ -17,9 +18,7 @@ interface Props {
 }
 
 export function EmergencyBanner({ flights, onSelect }: Props) {
-  const emergencies = flights.filter(
-    f => (f.squawk && EMERGENCY_SQUAWKS.has(f.squawk)) || f.emergency
-  )
+  const emergencies = flights.filter(isEmergencyFlight)
 
   if (emergencies.length === 0) return null
 
@@ -58,7 +57,9 @@ export function EmergencyBanner({ flights, onSelect }: Props) {
           <span style={{ fontSize: 20, flexShrink: 0 }}>🚨</span>
           <div>
             <div style={{ fontSize: 12, fontWeight: 700, color: '#ef4444', fontFamily: 'Archivo, sans-serif', letterSpacing: 1 }}>
-              SQUAWK {f.squawk ? squawkLabel(f.squawk) : f.emergency?.toUpperCase()}
+              {EMERGENCY_SQUAWKS.has(f.squawk ?? '')
+                ? `SQUAWK ${squawkLabel(f.squawk ?? '')}`
+                : `EMERGENCY: ${normalizeEmergency(f.emergency)?.toUpperCase()}`}
             </div>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginTop: 1 }}>
               {f.callsign} · {f.model ?? f.origin_country ?? ''} · klikni pro detail

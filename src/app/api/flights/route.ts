@@ -3,6 +3,7 @@ import { checkRateLimit } from '@/lib/rateLimit'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { getOpenSkyToken } from '@/lib/openskyAuth'
 import type { AircraftType, FlightDataSource } from '@/types/flight'
+import { normalizeEmergency } from '@/lib/emergency'
 
 type SourceResult = {
   source: FlightDataSource
@@ -36,7 +37,7 @@ function classifyAircraft(ac: Record<string, unknown>): AircraftType | null {
   if (category === 'A7') return 'helicopter'
   if (/^(A3(0[06]|1[08]|3[0-9]|4[0-9]|5[0-9]|80)|B74|B76|B77|B78|DC10|MD11)/.test(designator)) return 'wide-body'
   if (/^(AT[467]|DH8|DHC6|SF34|E120|C208|PC12|BE20|L410|AN2[468]|AN3[028])/.test(designator)) return 'turboprop'
-  if (/^(C25|C5[1256]|C6[058]|C7[05]|GLF|LJ|FA[12578]|CL3[05]|CL60|E5[05]P|PC24|H25B)/.test(designator)) return 'private-jet'
+  if (/^(C25|C5[1256]|C6[058]|C7[05]|GLF|LJ|FA[12578]|F2TH|F900|CL3[05]|CL60|E5[05]P|PC24|H25B)/.test(designator)) return 'private-jet'
   if (category === 'A5') return 'wide-body'
   if (category === 'A3' || category === 'A4') return 'narrow-body'
   if (category === 'A1' || category === 'A2') return 'ga'
@@ -62,7 +63,7 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
   const mach = ac.mach != null ? Number(ac.mach) : null
   const baroRate = ac.baro_rate != null ? Number(ac.baro_rate) : null
   const squawk = ac.squawk != null ? String(ac.squawk) : null
-  const emergency = ac.emergency != null && ac.emergency !== 'none' ? String(ac.emergency) : null
+  const emergency = normalizeEmergency(ac.emergency) ?? null
   const navAltitude = ac.nav_altitude_mcp != null ? Number(ac.nav_altitude_mcp) : null
   const model = String(ac.t ?? '').trim() || null
   const aircraftType = classifyAircraft(ac)

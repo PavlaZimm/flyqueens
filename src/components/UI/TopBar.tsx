@@ -18,6 +18,9 @@ interface TopBarProps {
   onToggleAirports: () => void
   region: string
   dataStatus: FlightDataStatus
+  displayMode: 'overview' | 'all'
+  onDisplayModeChange: (mode: 'overview' | 'all') => void
+  onRegionChange: (region: string) => void
 }
 
 const CHIP_BASE: React.CSSProperties = {
@@ -66,6 +69,9 @@ export function TopBar({
   onToggleAirports,
   region,
   dataStatus,
+  displayMode,
+  onDisplayModeChange,
+  onRegionChange,
 }: TopBarProps) {
   const currentRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
 
@@ -128,7 +134,7 @@ export function TopBar({
         <button
           onClick={() => onFilterChange(new Set())}
           aria-pressed={activeFilters.size === 0}
-          aria-label="Zobrazit všechna letadla"
+          aria-label="Zrušit filtry typů letadel"
           style={{
             ...CHIP_BASE,
             background: activeFilters.size === 0 ? 'rgba(245,184,61,0.13)' : 'var(--glass-bg)',
@@ -178,13 +184,44 @@ export function TopBar({
           <span style={{ fontSize: 13 }}>🛬</span>
           <span className="fq-chip-label" style={{ marginLeft: 5 }}>Letiště</span>
         </button>
+
+        <button
+          onClick={() => onDisplayModeChange(displayMode === 'overview' ? 'all' : 'overview')}
+          aria-label={displayMode === 'overview' ? 'Zobrazit všechna letadla' : 'Zjednodušit překrývající se letadla'}
+          aria-pressed={displayMode === 'overview'}
+          title={displayMode === 'overview' ? 'Přehledný režim – bez překrývání' : 'Zobrazují se všechna letadla'}
+          style={{
+            ...CHIP_BASE,
+            background: displayMode === 'overview' ? 'rgba(192,132,252,0.13)' : 'var(--glass-bg)',
+            border: `1px solid ${displayMode === 'overview' ? 'rgba(192,132,252,0.4)' : 'var(--glass-border)'}`,
+            color: displayMode === 'overview' ? 'var(--lavender)' : 'var(--text-muted)',
+          }}
+        >
+          <span aria-hidden="true">◫</span>
+          <span className="fq-chip-label" style={{ marginLeft: 5 }}>
+            {displayMode === 'overview' ? 'Přehledně' : 'Všechna'}
+          </span>
+        </button>
       </div>
 
-      {/* Aktuálně podporujeme jednu pravdivě vymezenou oblast. */}
-      <div className="fq-region-chip" style={{ ...CHIP_BASE, cursor: 'default', gap: 5 }} aria-label={`Oblast: ${currentRegion.label}`}>
-        <span style={{ fontSize: 15 }}>{currentRegion.flag}</span>
-        <span className="fq-region-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
-      </div>
+      <label className="fq-region-chip" style={{ ...CHIP_BASE, gap: 5, padding: '0 8px', position: 'relative' }} aria-label={`Oblast mapy: ${currentRegion.label}`}>
+        <span style={{ fontSize: 15 }} aria-hidden="true">{currentRegion.flag}</span>
+        <select
+          value={region}
+          onChange={(event) => onRegionChange(event.target.value)}
+          aria-label="Vybrat oblast Evropy"
+          style={{
+            appearance: 'none', border: 0, outline: 0, cursor: 'pointer',
+            color: 'inherit', background: 'transparent', font: 'inherit',
+            padding: '7px 14px 7px 0', maxWidth: 152,
+          }}
+        >
+          {Object.entries(REGION_CONFIGS).map(([id, config]) => (
+            <option key={id} value={id} style={{ color: '#0F172A' }}>{config.label}</option>
+          ))}
+        </select>
+        <span aria-hidden="true" style={{ position: 'absolute', right: 7, fontSize: 8, pointerEvents: 'none' }}>▼</span>
+      </label>
 
       {/* Stats link */}
       <Link className="fq-stats-btn" href="/stats" aria-label="Statistiky" title="Statistiky" style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>

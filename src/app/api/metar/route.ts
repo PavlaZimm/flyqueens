@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
     const res = await fetch(url, {
       headers: { 'Accept': 'application/json' },
       next: { revalidate: 1800 },
+      signal: AbortSignal.timeout(6000),
     })
 
     if (!res.ok) {

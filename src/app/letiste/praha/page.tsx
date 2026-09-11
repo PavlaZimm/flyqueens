@@ -4,13 +4,13 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Letiště Praha (Václava Havla): parkování, odlety a živá mapa',
   description:
-    'Vše k Letišti Václava Havla na jednom místě: parkování a ceny, odlety a přílety, počasí a lety v reálném čase nad Prahou.',
+    'Vše k Letišti Václava Havla na jednom místě: parkování a ceny, odlety a přílety, počasí a poslední dostupné polohy letadel nad Prahou.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha' },
 }
 
 const LINKS = [
   { href: '/letiste/praha/parkovani', title: 'Parkování a ceny', desc: 'Kde zaparkovat levně, srovnání parkovišť a tipy na rezervaci.', ready: true },
-  { href: '/radar', title: 'Živá mapa nad Prahou', desc: 'Co zrovna letí ve vzduchu, v reálném čase. Klik na letadlo ukáže detail.', ready: true },
+  { href: '/radar', title: 'Živá mapa nad Prahou', desc: 'Poslední dostupné polohy letadel. Kliknutí ukáže detail.', ready: true },
   { href: '/letiste/praha/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
 ]
 
@@ -29,9 +29,8 @@ export default function PrahaHubPage() {
           Letiště Václava Havla Praha
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Největší české letiště, kód PRG. Ročně jím projde přes patnáct milionů lidí, takže se hodí mít
-          věci nachystané dopředu. Vyberte, co potřebujete: kde zaparkovat, co letí nad Prahou právě teď,
-          nebo jaké je na letišti počasí.
+          Letiště Václava Havla používá kód PRG. Vyberte si ověřený přehled parkování nebo živou mapu
+          dostupných letových dat; provozní časy letu vždy potvrďte na oficiální tabuli letiště.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

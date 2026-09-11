@@ -3,13 +3,13 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Letiště Ostrava (Leoše Janáčka): parkování, odlety a živá mapa',
-  description: 'Vše k letišti Leoše Janáčka v Mošnově: parkování a ceny P1 až P5, odlety a přílety, lety v reálném čase nad Moravou.',
+  description: 'Vše k letišti Leoše Janáčka v Mošnově: ověřené parkování a ceny P1 až P6 a živá mapa dostupných letových dat nad Moravou.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/ostrava' },
 }
 
 const LINKS = [
-  { href: '/letiste/ostrava/parkovani', title: 'Parkování a ceny', desc: 'Srovnání parkovišť P1 až P5 a soukromá parkoviště s odvozem.', ready: true },
-  { href: '/radar', title: 'Živá mapa nad Moravou', desc: 'Co zrovna letí ve vzduchu, v reálném čase.', ready: true },
+  { href: '/letiste/ostrava/parkovani', title: 'Parkování a ceny', desc: 'Ověřený ceník parkovišť P1 až P6 a vzdálenost od terminálu.', ready: true },
+  { href: '/radar', title: 'Živá mapa nad Moravou', desc: 'Poslední dostupné polohy letadel ve vzduchu.', ready: true },
   { href: '/letiste/ostrava/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
 ]
 
@@ -28,8 +28,8 @@ export default function OstravaHubPage() {
           Letiště Leoše Janáčka Ostrava
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Letiště v Mošnově, kód OSR. V létě odsud létají charterové lety k moři, mimo sezónu je tu klid.
-          Vyberte, co potřebujete.
+          Letiště Leoše Janáčka v Mošnově používá kód OSR. Najdete tu ověřené parkovné a živou mapu;
+          aktuální odlety a přílety vždy potvrďte na oficiální tabuli letiště.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

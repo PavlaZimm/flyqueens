@@ -3,13 +3,13 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Letiště Brno-Tuřany: parkování, odlety a živá mapa',
-  description: 'Vše k letišti Brno-Tuřany na jednom místě: parkování a ceny, odlety a přílety, lety v reálném čase nad Brnem.',
+  description: 'Vše k letišti Brno-Tuřany na jednom místě: parkování a ceny, odlety a přílety a poslední dostupné polohy letadel nad Brnem.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/brno' },
 }
 
 const LINKS = [
-  { href: '/letiste/brno/parkovani', title: 'Parkování a ceny', desc: 'Oficiální ceník, soukromá parkoviště s odvozem a kde ušetříte.', ready: true },
-  { href: '/radar', title: 'Živá mapa nad Brnem', desc: 'Co zrovna letí ve vzduchu, v reálném čase.', ready: true },
+  { href: '/letiste/brno/parkovani', title: 'Parkování a ceny', desc: 'Ověřený oficiální ceník a na co dát pozor u alternativ.', ready: true },
+  { href: '/radar', title: 'Živá mapa nad Brnem', desc: 'Poslední dostupné polohy letadel ve vzduchu.', ready: true },
   { href: '/letiste/brno/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
 ]
 
@@ -28,8 +28,8 @@ export default function BrnoHubPage() {
           Letiště Brno-Tuřany
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Druhé největší české letiště, kód BRQ. Je menší a přehlednější než Ruzyň, takže odbavení bývá
-          rychlé. Vyberte, co potřebujete.
+          Letiště Brno-Tuřany používá kód BRQ. Najdete tu ověřený přehled parkování a odkaz na živou mapu;
+          provozní časy letu vždy potvrďte na oficiálním webu letiště.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

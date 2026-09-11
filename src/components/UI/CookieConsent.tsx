@@ -63,8 +63,8 @@ export function CookieConsent() {
             boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
           }}
         >
-          <span style={{ fontSize: 12, lineHeight: 1.5, color: 'rgba(255,255,255,0.75)', flex: '1 1 220px' }}>
-            Používáme Google Analytics, ať víme, co na webu funguje. Žádná reklama, jen statistika návštěv.
+          <span style={{ fontSize: 11, lineHeight: 1.45, color: 'rgba(255,255,255,0.75)', flex: '1 1 210px' }}>
+            Pomůžeš nám zjistit, co na FlyQueens funguje? Google Analytics zapneme jen s tvým souhlasem.
           </span>
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
             <button
@@ -72,7 +72,7 @@ export function CookieConsent() {
               style={{
                 background: 'none', border: '1px solid var(--glass-border)', borderRadius: 8,
                 color: 'rgba(255,255,255,0.6)', fontFamily: 'IBM Plex Sans, sans-serif',
-                fontSize: 11, padding: '7px 10px', cursor: 'pointer',
+                fontSize: 11, minHeight: 36, padding: '7px 10px', cursor: 'pointer',
               }}
             >
               Jen nezbytné
@@ -82,7 +82,7 @@ export function CookieConsent() {
               style={{
                 background: 'var(--gold)', border: 'none', borderRadius: 8,
                 color: '#0F172A', fontFamily: 'Archivo, sans-serif', fontWeight: 800,
-                fontSize: 11, letterSpacing: 0.5, padding: '7px 12px', cursor: 'pointer',
+                fontSize: 11, letterSpacing: 0.5, minHeight: 36, padding: '7px 12px', cursor: 'pointer',
               }}
             >
               Povolit

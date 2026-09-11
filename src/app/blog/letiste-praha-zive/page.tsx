@@ -23,7 +23,7 @@ const jsonLd = {
   '@type': 'BlogPosting',
   headline: post.title,
   datePublished: post.date,
-  dateModified: post.date,
+  dateModified: '2026-09-11',
   author: { '@type': 'Organization', name: 'FlyQueens' },
   publisher: { '@type': 'Organization', name: 'FlyQueens' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
@@ -62,9 +62,9 @@ export default function ZiveArticle() {
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Webkamera ukazuje statický záběr terminálu nebo dráhy. Živá mapa letadel funguje jinak: letadla samy
-            vysílají svoji polohu, výšku a rychlost, a mapa je vykresluje v reálném čase. Kliknete na letadlo
-            a zjistíte odkud letí, kam míří a v jaké je výšce.
+            Webkamera ukazuje záběr terminálu nebo dráhy. Živá mapa letadel funguje jinak: letadla sama
+            vysílají svoji polohu, výšku a rychlost, a mapa vykresluje poslední dostupné záznamy. Kliknete na letadlo
+            a uvidíte jeho identifikaci a dostupné letové údaje; trasa nemusí být vždy dostupná.
           </p>
         </div>
 
@@ -77,40 +77,37 @@ export default function ZiveArticle() {
 
         <h2 style={S.h2}>Jak vlastně mapa ví, kde letadlo je?</h2>
         <p style={S.p}>
-          Skoro každé dopravní letadlo dnes vysílá signál ADS-B. Několikrát za vteřinu odešle svoji polohu,
-          výšku, rychlost a identifikaci. Ten signál zachytávají pozemní přijímače, často i amatérské, a data
-          se slévají dohromady. Proto vidíte letadlo nad Prahou i nad Atlantikem, aniž by o tom kdokoli musel
-          ručně informovat.
+          Vybavené letadlo vysílá přes ADS-B identitu, polohu a další údaje odvozené z palubních systémů.
+          Signál zachytávají pozemní nebo satelitní přijímače a dostupné zdroje je mohou agregovat. Pokrytí
+          FlyQueens je omezené zvolenou oblastí a dostupností zdroje, nejde o úplný obraz provozu.
         </p>
 
         <h2 style={S.h2}>Co se dá z letu vyčíst</h2>
         <p style={S.p}>
           Když na letadlo kliknete, dostanete víc než jen tečku na mapě. Uvidíte volací znak, typ stroje,
-          výšku v metrech i letovou hladinu, rychlost a kurz. U linkových letů většinou i trasu, tedy odkud
-          letadlo vzlétlo a kde přistane. Zajímavá je vertikální rychlost: podle ní poznáte, jestli stroj
-          stoupá, klesá nebo je v cestovní fázi. Letadlo klesající nad Kladnem míří skoro jistě na Ruzyň.
+          barometrickou výšku převedenou do metrů, rychlost a kurz. Pokud se podaří dohledat letový plán,
+          zobrazí se i odletové a cílové letiště. Vertikální rychlost napoví, zda stroj stoupá nebo klesá;
+          sama ale nepotvrzuje, na které letiště míří.
         </p>
 
         <h2 style={S.h2}>Kdy je nad Prahou nejvíc rušno</h2>
         <p style={S.p}>
-          Provoz na Ruzyni má dvě špičky. Ráno mezi šestou a devátou odlétá vlna linek do Evropy, odpoledne
-          se to samé vrací. V létě je hustota výrazně vyšší než v zimě, o prázdninách přibývají charterové lety
-          k moři. Když chcete vidět nabitou mapu, zkuste červencové ráno.
+          Intenzita se mění podle aktuálního letového řádu, dne a sezóny. Nejspolehlivější je otevřít živou
+          mapu spolu s oficiální tabulí příletů a odletů letiště; bez těchto dat nechceme tvrdit pevné hodiny špičky.
         </p>
 
         <h2 style={S.h2}>Vyplatí se sledovat konkrétní let?</h2>
         <p style={S.p}>
-          Pokud čekáte na někoho z letiště, ano. Na mapě vidíte, kde letadlo právě je a kolik mu zbývá,
-          což je přesnější než odletová tabule, která se aktualizuje po skocích. Jedno upozornění: data mají
-          zpoždění pár vteřin a nad oblastmi bez pokrytí občas letadlo na chvíli zmizí. Nic se neděje, za pár
-          minut se objeví zpátky.
+          Mapa je dobrá pro orientaci, kde se zachycené letadlo nachází. Pro vyzvednutí cestujícího ale berte
+          jako autoritativní oficiální tabuli letiště: veřejná ADS-B data mohou mít zpoždění, výpadek pokrytí
+          nebo chybné přiřazení trasy.
         </p>
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Podívejte se na Prahu právě teď</div>
           <p style={{ ...S.p, marginBottom: 12 }}>
-            Živá mapa FlyQueens ukazuje letadla nad Českem v reálném čase. Zdarma, bez registrace.
-            Klikněte na kterékoli letadlo a uvidíte jeho trasu, výšku i typ.
+            Živá mapa FlyQueens ukazuje poslední dostupné polohy letadel nad Českem. Zdarma, bez registrace.
+            Klikněte na letadlo a uvidíte jeho výšku, rychlost a typ; trasu zobrazíme, jen když je dostupná.
           </p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
@@ -124,11 +121,11 @@ export default function ZiveArticle() {
 
         <SourcesBox
           sources={[
-            { label: 'SKYbrary — ADS-B (jak funguje vysílání polohy letadel)', href: 'https://www.skybrary.aero/articles/automatic-dependent-surveillance-broadcast-ads-b' },
-            { label: 'Letiště Praha — oficiální web', href: 'https://www.prg.aero/' },
+            { label: 'EUROCONTROL — Automatic Dependent Surveillance–Broadcast', href: 'https://www.eurocontrol.int/service/automatic-dependent-surveillance-broadcast' },
+            { label: 'Letiště Praha — oficiální přílety a odlety', href: 'https://www.prg.aero/' },
             { label: 'Data o polohách: dostupné ADS-B zdroje uvedené přímo v mapě' },
           ]}
-          note="Popis provozních špiček vychází z pozorování dat na mapě FlyQueens v létě 2026, ne z oficiální statistiky letiště."
+          note="Princip ADS-B a omezení veřejných dat ověřeny 11. září 2026. Pro cestu na letiště kontrolujte oficiální tabuli."
         />
       </div>
     </main>

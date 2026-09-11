@@ -23,7 +23,7 @@ const jsonLd = {
   '@type': 'BlogPosting',
   headline: post.title,
   datePublished: post.date,
-  dateModified: post.date,
+  dateModified: '2026-09-11',
   author: { '@type': 'Organization', name: 'FlyQueens' },
   publisher: { '@type': 'Organization', name: 'FlyQueens' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
@@ -62,25 +62,25 @@ export default function VyskaArticle() {
 
         <p style={S.p}>
           Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte.
-          Jak vysoko vlastně je? Skoro jistě mezi devíti a dvanácti kilometry. A že zrovna tam, to není náhoda,
-          ale čistá matematika paliva.
+          Jak vysoko vlastně je? U běžného dopravního letu typicky mezi devíti a dvanácti kilometry. A že zrovna tam, to není náhoda,
+          ale kompromis výkonu, spotřeby, počasí, hmotnosti a řízení provozu.
         </p>
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
             Dopravní letadla létají nejčastěji v 10 až 12 kilometrech, tedy kolem letové hladiny FL350.
-            Vzduch je tam řidší, takže motory spálí méně paliva, a letadlo se navíc dostane nad většinu
-            počasí. Malé stroje létají v jednotkách kilometrů, byznys tryskáče až v 15 kilometrech.
+            Řidší vzduch snižuje aerodynamický odpor, ale konkrétní hladina závisí na typu, hmotnosti,
+            trati a počasí. Malé stroje obvykle létají níž, některé byznys tryskáče až kolem 15 kilometrů.
           </p>
         </div>
 
         <h2 style={S.h2}>Proč se létá tak vysoko?</h2>
         <p style={S.p}>
-          Kvůli penězům. Ve výšce deseti kilometrů má vzduch zhruba třetinovou hustotu proti zemi, takže
-          klade menší odpor a letadlo proletí stejnou vzdálenost za výrazně méně paliva. Druhý důvod je
-          pohodlí: bouřky, déšť a většina turbulencí se odehrávají pod vámi. A do třetice provoz. Vysoko
-          nad zemí je nebe rozdělené do hladin, kde se letadla bezpečně míjejí s rozestupem tři sta metrů.
+          Ve standardní atmosféře má vzduch kolem deseti kilometrů přibližně třetinovou hustotu proti hladině
+          moře, což snižuje odpor. Optimální hladinu ale ovlivňuje i výkon motorů, hmotnost a vítr. Letové
+          hladiny zároveň pomáhají řízení oddělovat provoz; v prostoru RVSM je běžný vertikální rozstup
+          1 000 stop (přibližně 305 metrů). Bouřky i turbulence mohou zasahovat také cestovní hladiny.
         </p>
 
         <h2 style={S.h2}>Kolik má které letadlo</h2>
@@ -107,25 +107,23 @@ export default function VyskaArticle() {
 
         <h2 style={S.h2}>Co znamená FL350</h2>
         <p style={S.p}>
-          Piloti neměří výšku v metrech, ale v letových hladinách. FL350 znamená 35 000 stop, což je zhruba
-          10,7 kilometru. Číslo za FL jsou vždycky stovky stop. Když na mapě uvidíte letadlo na FL380, letí
-          v 11,6 km. Jednoduchá pomůcka: číslo hladiny krát tři dá výšku v metrech jen s malou chybou.
+          Ve vyšších hladinách se používají letové hladiny vztažené ke standardnímu tlaku 1013,2 hPa.
+          FL350 znamená tlakovou hladinu 35 000 stop, přibližně 10,7 kilometru ve standardní atmosféře.
+          Není to totéž co přesná geometrická výška nad terénem, protože skutečný tlak a teplota se mění.
         </p>
 
         <h2 style={S.h2}>Proč ne ještě výš?</h2>
         <p style={S.p}>
-          Každý stroj má certifikovaný strop. U běžného A320 je to zhruba 12,5 kilometru a výš to nejde ze
-          dvou důvodů. Řidší vzduch přestává stačit motorům i křídlům, a trup by musel vydržet větší rozdíl
-          tlaků. Venku je totiž kolem minus 55 stupňů a tlak, při kterém se nedá dýchat. Výjimkou byl
-          Concorde, ten létal v osmnácti kilometrech. Dneska tam nahoře potkáte leda byznys tryskáče.
+          Každý typ má certifikované limity. Pro rodinu A320 výrobce uvádí maximální provozní výšku kolem
+          39 800 stop, tedy asi 12,1 kilometru. Limit souvisí s aerodynamikou, výkonem, přetlakováním i
+          certifikací; není to jedna univerzální hranice pro všechna letadla.
         </p>
 
         <h2 style={S.h2}>Jak zjistím výšku letadla nad hlavou?</h2>
         <p style={S.p}>
           Otevřete živou mapu, najděte letadlo a klikněte na něj. U každého stroje vidíte výšku v metrech,
-          letovou hladinu, rychlost i to, jestli stoupá nebo klesá. Letadlo nad Prahou ve 3 000 metrech
-          skoro jistě míří na Ruzyň. To samé ve 11 kilometrech Česko jen přelétá, typicky někam mezi
-          Frankfurt a Istanbul.
+          tlakovou výšku, rychlost i to, jestli stoupá nebo klesá. Samotná výška ale nestačí k bezpečnému
+          určení cílového letiště; trasa se zobrazí jen tehdy, když ji lze spolehlivě přiřadit.
         </p>
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
@@ -146,11 +144,11 @@ export default function VyskaArticle() {
 
         <SourcesBox
           sources={[
-            { label: 'SKYbrary — letové hladiny a vertikální rozstupy (RVSM)', href: 'https://www.skybrary.aero/articles/reduced-vertical-separation-minima-rvsm' },
-            { label: 'ICAO — standardy pro letové hladiny', href: 'https://www.icao.int/' },
-            { label: 'Výškové stropy podle výrobců (Airbus, Boeing) a typových certifikací' },
+            { label: 'FAA Pilot/Controller Glossary — definice letové hladiny', href: 'https://www.faa.gov/air_traffic/publications/ATpubs/ATC/PCG/F.HTM' },
+            { label: 'FAA Instrument Flying Handbook — tlaková výška a RVSM', href: 'https://www.faa.gov/sites/faa.gov/files/pilots/FAA-H-8083-15B.pdf' },
+            { label: 'Airbus — technické charakteristiky rodiny A320', href: 'https://www.aircraft.airbus.com/en/customer-care/fleet-wide-care/airport-operations-and-aircraft-characteristics' },
           ]}
-          note="Uvedené výšky jsou obvyklé rozsahy, konkrétní hladinu určuje řízení letového provozu podle trasy, hmotnosti a počasí."
+          note="Fakta a odkazy ověřeny 11. září 2026. Uvedené výšky jsou obvyklé rozsahy, ne provozní pokyn."
         />
       </div>
     </main>

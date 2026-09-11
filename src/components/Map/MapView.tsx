@@ -9,6 +9,7 @@ import type { Airport } from '@/lib/airportData'
 import { getAtcFeeds, getLiveAtcUrl } from '@/lib/liveatc'
 import type { FlightRoute } from '@/hooks/useFlightRoute'
 import { REGION_CONFIGS } from '@/lib/constants'
+import { isEmergencyFlight } from '@/lib/emergency'
 
 // Globální audio instance — jen jeden stream hraje naráz
 let globalAudio: HTMLAudioElement | null = null
@@ -83,6 +84,7 @@ interface MapViewProps {
   onMapReady?: (flyTo: (lat: number, lng: number) => void) => void
   selectedRoute?: FlightRoute | null   // trasa pro kreslení oblouku
   region: string
+  displayMode: 'overview' | 'all'
 }
 
 // Historie pozic — max 12 bodů na letadlo
@@ -92,6 +94,53 @@ const MAX_HISTORY = 12
 // Viewport culling — vykresluj jen letadla v aktuálním výřezu (+ okraj)
 // Zásadní pro výkon: přes Evropu je 1600+ letadel, ale ve výřezu obvykle jen zlomek
 const CULL_PADDING = 0.25   // 25 % okraj kolem viewportu (plynulý pan)
+
+function visibleFlightIds(
+  map: LeafletMap,
+  flights: Flight[],
+  predicate: (flight: Flight) => boolean,
+  selectedId: string | null,
+  declutter: boolean,
+): Set<string> {
+  const bounds = map.getBounds().pad(CULL_PADDING)
+  const candidates = flights.filter((flight) =>
+    predicate(flight)
+    && (flight.icao24 === selectedId || bounds.contains([flight.lat, flight.lng] as [number, number]))
+  )
+
+  if (!declutter || map.getZoom() >= 10) {
+    return new Set(candidates.map((flight) => flight.icao24))
+  }
+
+  // Jeden marker na přibližně jednu dotykovou plochu. Důležité a vybrané
+  // lety mají přednost; zoomem se postupně ukážou všechny.
+  const cellSize = map.getZoom() <= 7 ? 52 : 46
+  const occupied = new Set<string>()
+  const visible = new Set<string>()
+  const ranked = [...candidates].sort((a, b) => {
+    const priority = (flight: Flight) => {
+      if (flight.icao24 === selectedId) return 1000
+      if (isEmergencyFlight(flight)) return 900
+      if (['military', 'helicopter', 'private-jet'].includes(flight.aircraftType ?? '')) return 100
+      return Math.min(flight.altitude / 1000, 20)
+    }
+    return priority(b) - priority(a) || a.icao24.localeCompare(b.icao24)
+  })
+
+  ranked.forEach((flight) => {
+    if (flight.icao24 === selectedId) {
+      visible.add(flight.icao24)
+      return
+    }
+    const point = map.latLngToContainerPoint([flight.lat, flight.lng])
+    const cell = `${Math.floor(point.x / cellSize)}:${Math.floor(point.y / cellSize)}`
+    if (occupied.has(cell)) return
+    occupied.add(cell)
+    visible.add(flight.icao24)
+  })
+
+  return visible
+}
 
 // Generuje body velkého oblouku (great circle arc) mezi dvěma body
 function greatCirclePoints(
@@ -129,7 +178,7 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   return false
 }
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region }: MapViewProps) {
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region, displayMode }: MapViewProps) {
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
@@ -143,6 +192,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const visiblePredRef  = useRef<(f: Flight) => boolean>(() => true)
   const flightsRef      = useRef<Flight[]>([])
   const selectedIdRef   = useRef<string | null>(null)
+  const displayModeRef  = useRef(displayMode)
+  const hasSearchRef    = useRef(false)
 
   // Registruj window.__playAtc — volá se z Leaflet popup tlačítek
   useEffect(() => {
@@ -197,15 +248,19 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       // Viewport culling — přidá/odebere markery podle výřezu při posunu/zoomu.
       // Registrováno zde (ne v samostatném efektu), protože mapa vzniká async.
       const applyCulling = () => {
-        const bounds = map.getBounds().pad(CULL_PADDING)
         const pred = visiblePredRef.current
         const selId = selectedIdRef.current
+        const visibleIds = visibleFlightIds(
+          map,
+          flightsRef.current,
+          pred,
+          selId,
+          displayModeRef.current === 'overview' && !hasSearchRef.current,
+        )
         flightsRef.current.forEach((flight) => {
           const marker = markersRef.current.get(flight.icao24)
           if (!marker) return
-          const isSelected = flight.icao24 === selId
-          const onScreen = isSelected || bounds.contains([flight.lat, flight.lng] as [number, number])
-          const isVisible = pred(flight) && onScreen
+          const isVisible = visibleIds.has(flight.icao24)
           if (isVisible) {
             if (!map.hasLayer(marker)) marker.addTo(map)
           } else if (map.hasLayer(marker)) {
@@ -417,6 +472,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Udržuj ref synchronizovaný s props (pro async Leaflet init callback)
   useEffect(() => { showAirportsRef.current = showAirports }, [showAirports])
   useEffect(() => { themeRef.current = theme }, [theme])
+  useEffect(() => { displayModeRef.current = displayMode }, [displayMode])
 
   // Toggle letišť
   useEffect(() => {
@@ -540,15 +596,21 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     visiblePredRef.current = matchesQuery
     flightsRef.current     = flights
     selectedIdRef.current  = selectedFlight?.icao24 ?? null
+    displayModeRef.current = displayMode
+    hasSearchRef.current   = Boolean(q)
 
-    // Aktuální výřez + okraj — letadla mimo se nevykreslují
-    const bounds = map.getBounds().pad(CULL_PADDING)
+    const visibleIds = visibleFlightIds(
+      map,
+      flights,
+      matchesQuery,
+      selectedFlight?.icao24 ?? null,
+      displayMode === 'overview' && !q,
+    )
 
     flights.forEach((flight) => {
       const isSelected   = selectedFlight?.icao24 === flight.icao24
       // Viditelné = projde search/filter A je ve výřezu (vybraný let vždy)
-      const isVisible    = matchesQuery(flight) &&
-        (isSelected || bounds.contains([flight.lat, flight.lng] as [number, number]))
+      const isVisible    = visibleIds.has(flight.icao24)
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 30 : 20
 
@@ -629,7 +691,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       }
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flights, selectedFlight, theme, searchQuery, activeFilters, mapReady, viewportRevision])
+  }, [flights, selectedFlight, theme, searchQuery, activeFilters, displayMode, mapReady, viewportRevision])
 
   return (
     <>

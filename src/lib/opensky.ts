@@ -1,4 +1,5 @@
 import type { Flight, AircraftType, FlightDataMeta, FlightDataSource, FlightDataStatus } from '@/types/flight'
+import { normalizeEmergency } from '@/lib/emergency'
 
 // OpenSky state vector indexes
 const IDX_ICAO24 = 0
@@ -37,7 +38,7 @@ function parseState(state: unknown[]): Flight | null {
   const baroRate = arr[22] != null ? Number(arr[22]) : undefined  // ft/min, + = stoupání
   // OpenSky vrací squawk na indexu 14, rozšířený ADS-B formát ho duplikuje na 23.
   const squawk   = arr[23] ? String(arr[23]) : (arr[14] ? String(arr[14]) : undefined)
-  const emergency = arr[24] ? String(arr[24]) : undefined
+  const emergency = normalizeEmergency(arr[24])
   const navAltFt = arr[25] != null ? Number(arr[25]) : undefined  // autopilot target ft
 
   return {

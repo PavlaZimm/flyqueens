@@ -2,16 +2,17 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
+import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně (2026)',
   description:
-    'Kolik stojí parkování u Letiště Václava Havla, kde je nejlevněji a kde zdarma. Srovnání oficiálních i soukromých parkovišť, ceny, vzdálenosti a tipy na rezervaci.',
+    'Ověřené možnosti parkování u Letiště Václava Havla, expresní stání zdarma, vzdálenosti a proč cenu dlouhodobého parkování ověřit pro konkrétní termín.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha/parkovani' },
   openGraph: {
     title: 'Parkování u letiště Praha: ceny a kde zaparkovat levně',
     description:
-      'Srovnání parkovišť u Letiště Václava Havla, ceny, vzdálenosti a tipy na rezervaci.',
+      'Ověřené možnosti parkování, vzdálenosti, expresní stání a tipy na rezervaci.',
     url: 'https://www.flyqueens.cz/letiste/praha/parkovani',
     type: 'article',
   },
@@ -27,7 +28,7 @@ const faqJsonLd = {
       name: 'Kolik stojí parkování u letiště Praha?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Oficiální kryté parkoviště AeroParking vyjde s online rezervací zhruba od 790 Kč za 8 dní. Soukromá parkoviště s kyvadlovou dopravou startují okolo 700 Kč za týden. Parkování přímo u terminálu je nejdražší, počítejte s 300 Kč za první den a 500 Kč za každý další.',
+        text: 'Dlouhodobé ceny jsou závislé na termínu a typu parkoviště. AeroParking při ověření 11. září 2026 uváděl nabídku od 890 Kč za 8 dní; konečnou cenu ukáže rezervace pro konkrétní termín.',
       },
     },
     {
@@ -35,7 +36,7 @@ const faqJsonLd = {
       name: 'Kde se dá u letiště Praha parkovat zdarma?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Přímo u letiště zdarma nezaparkujete. Nejblíž se dá stát zadarmo v ulicích Nebušic nebo u nákupních center pár kilometrů od letiště, ale na pár hodin, ne na dovolenou. Pro delší odstavení je levnější vzdálené parkoviště s odvozem než riskovat odtah.',
+        text: 'Na expresních parkovištích P1, P2 nebo PB je prvních 10 minut jednou za 24 hodin zdarma. Nejde o bezplatné dlouhodobé parkování; do 15 minut je podle letiště sazba 50 Kč.',
       },
     },
     {
@@ -43,7 +44,7 @@ const faqJsonLd = {
       name: 'Vyplatí se rezervovat parkování dopředu?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Ano. Online rezervace bývá i o polovinu levnější než platba na místě a o prázdninách se parkoviště u terminálu plní. Rezervovat stačí obvykle dvě hodiny předem, u oficiálního parkoviště jde zrušení zdarma i minutu před příjezdem.',
+        text: 'Oficiální letiště uvádí, že online rezervace může být až o 50 % levnější a rezervaci lze zrušit zdarma. Konkrétní cenu a storno podmínky zkontrolujte před potvrzením.',
       },
     },
   ],
@@ -74,40 +75,39 @@ export default function ParkovaniPrahaPage() {
 
         <h1 style={S.h1}>Parkování u letiště Praha: kolik stojí a kde zaparkovat levně</h1>
         <p style={S.lead}>
-          Přiletíte v půl šesté ráno po nočním letu a první starost je banální. Kde jste nechali auto
-          a kolik za něj zaplatíte. U Letiště Václava Havla se dá parkovat od zhruba 700 Kč za týden
-          na vzdáleném parkovišti až po stovky korun denně přímo u terminálu. Rozdíl je velký, tak se
-          vyplatí vědět, co si vybrat. Projdeme ceny, vzdálenosti a kdy má smysl rezervovat dopředu.
+          U Letiště Václava Havla si můžete vybrat expresní stání, několik oficiálních dlouhodobých
+          parkovišť i služby třetích stran. Dlouhodobé ceny jsou dynamické, takže je porovnáváme podle
+          typu a vzdálenosti a přesnou částku necháváme na rezervaci pro konkrétní termín.
         </p>
 
         {/* Rychlá odpověď — cílí na featured snippet */}
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Nejlevněji zaparkujete na soukromém parkovišti s kyvadlovou dopravou, kolem 700 Kč za týden.
-            Oficiální kryté parkoviště startuje s rezervací okolo 790 Kč za 8 dní. Stání přímo u terminálu
-            je nejdražší: 300 Kč první den, pak 500 Kč za každý další. Krátce zastavit lze za 80 Kč na hodinu,
-            do 15 minut za 50 Kč.
+            P1, P2 a PB EXPRESS nabízí 10 minut zdarma jednou za 24 hodin; do 15 minut stojí 50 Kč.
+            Krátkodobé PC COMFORT stojí 80 Kč za hodinu. U dlouhodobého parkování se cena mění podle
+            termínu; AeroParking při ověření uváděl nabídku od 890 Kč za 8 dní.
           </p>
         </div>
 
-        <h2 style={S.h2}>Srovnání: kolik zaplatíte za týden</h2>
-        <p style={S.p}>Orientační ceny za sedm dní odstavení, stav červenec 2026. U soukromých parkovišť se cena mění podle sezóny, v létě bývá vyšší.</p>
+        <h2 style={S.h2}>Srovnání oficiálních možností</h2>
+        <p style={S.p}>Přesnou dlouhodobou cenu ukáže rezervační systém až po zadání termínu. Tohle jsou ověřené rozdíly mezi parkovišti.</p>
 
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
               <tr style={{ textAlign: 'left', color: 'var(--text-dim)', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                 <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Kde</th>
-                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Cena / týden</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Typ</th>
                 <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>K terminálu</th>
               </tr>
             </thead>
             <tbody>
               {[
-                ['Soukromé parkoviště + odvoz', 'od ~700 Kč', 'kyvadlová doprava, 5–10 min'],
-                ['AeroParking (oficiální, kryté)', 'od ~790 Kč / 8 dní', 'pěšky nebo autobus'],
-                ['Přímo u terminálu (P1, P2)', '2000 Kč a víc', 'pěšky 3–5 min'],
+                ['PA SMART', 'dlouhodobé, online', '3 min pěšky k T2'],
+                ['PD HOLIDAY', 'dlouhodobé, online', '10 min pěšky'],
+                ['PC COMFORT', 'dlouhodobé i hodinové', 'před T1, krytá lávka k T2'],
+                ['PB ECONOMY', 'venkovní, online', 'před přílety T2'],
               ].map(([kde, cena, dist], i) => (
                 <tr key={i}>
                   <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', fontWeight: 600 }}>{kde}</td>
@@ -118,44 +118,41 @@ export default function ParkovaniPrahaPage() {
             </tbody>
           </table>
         </div>
-        <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '4px 0 0' }}>Ceny se v čase mění, aktuální částku vidíte vždy až při rezervaci. Ověřte na stránkách provozovatele.</p>
+        <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '4px 0 0' }}>Uvedené doby chůze a typy parkovišť pocházejí z oficiálního přehledu letiště.</p>
 
-        <h2 style={S.h2}>Přímo u terminálu: rychlé, ale drahé</h2>
+        <h2 style={S.h2}>Přímo u terminálu: expresní a hodinové stání</h2>
         <p style={S.p}>
-          Parkoviště P1 a P2 máte od auta k odletové hale za tři až pět minut pěšky. To je jejich jediná výhoda.
-          Za pohodlí se platí: první den vyjde na 300 Kč, každý další na 500 Kč. Na víkendovku ještě dobré,
-          na dvoutýdenní dovolenou z toho bude přes sedm tisíc. Krátké vyzvednutí příbuzného ale zvládnete
-          za 80 Kč na hodinu a do 15 minut jen za 50 Kč.
+          P1 EXPRESS je před Terminálem 1, P2 EXPRESS před odlety Terminálu 2 a PB EXPRESS před jeho přílety.
+          Každé nabízí 10 minut zdarma jednou za 24 hodin; do 15 minut stojí 50 Kč. Pokud potřebujete
+          delší neurčenou dobu, letiště uvádí PC COMFORT s tarifem 80 Kč za hodinu.
         </p>
 
-        <h2 style={S.h2}>Soukromá parkoviště s odvozem: nejlevnější volba</h2>
+        <h2 style={S.h2}>Soukromá parkoviště s odvozem</h2>
         <p style={S.p}>
-          Pár kilometrů od letiště jsou hlídaná parkoviště, která auto odvezou dodávkou k terminálu a po
-          návratu zase vyzvednou. Týden vyjde zhruba od 700 Kč, měsíc kolem tří tisíc. V ceně bývá ostraha,
-          kamery a někdy i dětská autosedačka do odvozu. Nevýhoda je čas: k odbavení připočtěte deset až
-          patnáct minut na kyvadlovou dopravu, takže nepřijíždějte na poslední chvíli.
+          Kolem letiště fungují i provozovatelé s transferem. Cenu ani úroveň zabezpečení nelze zobecnit:
+          ověřte celkovou cenu pro konkrétní termín, četnost odvozu, storno a podmínky odpovědnosti za auto.
+          Do času k odbavení započítejte rezervu na transfer.
         </p>
 
         {/* Affiliate CTA — aktivuje se po registraci do partnerského programu (Parkos / ParkVia) */}
         <div style={{ background: 'rgba(245,184,61,0.06)', border: '1px solid rgba(245,184,61,0.25)', borderRadius: 12, padding: '14px 16px', margin: '14px 0' }}>
           <p style={{ ...S.p, margin: 0, color: 'var(--text-muted)' }}>
-            Většina těchto parkovišť jde rezervovat online dopředu za nižší cenu. Srovnat volná místa a ceny
-            na konkrétní termín se vyplatí, o prázdninách se blízká parkoviště plní.
+            Porovnávejte stejnou délku pobytu a stejný rozsah služeb. Nejnižší uvedená cena nemusí zahrnovat
+            transfer, pozdní příjezd nebo změnu rezervace.
           </p>
         </div>
 
         <h2 style={S.h2}>Dá se u letiště parkovat zdarma?</h2>
         <p style={S.p}>
-          Přímo u letiště ne. Zadarmo postojíte pár hodin v okolních ulicích v Nebušicích nebo u nákupních
-          center vzdálených několik kilometrů, ale to je řešení na schůzku, ne na dovolenou. Na delší
-          odstavení se vyplatí radši vzdálené parkoviště s odvozem než hlídat, jestli vám auto neodtáhnou.
+          Pro vysazení nebo vyzvednutí ano: na P1, P2 nebo PB EXPRESS je 10 minut zdarma jednou za 24 hodin.
+          Oficiální web bezplatné dlouhodobé parkování nenabízí. Parkování v okolních ulicích zde
+          nedoporučujeme, protože pravidla a místní omezení se mohou měnit.
         </p>
 
         <h2 style={S.h2}>Kdy a jak rezervovat</h2>
         <p style={S.p}>
-          Online rezervace bývá i o polovinu levnější než platba na místě. Stačí ji udělat zhruba dvě hodiny
-          před příjezdem. U oficiálního parkoviště jde zrušení zdarma i minutu předem, takže se nemáte čeho
-          bát. Jediné pravidlo: v létě a o svátcích rezervujte s předstihem, jinak u terminálu nezbyde místo.
+          Letiště uvádí, že online rezervace může být až o 50 % levnější a nabízí bezplatné zrušení rezervace.
+          Před zaplacením zkontrolujte konkrétní storno podmínky, rozměrová omezení vozu a správný terminál.
         </p>
 
         {/* FlyQueens diferenciace — živá data, co konkurence nemá */}
@@ -163,7 +160,7 @@ export default function ParkovaniPrahaPage() {
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Než vyrazíte na letiště</div>
           <p style={{ ...S.p, marginBottom: 12 }}>
             Mrkněte, co se zrovna děje ve vzduchu nad Prahou a jaké je na letišti počasí. Živá mapa ukáže
-            letadla v reálném čase, klik na letiště přidá aktuální METAR.
+            poslední dostupné polohy letadel; kliknutí na letiště přidá aktuální METAR.
           </p>
           <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
             Otevřít živou mapu letadel
@@ -171,15 +168,15 @@ export default function ParkovaniPrahaPage() {
         </div>
 
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 24 }}>
-          Aktualizováno v červenci 2026. Ceny jsou orientační, aktuální částku vždy ověřte u provozovatele.
+          Ověřeno 11. září 2026. Dlouhodobé ceny jsou dynamické; aktuální částku vždy ověřte v rezervaci.
         </p>
+        <AffiliateParkingCta airport="praha" />
         <SourcesBox
           sources={[
             { label: 'Letiště Praha — oficiální ceník parkování', href: 'https://www.prg.aero/parkovani' },
-            { label: 'AeroParking — ceník krytého parkoviště', href: 'https://www.aeroparking.cz/' },
-            { label: 'Ceny soukromých parkovišť podle srovnávačů a ceníků provozovatelů' },
+            { label: 'AeroParking — aktuální nabídka a rezervace', href: 'https://www.aeroparking.cz/' },
           ]}
-          note="Ceny ověřeny v červenci 2026. Parkovné se mění podle sezóny a typu rezervace, aktuální částku vidíte až při rezervaci."
+          note="Sazby expresního a hodinového stání a nabídka dlouhodobého parkování ověřeny 11. září 2026."
         />
         <ParkingCrossLinks current="praha" />
       </div>

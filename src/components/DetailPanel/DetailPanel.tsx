@@ -8,6 +8,8 @@ import { getAirlineLogoUrl } from '@/lib/airlineLogos'
 import { getFlightPhase } from '@/lib/flightPhase'
 import { getAircraftBadge } from '@/lib/aircraftBadge'
 import type { FlightRoute } from '@/hooks/useFlightRoute'
+import { isEmergencyFlight, normalizeEmergency } from '@/lib/emergency'
+import { trackEvent } from '@/lib/analytics'
 
 interface DetailPanelProps {
   flight: Flight | null
@@ -35,29 +37,32 @@ function useAircraftPhoto(icao24: string | null) {
     setPhoto(null)
     /* eslint-enable react-hooks/set-state-in-effect */
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 8000)
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+    // Nejdřív vykresli živé údaje; externí fotka není pro použití detailu nutná.
+    const startId = setTimeout(() => {
+      timeoutId = setTimeout(() => controller.abort(), 8000)
+      fetch(`https://api.planespotters.net/pub/photos/hex/${icao24}`, { signal: controller.signal })
+        .then(r => r.json())
+        .then((data: { photos?: PlanePhoto[] }) => {
+          setPhoto(data.photos?.[0] ?? null)
+        })
+        .catch(() => setPhoto(null))
+        .finally(() => { if (timeoutId) clearTimeout(timeoutId); setLoading(false) })
+    }, 500)
 
-    fetch(`https://api.planespotters.net/pub/photos/hex/${icao24}`, { signal: controller.signal })
-      .then(r => r.json())
-      .then((data: { photos?: PlanePhoto[] }) => {
-        setPhoto(data.photos?.[0] ?? null)
-      })
-      .catch(() => setPhoto(null))
-      .finally(() => { clearTimeout(timeoutId); setLoading(false) })
-
-    return () => { clearTimeout(timeoutId); controller.abort() }
+    return () => { clearTimeout(startId); if (timeoutId) clearTimeout(timeoutId); controller.abort() }
   }, [icao24])
 
   return { photo, loading }
 }
 
 function getVibeText(altitude: number, velocity: number): string {
-  if (altitude > 10000) return 'Letí v naprostém klidu nad mraky, daleko od světa ✨'
-  if (altitude > 5000)  return `Stoupá klidně na výšku ${Math.round(altitude / 1000)}km 🌤`
-  if (altitude < 500 && velocity < 100) return 'Pomalu se řídí k přistání. Skoro doma! 🛬'
-  if (velocity > 800)   return 'Na plný plyn — žene se přes oblohu jako hvězda 🚀'
-  if (velocity < 100)   return 'Manévruje na letišti nebo pomalu stoupá 🐢'
-  return 'Proplouvá nebem svým vlastním tempem 🌿'
+  if (altitude > 10000) return 'Ve vysoké cestovní hladině ✨'
+  if (altitude > 5000)  return 'Ve vyšší letové hladině 🌤'
+  if (altitude < 500 && velocity < 100) return 'Nízko a pomalu — může být blízko startu nebo přistání 🛬'
+  if (velocity > 800)   return 'Vysoká rychlost vůči zemi ✈️'
+  if (velocity < 100)   return 'Nízká rychlost — může pojíždět nebo manévrovat'
+  return 'Stav podle posledního dostupného ADS-B záznamu'
 }
 
 function getAircraftLabel(type: Flight['aircraftType']): string {
@@ -179,6 +184,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
 
       {/* Fotka letadla */}
       <div style={{
+        order: 8,
         width: '100%', height: 110, borderRadius: 8, overflow: 'hidden',
         background: 'var(--glass-bg)', border: '1px solid var(--border-mid)',
         position: 'relative', flexShrink: 0,
@@ -225,7 +231,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       </div>
 
       {/* Callsign + registrace */}
-      <div>
+      <div style={{ order: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
           <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
             {flight.callsign}
@@ -251,7 +257,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       </div>
 
       {/* Typ + model */}
-      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
+      <div style={{ order: 5, fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
         {label}
         {flight.model && (
           <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.7 }}>· {flight.model}</span>
@@ -260,7 +266,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
 
       {/* Odznak zajímavého letadla */}
       {badge && (
-        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ order: 6, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '4px 10px', borderRadius: 20,
@@ -276,6 +282,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
 
       {/* Vibe */}
       <div style={{
+        order: 4,
         fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5,
         paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)',
       }}>
@@ -284,7 +291,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
 
       {/* Dopravce + logo */}
       {(airline || logoUrl) && (
-        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ order: 7, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', marginBottom: 6, letterSpacing: 1 }}>DOPRAVCE</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* Logo */}
@@ -322,7 +329,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
 
       {/* Trasa — odkud / kam */}
       {(routeLoading || route) && (
-        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ order: 2, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>TRASA</div>
 
           {routeLoading && (
@@ -457,8 +464,9 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       )}
 
       {/* Emergency badge */}
-      {(flight.squawk === '7700' || flight.squawk === '7500' || flight.squawk === '7600' || flight.emergency) && (
+      {isEmergencyFlight(flight) && (
         <div style={{
+          order: 0,
           background: 'rgba(239,68,68,0.15)',
           border: '1px solid rgba(239,68,68,0.6)',
           borderRadius: 8,
@@ -474,7 +482,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
               {flight.squawk === '7700' ? 'SQUAWK 7700 — NOUZOVÁ SITUACE' :
                flight.squawk === '7500' ? 'SQUAWK 7500 — ÚNOS' :
                flight.squawk === '7600' ? 'SQUAWK 7600 — VÝPADEK RÁDIA' :
-               `EMERGENCY: ${flight.emergency?.toUpperCase()}`}
+               `EMERGENCY: ${normalizeEmergency(flight.emergency)?.toUpperCase()}`}
             </div>
             <div style={{ fontSize: 9, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
           </div>
@@ -482,16 +490,16 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       )}
 
       {/* 4 metric tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+      <div style={{ order: 3, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
         <div className="metric-tile">
-          <div className="label">Výška</div>
+          <div className="label">Baro výška</div>
           <div className="value">{flight.altitude.toLocaleString('cs')}</div>
           <div className="sub">metrů</div>
         </div>
         <div className="metric-tile">
           <div className="label">Rychlost</div>
           <div className="value">{flight.velocity}</div>
-          <div className="sub">km/h</div>
+          <div className="sub">km/h vůči zemi</div>
         </div>
         <div className="metric-tile">
           <div className="label">Kurz</div>
@@ -527,9 +535,10 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       </div>
 
       {/* Share */}
-      <div style={{ display: 'flex' }}>
+      <div style={{ order: 9, display: 'flex' }}>
         <button
           onClick={() => {
+            trackEvent('Flight Shared', { nativeShare: Boolean(navigator.share) })
             const url = `${window.location.origin}${window.location.pathname}?flight=${encodeURIComponent(flight.callsign.trim())}`
             if (navigator.share) {
               navigator.share({ title: `${flight.callsign} – FlyQueens`, url })
