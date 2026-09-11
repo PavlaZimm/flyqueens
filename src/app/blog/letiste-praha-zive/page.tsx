@@ -4,7 +4,9 @@ import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { ArticleHero } from '@/components/UI/ArticleHero'
+import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
 
 const post = getPost('letiste-praha-zive')!
 
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
   description:
     'Sledujte letadla nad Ruzyní na živé mapě a ověřte přílety či odlety na oficiální tabuli. Jak se liší radar, webkamera a stav letu.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/letiste-praha-zive' },
+  authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
+  creator: AUTHOR.name,
   ...socialMetadata({
     title: 'Letiště Praha živě: přílety, odlety a mapa letadel',
     description: 'Sledujte provoz nad Ruzyní a zjistěte, kde správně ověřit přílet, odlet nebo zpoždění.',
@@ -34,7 +38,7 @@ const jsonLd = {
   image: 'https://www.flyqueens.cz/blog/letiste-praha-zive.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
-  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  author: AUTHOR_JSON_LD,
   publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
@@ -48,7 +52,7 @@ const S = {
 export default function ZiveArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
@@ -61,7 +65,7 @@ export default function ZiveArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Letiště Praha živě: přílety, odlety a mapa letadel
         </h1>
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -186,6 +190,8 @@ export default function ZiveArticle() {
             </Link>
           </div>
         </div>
+
+        <AuthorCard />
 
         <RelatedReading
           items={[

@@ -3,11 +3,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { AUTHOR } from '@/lib/author'
 
 export const metadata: Metadata = {
   title: 'Letecký blog: radary, letiště a sledování letů',
   description: 'Praktické návody ke sledování letadel a letů, živým radarům, letištím, výšce letu i squawk kódům. Srozumitelně a s ověřenými zdroji.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog' },
+  authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
+  creator: AUTHOR.name,
   ...socialMetadata({
     title: 'Letecký blog: radary, letiště a sledování letů',
     description: 'Praktické návody ke sledování letadel, letištím a živým letovým datům.',
@@ -44,7 +47,7 @@ export default function BlogIndexPage() {
                   <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>{p.tag}</div>
                   <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 18, fontWeight: 800, lineHeight: 1.25, marginBottom: 6 }}>{p.title}</div>
                   <div style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 8 }}>{p.excerpt}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{p.dateLabel} · {p.readingTime} · Číst →</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{AUTHOR.name} · {p.dateLabel} · {p.readingTime} · Číst →</div>
                 </div>
               </article>
             </Link>

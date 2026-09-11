@@ -4,7 +4,9 @@ import { getPost } from '@/lib/blog'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { ArticleHero } from '@/components/UI/ArticleHero'
+import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
   description:
     'Dopravní letadla obvykle létají ve výšce 9–12 km. Zjistěte proč, co znamená FL350 a jak převést letovou hladinu na metry.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla' },
+  authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
+  creator: AUTHOR.name,
   ...socialMetadata({
     title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
     description: 'Proč dopravní letadla létají v 10 km, co je letová hladina a jak to vidíte na mapě.',
@@ -34,7 +38,7 @@ const jsonLd = {
   image: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla.jpg',
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
-  author: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz/o-nas' },
+  author: AUTHOR_JSON_LD,
   publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
@@ -56,7 +60,7 @@ const HEIGHTS = [
 export default function VyskaArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
@@ -69,7 +73,7 @@ export default function VyskaArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Jak vysoko létají letadla? Výška v metrech a FL350
         </h1>
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 22 }}>{post.dateLabel} · aktualizováno 11. září 2026 · {post.readingTime}</div>
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -196,6 +200,8 @@ export default function VyskaArticle() {
             </Link>
           </div>
         </div>
+
+        <AuthorCard />
 
         <RelatedReading
           items={[
