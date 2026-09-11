@@ -584,7 +584,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       // --- Marker — min 44×44px hit area pro touch ---
       const HIT = Math.max(44, size)
       const icon = L.divIcon({
-        html: `<div style="width:${HIT}px;height:${HIT}px;display:flex;align-items:center;justify-content:center;">${createAircraftSVG(color, size, flight.heading, isSelected)}</div>`,
+        html: `<div style="width:${HIT}px;height:${HIT}px;display:flex;align-items:center;justify-content:center;">${createAircraftSVG(color, size, flight.heading, isSelected, theme)}</div>`,
         className: '',
         iconSize: [HIT, HIT],
         iconAnchor: [HIT / 2, HIT / 2],
@@ -761,16 +761,18 @@ function animateMarker(marker: Marker, from: { lat: number; lng: number }, to: {
   requestAnimationFrame(step)
 }
 
-function createAircraftSVG(color: string, size: number, heading: number, selected: boolean): string {
+function createAircraftSVG(color: string, size: number, heading: number, selected: boolean, theme: 'dark' | 'light'): string {
+  const planePath = 'M24 3 28 18 44 26 44 31 28 27 27 43 21 43 20 27 4 31 4 26 20 18Z'
+  const halo = theme === 'dark' ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,.96)'
   const pulse = selected ? `
     <circle cx="24" cy="24" r="15" fill="none" stroke="${color}" stroke-width="1.4" opacity="0.5" style="animation:pulse-ring 2s ease-out infinite"/>
     <circle cx="24" cy="24" r="21" fill="none" stroke="${color}" stroke-width="1" opacity="0.25" style="animation:pulse-ring 2s ease-out infinite;animation-delay:0.5s"/>
   ` : ''
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="${size}" height="${size}"
-    style="transform:rotate(${heading}deg);transform-origin:center;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.7));overflow:visible;display:block">
+    style="transform:rotate(${heading}deg);transform-origin:center;filter:drop-shadow(0 1px 3px rgba(0,0,0,.85));overflow:visible;display:block">
     ${pulse}
-    <path d="M24 3 28 18 44 26 44 31 28 27 27 43 21 43 20 27 4 31 4 26 20 18Z"
-      fill="${color}" stroke="rgba(5,8,13,.5)" stroke-width="1.2" paint-order="stroke"/>
+    <path d="${planePath}" fill="none" stroke="${halo}" stroke-width="4.6" stroke-linejoin="round"/>
+    <path d="${planePath}" fill="${color}" stroke="rgba(5,8,13,.9)" stroke-width="1.5" stroke-linejoin="round" paint-order="stroke"/>
   </svg>`
 }
 

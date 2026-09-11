@@ -17,19 +17,19 @@ export function getAircraftColor(type: AircraftType, theme: 'dark' | 'light'): s
     'cargo':       '#5AA9FF',
     'military':    '#FF5C63',
     'helicopter':  '#5AA9FF',
-    'ga':          '#8698B0',
-    'unknown':     '#8698B0',
+    'ga':          '#C3CEDC',
+    'unknown':     '#B8C7D9',
   }
   const light: Record<AircraftType, string> = {
     'narrow-body': '#0F172A',
     'wide-body':   '#0F172A',
     'turboprop':   '#059669',
     'private-jet': '#059669',
-    'cargo':       '#0284C7',
+    'cargo':       '#0369A1',
     'military':    '#DC2626',
-    'helicopter':  '#0284C7',
-    'ga':          '#64748B',
-    'unknown':     '#475569',
+    'helicopter':  '#0369A1',
+    'ga':          '#334155',
+    'unknown':     '#1E293B',
   }
   return theme === 'light' ? light[type] : dark[type]
 }
