@@ -12,6 +12,7 @@ export function LiveBadge({ status }: { status: FlightDataStatus }) {
   const config = STATUS[status]
   return (
     <div
+      className="fq-live-badge"
       role="status"
       aria-label={`Stav dat: ${config.label}`}
       style={{

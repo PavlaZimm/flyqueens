@@ -293,18 +293,32 @@ html.light .leaflet-control-attribution a {
 @media (max-width: 768px) {
   .fq-hamburger { display: flex !important; }
 
-  /* TopBar — filter chips na druhý řádek */
-  .fq-topbar-inner  { flex-wrap: wrap; }
-  .fq-topbar-row1   { width: 100%; display: flex; align-items: center; gap: 8px; }
-  .fq-topbar-row2   {
+  /* TopBar — stabilní hlavní řádek, filtry samostatně pod ním. */
+  .fq-topbar-inner {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: auto auto auto minmax(0, 1fr) auto auto auto;
+    grid-template-rows: 36px 36px;
+    align-items: center;
+    gap: 6px !important;
+  }
+  .fq-hamburger    { grid-column: 1; grid-row: 1; }
+  .fq-live-badge   { grid-column: 2; grid-row: 1; }
+  .fq-flight-count { grid-column: 3; grid-row: 1; }
+  .fq-region-chip  { grid-column: 5; grid-row: 1; }
+  .fq-stats-btn    { grid-column: 6; grid-row: 1; }
+  .fq-theme-btn    { grid-column: 7; grid-row: 1; }
+  .fq-filters {
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
     display: flex !important;
     overflow-x: auto;
     scrollbar-width: none;
     gap: 5px;
-    padding-bottom: 2px;
+    padding: 0 !important;
   }
-  .fq-topbar-row2::-webkit-scrollbar { display: none; }
+  .fq-filters::-webkit-scrollbar { display: none; }
   .fq-chip-label    { display: none !important; }
 
   /* DetailPanel uvnitř bottom sheetu — bez absolutního pozicování */
@@ -332,7 +346,14 @@ html.light .leaflet-control-attribution a {
   .metric-tile .value { font-size: 15px; }
 }
 
+@media (max-width: 360px) {
+  .fq-topbar-inner { gap: 4px !important; }
+  .fq-live-badge { padding-inline: 6px !important; }
+  .fq-live-badge > span { letter-spacing: 1px !important; }
+  .fq-flight-count { padding-inline: 8px !important; }
+  .fq-flight-count-icon { display: none; }
+}
+
 @media (min-width: 769px) {
-  .fq-hamburger    { display: none !important; }
-  .fq-topbar-row2  { display: none !important; }
+  .fq-hamburger { display: none !important; }
 }

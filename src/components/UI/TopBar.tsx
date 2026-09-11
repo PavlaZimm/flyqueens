@@ -86,7 +86,7 @@ export function TopBar({
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, pointerEvents: 'all' }}>
+    <div className="fq-topbar-inner" style={{ display: 'flex', alignItems: 'center', gap: 8, pointerEvents: 'all' }}>
 
       {/* Hamburger — pouze mobile */}
       <button
@@ -104,8 +104,8 @@ export function TopBar({
 
       {/* Live badge + počet letadel */}
       <LiveBadge status={dataStatus} />
-      <div style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default', flexShrink: 0 }}>
-        <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
+      <div className="fq-flight-count" style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default', flexShrink: 0 }}>
+        <span className="fq-flight-count-icon" style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
         <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>
           {flightCount}
         </span>
@@ -181,18 +181,19 @@ export function TopBar({
       </div>
 
       {/* Aktuálně podporujeme jednu pravdivě vymezenou oblast. */}
-      <div style={{ ...CHIP_BASE, cursor: 'default', gap: 5 }} aria-label={`Oblast: ${currentRegion.label}`}>
+      <div className="fq-region-chip" style={{ ...CHIP_BASE, cursor: 'default', gap: 5 }} aria-label={`Oblast: ${currentRegion.label}`}>
         <span style={{ fontSize: 15 }}>{currentRegion.flag}</span>
         <span className="fq-region-label" style={{ marginLeft: 4 }}>{currentRegion.label}</span>
       </div>
 
       {/* Stats link */}
-      <Link href="/stats" aria-label="Statistiky" title="Statistiky" style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>
+      <Link className="fq-stats-btn" href="/stats" aria-label="Statistiky" title="Statistiky" style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>
         <span aria-hidden="true">📊</span>
       </Link>
 
       {/* Theme toggle */}
       <button
+        className="fq-theme-btn"
         onClick={onToggleTheme}
         style={{ ...ICON_BTN }}
         aria-label={theme === 'dark' ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
