@@ -21,6 +21,9 @@ npm run check
 
 Primární zdroj poloh je ADSB.lol. Aktuální zdroj a čerstvost se posílají v odpovědi `/api/flights` a zobrazují se uživateli. Výpadek se nikdy nenahrazuje falešnými „živými“ letadly; krátce lze použít označený poslední platný snapshot.
 
+Podrobný stav zdrojů, přesnosti, výkonových úprav a další doporučené investice
+shrnuje [audit dat a rychlosti](docs/data-performance-audit-2026-09-11.md).
+
 Volitelné zdroje a funkce jsou výchozím stavem vypnuté:
 
 - `OPENSKY_LICENSED=true` pouze po získání písemné licence a s `OPENSKY_CLIENT_ID` + `OPENSKY_CLIENT_SECRET`.

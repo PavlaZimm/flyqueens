@@ -20,10 +20,17 @@ export async function GET(req: NextRequest) {
   try {
     const url = `https://aviationweather.gov/api/data/metar?ids=${icao}&format=json&taf=false`
     const res = await fetch(url, {
-      headers: { 'Accept': 'application/json' },
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'FlyQueens/1.0 (+https://www.flyqueens.cz/o-projektu)',
+      },
       next: { revalidate: 1800 },
       signal: AbortSignal.timeout(6000),
     })
+
+    if (res.status === 204) {
+      return NextResponse.json({ error: 'No METAR data' }, { status: 404 })
+    }
 
     if (!res.ok) {
       return NextResponse.json({ error: 'METAR not available' }, { status: 502 })
@@ -46,6 +53,10 @@ export async function GET(req: NextRequest) {
     const rawVis = metar.visib
     const visibility = rawVis === '6+' || rawVis === 'P6' ? 10 : (rawVis != null ? Number(rawVis) : null)
 
+    const observationTime = typeof metar.obsTime === 'number'
+      ? new Date(metar.obsTime * 1000).toISOString()
+      : metar.obsTime ?? null
+
     return NextResponse.json({
       icao:      metar.icaoId ?? icao,
       temp:      metar.temp    ?? null,
@@ -55,12 +66,15 @@ export async function GET(req: NextRequest) {
       windSpeed: metar.wspd    ?? null,     // uzly
       windGust:  metar.wgst    ?? null,     // uzly
       visibility,                           // míle (číslo)
-      altimeter: metar.altim   ?? null,     // inHg
+      altimeter: metar.altim   ?? null,     // hPa v JSON výstupu Aviation Weather
       weather:   metar.wxString ?? null,
       clouds:    metar.clouds   ?? [],
       category:  metar.fltcat  ?? null,
       rawMetar:  metar.rawOb   ?? null,
-      obsTime:   metar.obsTime ?? null,
+      obsTime:   observationTime,
+      source:    'aviationweather.gov',
+    }, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=1800' },
     })
   } catch {
     return NextResponse.json({ error: 'Fetch failed' }, { status: 502 })

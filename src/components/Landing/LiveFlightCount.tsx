@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { fetchFlightSummary } from '@/lib/flightSummaryClient'
 
 type Summary = {
   count: number
@@ -12,28 +13,25 @@ export function LiveFlightCount({ className, dotClassName }: { className: string
   const [summary, setSummary] = useState<Summary>({ count: 0, status: 'unavailable', source: null })
 
   useEffect(() => {
-    const controller = new AbortController()
+    let active = true
 
     async function load() {
       try {
-        const response = await fetch('/api/flights?summary=1', {
-          cache: 'no-store',
-          signal: controller.signal,
-        })
-        const data = await response.json() as Partial<Summary>
+        const data = await fetchFlightSummary()
+        if (!active) return
         setSummary({
           count: typeof data.count === 'number' ? data.count : 0,
-          status: response.ok ? (data.status ?? 'unavailable') : 'unavailable',
+          status: data.status ?? 'unavailable',
           source: data.source ?? null,
         })
-      } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') return
+      } catch {
+        if (!active) return
         setSummary((current) => ({ ...current, status: current.count ? 'stale' : 'unavailable' }))
       }
     }
 
     load()
-    return () => controller.abort()
+    return () => { active = false }
   }, [])
 
   const label = summary.status === 'live'

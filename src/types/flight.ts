@@ -22,6 +22,8 @@ export interface Flight {
   velocity: number      // km/h (přepočteno z m/s)
   heading: number       // stupně 0-360
   onGround: boolean
+  positionUpdatedAt?: number // Unix timestamp poslední skutečné polohy
+  lastContactAt?: number     // Unix timestamp poslední ADS-B zprávy
   aircraftType?: AircraftType
   model?: string            // přesný model z aircraft DB (např. "A320-214")
   registration?: string     // poznávací značka (např. "OK-SWW")

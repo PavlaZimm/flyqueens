@@ -42,6 +42,10 @@ const lastGoodSnapshots = new Map<string, CachedSnapshot>()
 const inFlightRequests = new Map<string, Promise<SourceResult>>()
 const LIVE_CACHE_MS = 10_000
 const MAX_STALE_MS = 5 * 60_000
+// ADS-B agregátory mohou ve výřezu krátce držet poslední známou pozici.
+// Starší bod už na pohyblivé mapě působí zavádějícím dojmem, proto jej do
+// živého snapshotu nepouštíme. Letadlo se vrátí, jakmile dorazí nová poloha.
+const MAX_POSITION_AGE_SECONDS = 30
 
 function finiteNumber(value: unknown): number | null {
   if (value == null || value === '') return null
@@ -158,16 +162,22 @@ function classifyAircraft(ac: Record<string, unknown>): AircraftType | null {
 // adsb.lol / airplanes.live formát → rozšířený OpenSky formát.
 // Zemi z ICAO adresy nehádáme: dvouznakové prefixy nejsou hranice států a
 // předchozí implementace proto zobrazovala pro řadu letadel nesprávné vlajky.
-function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
+function adsbToOpenSky(ac: Record<string, unknown>, snapshotAt: number): unknown[] {
   const icao = String(ac.hex ?? '').toLowerCase()
   const callsign = String(ac.flight ?? '').trim()
-  const lat = Number(ac.lat)
-  const lon = Number(ac.lon)
-  const alt = ac.alt_baro === 'ground' ? 0 : Number(ac.alt_baro ?? 0) * 0.3048
-  const velocity = Number(ac.gs ?? 0) * 0.514444
-  const heading = Number(ac.track ?? 0)
-  const onGround = ac.alt_baro === 'ground' || alt < 10
-  const now = Math.floor(Date.now() / 1000)
+  const lat = finiteNumber(ac.lat)
+  const lon = finiteNumber(ac.lon)
+  const altitudeFeet = ac.alt_baro === 'ground'
+    ? 0
+    : finiteNumber(ac.alt_baro) ?? finiteNumber(ac.alt_geom) ?? 0
+  const alt = altitudeFeet * 0.3048
+  const velocity = (finiteNumber(ac.gs) ?? 0) * 0.514444
+  const heading = finiteNumber(ac.track) ?? finiteNumber(ac.true_heading) ?? 0
+  const onGround = ac.alt_baro === 'ground'
+  const seen = Math.max(0, finiteNumber(ac.seen) ?? 0)
+  const seenPosition = Math.max(0, finiteNumber(ac.seen_pos) ?? seen)
+  const timePosition = Math.max(0, Math.floor(snapshotAt - seenPosition))
+  const lastContact = Math.max(0, Math.floor(snapshotAt - seen))
   const registration = String(ac.r ?? '').trim()
   const oat = ac.oat != null ? Number(ac.oat) : null
   const windSpeed = ac.ws != null ? Number(ac.ws) : null
@@ -180,7 +190,7 @@ function adsbToOpenSky(ac: Record<string, unknown>): unknown[] {
   const aircraftType = classifyAircraft(ac)
 
   return [
-    icao, callsign, '', now, now, lon, lat, alt, onGround, velocity, heading,
+    icao, callsign, '', timePosition, lastContact, lon, lat, alt, onGround, velocity, heading,
     0, null, alt, squawk, false, registration, model, aircraftType, oat, windSpeed,
     mach, baroRate, squawk, emergency, navAltitude,
   ]
@@ -201,10 +211,19 @@ async function fetchAdsbLol(region: (typeof REGION_CONFIGS)[string]): Promise<So
   if (!response.ok) throw new Error(`adsb.lol HTTP ${response.status}`)
 
   const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
+  const fetchedAt = unixSeconds(data.now)
+  const freshAircraft = (data.ac ?? []).filter((aircraft) => {
+    const lat = finiteNumber(aircraft.lat)
+    const lon = finiteNumber(aircraft.lon)
+    const age = finiteNumber(aircraft.seen_pos)
+    return lat != null && lat >= -90 && lat <= 90
+      && lon != null && lon >= -180 && lon <= 180
+      && (age == null || (age >= 0 && age <= MAX_POSITION_AGE_SECONDS))
+  })
   return {
     source: 'adsb.lol',
-    states: normalizeRows((data.ac ?? []).map(adsbToOpenSky)),
-    fetchedAt: unixSeconds(data.now),
+    states: normalizeRows(freshAircraft.map((aircraft) => adsbToOpenSky(aircraft, fetchedAt))),
+    fetchedAt,
   }
 }
 
@@ -257,10 +276,19 @@ async function fetchEnabledAirplanesLive(region: (typeof REGION_CONFIGS)[string]
   if (!response.ok) throw new Error(`airplanes.live HTTP ${response.status}`)
 
   const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
+  const fetchedAt = unixSeconds(data.now)
+  const freshAircraft = (data.ac ?? []).filter((aircraft) => {
+    const lat = finiteNumber(aircraft.lat)
+    const lon = finiteNumber(aircraft.lon)
+    const age = finiteNumber(aircraft.seen_pos)
+    return lat != null && lat >= -90 && lat <= 90
+      && lon != null && lon >= -180 && lon <= 180
+      && (age == null || (age >= 0 && age <= MAX_POSITION_AGE_SECONDS))
+  })
   return {
     source: 'airplanes.live',
-    states: normalizeRows((data.ac ?? []).map(adsbToOpenSky)),
-    fetchedAt: unixSeconds(data.now),
+    states: normalizeRows(freshAircraft.map((aircraft) => adsbToOpenSky(aircraft, fetchedAt))),
+    fetchedAt,
   }
 }
 

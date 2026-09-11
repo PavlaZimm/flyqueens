@@ -78,6 +78,78 @@ interface AdsbdbAirport {
   longitude?: number
 }
 
+type RouteConfidence = 'schedule' | 'position-checked' | 'unverified'
+
+interface CurrentPosition {
+  lat: number
+  lng: number
+  heading: number
+  velocity: number
+}
+
+function finiteParam(value: string | null, min: number, max: number): number | null {
+  const number = Number(value)
+  return Number.isFinite(number) && number >= min && number <= max ? number : null
+}
+
+function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const radius = 6371
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLng = (lng2 - lng1) * Math.PI / 180
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
+    * Math.sin(dLng / 2) ** 2
+  return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+function bearingTo(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const φ1 = lat1 * Math.PI / 180
+  const φ2 = lat2 * Math.PI / 180
+  const dLng = (lng2 - lng1) * Math.PI / 180
+  const y = Math.sin(dLng) * Math.cos(φ2)
+  const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(dLng)
+  return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360
+}
+
+function angleDifference(a: number, b: number): number {
+  return Math.abs(((a - b + 540) % 360) - 180)
+}
+
+// Bezplatné callsign databáze mohou vrátit historickou nebo opačnou rotaci.
+// Trasu proto pustíme na mapu jen pokud současný ADS-B bod leží v rozumném
+// koridoru a rychle letící stroj nemíří zjevně opačným směrem.
+function routeFit(
+  departure: RouteAirport,
+  arrival: RouteAirport,
+  current: CurrentPosition | null,
+): { valid: boolean; score: number; confidence: RouteConfidence } {
+  if (!current || departure.lat == null || departure.lng == null || arrival.lat == null || arrival.lng == null) {
+    return { valid: true, score: 1_000_000, confidence: 'unverified' }
+  }
+
+  const direct = distanceKm(departure.lat, departure.lng, arrival.lat, arrival.lng)
+  if (!Number.isFinite(direct) || direct < 10) return { valid: false, score: Infinity, confidence: 'unverified' }
+
+  const fromDeparture = distanceKm(departure.lat, departure.lng, current.lat, current.lng)
+  const toArrival = distanceKm(current.lat, current.lng, arrival.lat, arrival.lng)
+  const corridorExcess = Math.max(0, fromDeparture + toArrival - direct)
+  const allowedExcess = Math.max(180, direct * 0.35)
+  if (corridorExcess > allowedExcess) return { valid: false, score: Infinity, confidence: 'unverified' }
+
+  const desiredBearing = bearingTo(current.lat, current.lng, arrival.lat, arrival.lng)
+  const headingDelta = angleDifference(current.heading, desiredBearing)
+  const nearEndpoint = Math.min(fromDeparture, toArrival) < 120
+  if (current.velocity > 250 && toArrival > 150 && !nearEndpoint && headingDelta > 135) {
+    return { valid: false, score: Infinity, confidence: 'unverified' }
+  }
+
+  return {
+    valid: true,
+    score: corridorExcess + (current.velocity > 250 ? headingDelta * 0.5 : 0),
+    confidence: 'position-checked',
+  }
+}
+
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
@@ -93,6 +165,13 @@ export async function GET(req: NextRequest) {
   }
 
   const callsign = (req.nextUrl.searchParams.get('callsign') ?? '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
+  const lat = finiteParam(req.nextUrl.searchParams.get('lat'), -90, 90)
+  const lng = finiteParam(req.nextUrl.searchParams.get('lng'), -180, 180)
+  const heading = finiteParam(req.nextUrl.searchParams.get('heading'), 0, 360)
+  const velocity = finiteParam(req.nextUrl.searchParams.get('velocity'), 0, 2_500)
+  const current = lat != null && lng != null
+    ? { lat, lng, heading: heading ?? 0, velocity: velocity ?? 0 }
+    : null
 
   const aeroKey  = process.env.AERODATABOX_API_KEY
   const aeroBase = process.env.AERODATABOX_BASE_URL
@@ -106,33 +185,31 @@ export async function GET(req: NextRequest) {
           'x-api-market-key': aeroKey,
           'Accept': 'application/json',
         },
-        signal: AbortSignal.timeout(8000),
+        signal: AbortSignal.timeout(5000),
       })
 
       if (res.ok) {
         const data: AeroDataBoxFlight[] | AeroDataBoxFlight = await res.json()
-        const flight = Array.isArray(data) ? data[0] : data
-
-        const dep = flight?.departure?.airport
-        const arr = flight?.arrival?.airport
-
-        if (dep || arr) {
+        const candidates = Array.isArray(data) ? data : [data]
+        const ranked = candidates.flatMap((candidate) => {
+          const dep = candidate?.departure?.airport
+          const arr = candidate?.arrival?.airport
           const depAp: RouteAirport = {
-            icao: dep?.icao ?? null,
-            iata: dep?.iata ?? null,
-            name: dep?.name ?? null,
-            city: dep?.municipalityName ?? null,
-            lat:  dep?.location?.lat ?? null,
-            lng:  dep?.location?.lon ?? null,
+            icao: dep?.icao ?? null, iata: dep?.iata ?? null, name: dep?.name ?? null,
+            city: dep?.municipalityName ?? null, lat: dep?.location?.lat ?? null, lng: dep?.location?.lon ?? null,
           }
           const arrAp: RouteAirport = {
-            icao: arr?.icao ?? null,
-            iata: arr?.iata ?? null,
-            name: arr?.name ?? null,
-            city: arr?.municipalityName ?? null,
-            lat:  arr?.location?.lat ?? null,
-            lng:  arr?.location?.lon ?? null,
+            icao: arr?.icao ?? null, iata: arr?.iata ?? null, name: arr?.name ?? null,
+            city: arr?.municipalityName ?? null, lat: arr?.location?.lat ?? null, lng: arr?.location?.lon ?? null,
           }
+          if (!dep && !arr) return []
+          const fit = routeFit(depAp, arrAp, current)
+          return fit.valid ? [{ flight: candidate, depAp, arrAp, fit }] : []
+        }).sort((a, b) => a.fit.score - b.fit.score)
+        const selected = ranked[0]
+        const flight = selected?.flight
+
+        if (flight && selected) {
           const d = flight?.departure
           const a = flight?.arrival
           const schedule: FlightSchedule = {
@@ -151,7 +228,12 @@ export async function GET(req: NextRequest) {
             arrBaggageBelt: a?.baggageBelt ?? null,
             arrDelayMin:    delayMin(a?.scheduledTime, a?.revisedTime ?? a?.predictedTime),
           }
-          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, schedule, source: 'aerodatabox' })
+          return NextResponse.json({
+            route: { departure: selected.depAp, arrival: selected.arrAp },
+            schedule,
+            source: 'aerodatabox',
+            confidence: selected.fit.confidence === 'unverified' ? 'schedule' : selected.fit.confidence,
+          })
         }
       }
     } catch {
@@ -166,7 +248,7 @@ export async function GET(req: NextRequest) {
       const res = await fetch(`https://api.adsbdb.com/v0/callsign/${callsign}`, {
         headers: { 'Accept': 'application/json' },
         next: { revalidate: 120 },
-        signal: AbortSignal.timeout(6000),
+        signal: AbortSignal.timeout(4000),
       })
       if (res.ok) {
         const data: {
@@ -191,6 +273,10 @@ export async function GET(req: NextRequest) {
             name: d?.name ?? null, city: d?.municipality ?? null,
             lat: d?.latitude ?? null, lng: d?.longitude ?? null,
           }
+          const fit = routeFit(depAp, arrAp, current)
+          if (!fit.valid) {
+            return NextResponse.json({ route: null, reason: 'route_position_mismatch' })
+          }
           // adsbdb nemá časy/brány — jen číslo letu a aerolinku
           const schedule: FlightSchedule = {
             number: fr?.callsign_iata ?? null,
@@ -199,7 +285,12 @@ export async function GET(req: NextRequest) {
             depScheduled: null, depActual: null, depTerminal: null, depGate: null, depDelayMin: null,
             arrScheduled: null, arrActual: null, arrTerminal: null, arrGate: null, arrBaggageBelt: null, arrDelayMin: null,
           }
-          return NextResponse.json({ route: { departure: depAp, arrival: arrAp }, schedule, source: 'adsbdb' })
+          return NextResponse.json({
+            route: { departure: depAp, arrival: arrAp },
+            schedule,
+            source: 'adsbdb',
+            confidence: fit.confidence,
+          })
         }
       }
     } catch {

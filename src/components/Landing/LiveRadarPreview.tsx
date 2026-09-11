@@ -2,41 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import styles from '@/app/page.module.css'
-
-type RadarPoint = {
-  id: string
-  callsign: string
-  x: number
-  y: number
-  heading: number
-  altitude: number
-}
-
-type FlightSummary = {
-  count: number
-  airborne: number
-  onGround: number
-  avgAltitude: number
-  avgSpeed: number
-  source: string | null
-  fetchedAt: number | null
-  status: 'live' | 'stale' | 'unavailable'
-  altitudeBands: { low: number; medium: number; high: number }
-  radar: RadarPoint[]
-}
-
-const EMPTY_SUMMARY: FlightSummary = {
-  count: 0,
-  airborne: 0,
-  onGround: 0,
-  avgAltitude: 0,
-  avgSpeed: 0,
-  source: null,
-  fetchedAt: null,
-  status: 'unavailable',
-  altitudeBands: { low: 0, medium: 0, high: 0 },
-  radar: [],
-}
+import { EMPTY_FLIGHT_SUMMARY, fetchFlightSummary } from '@/lib/flightSummaryClient'
+import type { FlightSummary } from '@/lib/flightSummaryClient'
 
 const BANDS = [
   { key: 'high', label: 'nad 9 km' },
@@ -44,55 +11,19 @@ const BANDS = [
   { key: 'low', label: 'pod 3 km' },
 ] as const
 
-function numberOrZero(value: unknown): number {
-  const number = Number(value)
-  return Number.isFinite(number) ? number : 0
-}
-
-function normalizeSummary(input: Partial<FlightSummary>): FlightSummary {
-  return {
-    count: numberOrZero(input.count),
-    airborne: numberOrZero(input.airborne),
-    onGround: numberOrZero(input.onGround),
-    avgAltitude: numberOrZero(input.avgAltitude),
-    avgSpeed: numberOrZero(input.avgSpeed),
-    source: typeof input.source === 'string' ? input.source : null,
-    fetchedAt: numberOrZero(input.fetchedAt) || null,
-    status: input.status === 'live' || input.status === 'stale' ? input.status : 'unavailable',
-    altitudeBands: {
-      low: numberOrZero(input.altitudeBands?.low),
-      medium: numberOrZero(input.altitudeBands?.medium),
-      high: numberOrZero(input.altitudeBands?.high),
-    },
-    radar: Array.isArray(input.radar)
-      ? input.radar.filter((flight): flight is RadarPoint => (
-          Boolean(flight?.id)
-          && Number.isFinite(flight.x)
-          && Number.isFinite(flight.y)
-          && Number.isFinite(flight.heading)
-        ))
-      : [],
-  }
-}
-
 export function LiveRadarPreview() {
-  const [summary, setSummary] = useState<FlightSummary>(EMPTY_SUMMARY)
+  const [summary, setSummary] = useState<FlightSummary>(EMPTY_FLIGHT_SUMMARY)
 
   useEffect(() => {
     let active = true
     let timer: ReturnType<typeof setTimeout> | undefined
-    let controller: AbortController | undefined
 
     async function load() {
-      controller = new AbortController()
+      if (document.hidden || !navigator.onLine) return
       try {
-        const response = await fetch('/api/flights?summary=1', {
-          cache: 'no-store',
-          signal: controller.signal,
-        })
-        const data = await response.json() as Partial<FlightSummary>
+        const data = await fetchFlightSummary()
         if (!active) return
-        setSummary(normalizeSummary(data))
+        setSummary(data)
       } catch (error) {
         if (!active || (error instanceof DOMException && error.name === 'AbortError')) return
         setSummary((current) => ({
@@ -100,15 +31,28 @@ export function LiveRadarPreview() {
           status: current.count ? 'stale' : 'unavailable',
         }))
       } finally {
-        if (active) timer = setTimeout(load, 10_000)
+        if (active && !document.hidden && navigator.onLine) timer = setTimeout(load, 10_000)
       }
     }
 
+    const resume = () => {
+      if (document.hidden || !navigator.onLine) return
+      if (timer) clearTimeout(timer)
+      load()
+    }
+    const pause = () => { if (timer) clearTimeout(timer) }
+    const onVisibilityChange = () => { if (document.hidden) pause(); else resume() }
+
     load()
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('online', resume)
+    window.addEventListener('offline', pause)
     return () => {
       active = false
-      controller?.abort()
       if (timer) clearTimeout(timer)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('online', resume)
+      window.removeEventListener('offline', pause)
     }
   }, [])
 

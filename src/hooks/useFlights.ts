@@ -29,8 +29,10 @@ export function useFlights(): UseFlightsResult {
   const [region, setRegionState] = useState('europe')
   const backoffRef = useRef(POLL_INTERVAL)
   const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const controllerRef = useRef<AbortController | null>(null)
   const regionRef  = useRef('europe')
   const requestIdRef = useRef(0)
+  const mountedRef = useRef(false)
 
   const schedule = useCallback((delay: number, fn: () => void) => {
     if (timerRef.current) clearTimeout(timerRef.current)
@@ -38,10 +40,16 @@ export function useFlights(): UseFlightsResult {
   }, [])
 
   const load = useCallback(async () => {
+    if (!mountedRef.current) return
+    if (document.hidden || !navigator.onLine) return
+
     const requestId = ++requestIdRef.current
     const requestedRegion = regionRef.current
+    controllerRef.current?.abort()
+    const controller = new AbortController()
+    controllerRef.current = controller
     try {
-      const { flights: data, meta } = await fetchFlights(requestedRegion)
+      const { flights: data, meta } = await fetchFlights(requestedRegion, controller.signal)
       if (requestId !== requestIdRef.current) return
       setFlights(data)
       setDataMeta(meta)
@@ -49,6 +57,7 @@ export function useFlights(): UseFlightsResult {
       backoffRef.current = POLL_INTERVAL
     } catch (err) {
       if (requestId !== requestIdRef.current) return
+      if (err instanceof DOMException && err.name === 'AbortError') return
       const msg = err instanceof Error ? err.message : 'Chyba při načítání letů'
       setError(msg)
       setDataMeta((previous) => ({
@@ -58,15 +67,19 @@ export function useFlights(): UseFlightsResult {
       }))
       backoffRef.current = Math.min(backoffRef.current * BACKOFF_FACTOR, MAX_BACKOFF)
     } finally {
-      if (requestId !== requestIdRef.current) return
+      if (requestId !== requestIdRef.current || !mountedRef.current) return
+      if (controllerRef.current === controller) controllerRef.current = null
       setLoading(false)
-      schedule(backoffRef.current, load)
+      if (!document.hidden && navigator.onLine) schedule(backoffRef.current, load)
     }
   }, [schedule])
 
   const setRegion = useCallback((r: string) => {
     regionRef.current = r
     setRegionState(r)
+    requestIdRef.current += 1
+    controllerRef.current?.abort()
+    controllerRef.current = null
     setFlights([])
     setDataMeta({ status: 'unavailable', source: null, fetchedAt: null })
     setLoading(true)
@@ -75,9 +88,44 @@ export function useFlights(): UseFlightsResult {
   }, [load])
 
   useEffect(() => {
+    mountedRef.current = true
     load()
-    return () => {
+
+    const resume = () => {
+      if (!mountedRef.current || document.hidden || !navigator.onLine) return
       if (timerRef.current) clearTimeout(timerRef.current)
+      load()
+    }
+    const pause = () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      controllerRef.current?.abort()
+      controllerRef.current = null
+    }
+    const onVisibilityChange = () => {
+      if (document.hidden) pause()
+      else resume()
+    }
+    const offline = () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      controllerRef.current?.abort()
+      controllerRef.current = null
+      setDataMeta((previous) => ({
+        ...previous,
+        status: previous.fetchedAt ? 'stale' : 'unavailable',
+        message: 'Zařízení je offline. Zobrazujeme poslední dostupný stav.',
+      }))
+    }
+
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('online', resume)
+    window.addEventListener('offline', offline)
+    return () => {
+      mountedRef.current = false
+      if (timerRef.current) clearTimeout(timerRef.current)
+      controllerRef.current?.abort()
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('online', resume)
+      window.removeEventListener('offline', offline)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

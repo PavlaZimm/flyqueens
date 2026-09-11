@@ -360,9 +360,12 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                   const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
                   const catColor = m.category === 'VFR' ? '#4FE0B0' : m.category === 'MVFR' ? '#5AA9FF' : m.category === 'IFR' ? '#FF5C63' : m.category === 'LIFR' ? '#C084FC' : '#6B7280'
                   const wxLabel = m.weather ? escapeHtml(wxMap[m.weather] ?? m.weather) : null
+                  const obsTime = m.obsTime
+                    ? new Date(m.obsTime).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+                    : null
                   metarHtml = `
                     <div class="fq-metar-divider"></div>
-                    ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}</div>` : ''}
+                    ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}${obsTime ? ` · pozorování ${obsTime} UTC` : ''}</div>` : ''}
                     <div class="fq-metar-grid">
                       ${m.temp != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">TEPLOTA</div><div class="fq-mt-val">${m.temp}°C</div></div>` : ''}
                       ${qnh ? `<div class="fq-metar-tile"><div class="fq-mt-label">QNH</div><div class="fq-mt-val">${qnh} hPa</div></div>` : ''}
@@ -665,6 +668,21 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const isSelected   = selectedFlight?.icao24 === flight.icao24
       // Viditelné = projde search/filter A je ve výřezu (vybraný let vždy)
       const isVisible    = visibleIds.has(flight.icao24)
+      const existing     = markersRef.current.get(flight.icao24)
+
+      // U kontinentálního snapshotu může být mimo aktuální výřez přes tisíc
+      // strojů. Nevyráběj pro ně SVG, tooltipy ani historii; Leaflet marker se
+      // doplní až při posunu mapy do jejich oblasti.
+      if (!isVisible) {
+        if (existing && map.hasLayer(existing)) map.removeLayer(existing)
+        const existingTrail = trailsRef.current.get(flight.icao24)
+        if (existingTrail) {
+          map.removeLayer(existingTrail)
+          trailsRef.current.delete(flight.icao24)
+        }
+        return
+      }
+
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 30 : 20
       // Tří-stupňové kroky nejsou okem poznat, ale zabrání zbytečné výměně
@@ -681,12 +699,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       }
 
       // --- Historie trasy ---
-      const hist = flightHistory.get(flight.icao24) ?? []
-      const last = hist[hist.length - 1]
-      if (!last || last.lat !== flight.lat || last.lng !== flight.lng) {
-        hist.push({ lat: flight.lat, lng: flight.lng })
-        if (hist.length > MAX_HISTORY) hist.shift()
-        flightHistory.set(flight.icao24, hist)
+      const hist = isSelected ? (flightHistory.get(flight.icao24) ?? []) : []
+      if (isSelected) {
+        const last = hist[hist.length - 1]
+        if (!last || last.lat !== flight.lat || last.lng !== flight.lng) {
+          hist.push({ lat: flight.lat, lng: flight.lng })
+          if (hist.length > MAX_HISTORY) hist.shift()
+          flightHistory.set(flight.icao24, hist)
+        }
       }
 
       // Trail polyline
@@ -721,7 +741,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         iconAnchor: [HIT / 2, HIT / 2],
       })
 
-      const existing = markersRef.current.get(flight.icao24)
       if (existing) {
         const cur = existing.getLatLng()
         if (cur.lat !== flight.lat || cur.lng !== flight.lng) {
@@ -745,16 +764,12 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           existing.setTooltipContent(tooltipContent)
         }
         if (isSelected) existing.openTooltip()
-        if (isVisible) {
-          if (!map.hasLayer(existing)) existing.addTo(map)
-        } else {
-          if (map.hasLayer(existing)) map.removeLayer(existing)
-        }
-      } else if (isVisible) {
+        if (!map.hasLayer(existing)) existing.addTo(map)
+      } else {
         const marker = L.marker([flight.lat, flight.lng], { icon })
         marker.on('click', () => onFlightSelect(flight))
         marker.bindTooltip(tooltipContent, tooltipOptions)
-        if (isVisible) marker.addTo(map)
+        marker.addTo(map)
         if (isSelected) marker.openTooltip()
         markersRef.current.set(flight.icao24, marker)
         markerVisualsRef.current.set(flight.icao24, visualKey)

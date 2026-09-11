@@ -11,6 +11,13 @@ const IDX_ALT_BARO = 7
 const IDX_ON_GROUND = 8
 const IDX_VELOCITY = 9
 const IDX_HEADING = 10
+const IDX_TIME_POSITION = 3
+const IDX_LAST_CONTACT = 4
+
+function unixTimestamp(value: unknown): number | undefined {
+  const number = Number(value)
+  return Number.isFinite(number) && number > 0 ? Math.floor(number) : undefined
+}
 
 function parseState(state: unknown[]): Flight | null {
   const arr = state as Array<unknown>
@@ -50,6 +57,8 @@ function parseState(state: unknown[]): Flight | null {
     velocity: Math.round(velocity),
     heading: Math.round(heading),
     onGround,
+    positionUpdatedAt: unixTimestamp(arr[IDX_TIME_POSITION]),
+    lastContactAt: unixTimestamp(arr[IDX_LAST_CONTACT]),
     aircraftType: dbType ?? 'unknown',
     model: dbModel,
     registration: registration || undefined,
@@ -64,10 +73,15 @@ function parseState(state: unknown[]): Flight | null {
   }
 }
 
-export async function fetchFlights(region = 'europe'): Promise<{ flights: Flight[]; meta: FlightDataMeta }> {
+export async function fetchFlights(
+  region = 'europe',
+  signal?: AbortSignal,
+): Promise<{ flights: Flight[]; meta: FlightDataMeta }> {
+  const timeoutSignal = AbortSignal.timeout(6500)
   const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}`, {
-    cache: 'no-store',
-    signal: AbortSignal.timeout(6500),
+    // Odpověď má krátkou CDN cache řízenou serverem. `no-store` v klientovi by
+    // ji při každém pollu zbytečně obcházel.
+    signal: signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal,
   })
 
   const data = await res.json() as {

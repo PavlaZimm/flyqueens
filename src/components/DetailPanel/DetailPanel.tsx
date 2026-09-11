@@ -99,6 +99,14 @@ function getFlightLevel(altitude: number): string {
   return fl > 0 ? `FL${fl}` : 'GND'
 }
 
+function positionFreshness(timestamp: number | undefined): { label: string; color: string } | null {
+  if (!timestamp) return null
+  const age = Math.max(0, Math.round(Date.now() / 1000 - timestamp))
+  if (age <= 5) return { label: `Poloha před ${age || 1} s`, color: 'var(--green-live)' }
+  if (age <= 30) return { label: `Poloha před ${age} s`, color: 'var(--gold)' }
+  return { label: `Poslední poloha před ${age} s`, color: '#FCA5A5' }
+}
+
 // ISO čas (s offsetem) → "HH:MM"
 function fmtTime(iso: string | null): string | null {
   if (!iso) return null
@@ -131,6 +139,7 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
   const fl    = getFlightLevel(flight.altitude)
   const phase = getFlightPhase(flight)
   const badge = getAircraftBadge(flight)
+  const freshness = positionFreshness(flight.positionUpdatedAt)
 
   const airline  = getAirportFromCallsign(flight.callsign)
   const logoUrl  = getAirlineLogoUrl(flight.callsign)
@@ -254,6 +263,11 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
             <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{flight.registration}</span>
           )}
         </div>
+        {freshness && (
+          <div style={{ fontSize: 9, color: freshness.color, marginTop: 4, letterSpacing: 0.3 }}>
+            ● {freshness.label} · ADS-B
+          </div>
+        )}
       </div>
 
       {/* Typ + model */}
@@ -330,7 +344,13 @@ export function DetailPanel({ flight, theme, onClose, route, routeLoading }: Det
       {/* Trasa — odkud / kam */}
       {(routeLoading || route) && (
         <div style={{ order: 2, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>TRASA · ORIENTAČNĚ</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>
+            TRASA · {route?.confidence === 'position-checked'
+              ? 'ODPOVÍDÁ POLOZE'
+              : route?.confidence === 'schedule'
+                ? 'LETOVÝ ŘÁD'
+                : 'ORIENTAČNĚ'}
+          </div>
 
           {routeLoading && (
             <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>Hledám trasu…</div>

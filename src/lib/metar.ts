@@ -17,7 +17,6 @@ export interface MetarData {
 export async function fetchMetar(icao: string): Promise<MetarData | null> {
   try {
     const res = await fetch(`/api/metar?icao=${encodeURIComponent(icao)}`, {
-      cache: 'no-store',
       signal: AbortSignal.timeout(8000),
     })
     if (!res.ok) return null

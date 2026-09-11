@@ -29,7 +29,13 @@ export interface FlightRoute {
   etaMin:    number          // minuty do přistání
   totalDist: number          // celková vzdálenost km
   schedule:  FlightSchedule | null  // časy, zpoždění, brána (AeroDataBox)
+  source: 'aerodatabox' | 'adsbdb' | null
+  confidence: 'schedule' | 'position-checked' | 'unverified'
 }
+
+const routeCache = new Map<string, { route: FlightRoute | null; expiresAt: number }>()
+const ROUTE_CACHE_MS = 10 * 60_000
+const EMPTY_ROUTE_CACHE_MS = 2 * 60_000
 
 // Airport jak ho vrátí AeroDataBox (s lat/lng přímo)
 interface ApiAirport {
@@ -97,6 +103,14 @@ export function useFlightRoute(
     if (!icao24) { setRoute(null); return }
 
     const controller = new AbortController()
+    let active = true
+    const cacheKey = `${icao24}:${callsign.trim().toUpperCase()}`
+    const cached = routeCache.get(cacheKey)
+    if (cached && cached.expiresAt > Date.now()) {
+      setRoute(cached.route)
+      setLoading(false)
+      return () => { active = false; controller.abort() }
+    }
     setLoading(true)
     setRoute(null)
 
@@ -105,20 +119,42 @@ export function useFlightRoute(
       lat:     String(currentLat),
       lng:     String(currentLng),
       heading: String(headingDeg),
+      velocity: String(velocityKmh),
       callsign,
     })
 
-    fetch(`/api/flight-route?${params}`, { signal: controller.signal })
+    fetch(`/api/flight-route?${params}`, {
+      // Server může nejdřív zkusit placený letový řád a až potom bezplatný
+      // callsign fallback. Klientský limit proto musí být o něco delší než
+      // jednotlivé serverové timeouty.
+      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10_000)]),
+    })
       .then(r => r.json())
-      .then((data: { route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null; schedule?: FlightSchedule | null }) => {
-        if (!data.route) { setRoute(null); return }
+      .then((data: {
+        route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null
+        schedule?: FlightSchedule | null
+        source?: 'aerodatabox' | 'adsbdb'
+        confidence?: 'schedule' | 'position-checked' | 'unverified'
+      }) => {
+        if (!active) return
+        if (!data.route) {
+          routeCache.set(cacheKey, { route: null, expiresAt: Date.now() + EMPTY_ROUTE_CACHE_MS })
+          setRoute(null)
+          return
+        }
 
         const dep = apiToAirport(data.route.departure)
         const arr = apiToAirport(data.route.arrival)
         const schedule = data.schedule ?? null
 
         if (!arr) {
-          setRoute({ departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0, totalDist: 0, schedule })
+          const partial: FlightRoute = {
+            departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0,
+            totalDist: 0, schedule, source: data.source ?? null,
+            confidence: data.confidence ?? 'unverified',
+          }
+          routeCache.set(cacheKey, { route: partial, expiresAt: Date.now() + ROUTE_CACHE_MS })
+          setRoute(partial)
           return
         }
 
@@ -129,12 +165,18 @@ export function useFlightRoute(
         const speedKmh      = velocityKmh > 50 ? velocityKmh : 800
         const etaMin        = Math.round(distRemaining / speedKmh * 60)
 
-        setRoute({ departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin, totalDist: Math.round(totalDist), schedule })
+        const complete: FlightRoute = {
+          departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin,
+          totalDist: Math.round(totalDist), schedule, source: data.source ?? null,
+          confidence: data.confidence ?? 'unverified',
+        }
+        routeCache.set(cacheKey, { route: complete, expiresAt: Date.now() + ROUTE_CACHE_MS })
+        setRoute(complete)
       })
-      .catch((err) => { if ((err as Error).name !== 'AbortError') setRoute(null) })
-      .finally(() => setLoading(false))
+      .catch((err) => { if (active && (err as Error).name !== 'AbortError') setRoute(null) })
+      .finally(() => { if (active) setLoading(false) })
 
-    return () => controller.abort()
+    return () => { active = false; controller.abort() }
   // Trasu znovu hledáme jen při změně identity letu. Průběh a ETA se níže
   // přepočítávají lokálně při každé nové poloze, takže nevzniká placené API
   // volání každých deset sekund.
