@@ -21,7 +21,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       // Leaflet markery, mapové dlaždice a planespotters fotky.
-      "img-src 'self' data: blob: https://*.tile.opentopomap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
+      "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
       // API calls z klienta jdou přes /api/* (self); externě fotky a analytika.
       // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
       "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",

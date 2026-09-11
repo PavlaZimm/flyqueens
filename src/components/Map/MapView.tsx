@@ -178,14 +178,13 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       // Rasterový podklad se načítá přímo přes Leaflet. Oproti předchozí
       // MapLibre vrstvě nevyžaduje další velký JS bundle ani WebGL a názvy měst
       // jsou součástí každé dlaždice, takže se nemohou ztratit při renderování.
-      const basemapUrl = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+      const basemapUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
       const basemapOptions = {
-        subdomains: 'abc',
-        maxZoom: 17,
-        maxNativeZoom: 17,
+        maxZoom: 19,
+        maxNativeZoom: 19,
         updateWhenIdle: true,
         keepBuffer: 2,
-        attribution: 'Mapová data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>, SRTM | styl © <a href="https://opentopomap.org" target="_blank" rel="noopener noreferrer">OpenTopoMap</a> (CC-BY-SA)',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
       }
       const darkTiles = L.tileLayer(basemapUrl, { ...basemapOptions, className: 'fq-basemap-dark' })
       const lightTiles = L.tileLayer(basemapUrl, { ...basemapOptions, className: 'fq-basemap-light' })
@@ -666,7 +665,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .leaflet-control-zoom-out:hover { background: rgba(30,41,59,0.95) !important; color: var(--gold) !important; }
         .leaflet-tile-pane { background: #141923; }
         .fq-basemap-dark {
-          filter: invert(1) hue-rotate(180deg) brightness(0.78) saturate(0.82) contrast(1.02);
+          filter: invert(0.9) hue-rotate(180deg) brightness(1.02) saturate(0.68) contrast(0.94);
         }
         .leaflet-control-attribution {
           max-width: min(82vw, 560px);
