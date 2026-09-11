@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 
+export const SOCIAL_IMAGE_URL = '/social-preview.png?v=20260911-2'
+
 export const SOCIAL_IMAGE = {
-  url: '/social-preview.png',
+  url: SOCIAL_IMAGE_URL,
   width: 1200,
   height: 630,
   alt: 'FlyQueens — co právě letí nad tebou?',
@@ -35,7 +37,7 @@ export function socialMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: ['/social-preview.png'],
+      images: [SOCIAL_IMAGE_URL],
     },
   }
 }

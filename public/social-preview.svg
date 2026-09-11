@@ -49,7 +49,7 @@
 
     <text x="0" y="106" fill="#f5f7fa" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800" letter-spacing="-2.2">Co právě letí</text>
     <text x="0" y="174" fill="#f5f7fa" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800" letter-spacing="-2.2">nad <tspan fill="#f5b83d">tebou?</tspan></text>
-    <text x="2" y="224" fill="#a8b6c9" font-family="Arial, Helvetica, sans-serif" font-size="21">Živá mapa letadel nad Českem a okolím.</text>
+    <text x="2" y="224" fill="#a8b6c9" font-family="Arial, Helvetica, sans-serif" font-size="21">Živá mapa letadel nad Evropou.</text>
 
     <g transform="translate(0 270)">
       <rect width="220" height="48" rx="12" fill="#f5b83d"/>

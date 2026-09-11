@@ -7,12 +7,12 @@ import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Živá mapa letadel nad Českem | FlyQueens',
-  description: 'Zjistěte, co vám právě letí nad hlavou. FlyQueens zobrazuje dostupná živá ADS-B data o letadlech nad Českem a okolím.',
+  title: 'Živá mapa letadel nad Evropou | FlyQueens',
+  description: 'Zjistěte, co vám právě letí nad hlavou. FlyQueens zobrazuje dostupná živá ADS-B data ve vybraných oblastech Evropy.',
   alternates: { canonical: 'https://www.flyqueens.cz' },
   ...socialMetadata({
-    title: 'Živá mapa letadel nad Českem | FlyQueens',
-    description: 'Zjistěte, co vám právě letí nad hlavou. Živá mapa dostupných ADS-B dat nad Českem a okolím.',
+    title: 'Živá mapa letadel nad Evropou | FlyQueens',
+    description: 'Zjistěte, co vám právě letí nad hlavou. Živá mapa dostupných ADS-B dat ve vybraných oblastech Evropy.',
     url: 'https://www.flyqueens.cz',
   }),
 }

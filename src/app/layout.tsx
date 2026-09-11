@@ -27,12 +27,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Živá mapa letadel nad Českem | FlyQueens",
-  description: "Sledujte dostupná ADS-B data o letadlech nad Českem a okolím — polohu, výšku, rychlost a odhad trasy.",
+  title: "Živá mapa letadel nad Evropou | FlyQueens",
+  description: "Sledujte dostupná ADS-B data o letadlech ve vybraných oblastech Evropy — polohu, výšku, rychlost a odhad trasy.",
   keywords: ["flight tracker", "letadla live", "sledování letů", "mapa letadel", "ADS-B"],
   ...socialMetadata({
-    title: "Živá mapa letadel nad Českem | FlyQueens",
-    description: "Dostupná ADS-B data o letadlech nad Českem a okolím na interaktivní mapě.",
+    title: "Živá mapa letadel nad Evropou | FlyQueens",
+    description: "Dostupná ADS-B data o letadlech ve vybraných oblastech Evropy na interaktivní mapě.",
     url: "https://www.flyqueens.cz",
   }),
   robots: { index: true, follow: true },
