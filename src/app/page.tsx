@@ -41,7 +41,7 @@ export default function HomePage() {
     '@type': 'WebSite',
     name: 'FlyQueens',
     url: 'https://www.flyqueens.cz',
-    description: 'Živá mapa dostupných ADS-B dat o letadlech nad Českem a okolím.',
+    description: 'Živá mapa dostupných ADS-B dat o letadlech ve vybraných oblastech Evropy.',
   }
 
   return (

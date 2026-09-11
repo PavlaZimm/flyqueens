@@ -25,7 +25,7 @@ const jsonLd = {
   '@type': 'BlogPosting',
   headline: post.title,
   datePublished: post.date,
-  dateModified: '2026-09-11',
+  dateModified: post.updatedAt,
   description: 'Význam nouzových squawk kódů 7700, 7600 a 7500, princip odpovídače a správné čtení upozornění na živé mapě.',
   image: 'https://www.flyqueens.cz/social-preview.png',
   inLanguage: 'cs-CZ',
@@ -165,6 +165,12 @@ export default function SquawkArticle() {
 
         <RelatedReading
           items={[
+            {
+              href: '/blog/co-mi-leti-nad-hlavou',
+              eyebrow: 'Praktický návod',
+              title: 'Jak poznat letadlo nad hlavou',
+              description: 'Najděte letadlo na živé mapě a zkontrolujte jeho dostupné údaje.',
+            },
             {
               href: '/blog/jak-vysoko-letaji-letadla',
               eyebrow: 'Jak to funguje',

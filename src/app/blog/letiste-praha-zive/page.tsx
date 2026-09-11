@@ -25,7 +25,7 @@ const jsonLd = {
   '@type': 'BlogPosting',
   headline: post.title,
   datePublished: post.date,
-  dateModified: '2026-09-11',
+  dateModified: post.updatedAt,
   description: 'Praktický návod ke sledování letadel u pražského letiště pomocí živé ADS-B mapy, webkamery a oficiální tabule letů.',
   image: 'https://www.flyqueens.cz/social-preview.png',
   inLanguage: 'cs-CZ',
@@ -175,6 +175,12 @@ export default function ZiveArticle() {
 
         <RelatedReading
           items={[
+            {
+              href: '/blog/jak-sledovat-let-podle-cisla',
+              eyebrow: 'Praktický návod',
+              title: 'Jak sledovat konkrétní let podle čísla',
+              description: 'Co zadat do mapy a kde ověřit skutečný stav nebo zpoždění letu.',
+            },
             {
               href: '/letiste/praha/parkovani',
               eyebrow: 'Prakticky před cestou',

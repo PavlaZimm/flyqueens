@@ -25,7 +25,7 @@ const jsonLd = {
   '@type': 'BlogPosting',
   headline: post.title,
   datePublished: post.date,
-  dateModified: '2026-09-11',
+  dateModified: post.updatedAt,
   description: 'Obvyklé výšky dopravních i malých letadel, význam letové hladiny a rozdíl mezi výškou nad mořem a nad zemí.',
   image: 'https://www.flyqueens.cz/social-preview.png',
   inLanguage: 'cs-CZ',
@@ -187,6 +187,12 @@ export default function VyskaArticle() {
 
         <RelatedReading
           items={[
+            {
+              href: '/blog/co-mi-leti-nad-hlavou',
+              eyebrow: 'Praktický návod',
+              title: 'Co mi právě letí nad hlavou?',
+              description: 'Jak najít konkrétní letadlo podle polohy a správně číst jeho údaje.',
+            },
             {
               href: '/blog/squawk-nouzove-kody',
               eyebrow: 'Jak to funguje',

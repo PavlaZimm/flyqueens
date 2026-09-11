@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Blogové články se přidají automaticky z registru
   const posts: MetadataRoute.Sitemap = POSTS.map((p) => ({
     url: `${BASE}/blog/${p.slug}`,
-    lastModified: new Date(p.date),
+    lastModified: new Date(p.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
