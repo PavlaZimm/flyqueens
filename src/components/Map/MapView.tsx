@@ -114,7 +114,10 @@ function visibleFlightIds(
 
   // Jeden marker na přibližně jednu dotykovou plochu. Důležité a vybrané
   // lety mají přednost; zoomem se postupně ukážou všechny.
-  const cellSize = map.getZoom() <= 7 ? 52 : 46
+  // Na kontinentálním/regionálním přehledu má přednost rychlá orientace.
+  // Větší buňky drží počet DOM markerů zhruba pod dvěma stovkami na desktopu
+  // a pod stovkou na mobilu; po přiblížení (z10) se zobrazí všechny.
+  const cellSize = map.getZoom() <= 7 ? 70 : 58
   const occupied = new Set<string>()
   const visible = new Set<string>()
   const ranked = [...candidates].sort((a, b) => {
@@ -187,6 +190,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
+  const markerVisualsRef = useRef<Map<string, string>>(new Map())
   const trailsRef       = useRef<Map<string, Polyline>>(new Map())
   const routeArcRef     = useRef<Polyline | null>(null)
   const showAirportsRef = useRef(showAirports)
@@ -220,9 +224,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' })
 
       const initialRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
+      const isCompactViewport = window.matchMedia('(max-width: 768px)').matches
       const initialZoom = initialRegion.dist > 1000
         ? 3
-        : window.matchMedia('(max-width: 768px)').matches ? 8 : 7
+        : isCompactViewport ? 8 : 7
       const map = L.map(containerRef.current, {
         center: [initialRegion.lat, initialRegion.lon], zoom: initialZoom,
         zoomControl: false, attributionControl: true,
@@ -239,7 +244,11 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         maxZoom: 19,
         maxNativeZoom: 19,
         updateWhenIdle: true,
-        keepBuffer: 2,
+        updateWhenZooming: false,
+        // Leaflet má výchozí buffer dvě řady dlaždic na každou stranu. Na
+        // mobilu to může znamenat několikanásobně více HTTP požadavků, než je
+        // pro aktuální obrazovku potřeba.
+        keepBuffer: isCompactViewport ? 0 : 1,
         attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
       }
       const darkTiles = L.tileLayer(basemapUrl, { ...basemapOptions, className: 'fq-basemap-dark' })
@@ -463,6 +472,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
     // Capture refs pro cleanup (eslint react-hooks/exhaustive-deps)
     const markers = markersRef.current
+    const markerVisuals = markerVisualsRef.current
     const trails  = trailsRef.current
 
     return () => {
@@ -470,6 +480,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         mapRef.current.map.remove()
         mapRef.current = null
         markers.clear()
+        markerVisuals.clear()
         trails.clear()
         flightHistory.clear()
       }
@@ -656,6 +667,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const isVisible    = visibleIds.has(flight.icao24)
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 30 : 20
+      // Tří-stupňové kroky nejsou okem poznat, ale zabrání zbytečné výměně
+      // celého SVG markeru při každé drobné změně kurzu.
+      const visualKey    = `${color}:${size}:${Math.round(flight.heading / 3)}:${isSelected ? 1 : 0}`
       const tooltipContent = isSelected
         ? `<div class="fq-selected-callout"><strong>${escapeHtml(flight.callsign)}</strong><span>${flightLevelLabel(flight)}</span><span>${Math.round(flight.velocity)} km/h</span></div>`
         : escapeHtml(flight.callsign)
@@ -679,7 +693,10 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const existingTrail = trailsRef.current.get(flight.icao24)
       if (existingTrail) map.removeLayer(existingTrail)
 
-      if (hist.length >= 2 && isVisible) {
+      // Historickou stopu potřebuje jen právě vybrané letadlo. Stovky
+      // překreslovaných polyline u ostatních strojů jsou drahé a na mapě
+      // stejně nejsou při běžném zoomu čitelné.
+      if (hist.length >= 2 && isSelected && isVisible) {
         const trailColor = isSelected ? color : `${color}55`
         const trail = L.polyline(
           hist.map(p => [p.lat, p.lng]),
@@ -708,9 +725,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       if (existing) {
         const cur = existing.getLatLng()
         if (cur.lat !== flight.lat || cur.lng !== flight.lng) {
-          animateMarker(existing, cur, { lat: flight.lat, lng: flight.lng })
+          // Jednorázový posun je výrazně levnější než samostatná 900ms RAF
+          // animace pro každý marker a u vybraného letu udrží čáru pod strojem.
+          existing.setLatLng([flight.lat, flight.lng])
         }
-        existing.setIcon(icon)
+        if (markerVisualsRef.current.get(flight.icao24) !== visualKey) {
+          existing.setIcon(icon)
+          markerVisualsRef.current.set(flight.icao24, visualKey)
+        }
         existing.off('click')
         existing.on('click', () => onFlightSelect(flight))
         const tooltip = existing.getTooltip()
@@ -735,6 +757,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         if (isVisible) marker.addTo(map)
         if (isSelected) marker.openTooltip()
         markersRef.current.set(flight.icao24, marker)
+        markerVisualsRef.current.set(flight.icao24, visualKey)
       }
     })
 
@@ -744,6 +767,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       if (!ids.has(id)) {
         map.removeLayer(m)
         markersRef.current.delete(id)
+        markerVisualsRef.current.delete(id)
         flightHistory.delete(id)
         const t = trailsRef.current.get(id)
         if (t) { map.removeLayer(t); trailsRef.current.delete(id) }
@@ -899,19 +923,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />
     </>
   )
-}
-
-function animateMarker(marker: Marker, from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
-  const duration = 900
-  const start = performance.now()
-  function step(now: number) {
-    const t    = Math.min((now - start) / duration, 1)
-    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-    marker.setLatLng([from.lat + (to.lat - from.lat) * ease, from.lng + (to.lng - from.lng) * ease])
-    if (t < 1) requestAnimationFrame(step)
-    else marker.setLatLng([to.lat, to.lng])
-  }
-  requestAnimationFrame(step)
 }
 
 function createAircraftSVG(color: string, size: number, heading: number, selected: boolean, theme: 'dark' | 'light'): string {

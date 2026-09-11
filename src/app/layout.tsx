@@ -85,6 +85,10 @@ export default function RootLayout({
       lang="cs"
       className={`h-full ${archivo.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
     >
+      <head>
+        <link rel="preconnect" href="https://tile.openstreetmap.org" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//tile.openstreetmap.org" />
+      </head>
       <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }} suppressHydrationWarning>
         {children}
         <Analytics />
