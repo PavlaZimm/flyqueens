@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import dynamic from 'next/dynamic'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute } from '@/hooks/useFlightRoute'
@@ -16,10 +15,8 @@ import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
 import { EmergencyBanner } from '@/components/UI/EmergencyBanner'
+import { MapView } from '@/components/Map/MapView'
 import type { Flight } from '@/types/flight'
-
-// Leaflet (~800 KB) se nesmí renderovat na serveru — SSR crash
-const MapView = dynamic(() => import('@/components/Map/MapView').then(m => ({ default: m.MapView })), { ssr: false })
 
 function MobileBottomSheet({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   const touchStartY = useRef(0)
@@ -217,11 +214,8 @@ export default function RadarPage() {
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
 
         {/* Mapa */}
-        {loading && flights.length === 0 ? (
-          <LoadingScreen />
-        ) : (
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <ErrorBoundary>
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <ErrorBoundary>
             <MapView
               flights={flights}
               selectedFlight={selectedFlight}
@@ -234,9 +228,9 @@ export default function RadarPage() {
               selectedRoute={selectedRoute}
               region={region}
             />
-            </ErrorBoundary>
-          </div>
-        )}
+          </ErrorBoundary>
+          {loading && flights.length === 0 && <LoadingScreen />}
+        </div>
 
         {/* TopBar */}
         <div style={{

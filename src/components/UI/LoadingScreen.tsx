@@ -38,7 +38,7 @@ export function LoadingScreen() {
           </span>
         </div>
         <div style={{ fontSize: 10, color: 'var(--text-dim)', letterSpacing: 1.5, textAlign: 'center', marginTop: 6 }}>
-          CENTRAL EUROPE · ADS-B DATA
+          ČESKO + OKOLÍ · ADS-B DATA
         </div>
       </div>
 

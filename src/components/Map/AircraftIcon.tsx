@@ -11,24 +11,24 @@ interface AircraftIconProps {
 export function getAircraftColor(type: AircraftType, theme: 'dark' | 'light'): string {
   const dark: Record<AircraftType, string> = {
     'narrow-body': '#F5B83D',
-    'wide-body':   '#C084FC',
-    'turboprop':   '#34D399',
-    'private-jet': '#FBB724',
-    'cargo':       '#FB923C',
+    'wide-body':   '#F5B83D',
+    'turboprop':   '#4FE0B0',
+    'private-jet': '#4FE0B0',
+    'cargo':       '#5AA9FF',
     'military':    '#FF5C63',
     'helicopter':  '#5AA9FF',
-    'ga':          '#6EE7B7',
-    'unknown':     '#CBD5E1',
+    'ga':          '#8698B0',
+    'unknown':     '#8698B0',
   }
   const light: Record<AircraftType, string> = {
     'narrow-body': '#0F172A',
-    'wide-body':   '#7C3AED',
+    'wide-body':   '#0F172A',
     'turboprop':   '#059669',
-    'private-jet': '#D97706',
-    'cargo':       '#EA7020',
+    'private-jet': '#059669',
+    'cargo':       '#0284C7',
     'military':    '#DC2626',
     'helicopter':  '#0284C7',
-    'ga':          '#10B981',
+    'ga':          '#64748B',
     'unknown':     '#475569',
   }
   return theme === 'light' ? light[type] : dark[type]

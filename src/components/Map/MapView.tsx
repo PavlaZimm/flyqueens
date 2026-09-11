@@ -67,6 +67,7 @@ interface MapRefs {
   darkTiles: Layer | null
   lightTiles: Layer | null
   airportLayer: LayerGroup
+  ensureAirports?: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   L: any  // Leaflet dynamically imported — no static type available at module level
 }
@@ -137,6 +138,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   const showAirportsRef = useRef(showAirports)
   const themeRef        = useRef(theme)
   const [mapReady, setMapReady] = useState(false)
+  const [viewportRevision, setViewportRevision] = useState(0)
   // Viewport culling — predikát viditelnosti (search+filter) sdílený s moveend handlerem
   const visiblePredRef  = useRef<(f: Flight) => boolean>(() => true)
   const flightsRef      = useRef<Flight[]>([])
@@ -153,6 +155,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Init mapy
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
+    let basemapTimer: ReturnType<typeof setTimeout> | null = null
 
     import('leaflet').then((L) => {
       if (!containerRef.current || mapRef.current) return
@@ -162,8 +165,11 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' })
 
       const initialRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
+      const initialZoom = initialRegion.dist > 1000
+        ? 3
+        : window.matchMedia('(max-width: 768px)').matches ? 8 : 7
       const map = L.map(containerRef.current, {
-        center: [initialRegion.lat, initialRegion.lon], zoom: initialRegion.dist > 1000 ? 3 : 6,
+        center: [initialRegion.lat, initialRegion.lon], zoom: initialZoom,
         zoomControl: false, attributionControl: true,
       })
 
@@ -171,27 +177,6 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
       const airportLayer = L.layerGroup()
       mapRef.current = { map, darkTiles: null, lightTiles: null, airportLayer, L }
-
-      // Letadla nečekají na těžší vektorový renderer. OpenFreeMap se načte
-      // souběžně a doplní podklad až po zprovoznění Leafletu a markerů.
-      import('@maplibre/maplibre-gl-leaflet').then(({ maplibreGL }) => {
-        if (!mapRef.current || mapRef.current.map !== map) return
-
-        const darkTiles = maplibreGL({
-          // Fiord má na radarové mapě čitelnější hranice než téměř černý styl Dark.
-          style: 'https://tiles.openfreemap.org/styles/fiord',
-        })
-        const lightTiles = maplibreGL({
-          style: 'https://tiles.openfreemap.org/styles/positron',
-        })
-        mapRef.current.darkTiles = darkTiles
-        mapRef.current.lightTiles = lightTiles
-
-        if (themeRef.current === 'light') lightTiles.addTo(map)
-        else darkTiles.addTo(map)
-      }).catch(() => {
-        // Radar zůstává použitelný i při výpadku externího mapového podkladu.
-      })
 
       // Viewport culling — přidá/odebere markery podle výřezu při posunu/zoomu.
       // Registrováno zde (ne v samostatném efektu), protože mapa vzniká async.
@@ -211,12 +196,18 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             map.removeLayer(marker)
           }
         })
+        setViewportRevision((revision) => revision + 1)
       }
       map.on('moveend', applyCulling)
       map.on('zoomend', applyCulling)
 
-      // Přidej airport markery do airportLayer (data jsou bundlovaná, žádný fetch)
-      airports.forEach((a: Airport) => {
+      // Letiště jsou ve výchozím stavu vypnutá. Jejich 284 markerů a popupů
+      // vytvoříme až při prvním zapnutí vrstvy, ne během kritického startu mapy.
+      let airportsInitialized = false
+      const ensureAirports = () => {
+        if (airportsInitialized) return
+        airportsInitialized = true
+        airports.forEach((a: Airport) => {
           const isLarge = a.type === 'large_airport'
           const isMedium = a.type === 'medium_airport'
           const size = isLarge ? 14 : isMedium ? 10 : 7
@@ -359,11 +350,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             }
           })
 
-          airportLayer.addLayer(marker)
+            airportLayer.addLayer(marker)
         })
+      }
+      if (mapRef.current) mapRef.current.ensureAirports = ensureAirports
 
       // Pokud byl toggle zapnut ještě před init mapou — přidej vrstvu hned
-      if (showAirportsRef.current) airportLayer.addTo(map)
+      if (showAirportsRef.current) {
+        ensureAirports()
+        airportLayer.addTo(map)
+      }
 
       if (onMapReady) {
         onMapReady((lat, lng) => {
@@ -375,6 +371,24 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       // Data mohou dorazit dřív než dynamicky načtená mapa. Změna stavu
       // okamžitě znovu spustí efekt markerů; bez ní čekaly až na další 10s poll.
       setMapReady(true)
+
+      // MapLibre má téměř 1 MB JS. Spustíme ho až po prvním vykreslení letadel,
+      // aby jeho stažení a parsování neblokovalo nejdůležitější obsah radaru.
+      basemapTimer = setTimeout(() => {
+        import('@maplibre/maplibre-gl-leaflet').then(({ maplibreGL }) => {
+          if (!mapRef.current || mapRef.current.map !== map) return
+
+          const darkTiles = maplibreGL({ style: 'https://tiles.openfreemap.org/styles/fiord' })
+          const lightTiles = maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron' })
+          mapRef.current.darkTiles = darkTiles
+          mapRef.current.lightTiles = lightTiles
+
+          if (themeRef.current === 'light') lightTiles.addTo(map)
+          else darkTiles.addTo(map)
+        }).catch(() => {
+          // Radar zůstává použitelný i při výpadku externího mapového podkladu.
+        })
+      }, 3_000)
     })
 
     // Capture refs pro cleanup (eslint react-hooks/exhaustive-deps)
@@ -382,6 +396,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const trails  = trailsRef.current
 
     return () => {
+      if (basemapTimer) clearTimeout(basemapTimer)
       if (mapRef.current) {
         mapRef.current.map.remove()
         mapRef.current = null
@@ -396,7 +411,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Přepnutí regionu musí změnit i výřez mapy, nejen datový dotaz.
   useEffect(() => {
     const config = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
-    const zoom = config.dist > 1000 ? 3 : config.dist > 500 ? 4 : 6
+    const zoom = config.dist > 1000
+      ? 3
+      : config.dist > 500 ? 4 : window.matchMedia('(max-width: 768px)').matches ? 8 : 7
     mapRef.current?.map.setView([config.lat, config.lon], zoom, { animate: true })
   }, [region])
 
@@ -407,8 +424,9 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Toggle letišť
   useEffect(() => {
     if (!mapRef.current) return
-    const { map, airportLayer } = mapRef.current
+    const { map, airportLayer, ensureAirports } = mapRef.current
     if (showAirports) {
+      ensureAirports?.()
       if (!map.hasLayer(airportLayer)) airportLayer.addTo(map)
     } else {
       if (map.hasLayer(airportLayer)) map.removeLayer(airportLayer)
@@ -535,7 +553,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       const isVisible    = matchesQuery(flight) &&
         (isSelected || bounds.contains([flight.lat, flight.lng] as [number, number]))
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
-      const size         = isSelected ? 34 : 22
+      const size         = isSelected ? 30 : 20
 
       // --- Historie trasy ---
       const hist = flightHistory.get(flight.icao24) ?? []
@@ -590,7 +608,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         } else {
           if (map.hasLayer(existing)) map.removeLayer(existing)
         }
-      } else {
+      } else if (isVisible) {
         const marker = L.marker([flight.lat, flight.lng], { icon })
         marker.on('click', () => onFlightSelect(flight))
         marker.bindTooltip(flight.callsign, {
@@ -614,7 +632,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
       }
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flights, selectedFlight, theme, searchQuery, activeFilters, mapReady])
+  }, [flights, selectedFlight, theme, searchQuery, activeFilters, mapReady, viewportRevision])
 
   return (
     <>
@@ -738,21 +756,14 @@ function animateMarker(marker: Marker, from: { lat: number; lng: number }, to: {
 
 function createAircraftSVG(color: string, size: number, heading: number, selected: boolean): string {
   const pulse = selected ? `
-    <circle cx="40" cy="30" r="24" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.5" style="animation:pulse-ring 2s ease-out infinite"/>
-    <circle cx="40" cy="30" r="34" fill="none" stroke="${color}" stroke-width="1"   opacity="0.25" style="animation:pulse-ring 2s ease-out infinite;animation-delay:0.5s"/>
+    <circle cx="24" cy="24" r="15" fill="none" stroke="${color}" stroke-width="1.4" opacity="0.5" style="animation:pulse-ring 2s ease-out infinite"/>
+    <circle cx="24" cy="24" r="21" fill="none" stroke="${color}" stroke-width="1" opacity="0.25" style="animation:pulse-ring 2s ease-out infinite;animation-delay:0.5s"/>
   ` : ''
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" width="${size}" height="${size}"
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="${size}" height="${size}"
     style="transform:rotate(${heading}deg);transform-origin:center;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.7));overflow:visible;display:block">
     ${pulse}
-    <g fill="${color}">
-      <path d="M40 8 Q43 8 45 12 L46 38 Q46 44 40 46 Q34 44 34 38 L35 12 Q37 8 40 8Z"/>
-      <path d="M35 22 Q22 26 14 30 Q16 32 19 31 L34 26Z"/>
-      <path d="M45 22 Q58 26 66 30 Q64 32 61 31 L46 26Z"/>
-      <path d="M20 29 Q18 30 18 32 Q20 33 24 32 L24 29Z"/>
-      <path d="M60 29 Q62 30 62 32 Q60 33 56 32 L56 29Z"/>
-      <path d="M36 40 Q30 42 26 44 Q27 45 30 44 L36 42Z"/>
-      <path d="M44 40 Q50 42 54 44 Q53 45 50 44 L44 42Z"/>
-    </g>
+    <path d="M24 3 28 18 44 26 44 31 28 27 27 43 21 43 20 27 4 31 4 26 20 18Z"
+      fill="${color}" stroke="rgba(5,8,13,.5)" stroke-width="1.2" paint-order="stroke"/>
   </svg>`
 }
 
