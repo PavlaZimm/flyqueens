@@ -19,6 +19,18 @@
 .loading span { font-size: 36px; }
 .loading strong { font: 700 12px/1.4 'Archivo', sans-serif; }
 
+.inlineLoading {
+  min-height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+}
+.inlineLoading > span { color: var(--gold); font-size: 28px; }
+.inlineLoading strong { display: block; font: 800 15px/1.3 'Archivo', sans-serif; }
+.inlineLoading small { display: block; max-width: 470px; margin-top: 4px; color: var(--text-dim); font-size: 10px; line-height: 1.5; }
+
 .header {
   display: grid;
   grid-template-columns: auto 1fr auto;

@@ -6,6 +6,7 @@ import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { isEmergencyFlight } from '@/lib/emergency'
+import { trackEvent } from '@/lib/analytics'
 import type { Flight } from '@/types/flight'
 import styles from './page.module.css'
 
@@ -173,6 +174,7 @@ export default function StatsPage() {
   const changeRegion = (nextRegion: string) => {
     historyRef.current = []
     setHistory([])
+    trackEvent('Stats Region Changed', { region: nextRegion })
     setRegion(nextRegion)
   }
 
@@ -249,8 +251,7 @@ export default function StatsPage() {
   }, [dataMeta.fetchedAt, flights])
 
   const currentRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe
-
-  if (loading && count === 0) return <main className={styles.loading}><span aria-hidden="true">✈️</span><strong>NAČÍTÁM ŽIVÝ SNÍMEK…</strong></main>
+  const initialLoading = loading && count === 0
 
   return (
     <main className={styles.page}>
@@ -269,6 +270,12 @@ export default function StatsPage() {
         <label><span>Oblast</span><select value={region} onChange={event => changeRegion(event.target.value)}>{Object.entries(REGION_CONFIGS).map(([key, config]) => <option key={key} value={key}>{config.flag} {config.label}</option>)}</select></label>
       </section>
 
+      {initialLoading ? (
+        <section className={`glass-panel ${styles.inlineLoading}`} aria-live="polite">
+          <span aria-hidden="true">✈️</span>
+          <div><strong>Načítám živý snímek</strong><small>Stránka zůstává použitelná, data se doplní hned po přijetí první odpovědi.</small></div>
+        </section>
+      ) : <>
       {dataMeta.status !== 'live' && <div role="status" className={`${styles.dataNotice} ${dataMeta.status === 'stale' ? styles.stale : styles.unavailable}`}>{dataMeta.message ?? 'Živá data nejsou momentálně dostupná.'}</div>}
 
       <section className={styles.metrics} aria-label="Základní metriky">
@@ -304,7 +311,7 @@ export default function StatsPage() {
       </div>
 
       {(stats.averages.oat != null || stats.averages.wind != null || stats.averages.mach != null) && <section className={styles.atmosphere} aria-label="Atmosférické údaje hlášené letadly">
-        <div className={styles.atmosphereIntro}><span>PALUBNÍ DATA</span><h2>Podmínky hlášené letadly</h2><p>Průměr počítáme jen ze strojů, které danou hodnotu skutečně vysílají.</p></div>
+        <div className={styles.atmosphereIntro}><span>PALUBNÍ DATA</span><h2>Podmínky hlášené letadly</h2><p>Průměr počítáme jen ze strojů, které danou hodnotu skutečně vysílají. Zjevně neplatné extrémy vyřazujeme.</p></div>
         {stats.averages.oat != null && <div><span>Venkovní teplota</span><strong>{stats.averages.oat} °C</strong><small>vzorek {stats.averages.oatSamples} letadel</small></div>}
         {stats.averages.wind != null && <div><span>Odvozený vítr</span><strong>{stats.averages.wind} kt</strong><small>vzorek {stats.averages.windSamples} letadel</small></div>}
         {stats.averages.mach != null && <div><span>Mach</span><strong>M{stats.averages.mach.toFixed(3)}</strong><small>vzorek {stats.averages.machSamples} letadel</small></div>}
@@ -325,6 +332,7 @@ export default function StatsPage() {
       {stats.emergencyCount > 0 && <section className={styles.emergency} role="alert"><span aria-hidden="true">🚨</span><div><strong>{stats.emergencyCount} {stats.emergencyCount === 1 ? 'let vysílá' : 'lety vysílají'} nouzový údaj</strong><small>Nouzový stav nebo squawk 7700, 7600 či 7500. Veřejná data mohou být neúplná.</small></div></section>}
 
       <footer className={styles.footerNote}><strong>{dataMeta.status === 'live' ? `Živá data · ${dataMeta.source}` : 'Živá data nejsou dostupná'}</strong><span>Obnova přibližně každých 10 sekund · žádné hodnoty na této stránce nejsou dlouhodobě ukládány</span></footer>
+      </>}
     </main>
   )
 }

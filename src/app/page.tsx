@@ -4,6 +4,7 @@ import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
 import { LiveRadarPreview } from '@/components/Landing/LiveRadarPreview'
 import { HomeThemeToggle } from '@/components/Landing/HomeThemeToggle'
+import { RadarLink, RadarSearch } from '@/components/Landing/RadarActions'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
@@ -62,7 +63,7 @@ export default function HomePage() {
             <Link href="/blog">Blog</Link>
           </nav>
           <HomeThemeToggle className={styles.themeToggle} />
-          <Link href="/radar" className={styles.headerCta}>Otevřít radar</Link>
+          <RadarLink source="header" className={styles.headerCta}>Otevřít radar</RadarLink>
         </div>
       </header>
 
@@ -81,17 +82,7 @@ export default function HomePage() {
                   Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.
                   Sleduj živá ADS-B data ve vybraných oblastech Evropy — zdarma a bez účtu.
                 </p>
-                <form action="/radar" method="get" className={styles.search}>
-                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 5 5" /></svg>
-                  <input
-                    name="search"
-                    maxLength={10}
-                    autoComplete="off"
-                    aria-label="Číslo letu, registrace nebo ICAO adresa"
-                    placeholder="Let, registrace nebo ICAO — např. TVS123"
-                  />
-                  <button type="submit">Najít</button>
-                </form>
+                <RadarSearch />
                 <div className={styles.popular}>
                   <span>RYCHLÉ ODKAZY:</span>
                   <Link href="/letiste/praha">LKPR Praha</Link>
@@ -140,7 +131,7 @@ export default function HomePage() {
                 <span>ŽIVÝ RADAR</span>
                 <h3>Podívej se, co je ve vzduchu právě teď.</h3>
               </div>
-              <Link href="/radar">Otevřít mapu <span aria-hidden="true">→</span></Link>
+              <RadarLink source="feature">Otevřít mapu <span aria-hidden="true">→</span></RadarLink>
             </div>
           </div>
         </section>

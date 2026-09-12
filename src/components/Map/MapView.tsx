@@ -112,13 +112,12 @@ function visibleFlightIds(
     return new Set(candidates.map((flight) => flight.icao24))
   }
 
-  // Jeden marker na přibližně jednu dotykovou plochu. Důležité a vybrané
-  // lety mají přednost; zoomem se postupně ukážou všechny.
-  // Na kontinentálním/regionálním přehledu má přednost rychlá orientace.
-  // Větší buňky drží počet DOM markerů zhruba pod dvěma stovkami na desktopu
-  // a pod stovkou na mobilu; po přiblížení (z10) se zobrazí všechny.
-  const cellSize = map.getZoom() <= 7 ? 70 : 58
-  const occupied = new Set<string>()
+  // Středy značek musí mít skutečný minimální rozestup. Původní mřížka
+  // dovolovala překrytí přes hranici dvou sousedních buněk, takže uživatel
+  // mohl klepnout na jiné letadlo, než které viděl pod prstem.
+  const compact = map.getContainer().clientWidth <= 520
+  const minDistance = map.getZoom() <= 7 ? 64 : compact ? 52 : 46
+  const acceptedPoints: Array<{ x: number; y: number }> = []
   const visible = new Set<string>()
   const ranked = [...candidates].sort((a, b) => {
     const priority = (flight: Flight) => {
@@ -131,14 +130,18 @@ function visibleFlightIds(
   })
 
   ranked.forEach((flight) => {
+    const point = map.latLngToContainerPoint([flight.lat, flight.lng])
     if (flight.icao24 === selectedId) {
       visible.add(flight.icao24)
+      acceptedPoints.push(point)
       return
     }
-    const point = map.latLngToContainerPoint([flight.lat, flight.lng])
-    const cell = `${Math.floor(point.x / cellSize)}:${Math.floor(point.y / cellSize)}`
-    if (occupied.has(cell)) return
-    occupied.add(cell)
+    if (acceptedPoints.some(accepted => {
+      const dx = accepted.x - point.x
+      const dy = accepted.y - point.y
+      return dx * dx + dy * dy < minDistance * minDistance
+    })) return
+    acceptedPoints.push(point)
     visible.add(flight.icao24)
   })
 
@@ -183,6 +186,13 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
 function flightLevelLabel(flight: Flight): string {
   if (flight.onGround || flight.altitude < 10) return 'GND'
   return `FL${Math.round(flight.altitude * 3.28084 / 100)}`
+}
+
+function aircraftMarkerLabel(flight: Flight): string {
+  const position = flight.onGround
+    ? 'na zemi'
+    : `ve výšce ${Math.round(flight.altitude).toLocaleString('cs-CZ')} metrů`
+  return `${flight.callsign}, ${position}, rychlost ${Math.round(flight.velocity)} kilometrů za hodinu`
 }
 
 export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region, displayMode }: MapViewProps) {
@@ -759,6 +769,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
       const color        = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
       const size         = isSelected ? 30 : 20
+      const accessibleLabel = aircraftMarkerLabel(flight)
       // Tří-stupňové kroky nejsou okem poznat, ale zabrání zbytečné výměně
       // celého SVG markeru při každé drobné změně kurzu.
       const visualKey    = `${color}:${size}:${Math.round(flight.heading / 3)}:${isSelected ? 1 : 0}`
@@ -839,11 +850,21 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         }
         if (isSelected) existing.openTooltip()
         if (!map.hasLayer(existing)) existing.addTo(map)
+        const element = existing.getElement()
+        element?.setAttribute('aria-label', accessibleLabel)
+        element?.setAttribute('title', accessibleLabel)
       } else {
-        const marker = L.marker([flight.lat, flight.lng], { icon })
+        const marker = L.marker([flight.lat, flight.lng], {
+          icon,
+          title: accessibleLabel,
+          alt: accessibleLabel,
+          keyboard: true,
+          riseOnHover: true,
+        })
         marker.on('click', () => onFlightSelect(flight))
         marker.bindTooltip(tooltipContent, tooltipOptions)
         marker.addTo(map)
+        marker.getElement()?.setAttribute('aria-label', accessibleLabel)
         if (isSelected) marker.openTooltip()
         markersRef.current.set(flight.icao24, marker)
         markerVisualsRef.current.set(flight.icao24, visualKey)

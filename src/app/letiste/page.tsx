@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
-  title: 'Letiště v Česku: odlety, parkování a živá mapa | FlyQueens',
+  title: 'Letiště v Česku: parkování a živá mapa | FlyQueens',
   description:
-    'Přehled českých letišť. Parkování, odlety a přílety, počasí a poslední dostupné polohy letadel nad Prahou, Brnem, Ostravou a dalšími.',
+    'Přehled českých letišť s praktickými informacemi o parkování a odkazy na poslední dostupné polohy letadel nad Prahou, Brnem a Ostravou.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste' },
   ...socialMetadata({
-    title: 'Letiště v Česku: odlety, parkování a živá mapa | FlyQueens',
+    title: 'Letiště v Česku: parkování a živá mapa | FlyQueens',
     description: 'Přehled českých letišť, praktické informace a živá mapa dostupných letových dat.',
     url: 'https://www.flyqueens.cz/letiste',
   }),
@@ -36,8 +36,9 @@ export default function LetisteIndexPage() {
           Letiště v Česku
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Vyberte letiště a najdete parkování, odlety a přílety i aktuální počasí. U každého navíc vidíte,
-          co zrovna letí ve vzduchu v okolí. Zatím máme podrobně zpracovanou Prahu, další přibývají.
+          Vyberte letiště a najdete praktické informace, parkování, aktuální počasí a odkazy na oficiální zdroje.
+          U každého navíc vidíte dostupná živá data letadel v okolí. Zatím máme podrobně zpracovanou Prahu,
+          další letiště postupně doplňujeme.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

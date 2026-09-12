@@ -6,27 +6,20 @@ export interface FlightPhase {
   color: string   // CSS var nebo hex
 }
 
-// Odvodí fázi letu z výšky, vertikální rychlosti a stavu na zemi.
-// baroRate je ve ft/min (+ stoupání, − klesání), altitude v metrech.
+// Popisuje pouze stav, který lze doložit přímo z ADS-B. Z barometrické výšky
+// bez výšky terénu nelze poctivě určit vzlet, přistání ani cestovní fázi.
 export function getFlightPhase(flight: Flight): FlightPhase {
-  const alt = flight.altitude          // m
-  const rate = flight.baroRate ?? 0    // ft/min
-  const vel = flight.velocity          // km/h
+  const rate = flight.baroRate ?? flight.geomRate
 
   if (flight.onGround) {
-    return vel > 30
-      ? { label: 'Pojíždí', icon: '🛞', color: 'var(--text-muted)' }
-      : { label: 'Na zemi', icon: '🛑', color: 'var(--text-muted)' }
+    return { label: 'Na zemi', icon: '●', color: 'var(--text-muted)' }
   }
 
-  // Nízko nad zemí → vzlet nebo přistání
-  if (alt < 900) {
-    if (rate > 200)  return { label: 'Startuje', icon: '🛫', color: 'var(--green-live)' }
-    if (rate < -200) return { label: 'Přistává', icon: '🛬', color: 'var(--accent-blue)' }
+  if (rate == null || !Number.isFinite(rate)) {
+    return { label: 'Ve vzduchu', icon: '✈', color: 'var(--gold)' }
   }
+  if (rate > 100) return { label: 'Stoupá', icon: '↗', color: 'var(--green-live)' }
+  if (rate < -100) return { label: 'Klesá', icon: '↘', color: 'var(--accent-blue)' }
 
-  if (rate > 300)  return { label: 'Stoupá',   icon: '↗', color: 'var(--green-live)' }
-  if (rate < -300) return { label: 'Klesá',    icon: '↘', color: 'var(--accent-blue)' }
-
-  return { label: 'Cestovní', icon: '✈', color: 'var(--gold)' }
+  return { label: 'Výška stabilní', icon: '→', color: 'var(--gold)' }
 }

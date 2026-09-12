@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { LiveBadge } from './LiveBadge'
 import { REGION_CONFIGS } from '@/lib/constants'
 import type { FlightDataStatus } from '@/types/flight'
+import { trackEvent } from '@/lib/analytics'
 
 export type FilterType = 'passenger' | 'private' | 'military' | 'helicopter'
 
@@ -82,6 +83,7 @@ export function TopBar({
     } else {
       next.add(f)
     }
+    trackEvent('Radar Filter Changed', { filter: f, active: next.has(f) })
     onFilterChange(next)
   }
 
@@ -133,7 +135,10 @@ export function TopBar({
         }}
       >
         <button
-          onClick={() => onFilterChange(new Set())}
+          onClick={() => {
+            trackEvent('Radar Filters Cleared')
+            onFilterChange(new Set())
+          }}
           aria-pressed={activeFilters.size === 0}
           aria-label="Zrušit filtry typů letadel"
           style={{
@@ -171,7 +176,10 @@ export function TopBar({
 
         {/* Letiště toggle */}
         <button
-          onClick={onToggleAirports}
+          onClick={() => {
+            trackEvent('Radar Airports Toggled', { visible: !showAirports })
+            onToggleAirports()
+          }}
           aria-label="Přepnout zobrazení letišť"
           aria-pressed={showAirports}
           style={{
@@ -187,7 +195,11 @@ export function TopBar({
         </button>
 
         <button
-          onClick={() => onDisplayModeChange(displayMode === 'overview' ? 'all' : 'overview')}
+          onClick={() => {
+            const nextMode = displayMode === 'overview' ? 'all' : 'overview'
+            trackEvent('Radar Display Mode Changed', { mode: nextMode })
+            onDisplayModeChange(nextMode)
+          }}
           aria-label={displayMode === 'overview' ? 'Zobrazit všechna letadla' : 'Zjednodušit překrývající se letadla'}
           aria-pressed={displayMode === 'overview'}
           title={displayMode === 'overview' ? 'Přehledný režim – bez překrývání' : 'Zobrazují se všechna letadla'}
@@ -225,7 +237,7 @@ export function TopBar({
       </label>
 
       {/* Stats link */}
-      <Link className="fq-stats-btn" href="/stats" aria-label="Statistiky" title="Statistiky" style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>
+      <Link className="fq-stats-btn" href="/stats" aria-label="Statistiky" title="Statistiky" onClick={() => trackEvent('Radar Stats Opened')} style={{ textDecoration: 'none', flexShrink: 0, ...ICON_BTN }}>
         <span aria-hidden="true">📊</span>
       </Link>
 

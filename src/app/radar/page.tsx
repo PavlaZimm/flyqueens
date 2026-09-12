@@ -421,8 +421,14 @@ export default function RadarPage() {
           <TopBar
             flightCount={count}
             theme={theme}
-            onToggleTheme={toggleTheme}
-            onHamburger={() => setSidebarOpen(true)}
+            onToggleTheme={() => {
+              trackEvent('Theme Changed', { theme: theme === 'dark' ? 'light' : 'dark', source: 'radar' })
+              toggleTheme()
+            }}
+            onHamburger={() => {
+              trackEvent('Mobile Menu Opened')
+              setSidebarOpen(true)
+            }}
             activeFilters={activeFilters}
             onFilterChange={setActiveFilters}
             showAirports={showAirports}
@@ -505,17 +511,21 @@ export default function RadarPage() {
                   {nearbyFlights.length} letadel v okruhu 30 km
                 </div>
                 {nearbyFlights.slice(0, 5).map(f => (
-                  <div
+                  <button
+                    type="button"
                     key={f.icao24}
                     onClick={() => { handleFlightSelect(f); dismissNearby() }}
                     style={{
+                      appearance: 'none', width: '100%', background: 'transparent', border: 0,
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '4px 0', borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer',
+                      padding: '7px 0', borderBottom: '1px solid var(--border-subtle)', cursor: 'pointer',
+                      color: 'inherit', textAlign: 'left',
                     }}
+                    aria-label={`Otevřít detail letu ${f.callsign}`}
                   >
                     <span style={{ fontFamily: "'Archivo', sans-serif", fontWeight: 700, fontSize: 11, color: 'var(--text-primary)' }}>{f.callsign}</span>
                     <span style={{ fontSize: 10, color: 'var(--text-dim)' }}>{Math.round(f.altitude).toLocaleString('cs')} m</span>
-                  </div>
+                  </button>
                 ))}
                 {nearbyFlights.length > 5 && (
                   <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 4 }}>+{nearbyFlights.length - 5} dalších</div>
@@ -614,6 +624,9 @@ export default function RadarPage() {
             width: min(300px, 82vw) !important;
             transform: translateX(-100%);
             transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+          .fq-sidebar:not(.fq-sidebar-open) {
+            content-visibility: hidden;
           }
           .fq-sidebar.fq-sidebar-open {
             transform: translateX(0);

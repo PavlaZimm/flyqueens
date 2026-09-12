@@ -152,6 +152,10 @@ body {
 }
 
 .flight-card {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
   background: var(--glass-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 9px;

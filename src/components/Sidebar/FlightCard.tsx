@@ -2,7 +2,6 @@
 
 import type { Flight } from '@/types/flight'
 import { getAircraftColor } from '@/components/Map/AircraftIcon'
-import { getAirlineLogoUrl } from '@/lib/airlineLogos'
 import { getFlightPhase } from '@/lib/flightPhase'
 
 interface FlightCardProps {
@@ -37,41 +36,19 @@ function headingLabel(heading: number): string {
 export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps) {
   const phase    = getFlightPhase(flight)
   const acColor  = getAircraftColor(flight.aircraftType ?? 'narrow-body', theme)
-  const logoUrl  = getAirlineLogoUrl(flight.callsign)
 
   return (
-    <div
+    <button
+      type="button"
       className={`flight-card${selected ? ' selected' : ''}`}
       onClick={() => onClick(flight)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          onClick(flight)
-        }
-      }}
       aria-pressed={selected}
+      aria-label={`${flight.callsign}, ${phase.label}, rychlost ${flight.velocity} kilometrů za hodinu, výška ${Math.round(flight.altitude)} metrů`}
     >
-      {/* Row 1: logo + callsign + status */}
+      {/* Volací znak + stav doložený ADS-B. Loga z ručního seznamu záměrně
+          nenačítáme: zpomalovala seznam a u starých prefixů mohla být chybná. */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {logoUrl && (
-            <div style={{
-              width: 22, height: 22, borderRadius: 4, flexShrink: 0,
-              background: 'rgba(255,255,255,0.88)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              overflow: 'hidden', padding: 2,
-            }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={logoUrl}
-                alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                onError={(e) => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none' }}
-              />
-            </div>
-          )}
           <span className="callsign" style={{ color: selected ? 'var(--gold)' : 'var(--text-primary)' }}>
             {flight.callsign}
           </span>
@@ -113,6 +90,6 @@ export function FlightCard({ flight, selected, onClick, theme }: FlightCardProps
           </span>
         </div>
       </div>
-    </div>
+    </button>
   )
 }

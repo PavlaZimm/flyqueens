@@ -53,6 +53,11 @@ function finiteNumber(value: unknown): number | null {
   return Number.isFinite(number) ? number : null
 }
 
+function boundedNumber(value: unknown, min: number, max: number): number | null {
+  const number = finiteNumber(value)
+  return number != null && number >= min && number <= max ? number : null
+}
+
 function summarizeStates(
   states: unknown[][],
   region: (typeof REGION_CONFIGS)[string],
@@ -183,9 +188,11 @@ function adsbToOpenSky(ac: Record<string, unknown>, snapshotAt: number): unknown
   const timePosition = Math.max(0, Math.floor(snapshotAt - seenPosition))
   const lastContact = Math.max(0, Math.floor(snapshotAt - seen))
   const registration = String(ac.r ?? '').trim()
-  const oat = ac.oat != null ? Number(ac.oat) : null
-  const windSpeed = ac.ws != null ? Number(ac.ws) : null
-  const mach = ac.mach != null ? Number(ac.mach) : null
+  // Ve veřejné telemetrii se občas objeví poškozené extrémy (např. -215 °C).
+  // Raději údaj vynecháme, než abychom z něj dělali přesvědčivě vypadající statistiku.
+  const oat = boundedNumber(ac.oat, -100, 60)
+  const windSpeed = boundedNumber(ac.ws, 0, 300)
+  const mach = boundedNumber(ac.mach, 0, 2.5)
   const baroRate = ac.baro_rate != null ? Number(ac.baro_rate) : null
   const squawk = ac.squawk != null ? String(ac.squawk) : null
   const emergency = normalizeEmergency(ac.emergency) ?? null

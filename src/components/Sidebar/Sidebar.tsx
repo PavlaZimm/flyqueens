@@ -7,6 +7,7 @@ import type { Flight, FlightDataMeta } from '@/types/flight'
 import { FlightCard } from './FlightCard'
 import { AtcPanel } from './AtcPanel'
 import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
+import { trackEvent } from '@/lib/analytics'
 
 interface SidebarProps {
   flights: Flight[]
@@ -48,9 +49,9 @@ export function Sidebar({
     )
   }, [flights, searchQuery])
 
-  // Výkon: nevykreslujeme 1600 DOM karet — jen prvních 60.
+  // Výkon: nevykreslujeme stovky DOM karet. Hledání stále prochází celý set.
   // Řazení podle zvoleného klíče, search jede nad celým setem.
-  const MAX_LIST = 60
+  const MAX_LIST = 40
   const visibleFlights = useMemo(() => {
     const sorted = [...filteredFlights].sort((a, b) => b[sortBy] - a[sortBy])
     return sorted.slice(0, MAX_LIST)
@@ -138,7 +139,15 @@ export function Sidebar({
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.href
           return (
-            <Link key={item.id} href={item.href} style={{ textDecoration: 'none' }} onClick={onClose}>
+            <Link
+              key={item.id}
+              href={item.href}
+              style={{ textDecoration: 'none' }}
+              onClick={() => {
+                trackEvent('Sidebar Navigation Opened', { destination: item.id })
+                onClose()
+              }}
+            >
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 width: '100%', padding: '7px 8px', borderRadius: 7,
@@ -176,7 +185,10 @@ export function Sidebar({
           {([['altitude', 'Výška'], ['velocity', 'Rychlost']] as const).map(([key, label]) => (
             <button
               key={key}
-              onClick={() => setSortBy(key)}
+              onClick={() => {
+                trackEvent('Flight List Sorted', { sortBy: key })
+                setSortBy(key)
+              }}
               style={{
                 flex: 1, padding: '4px 6px', borderRadius: 6, cursor: 'pointer',
                 fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 9, letterSpacing: 0.5,

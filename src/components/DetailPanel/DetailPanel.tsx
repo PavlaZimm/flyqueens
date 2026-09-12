@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getFlightPhase } from '@/lib/flightPhase'
@@ -22,6 +23,17 @@ interface PlanePhoto {
   thumbnail_large: { src: string }
   photographer: string
   link: string
+}
+
+const AIRPORT_GUIDES: Record<string, string> = {
+  LKPR: '/letiste/praha', PRG: '/letiste/praha',
+  LKTB: '/letiste/brno', BRQ: '/letiste/brno',
+  LKMT: '/letiste/ostrava', OSR: '/letiste/ostrava',
+}
+
+function airportGuide(airport: FlightRoute['departure']): string | null {
+  if (!airport) return null
+  return AIRPORT_GUIDES[airport.icao] ?? AIRPORT_GUIDES[airport.iata] ?? null
 }
 
 function useAircraftPhoto(icao24: string | null) {
@@ -56,11 +68,11 @@ function useAircraftPhoto(icao24: string | null) {
 }
 
 function getVibeText(altitude: number, velocity: number): string {
-  if (altitude > 10000) return 'Ve vysoké cestovní hladině ✨'
-  if (altitude > 5000)  return 'Ve vyšší letové hladině 🌤'
-  if (altitude < 500 && velocity < 100) return 'Nízko a pomalu — může být blízko startu nebo přistání 🛬'
+  if (altitude > 10000) return 'Barometrická výška přes 10 kilometrů ✨'
+  if (altitude > 5000)  return 'Barometrická výška přes 5 kilometrů 🌤'
+  if (altitude < 500 && velocity < 100) return 'Nízká barometrická výška a nízká rychlost vůči zemi'
   if (velocity > 800)   return 'Vysoká rychlost vůči zemi ✈️'
-  if (velocity < 100)   return 'Nízká rychlost — může pojíždět nebo manévrovat'
+  if (velocity < 100)   return 'Nízká rychlost vůči zemi'
   return 'Stav podle posledního dostupného ADS-B záznamu'
 }
 
@@ -142,6 +154,8 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
   const freshness = positionFreshness(flight.positionUpdatedAt)
 
   const operator = aircraft?.registeredOwner ?? route?.schedule?.airline ?? null
+  const departureGuide = airportGuide(route?.departure ?? null)
+  const arrivalGuide = airportGuide(route?.arrival ?? null)
   const exactType = [aircraft?.manufacturer, aircraft?.type].filter(Boolean).join(' ') || null
   const registration = aircraft?.registration ?? flight.registration
   const technicalRows = [
@@ -352,9 +366,11 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                 {/* Odlet */}
                 <div style={{ flex: 1, textAlign: 'center' }}>
-                  <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
-                    {route.departure ? (route.departure.iata || route.departure.icao) : '???'}
-                  </div>
+                  {departureGuide ? (
+                    <Link href={departureGuide} onClick={() => trackEvent('Flight Airport Guide Opened', { endpoint: 'departure' })} className="font-display" style={{ display: 'block', fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1, textDecoration: 'underline', textDecorationColor: 'var(--border-strong)', textUnderlineOffset: 3 }}>
+                      {route.departure ? (route.departure.iata || route.departure.icao) : '???'}
+                    </Link>
+                  ) : <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>{route.departure ? (route.departure.iata || route.departure.icao) : '???'}</div>}
                   <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
                     {route.departure ? (route.departure.city || route.departure.name) : 'Neznámé'}
                   </div>
@@ -379,9 +395,11 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
 
                 {/* Přilet */}
                 <div style={{ flex: 1, textAlign: 'center' }}>
-                  <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--gold)', letterSpacing: 1 }}>
-                    {route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}
-                  </div>
+                  {arrivalGuide ? (
+                    <Link href={arrivalGuide} onClick={() => trackEvent('Flight Airport Guide Opened', { endpoint: 'arrival' })} className="font-display" style={{ display: 'block', fontSize: 16, fontWeight: 800, color: 'var(--gold)', letterSpacing: 1, textDecoration: 'underline', textDecorationColor: 'var(--border-strong)', textUnderlineOffset: 3 }}>
+                      {route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}
+                    </Link>
+                  ) : <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--gold)', letterSpacing: 1 }}>{route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}</div>}
                   <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
                     {route.arrival ? (route.arrival.city || route.arrival.name) : 'Neznámé'}
                   </div>
