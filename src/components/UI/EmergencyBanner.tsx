@@ -62,7 +62,7 @@ export function EmergencyBanner({ flights, onSelect }: Props) {
                 : `EMERGENCY: ${normalizeEmergency(f.emergency)?.toUpperCase()}`}
             </div>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginTop: 1 }}>
-              {f.callsign} · {f.model ?? f.origin_country ?? ''} · klikni pro detail
+              {f.callsign} · {f.typeDesignator ?? f.origin_country ?? ''} · klikni pro detail
             </div>
           </div>
         </button>

@@ -232,7 +232,7 @@ export default function RadarPage() {
   const { flights, loading, count, dataMeta, region, setRegion } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
-  const { route: selectedRoute, loading: selectedRouteLoading } = useFlightRoute(
+  const { route: selectedRoute, aircraft: selectedAircraft, loading: selectedRouteLoading } = useFlightRoute(
     selectedFlight?.icao24   ?? null,
     selectedFlight?.lat      ?? 0,
     selectedFlight?.lng      ?? 0,
@@ -462,7 +462,7 @@ export default function RadarPage() {
         {selectedFlight && (
           <div className="fq-detail-desktop" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1000, pointerEvents: 'none' }}>
             <div style={{ pointerEvents: 'all' }}>
-              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
+              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
             </div>
           </div>
         )}
@@ -476,7 +476,7 @@ export default function RadarPage() {
             routeLoading={selectedRouteLoading}
             onClose={handleDetailClose}
           >
-            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} routeLoading={selectedRouteLoading} />
+            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
           </MobileBottomSheet>
         )}
 

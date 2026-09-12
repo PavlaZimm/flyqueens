@@ -25,6 +25,7 @@ export interface Flight {
   positionUpdatedAt?: number // Unix timestamp poslední skutečné polohy
   lastContactAt?: number     // Unix timestamp poslední ADS-B zprávy
   aircraftType?: AircraftType
+  typeDesignator?: string   // ICAO typový kód z ADS-B (např. "A320"), ne přesný model
   model?: string            // přesný model z aircraft DB (např. "A320-214")
   registration?: string     // poznávací značka (např. "OK-SWW")
   origin_country?: string
@@ -35,6 +36,13 @@ export interface Flight {
   squawk?: string           // transponder kód (7700=emergency, 7500=hijack, 7600=radio)
   emergency?: string        // emergency typ z adsb.lol
   navAltitudeFt?: number    // autopilot target altitude v ft
+  iasKts?: number           // indikovaná rychlost v uzlech
+  tasKts?: number           // pravá rychlost v uzlech
+  navHeading?: number       // kurz nastavený v autopilotu
+  navQnh?: number           // QNH nastavené v autopilotu v hPa
+  geomRate?: number         // geometrické stoupání/klesání v ft/min
+  roll?: number             // náklon v stupních
+  navModes?: string[]       // aktivní navigační režimy hlášené přes ADS-B
 }
 
 export interface FlightDataMeta {

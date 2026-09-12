@@ -5,7 +5,7 @@ import { LiveBadge } from './LiveBadge'
 import { REGION_CONFIGS } from '@/lib/constants'
 import type { FlightDataStatus } from '@/types/flight'
 
-export type FilterType = 'passenger' | 'cargo' | 'private' | 'military' | 'helicopter'
+export type FilterType = 'passenger' | 'private' | 'military' | 'helicopter'
 
 interface TopBarProps {
   flightCount: number
@@ -88,6 +88,7 @@ export function TopBar({
   const filters: { id: FilterType; label: string; emoji: string }[] = [
     { id: 'passenger', label: 'Pasažérské', emoji: '✈️' },
     { id: 'private',   label: 'Soukromé',   emoji: '🛩️' },
+    { id: 'military',  label: 'Vojenská',   emoji: '🎖️' },
     { id: 'helicopter',label: 'Vrtulníky',  emoji: '🚁' },
   ]
 

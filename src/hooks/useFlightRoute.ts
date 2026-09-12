@@ -21,6 +21,17 @@ export interface FlightSchedule {
   arrDelayMin: number | null
 }
 
+export interface AircraftDetails {
+  type: string | null
+  typeDesignator: string | null
+  manufacturer: string | null
+  registration: string | null
+  registeredOwnerCountry: string | null
+  registeredOwnerCountryIso: string | null
+  registeredOwnerOperatorCode: string | null
+  registeredOwner: string | null
+}
+
 export interface FlightRoute {
   departure: Airport | null
   arrival:   Airport | null
@@ -34,6 +45,7 @@ export interface FlightRoute {
 }
 
 const routeCache = new Map<string, { route: FlightRoute | null; expiresAt: number }>()
+const aircraftCache = new Map<string, { aircraft: AircraftDetails | null; expiresAt: number }>()
 const ROUTE_CACHE_MS = 10 * 60_000
 const EMPTY_ROUTE_CACHE_MS = 2 * 60_000
 
@@ -97,22 +109,26 @@ export function useFlightRoute(
   callsign: string = '',
 ) {
   const [route, setRoute] = useState<FlightRoute | null>(null)
+  const [aircraft, setAircraft] = useState<AircraftDetails | null>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!icao24) { setRoute(null); return }
+    if (!icao24) { setRoute(null); setAircraft(null); return }
 
     const controller = new AbortController()
     let active = true
     const cacheKey = `${icao24}:${callsign.trim().toUpperCase()}`
     const cached = routeCache.get(cacheKey)
+    const cachedAircraft = aircraftCache.get(icao24)
     if (cached && cached.expiresAt > Date.now()) {
       setRoute(cached.route)
+      setAircraft(cachedAircraft && cachedAircraft.expiresAt > Date.now() ? cachedAircraft.aircraft : null)
       setLoading(false)
       return () => { active = false; controller.abort() }
     }
     setLoading(true)
     setRoute(null)
+    setAircraft(cachedAircraft && cachedAircraft.expiresAt > Date.now() ? cachedAircraft.aircraft : null)
 
     const params = new URLSearchParams({
       icao24,
@@ -133,10 +149,14 @@ export function useFlightRoute(
       .then((data: {
         route: { departure: ApiAirport | string | null; arrival: ApiAirport | string | null } | null
         schedule?: FlightSchedule | null
+        aircraft?: AircraftDetails | null
         source?: 'aerodatabox' | 'adsbdb'
         confidence?: 'schedule' | 'position-checked' | 'unverified'
       }) => {
         if (!active) return
+        const nextAircraft = data.aircraft ?? null
+        aircraftCache.set(icao24, { aircraft: nextAircraft, expiresAt: Date.now() + ROUTE_CACHE_MS })
+        setAircraft(nextAircraft)
         if (!data.route) {
           routeCache.set(cacheKey, { route: null, expiresAt: Date.now() + EMPTY_ROUTE_CACHE_MS })
           setRoute(null)
@@ -203,5 +223,5 @@ export function useFlightRoute(
     }
   }, [route, currentLat, currentLng, velocityKmh])
 
-  return { route: updatedRoute, loading }
+  return { route: updatedRoute, aircraft, loading }
 }

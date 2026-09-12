@@ -140,7 +140,7 @@ function unixSeconds(value: number | undefined): number {
 function normalizeRows(states: unknown[][]): unknown[][] {
   return states.map((input) => {
     const row = [...input]
-    while (row.length < 26) row.push(undefined)
+    while (row.length < 34) row.push(undefined)
     return row
   })
 }
@@ -148,7 +148,11 @@ function normalizeRows(states: unknown[][]): unknown[][] {
 function classifyAircraft(ac: Record<string, unknown>): AircraftType | null {
   const designator = String(ac.t ?? '').toUpperCase()
   const category = String(ac.category ?? '').toUpperCase()
+  const dbFlags = Math.trunc(finiteNumber(ac.dbFlags) ?? 0)
 
+  // ADS-B Exchange DB bit 0 označuje vojenský stroj. Je to podstatně
+  // spolehlivější než hádání z volacího znaku nebo typu letadla.
+  if ((dbFlags & 1) === 1) return 'military'
   if (category === 'A7') return 'helicopter'
   if (/^(A3(0[06]|1[08]|3[0-9]|4[0-9]|5[0-9]|80)|B74|B76|B77|B78|DC10|MD11)/.test(designator)) return 'wide-body'
   if (/^(AT[467]|DH8|DHC6|SF34|E120|C208|PC12|BE20|L410|AN2[468]|AN3[028])/.test(designator)) return 'turboprop'
@@ -186,13 +190,24 @@ function adsbToOpenSky(ac: Record<string, unknown>, snapshotAt: number): unknown
   const squawk = ac.squawk != null ? String(ac.squawk) : null
   const emergency = normalizeEmergency(ac.emergency) ?? null
   const navAltitude = ac.nav_altitude_mcp != null ? Number(ac.nav_altitude_mcp) : null
-  const model = String(ac.t ?? '').trim() || null
+  const typeDesignator = String(ac.t ?? '').trim() || null
   const aircraftType = classifyAircraft(ac)
+  const dbFlags = finiteNumber(ac.dbFlags)
+  const ias = finiteNumber(ac.ias)
+  const tas = finiteNumber(ac.tas)
+  const navHeading = finiteNumber(ac.nav_heading)
+  const navQnh = finiteNumber(ac.nav_qnh)
+  const geomRate = finiteNumber(ac.geom_rate)
+  const roll = finiteNumber(ac.roll)
+  const navModes = Array.isArray(ac.nav_modes)
+    ? ac.nav_modes.map((mode) => String(mode)).filter(Boolean)
+    : null
 
   return [
     icao, callsign, '', timePosition, lastContact, lon, lat, alt, onGround, velocity, heading,
-    0, null, alt, squawk, false, registration, model, aircraftType, oat, windSpeed,
-    mach, baroRate, squawk, emergency, navAltitude,
+    0, null, alt, squawk, false, registration, typeDesignator, aircraftType, oat, windSpeed,
+    mach, baroRate, squawk, emergency, navAltitude, dbFlags, ias, tas, navHeading,
+    navQnh, geomRate, roll, navModes,
   ]
 }
 

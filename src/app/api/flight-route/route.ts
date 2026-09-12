@@ -78,6 +78,28 @@ interface AdsbdbAirport {
   longitude?: number
 }
 
+interface AdsbdbAircraft {
+  type?: string
+  icao_type?: string
+  manufacturer?: string
+  registration?: string
+  registered_owner_country_name?: string
+  registered_owner_country_iso_name?: string
+  registered_owner_operator_flag_code?: string
+  registered_owner?: string
+}
+
+interface AircraftDetails {
+  type: string | null
+  typeDesignator: string | null
+  manufacturer: string | null
+  registration: string | null
+  registeredOwnerCountry: string | null
+  registeredOwnerCountryIso: string | null
+  registeredOwnerOperatorCode: string | null
+  registeredOwner: string | null
+}
+
 type RouteConfidence = 'schedule' | 'position-checked' | 'unverified'
 
 interface CurrentPosition {
@@ -88,8 +110,23 @@ interface CurrentPosition {
 }
 
 function finiteParam(value: string | null, min: number, max: number): number | null {
+  if (value == null || value === '') return null
   const number = Number(value)
   return Number.isFinite(number) && number >= min && number <= max ? number : null
+}
+
+function aircraftDetails(aircraft: AdsbdbAircraft | undefined): AircraftDetails | null {
+  if (!aircraft) return null
+  return {
+    type: aircraft.type?.trim() || null,
+    typeDesignator: aircraft.icao_type?.trim() || null,
+    manufacturer: aircraft.manufacturer?.trim() || null,
+    registration: aircraft.registration?.trim() || null,
+    registeredOwnerCountry: aircraft.registered_owner_country_name?.trim() || null,
+    registeredOwnerCountryIso: aircraft.registered_owner_country_iso_name?.trim() || null,
+    registeredOwnerOperatorCode: aircraft.registered_owner_operator_flag_code?.trim() || null,
+    registeredOwner: aircraft.registered_owner?.trim() || null,
+  }
 }
 
 function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -231,6 +268,7 @@ export async function GET(req: NextRequest) {
           return NextResponse.json({
             route: { departure: selected.depAp, arrival: selected.arrAp },
             schedule,
+            aircraft: null,
             source: 'aerodatabox',
             confidence: selected.fit.confidence === 'unverified' ? 'schedule' : selected.fit.confidence,
           })
@@ -241,61 +279,74 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // ── adsbdb.com — zdarma, callsign → trasa (bez časů/zpoždění) ──
-  // Náhrada za AeroDataBox trasu, když předplatné není aktivní.
-  if (callsign.length >= 3) {
-    try {
-      const res = await fetch(`https://api.adsbdb.com/v0/callsign/${callsign}`, {
-        headers: { 'Accept': 'application/json' },
-        next: { revalidate: 120 },
-        signal: AbortSignal.timeout(4000),
-      })
-      if (res.ok) {
-        const data: {
-          response?: { flightroute?: {
+  // ── adsbdb.com — zdarma, metadata letadla + případná trasa bez časů ──
+  // Dotaz přes ICAO24 vrátí skutečného registrovaného provozovatele a přesný
+  // typ. Callsign přidáváme jen kvůli nalezení dvojice letišť.
+  try {
+    const query = callsign.length >= 3 ? `?callsign=${encodeURIComponent(callsign)}` : ''
+    const res = await fetch(`https://api.adsbdb.com/v0/aircraft/${icao24}${query}`, {
+      headers: { 'Accept': 'application/json' },
+      next: { revalidate: 600 },
+      signal: AbortSignal.timeout(4000),
+    })
+    if (res.ok) {
+      const data: {
+        response?: {
+          aircraft?: AdsbdbAircraft
+          flightroute?: {
             airline?: { name?: string }
             callsign_iata?: string
             origin?: AdsbdbAirport
             destination?: AdsbdbAirport
-          } }
-        } = await res.json()
-        const fr = data.response?.flightroute
-        const o = fr?.origin
-        const d = fr?.destination
-        if (o || d) {
-          const depAp: RouteAirport = {
-            icao: o?.icao_code ?? null, iata: o?.iata_code ?? null,
-            name: o?.name ?? null, city: o?.municipality ?? null,
-            lat: o?.latitude ?? null, lng: o?.longitude ?? null,
           }
-          const arrAp: RouteAirport = {
-            icao: d?.icao_code ?? null, iata: d?.iata_code ?? null,
-            name: d?.name ?? null, city: d?.municipality ?? null,
-            lat: d?.latitude ?? null, lng: d?.longitude ?? null,
-          }
-          const fit = routeFit(depAp, arrAp, current)
-          if (!fit.valid) {
-            return NextResponse.json({ route: null, reason: 'route_position_mismatch' })
-          }
-          // adsbdb nemá časy/brány — jen číslo letu a aerolinku
-          const schedule: FlightSchedule = {
-            number: fr?.callsign_iata ?? null,
-            airline: fr?.airline?.name ?? null,
-            status: null,
-            depScheduled: null, depActual: null, depTerminal: null, depGate: null, depDelayMin: null,
-            arrScheduled: null, arrActual: null, arrTerminal: null, arrGate: null, arrBaggageBelt: null, arrDelayMin: null,
-          }
+        }
+      } = await res.json()
+      const aircraft = aircraftDetails(data.response?.aircraft)
+      const fr = data.response?.flightroute
+      const o = fr?.origin
+      const d = fr?.destination
+      if (o || d) {
+        const depAp: RouteAirport = {
+          icao: o?.icao_code ?? null, iata: o?.iata_code ?? null,
+          name: o?.name ?? null, city: o?.municipality ?? null,
+          lat: o?.latitude ?? null, lng: o?.longitude ?? null,
+        }
+        const arrAp: RouteAirport = {
+          icao: d?.icao_code ?? null, iata: d?.iata_code ?? null,
+          name: d?.name ?? null, city: d?.municipality ?? null,
+          lat: d?.latitude ?? null, lng: d?.longitude ?? null,
+        }
+        const fit = routeFit(depAp, arrAp, current)
+        if (!fit.valid) {
           return NextResponse.json({
-            route: { departure: depAp, arrival: arrAp },
-            schedule,
+            route: null,
+            aircraft,
             source: 'adsbdb',
-            confidence: fit.confidence,
+            reason: 'route_position_mismatch',
           })
         }
+        // adsbdb nemá časy/brány — jen číslo letu a aerolinku
+        const schedule: FlightSchedule = {
+          number: fr?.callsign_iata ?? null,
+          airline: fr?.airline?.name ?? null,
+          status: null,
+          depScheduled: null, depActual: null, depTerminal: null, depGate: null, depDelayMin: null,
+          arrScheduled: null, arrActual: null, arrTerminal: null, arrGate: null, arrBaggageBelt: null, arrDelayMin: null,
+        }
+        return NextResponse.json({
+          route: { departure: depAp, arrival: arrAp },
+          schedule,
+          aircraft,
+          source: 'adsbdb',
+          confidence: fit.confidence,
+        })
       }
-    } catch {
-      // adsbdb selhal — vrátíme prázdno
+      if (aircraft) {
+        return NextResponse.json({ route: null, aircraft, source: 'adsbdb' })
+      }
     }
+  } catch {
+    // adsbdb selhal — vrátíme prázdno
   }
 
   // Žádný zdroj nevrátil trasu

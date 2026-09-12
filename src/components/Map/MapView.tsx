@@ -174,7 +174,6 @@ function matchesFilter(flight: Flight, filters: Set<string>): boolean {
   if (filters.size === 0) return true
   const t = flight.aircraftType ?? 'narrow-body'
   if (filters.has('passenger') && ['narrow-body', 'wide-body', 'turboprop'].includes(t)) return true
-  if (filters.has('cargo')     && t === 'cargo') return true
   if (filters.has('private')   && ['private-jet', 'ga'].includes(t)) return true
   if (filters.has('military')  && t === 'military') return true
   if (filters.has('helicopter')&& t === 'helicopter') return true
@@ -325,13 +324,14 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             ? `<a href="${guidePath}" class="fq-guide-btn">🅿 Parkování a průvodce letištěm</a>`
             : ''
 
-          const buildPopupHtml = (metarHtml: string, atcHtml: string) => `
+          const buildPopupHtml = (weatherHtml: string, airportHtml: string, atcHtml: string) => `
             <div class="fq-airport-popup">
               <div class="fq-ap-code">${escapeHtml(a.iata || a.icao)}</div>
               <div class="fq-ap-name">${escapeHtml(a.name)}</div>
               <div class="fq-ap-meta">${escapeHtml(a.city)} · ${escapeHtml(a.country)} · ${escapeHtml(a.elev)} ft</div>
               ${guideHtml}
-              <div class="fq-ap-metar">${metarHtml}</div>
+              <div class="fq-ap-metar">${weatherHtml}</div>
+              ${airportHtml}
               ${atcHtml}
             </div>`
 
@@ -347,14 +347,27 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           }
 
           marker.on('click', () => {
-            // Okamžitě otevři popup s "načítám..."
-            marker.setPopupContent(buildPopupHtml('<div class="fq-ap-metar-loading">⏳ Načítám počasí…</div>', ''))
+            let metarHtml = '<div class="fq-ap-metar-loading">⏳ Načítám aktuální počasí…</div>'
+            let tafHtml = '<div class="fq-ap-metar-loading">⏳ Načítám předpověď TAF…</div>'
+            let airportHtml = '<div class="fq-ap-metar-loading">⏳ Načítám dráhy a frekvence…</div>'
+            const feeds = getAtcFeeds(a.icao)
+            let atcHtml = `
+              <div class="fq-metar-divider"></div>
+              <div class="fq-atc-label">🎙 ATC POSLECH</div>
+              <div class="fq-atc-feed-item" style="color:rgba(255,255,255,0.3)">⏳ Zjišťuji dostupné streamy…</div>`
+
+            const updatePopup = () => {
+              marker.setPopupContent(buildPopupHtml(`${metarHtml}${tafHtml}`, airportHtml, atcHtml))
+              marker.getPopup()?.update()
+            }
+
+            updatePopup()
             marker.openPopup()
 
             fetch(`/api/metar?icao=${encodeURIComponent(a.icao)}`)
               .then(r => r.json())
               .then((m) => {
-                let metarHtml = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
+                metarHtml = '<div class="fq-ap-metar-loading">Počasí nedostupné</div>'
                 if (!m.error) {
                   const qnh = m.altimeter ? Math.round(m.altimeter) : null
                   const windSpd = m.windSpeed != null ? Math.round(m.windSpeed * 1.852) : null
@@ -376,69 +389,130 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                     ${m.rawMetar ? `<div class="fq-metar-raw">${escapeHtml(m.rawMetar)}</div>` : ''}`
                 }
 
-                const feeds = getAtcFeeds(a.icao)
-
-                // Nejdřív zobraz popup s "Zjišťuji status streamů..."
-                const atcLoading = `
-                  <div class="fq-metar-divider"></div>
-                  <div class="fq-atc-label">🎙 ATC POSLECH</div>
-                  <div class="fq-atc-feed-item" style="color:rgba(255,255,255,0.3)">⏳ Zjišťuji dostupné streamy…</div>`
-                marker.setPopupContent(buildPopupHtml(metarHtml, atcLoading))
-                marker.getPopup()?.update()
-
-                if (feeds.length === 0) {
-                  // Letiště bez known feedů — rovnou zobraz odkaz
-                  const atcHtml = `
-                    <div class="fq-metar-divider"></div>
-                    <div class="fq-atc-label">🎙 ATC POSLECH</div>
-                    <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
-                  marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
-                  marker.getPopup()?.update()
-                } else {
-                  // Zkontroluj status každého feedu paralelně
-                  Promise.all(feeds.map(f =>
-                    fetch(`/api/atc-check?feed=${encodeURIComponent(f.feed)}`)
-                      .then(r => r.json())
-                      .then((d: { online: boolean; disabled?: boolean }) => ({ ...f, online: d.online, disabled: d.disabled === true }))
-                      .catch(() => ({ ...f, online: false, disabled: false }))
-                  )).then(results => {
-                    const proxyDisabled = results.some(f => f.disabled)
-                    if (proxyDisabled) {
-                      const atcHtml = `
-                        <div class="fq-metar-divider"></div>
-                        <div class="fq-atc-label">🎙 ATC POSLECH</div>
-                        <div class="fq-atc-feed-item">Poslech přímo ve FlyQueens není aktivní.</div>
-                        <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Otevřít LiveATC.net ↗</a>`
-                      marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
-                      marker.getPopup()?.update()
-                      return
-                    }
-
-                    const feedBtns = results.map((f, i) => {
-                      const btnId = `atc-btn-${a.icao}-${i}`
-                      const proxyUrl = `/api/atc-stream?feed=${encodeURIComponent(f.feed)}`
-                      if (f.online) {
-                        return `<button id="${btnId}" class="fq-atc-btn online" data-label="${escapeHtml(f.label)}" onclick="window.__playAtc('${proxyUrl}','${btnId}')">🟢 ▶ ${escapeHtml(f.label)}</button>`
-                      } else {
-                        return `<div class="fq-atc-feed-offline">⚫ ${escapeHtml(f.label)} — offline</div>`
-                      }
-                    }).join('')
-
-                    const anyOnline = results.some(f => f.online)
-                    const atcHtml = `
-                      <div class="fq-metar-divider"></div>
-                      <div class="fq-atc-label">🎙 ATC POSLECH</div>
-                      ${feedBtns}
-                      ${!anyOnline ? `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>` : ''}`
-
-                    marker.setPopupContent(buildPopupHtml(metarHtml, atcHtml))
-                    marker.getPopup()?.update()
-                  })
-                }
+                updatePopup()
               })
               .catch(() => {
-                marker.setPopupContent(buildPopupHtml('<div class="fq-ap-metar-loading">Počasí nedostupné</div>', ''))
+                metarHtml = '<div class="fq-ap-metar-loading">Aktuální METAR není dostupný.</div>'
+                updatePopup()
               })
+
+            fetch(`/api/taf?icao=${encodeURIComponent(a.icao)}`)
+              .then(r => r.json())
+              .then((taf) => {
+                if (taf.error) {
+                  tafHtml = '<div class="fq-ap-metar-loading">Předpověď TAF není dostupná.</div>'
+                  updatePopup()
+                  return
+                }
+                const formatUtc = (value: string | null) => value
+                  ? new Date(value).toLocaleString('cs-CZ', {
+                      day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+                    })
+                  : '?'
+                const now = Date.now()
+                const forecasts = (taf.forecasts ?? [])
+                  .filter((forecast: { to?: string | null }) => !forecast.to || new Date(forecast.to).getTime() >= now)
+                  .slice(0, 3)
+                const rows = forecasts.map((forecast: {
+                  from?: string | null; to?: string | null; change?: string | null; probability?: number | null
+                  windDir?: number | null; windVariable?: boolean; windSpeed?: number | null; windGust?: number | null
+                  visibility?: string | number | null; weather?: string | null
+                  clouds?: Array<{ cover?: string; base?: number }>
+                }) => {
+                  const wind = forecast.windSpeed != null
+                    ? `${forecast.windVariable ? 'VRB' : forecast.windDir ?? '?'}° ${forecast.windSpeed} kt${forecast.windGust ? ` G${forecast.windGust}` : ''}`
+                    : 'vítr neuveden'
+                  const cloud = forecast.clouds?.[0]
+                  const condition = [forecast.weather, cloud ? `${cloud.cover ?? ''} ${cloud.base != null ? `${cloud.base} ft` : ''}`.trim() : null]
+                    .filter(Boolean).join(' · ')
+                  return `<div class="fq-taf-row">
+                    <div><strong>${formatUtc(forecast.from ?? null)}–${formatUtc(forecast.to ?? null)} UTC</strong>${forecast.change ? ` · ${escapeHtml(forecast.change)}` : ''}${forecast.probability ? ` ${forecast.probability}%` : ''}</div>
+                    <div>${escapeHtml(wind)}${condition ? ` · ${escapeHtml(condition)}` : ''}</div>
+                  </div>`
+                }).join('')
+                tafHtml = `
+                  <div class="fq-metar-divider"></div>
+                  <div class="fq-atc-label">PŘEDPOVĚĎ TAF${taf.validTo ? ` · DO ${formatUtc(taf.validTo)} UTC` : ''}</div>
+                  ${rows || '<div class="fq-ap-metar-loading">Bez dalšího úseku předpovědi.</div>'}
+                  ${taf.rawTaf ? `<details class="fq-raw-details"><summary>Raw TAF</summary><div class="fq-metar-raw">${escapeHtml(taf.rawTaf)}</div></details>` : ''}`
+                updatePopup()
+              })
+              .catch(() => {
+                tafHtml = '<div class="fq-ap-metar-loading">Předpověď TAF není dostupná.</div>'
+                updatePopup()
+              })
+
+            fetch(`/api/airport-details?icao=${encodeURIComponent(a.icao)}`)
+              .then(r => r.json())
+              .then((details) => {
+                if (details.error) {
+                  airportHtml = ''
+                  updatePopup()
+                  return
+                }
+                const runways = (details.runways ?? [])
+                  .filter((runway: { closed?: boolean }) => !runway.closed)
+                  .slice(0, 3)
+                  .map((runway: { ident?: string | null; lengthFt?: number | null; surface?: string | null; lighted?: boolean }) =>
+                    `<span>${escapeHtml(runway.ident ?? '?')} · ${runway.lengthFt ? `${Math.round(runway.lengthFt * 0.3048).toLocaleString('cs-CZ')} m` : '?'}${runway.surface ? ` · ${escapeHtml(runway.surface)}` : ''}${runway.lighted ? ' · světla' : ''}</span>`
+                  ).join('')
+                const preferred = new Set(['ATIS', 'TWR', 'GND', 'APP', 'RDR', 'INFO'])
+                const frequencies = (details.frequencies ?? [])
+                  .filter((frequency: { type?: string | null }) => preferred.has(frequency.type ?? ''))
+                  .slice(0, 6)
+                  .map((frequency: { type?: string | null; frequencyMhz?: number | null }) =>
+                    `<span><b>${escapeHtml(frequency.type ?? '?')}</b> ${frequency.frequencyMhz ?? '?'} MHz</span>`
+                  ).join('')
+                airportHtml = runways || frequencies ? `
+                  <div class="fq-metar-divider"></div>
+                  ${runways ? `<div class="fq-atc-label">DRÁHY</div><div class="fq-airport-list">${runways}</div>` : ''}
+                  ${frequencies ? `<div class="fq-atc-label fq-airport-frequency-title">FREKVENCE</div><div class="fq-frequency-list">${frequencies}</div>` : ''}
+                  <div class="fq-data-notice">Orientační veřejná data OurAirports. Pro provozní použití ověřte AIP.</div>` : ''
+                updatePopup()
+              })
+              .catch(() => {
+                airportHtml = ''
+                updatePopup()
+              })
+
+            if (feeds.length === 0) {
+              atcHtml = `
+                <div class="fq-metar-divider"></div>
+                <div class="fq-atc-label">🎙 ATC POSLECH</div>
+                <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn">Hledat ATC na LiveATC.net ↗</a>`
+              updatePopup()
+            } else {
+              Promise.all(feeds.map(f =>
+                fetch(`/api/atc-check?feed=${encodeURIComponent(f.feed)}`)
+                  .then(r => r.json())
+                  .then((d: { online: boolean; disabled?: boolean }) => ({ ...f, online: d.online, disabled: d.disabled === true }))
+                  .catch(() => ({ ...f, online: false, disabled: false }))
+              )).then(results => {
+                if (results.some(f => f.disabled)) {
+                  atcHtml = `
+                    <div class="fq-metar-divider"></div>
+                    <div class="fq-atc-label">🎙 ATC POSLECH</div>
+                    <div class="fq-atc-feed-item">Poslech přímo ve FlyQueens není aktivní.</div>
+                    <a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Otevřít LiveATC.net ↗</a>`
+                  updatePopup()
+                  return
+                }
+
+                const feedButtons = results.map((feed, index) => {
+                  const btnId = `atc-btn-${a.icao}-${index}`
+                  const proxyUrl = `/api/atc-stream?feed=${encodeURIComponent(feed.feed)}`
+                  return feed.online
+                    ? `<button id="${btnId}" class="fq-atc-btn online" data-label="${escapeHtml(feed.label)}" onclick="window.__playAtc('${proxyUrl}','${btnId}')">🟢 ▶ ${escapeHtml(feed.label)}</button>`
+                    : `<div class="fq-atc-feed-offline">⚫ ${escapeHtml(feed.label)} — offline</div>`
+                }).join('')
+                atcHtml = `
+                  <div class="fq-metar-divider"></div>
+                  <div class="fq-atc-label">🎙 ATC POSLECH</div>
+                  ${feedButtons}
+                  ${results.some(feed => feed.online) ? '' : `<a href="${getLiveAtcUrl(a.icao)}" target="_blank" rel="noopener noreferrer" class="fq-atc-link-btn" style="margin-top:5px">Hledat ATC na LiveATC.net ↗</a>`}`
+                updatePopup()
+              })
+            }
           })
 
           // Stop audio při zavření popupu
@@ -889,7 +963,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         }
         .fq-airport-popup-wrap .leaflet-popup-tip { background: rgba(15,23,42,0.96) !important; }
         .fq-airport-popup-wrap .leaflet-popup-content { margin: 0 !important; }
-        .fq-airport-popup { padding: 12px 14px; }
+        .fq-airport-popup { padding: 12px 14px; max-height: min(68vh, 560px); overflow-y: auto; overscroll-behavior: contain; }
         .fq-ap-code { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent-blue); letter-spacing: 2px; }
         .fq-ap-name { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
         .fq-ap-meta { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 4px; letter-spacing: 0.5px; }
@@ -903,6 +977,16 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
         .fq-mt-val { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); }
         .fq-metar-wx { font-size: 11px; color: rgba(255,255,255,0.75); margin: 4px 0; }
         .fq-metar-raw { font-size: 8px; color: rgba(255,255,255,0.2); margin-top: 6px; font-family: monospace; word-break: break-all; line-height: 1.4; }
+        .fq-taf-row { font-size: 9px; color: rgba(255,255,255,0.62); line-height: 1.45; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .fq-taf-row strong { color: rgba(255,255,255,0.86); }
+        .fq-raw-details summary { cursor: pointer; margin-top: 5px; font-size: 8px; color: rgba(255,255,255,0.35); }
+        .fq-airport-list, .fq-frequency-list { display: grid; gap: 4px; font-size: 9px; color: rgba(255,255,255,0.65); }
+        .fq-airport-list span { display: block; }
+        .fq-frequency-list { grid-template-columns: 1fr 1fr; }
+        .fq-frequency-list span { white-space: nowrap; }
+        .fq-frequency-list b { color: var(--accent-blue); }
+        .fq-airport-frequency-title { margin-top: 8px; }
+        .fq-data-notice { margin-top: 7px; font-size: 8px; line-height: 1.35; color: rgba(255,255,255,0.28); }
         .fq-atc-label { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
         .fq-atc-feed-item { font-size: 10px; color: rgba(255,255,255,0.5); padding: 2px 0; }
         .fq-atc-feed-offline { font-size: 10px; color: rgba(255,255,255,0.25); padding: 3px 0; }

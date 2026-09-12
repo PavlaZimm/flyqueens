@@ -8,7 +8,7 @@ export interface AircraftBadge {
 // Vrátí odznak pro „zajímavá" letadla — jinak null.
 // Superjumbo, jumbo, vojenské, vrtulníky, nákladní.
 export function getAircraftBadge(flight: Flight): AircraftBadge | null {
-  const model = (flight.model ?? '').toUpperCase()
+  const model = (flight.typeDesignator ?? flight.model ?? '').toUpperCase()
   const type = flight.aircraftType
 
   if (model.includes('A380') || model.includes('380'))

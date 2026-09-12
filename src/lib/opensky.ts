@@ -35,9 +35,10 @@ function parseState(state: unknown[]): Flight | null {
   const onGround = Boolean(arr[IDX_ON_GROUND])
   const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
 
-  // Layout: [16]=reg [17]=model(db) [18]=type(db) [19]=oat [20]=ws [21]=mach [22]=baroRate [23]=squawk [24]=emergency [25]=navAlt
+  // Rozšířený layout za nativními OpenSky poli. [17] je pouze ICAO typový
+  // designátor (A320), nikoliv přesný výrobní model letadla.
   const registration = arr[16] ? String(arr[16]) : undefined
-  const dbModel  = arr[17] ? String(arr[17]) : undefined
+  const typeDesignator = arr[17] ? String(arr[17]) : undefined
   const dbType   = arr[18] ? (arr[18] as AircraftType) : undefined
   const oat      = arr[19] != null ? Number(arr[19]) : undefined
   const windSpeed = arr[20] != null ? Number(arr[20]) : undefined
@@ -47,6 +48,15 @@ function parseState(state: unknown[]): Flight | null {
   const squawk   = arr[23] ? String(arr[23]) : (arr[14] ? String(arr[14]) : undefined)
   const emergency = normalizeEmergency(arr[24])
   const navAltFt = arr[25] != null ? Number(arr[25]) : undefined  // autopilot target ft
+  const iasKts = arr[27] != null ? Number(arr[27]) : undefined
+  const tasKts = arr[28] != null ? Number(arr[28]) : undefined
+  const navHeading = arr[29] != null ? Number(arr[29]) : undefined
+  const navQnh = arr[30] != null ? Number(arr[30]) : undefined
+  const geomRate = arr[31] != null ? Number(arr[31]) : undefined
+  const roll = arr[32] != null ? Number(arr[32]) : undefined
+  const navModes = Array.isArray(arr[33])
+    ? arr[33].map((mode) => String(mode)).filter(Boolean)
+    : undefined
 
   return {
     icao24,
@@ -60,7 +70,7 @@ function parseState(state: unknown[]): Flight | null {
     positionUpdatedAt: unixTimestamp(arr[IDX_TIME_POSITION]),
     lastContactAt: unixTimestamp(arr[IDX_LAST_CONTACT]),
     aircraftType: dbType ?? 'unknown',
-    model: dbModel,
+    typeDesignator,
     registration: registration || undefined,
     origin_country,
     oat,
@@ -70,6 +80,13 @@ function parseState(state: unknown[]): Flight | null {
     squawk,
     emergency,
     navAltitudeFt: navAltFt,
+    iasKts,
+    tasKts,
+    navHeading,
+    navQnh,
+    geomRate,
+    roll,
+    navModes,
   }
 }
 

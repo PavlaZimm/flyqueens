@@ -18,6 +18,8 @@ const LIMITS: Record<string, number> = {
   'flight-summary': 60,
   'flight-route': 30, // kliknutí na letadlo — max 30/min
   metar:         20,
+  taf:           20,
+  'airport-details': 30,
   'atc-stream':  10,
   'atc-check':   10,
   default:       60,

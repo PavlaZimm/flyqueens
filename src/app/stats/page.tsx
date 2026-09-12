@@ -270,7 +270,7 @@ export default function StatsPage() {
           items={top5fastest.map(f => ({
             label: f.callsign,
             value: `${f.velocity} km/h`,
-            sub: f.model ?? f.origin_country ?? '',
+            sub: f.typeDesignator ?? f.origin_country ?? '',
             callsign: f.callsign.trim(),
           }))}
         />
