@@ -7,6 +7,7 @@ const ALL = [
   { slug: 'brno', label: 'Brno (BRQ)' },
   { slug: 'ostrava', label: 'Ostrava (OSR)' },
   { slug: 'pardubice', label: 'Pardubice (PED)' },
+  { slug: 'karlovy-vary', label: 'Karlovy Vary (KLV)' },
 ]
 
 export function ParkingCrossLinks({ current }: { current: string }) {

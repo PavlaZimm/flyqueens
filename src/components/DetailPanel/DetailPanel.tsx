@@ -30,6 +30,7 @@ const AIRPORT_GUIDES: Record<string, string> = {
   LKTB: '/letiste/brno', BRQ: '/letiste/brno',
   LKMT: '/letiste/ostrava', OSR: '/letiste/ostrava',
   LKPD: '/letiste/pardubice', PED: '/letiste/pardubice',
+  LKKV: '/letiste/karlovy-vary', KLV: '/letiste/karlovy-vary',
 }
 
 function airportGuide(airport: FlightRoute['departure']): string | null {
@@ -588,14 +589,17 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         <button
           onClick={() => {
             trackEvent('Flight Shared', { nativeShare: Boolean(navigator.share) })
-            const url = `${window.location.origin}${window.location.pathname}?flight=${encodeURIComponent(flight.callsign.trim())}`
+            const flightKey = flight.callsign.trim() || flight.icao24
+            const url = new URL(window.location.href)
+            url.searchParams.set('flight', flightKey)
+            url.searchParams.delete('search')
             if (navigator.share) {
-              navigator.share({ title: `${flight.callsign} – FlyQueens`, url })
+              navigator.share({ title: `${flightKey} | FlyQueens`, url: url.toString() }).catch(() => {})
             } else {
-              navigator.clipboard.writeText(url).then(() => {
+              navigator.clipboard.writeText(url.toString()).then(() => {
                 const btn = document.getElementById('fq-share-btn')
                 if (btn) { btn.textContent = 'ZKOPÍROVÁNO ✓'; setTimeout(() => { btn.textContent = 'SDÍLET' }, 2000) }
-              })
+              }).catch(() => {})
             }
           }}
           id="fq-share-btn"

@@ -27,7 +27,7 @@ const faqJsonLd = {
       name: 'Kolik stojí parkování u letiště Ostrava?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Podle oficiálního ceníku ověřeného 11. září 2026 stojí P1 360 Kč za den. Parkoviště P3, P3A, P4, P5 a P6 stojí 130 Kč za den.',
+        text: 'Podle oficiálního ceníku ověřeného 12. září 2026 stojí P1 360 Kč za den. Parkoviště P3, P3A, P4, P5 a P6 stojí 130 Kč za den.',
       },
     },
     {
@@ -35,7 +35,7 @@ const faqJsonLd = {
       name: 'Které parkoviště v Mošnově je nejlevnější?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Z oficiálních parkovišť jsou podle ceníku ověřeného 11. září 2026 nejlevnější P3, P3A, P4, P5 a P6 se sazbou 130 Kč za den.',
+        text: 'Z oficiálních parkovišť jsou podle ceníku ověřeného 12. září 2026 nejlevnější P3, P3A, P4, P5 a P6 se sazbou 130 Kč za den.',
       },
     },
   ],
@@ -128,7 +128,7 @@ export default function ParkovaniOstravaPage() {
         </p>
 
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 20 }}>
-          Ceny ověřeny 11. září 2026. Aktuální částku a dostupnost vždy zkontrolujte u provozovatele.
+          Ceny ověřeny 12. září 2026. Aktuální částku a dostupnost vždy zkontrolujte u provozovatele.
         </p>
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '26px 0 10px' }}>
@@ -143,9 +143,9 @@ export default function ParkovaniOstravaPage() {
         <AffiliateParkingCta airport="ostrava" />
         <SourcesBox
           sources={[
-            { label: 'Letiště Ostrava — oficiální ceník a podmínky parkování', href: 'https://www.airport-ostrava.cz/p/parkovani' },
+            { label: 'Letiště Ostrava: oficiální ceník a podmínky parkování', href: 'https://www.airport-ostrava.cz/p/parkovani' },
           ]}
-          note="Ceny a informace o vzdálenosti a ostraze ověřeny na oficiálním webu 11. září 2026."
+          note="Ceny a informace o vzdálenosti a ostraze ověřeny na oficiálním webu 12. září 2026."
         />
         <ParkingCrossLinks current="ostrava" />
       </div>

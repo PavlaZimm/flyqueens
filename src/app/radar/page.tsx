@@ -340,8 +340,17 @@ export default function RadarPage() {
     trackEvent('Flight Detail Opened', { aircraftType: flight.aircraftType ?? 'unknown' })
     setSelectedFlight(flight)
     setSidebarOpen(false)   // na mobile zavřeme sidebar při výběru
+    const url = new URL(window.location.href)
+    url.searchParams.set('flight', flight.callsign.trim() || flight.icao24)
+    url.searchParams.delete('search')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }
-  const handleDetailClose = () => setSelectedFlight(null)
+  const handleDetailClose = () => {
+    setSelectedFlight(null)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('flight')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }
   const handleSearchChange = (query: string) => {
     setSearchQuery(query)
     trackedQueryRef.current = ''

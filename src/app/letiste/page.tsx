@@ -5,7 +5,7 @@ import { socialMetadata } from '@/lib/socialMetadata'
 export const metadata: Metadata = {
   title: 'Letiště v Česku: parkování a živá mapa | FlyQueens',
   description:
-    'Přehled českých letišť s praktickými informacemi o parkování a odkazy na poslední dostupné polohy letadel nad Prahou, Brnem a Ostravou.',
+    'Přehled hlavních českých letišť s praktickými informacemi o dopravě, parkování, odbavení a odkazy na oficiální odlety, přílety a živou mapu.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste' },
   ...socialMetadata({
     title: 'Letiště v Česku: parkování a živá mapa | FlyQueens',
@@ -19,7 +19,7 @@ const AIRPORTS = [
   { slug: 'praha', name: 'Letiště Václava Havla', city: 'Praha', iata: 'PRG', hasPage: true },
   { slug: 'brno', name: 'Letiště Brno-Tuřany', city: 'Brno', iata: 'BRQ', hasPage: true },
   { slug: 'ostrava', name: 'Letiště Leoše Janáčka', city: 'Ostrava', iata: 'OSR', hasPage: true },
-  { slug: 'karlovy-vary', name: 'Letiště Karlovy Vary', city: 'Karlovy Vary', iata: 'KLV', hasPage: false },
+  { slug: 'karlovy-vary', name: 'Letiště Karlovy Vary', city: 'Karlovy Vary', iata: 'KLV', hasPage: true },
   { slug: 'pardubice', name: 'Letiště Pardubice', city: 'Pardubice', iata: 'PED', hasPage: true },
 ]
 
@@ -37,8 +37,8 @@ export default function LetisteIndexPage() {
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
           Vyberte letiště a najdete praktické informace, parkování, aktuální počasí a odkazy na oficiální zdroje.
-          U každého navíc vidíte dostupná živá data letadel v okolí. Zatím máme podrobně zpracovanou Prahu,
-          další letiště postupně doplňujeme.
+          U každého navíc vidíte dostupná živá data letadel v okolí. Provozní časy a změny vždy ověřujte
+          na oficiální tabuli konkrétního letiště.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

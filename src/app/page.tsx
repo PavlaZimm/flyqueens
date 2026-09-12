@@ -25,6 +25,7 @@ const AIRPORTS = [
   { code: 'BRQ', city: 'Brno', note: 'Tuřany prakticky', href: '/letiste/brno' },
   { code: 'OSR', city: 'Ostrava', note: 'Mošnov a parkoviště', href: '/letiste/ostrava' },
   { code: 'PED', city: 'Pardubice', note: 'parkování zdarma a doprava', href: '/letiste/pardubice' },
+  { code: 'KLV', city: 'Karlovy Vary', note: 'doprava a možnosti parkování', href: '/letiste/karlovy-vary' },
 ]
 
 function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {

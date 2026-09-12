@@ -1,27 +1,44 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
-  title: 'Letiště Ostrava: parkování a živá mapa letadel',
-  description: 'Vše k letišti Leoše Janáčka v Mošnově: ověřené parkování a ceny P1 až P6 a živá mapa dostupných letových dat nad Moravou.',
+  title: 'Letiště Ostrava: doprava, parkování a odlety',
+  description: 'Praktický průvodce Letištěm Leoše Janáčka Ostrava: vlak a autobus, parkování, odbavení, oficiální přílety a odlety a živá mapa.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/ostrava' },
   ...socialMetadata({
-    title: 'Letiště Ostrava: parkování a živá mapa | FlyQueens',
-    description: 'Parkování, ceny a dostupná živá data o letadlech nad Ostravou a Moravou.',
+    title: 'Letiště Ostrava: doprava, parkování a odlety | FlyQueens',
+    description: 'Vlak přímo u terminálu, autobusové spojení, parkování a ověřené odkazy pro letiště OSR.',
     url: 'https://www.flyqueens.cz/letiste/ostrava',
   }),
 }
 
-const LINKS = [
-  { href: '/letiste/ostrava/parkovani', title: 'Parkování a ceny', desc: 'Ověřený ceník parkovišť P1 až P6 a vzdálenost od terminálu.', ready: true },
-  { href: '/radar', title: 'Živá mapa nad Moravou', desc: 'Poslední dostupné polohy letadel ve vzduchu.', ready: true },
-  { href: '/letiste/ostrava/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
-]
+const airportJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Airport',
+  name: 'Letiště Leoše Janáčka Ostrava',
+  iataCode: 'OSR',
+  icaoCode: 'LKMT',
+  url: 'https://www.airport-ostrava.cz/',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Mošnov 401',
+    addressLocality: 'Mošnov',
+    postalCode: '742 51',
+    addressCountry: 'CZ',
+  },
+}
+
+const S = {
+  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
+  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
+} as const
 
 export default function OstravaHubPage() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(airportJsonLd).replace(/</g, '\\u003c') }} />
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
@@ -31,29 +48,76 @@ export default function OstravaHubPage() {
         </nav>
 
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 30, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
-          Letiště Leoše Janáčka Ostrava
+          Letiště Ostrava: doprava, parkování a odlety
         </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Letiště Leoše Janáčka v Mošnově používá kód OSR. Najdete tu ověřené parkovné a živou mapu;
-          aktuální odlety a přílety vždy potvrďte na oficiální tabuli letiště.
+        <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
+          Letiště Leoše Janáčka Ostrava v Mošnově používá kódy OSR a LKMT. K terminálu se dostanete autem, autobusem i vlakem. Železniční terminál stojí hned vedle odletové haly.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {LINKS.map((l) => {
-            const inner = (
-              <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '14px 16px', opacity: l.ready ? 1 : 0.55 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                  <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16, fontWeight: 800 }}>{l.title}</div>
-                  <div style={{ fontSize: 12, color: l.ready ? 'var(--gold)' : 'var(--text-dim)', flexShrink: 0 }}>{l.ready ? 'Otevřít →' : 'Brzy'}</div>
-                </div>
-                <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4, lineHeight: 1.5 }}>{l.desc}</div>
-              </div>
-            )
-            return l.ready
-              ? <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>{inner}</Link>
-              : <div key={l.href}>{inner}</div>
-          })}
+        <section aria-label="Rychlá fakta" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: 9, marginBottom: 26 }}>
+          {[
+            ['OSR / LKMT', 'kódy letiště'],
+            ['S4 a S8', 'vlakové linky'],
+            ['AE', 'Airport Express'],
+            ['2 hodiny', 'běžné otevření check-in'],
+          ].map(([value, label]) => (
+            <div key={label} style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 10, padding: '13px 14px' }}>
+              <strong style={{ display: 'block', color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontSize: 17 }}>{value}</strong>
+              <span style={{ display: 'block', color: 'var(--text-dim)', fontSize: 11, marginTop: 3 }}>{label}</span>
+            </div>
+          ))}
+        </section>
+
+        <div style={{ display: 'grid', gap: 10 }}>
+          <Link href="/letiste/ostrava/parkovani" style={{ textDecoration: 'none', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Parkování P1 až P6</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Ověřené ceny a vzdálenosti od terminálu. →</span>
+          </Link>
+          <Link href="/radar" style={{ textDecoration: 'none', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Živá mapa letadel nad Moravou</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Poslední dostupné polohy zachycených letadel. →</span>
+          </Link>
+          <a href="https://www.airport-ostrava.cz/p/aktualni-prilety-a-odlety" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Aktuální odlety a přílety</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Otevřít oficiální letovou tabuli letiště. ↗</span>
+          </a>
         </div>
+
+        <h2 style={S.h2}>Vlakem přímo k odletové hale</h2>
+        <p style={S.p}>
+          Železniční terminál Mošnov, Ostrava Airport je umístěný vedle odletové haly. Letiště uvádí linku S4 přes Bohumín, Ostravu a Studénku a linku S8 přes Ostravu, Studénku, Příbor a Kopřivnici. Konkrétní spoj si ověřte v aktuálním jízdním řádu ODIS.
+        </p>
+
+        <h2 style={S.h2}>Autobusem z Ostravy a okolí</h2>
+        <p style={S.p}>
+          Přímé spojení z Ostravy nabízí Airport Express. Podle letiště je od 20. dubna 2026 pro odlétající cestující zdarma po předložení palubní vstupenky nebo potvrzení rezervace na daný den. Do Mošnova jezdí také regionální linky z Ostravy, Frýdku-Místku, Příbora, Kopřivnice a Nového Jičína. Podmínky i jízdní řády před cestou znovu ověřte.
+        </p>
+
+        <h2 style={S.h2}>Kdy dorazit na odbavení</h2>
+        <p style={S.p}>
+          Odbavovací přepážka podle letiště zpravidla otevírá dvě hodiny před plánovaným odletem a zavírá 40 minut před ním. Některé aerolinky vyžadují online odbavení nebo si za odbavení na letišti účtují poplatek, proto se řiďte podmínkami svého dopravce.
+        </p>
+
+        <h2 style={S.h2}>Parkování u letiště Ostrava</h2>
+        <p style={S.p}>
+          P1 leží před odletovou halou, vzdálenější plochy jsou levnější. Protože letiště používá více parkovišť s rozdílnými tarify, připravili jsme samostatné <Link href="/letiste/ostrava/parkovani" style={{ color: 'var(--gold)' }}>srovnání parkování u letiště Ostrava</Link>. Ceny a dostupnost vždy potvrďte před příjezdem.
+        </p>
+
+        <h2 style={S.h2}>Co ukáže FlyQueens a co ne</h2>
+        <p style={S.p}>
+          Na mapě FlyQueens vidíte poslední dostupnou ADS-B polohu, výšku, rychlost a směr zachycených letadel. Skutečný odlet, přílet, zpoždění, přepážku a gate potvrzuje letiště nebo dopravce, nikoliv poloha na mapě.
+        </p>
+
+        <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 22 }}>Informace ověřeny 12. září 2026. Dopravní spojení a pravidla odbavení se mohou změnit.</p>
+        <SourcesBox
+          sources={[
+            { label: 'Letiště Ostrava: veřejná doprava', href: 'https://www.airport-ostrava.cz/p/verejna-doprava-2' },
+            { label: 'Letiště Ostrava: odbavení cestujících', href: 'https://www.airport-ostrava.cz/p/odbaveni-cestujicich-2' },
+            { label: 'Letiště Ostrava: parkování', href: 'https://www.airport-ostrava.cz/p/parkovani' },
+            { label: 'Letiště Ostrava: přílety a odlety', href: 'https://www.airport-ostrava.cz/p/aktualni-prilety-a-odlety' },
+          ]}
+          note="Doprava, odbavení a parkování ověřeny na oficiálním webu letiště 12. září 2026."
+        />
       </div>
     </main>
   )

@@ -21,7 +21,7 @@ Aktualizováno 12. září 2026. Uvedené hledanosti, obtížnosti a CPC jsou da
 | 1 | parkování letiště Pardubice | 360 | neuvedena | `/letiste/pardubice/parkovani` | praktické informace |
 | 2 | letiště Brno | 15 000 | neuvedena | `/letiste/brno` | praktické informace |
 | 2 | letiště Ostrava | 10 000 | neuvedena | `/letiste/ostrava` | praktické informace |
-| 2 | letiště Karlovy Vary | 3 100 | neuvedena | budoucí `/letiste/karlovy-vary` | praktické informace |
+| 2 | letiště Karlovy Vary | 3 100 | neuvedena | `/letiste/karlovy-vary` | praktické informace |
 | 3 | jak vysoko létají letadla | 240 | neuvedena | `/blog/jak-vysoko-letaji-letadla` | vysvětlení |
 | 3 | squawk 7700 | 190 | neuvedena | `/blog/squawk-nouzove-kody` | vysvětlení |
 
@@ -32,8 +32,8 @@ Přesný dotaz „co mi letí nad hlavou“ nemá v Marketing Mineru měřitelno
 1. Posílit homepage pro „sledování letů“ a radar pro „radar letadel“ bez vzájemné kanibalizace.
 2. Udržovat návod ke sledování podle čísla ve formě stručného postupu vhodného pro featured snippet.
 3. Vydat kvalitní průvodce Pardubicemi a parkováním. Neopisovat proměnlivý letový řád, ale vést na oficiální živý zdroj.
-4. Rozšířit příliš stručné huby Brno a Ostrava o dopravu, odbavení a důvěryhodné zdroje.
-5. Poté zpracovat Karlovy Vary. Až následně tvořit stránky jednotlivých aerolinek a destinací podle ověřené poptávky.
+4. Brno a Ostrava jsou rozšířené o dopravu, odbavení a důvěryhodné zdroje.
+5. Karlovy Vary mají vlastní letištní a parkovací stránku. Další stránky jednotlivých aerolinek a destinací tvořit až podle ověřené poptávky.
 
 ## Monetizace bez poškození důvěry
 

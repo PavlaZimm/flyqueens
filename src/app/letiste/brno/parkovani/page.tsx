@@ -27,7 +27,7 @@ const faqJsonLd = {
       name: 'Kolik stojí parkování u letiště Brno?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Na oficiálním parkovišti zaplatíte 300 Kč za první den. Sedm dní stojí 1 300 Kč a patnáct dní 2 500 Kč. Ceník letiště je platný od 1. ledna 2025 a byl ověřen 11. září 2026.',
+        text: 'Na oficiálním parkovišti zaplatíte 300 Kč za první den. Sedm dní stojí 1 300 Kč a patnáct dní 2 500 Kč. Ceník letiště je platný od 1. ledna 2025 a byl ověřen 12. září 2026.',
       },
     },
     {
@@ -108,7 +108,7 @@ export default function ParkovaniBrnoPage() {
         </p>
 
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 20 }}>
-          Oficiální ceník ověřen 11. září 2026. Aktuální částku vždy ověřte u provozovatele.
+          Oficiální ceník ověřen 12. září 2026. Aktuální částku vždy ověřte u provozovatele.
         </p>
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '26px 0 10px' }}>
@@ -123,9 +123,9 @@ export default function ParkovaniBrnoPage() {
         <AffiliateParkingCta airport="brno" />
         <SourcesBox
           sources={[
-            { label: 'Letiště Brno-Tuřany — oficiální ceník parkování', href: 'https://www.brno-airport.cz/parkovani-na-letisti' },
+            { label: 'Letiště Brno-Tuřany: oficiální ceník parkování', href: 'https://www.brno-airport.cz/parkovani-na-letisti' },
           ]}
-          note="Ceník platný od 1. ledna 2025; dostupnost a obsah stránky ověřeny 11. září 2026."
+          note="Ceník platný od 1. ledna 2025; dostupnost a obsah stránky ověřeny 12. září 2026."
         />
         <ParkingCrossLinks current="brno" />
       </div>

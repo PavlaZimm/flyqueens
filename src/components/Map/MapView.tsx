@@ -328,6 +328,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             LKPR: '/letiste/praha',
             LKTB: '/letiste/brno',
             LKMT: '/letiste/ostrava',
+            LKPD: '/letiste/pardubice',
+            LKKV: '/letiste/karlovy-vary',
           }
           const guidePath = GUIDE_PAGES[a.icao]
           const guideHtml = guidePath

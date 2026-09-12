@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchFlights } from '@/lib/opensky'
 import type { Flight, FlightDataMeta } from '@/types/flight'
-import { POLL_INTERVAL_MS, MAX_BACKOFF_MS } from '@/lib/constants'
+import { POLL_INTERVAL_MS, MAX_BACKOFF_MS, REGION_CONFIGS } from '@/lib/constants'
 
 interface UseFlightsResult {
   flights: Flight[]
@@ -75,8 +75,13 @@ export function useFlights(): UseFlightsResult {
   }, [schedule])
 
   const setRegion = useCallback((r: string) => {
-    regionRef.current = r
-    setRegionState(r)
+    const nextRegion = REGION_CONFIGS[r] ? r : 'europe'
+    regionRef.current = nextRegion
+    setRegionState(nextRegion)
+    const url = new URL(window.location.href)
+    if (nextRegion === 'europe') url.searchParams.delete('region')
+    else url.searchParams.set('region', nextRegion)
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
     requestIdRef.current += 1
     controllerRef.current?.abort()
     controllerRef.current = null
@@ -89,6 +94,11 @@ export function useFlights(): UseFlightsResult {
 
   useEffect(() => {
     mountedRef.current = true
+    const requestedRegion = new URLSearchParams(window.location.search).get('region')
+    if (requestedRegion && REGION_CONFIGS[requestedRegion]) {
+      regionRef.current = requestedRegion
+      setRegionState(requestedRegion)
+    }
     load()
 
     const resume = () => {
