@@ -85,8 +85,14 @@ export default function RootLayout({
     <html
       lang="cs"
       className={`h-full ${archivo.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{if(localStorage.getItem('flyqueens-theme')==='light')document.documentElement.classList.add('light')}catch{}",
+          }}
+        />
         <link rel="preconnect" href="https://tile.openstreetmap.org" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//tile.openstreetmap.org" />
       </head>

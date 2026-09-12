@@ -66,6 +66,32 @@
   color: #05080d;
 }
 
+.themeToggle {
+  min-width: 92px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #22304a;
+  border-radius: 8px;
+  background: rgba(15, 22, 34, .72);
+  color: #a8b6c8;
+  cursor: pointer;
+  font: 600 11px var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.themeToggle:hover {
+  border-color: rgba(245, 184, 61, .58);
+  color: #f5b83d;
+}
+
+.themeToggle > span:first-child {
+  font-size: 15px;
+  line-height: 1;
+}
+
 .hero {
   position: relative;
   min-height: 680px;
@@ -577,6 +603,135 @@
 .footer small { grid-column: 1 / -1; color: #4a5a72; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .13em; }
 .footer small a { color: #8698b0; font: inherit; }
 
+/* Homepage má vlastní výrazný tmavý vizuál. Tyto cílené přepisy zachovají
+   kontrast a hierarchii i ve světlém režimu, místo pouhého obrácení barev. */
+:global(html.light) .page {
+  background: #f7f9fc;
+  color: #0f172a;
+}
+
+:global(html.light) .header {
+  border-color: rgba(15, 23, 42, .13);
+  background: rgba(255, 255, 255, .9);
+}
+
+:global(html.light) .nav a,
+:global(html.light) .footer a { color: #526176; }
+:global(html.light) .nav a:hover,
+:global(html.light) .footer a:hover { color: #0f172a; }
+
+:global(html.light) .themeToggle {
+  border-color: rgba(15, 23, 42, .15);
+  background: #f1f4f8;
+  color: #39485d;
+}
+
+:global(html.light) .themeToggle:hover {
+  border-color: rgba(180, 126, 0, .5);
+  color: #936500;
+}
+
+:global(html.light) .headerCta { border-color: #b47e00; color: #8f6400; }
+:global(html.light) .headerCta:hover { background: #b47e00; color: #fff; }
+
+:global(html.light) .hero { border-color: rgba(15, 23, 42, .12); }
+:global(html.light) .heroGrid {
+  opacity: .55;
+  background-image:
+    linear-gradient(rgba(80, 104, 135, .13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80, 104, 135, .13) 1px, transparent 1px);
+}
+:global(html.light) .heroGlow {
+  background:
+    radial-gradient(circle at 78% 34%, rgba(5, 150, 105, .1), transparent 29%),
+    radial-gradient(circle at 18% 52%, rgba(212, 160, 23, .12), transparent 25%);
+}
+:global(html.light) .heroCopy h1 span { color: #ad7900; }
+:global(html.light) .heroCopy > p { color: #526176; }
+
+:global(html.light) .liveFlightCount {
+  border-color: rgba(15, 23, 42, .15);
+  background: rgba(255, 255, 255, .78);
+  color: #526176;
+}
+
+:global(html.light) .search {
+  border-color: rgba(15, 23, 42, .16);
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 18px 55px rgba(15, 23, 42, .1);
+}
+:global(html.light) .search svg { stroke: #64748b; }
+:global(html.light) .search input { color: #0f172a; }
+:global(html.light) .search input::placeholder { color: #718096; }
+:global(html.light) .popular > span { color: #64748b; }
+:global(html.light) .popular a { border-color: rgba(15, 23, 42, .15); color: #526176; }
+:global(html.light) .popular a:hover { border-color: #b47e00; color: #936500; }
+
+:global(html.light) .radarCard {
+  border-color: rgba(15, 23, 42, .16);
+  background: #edf3f7;
+  box-shadow: 0 34px 80px rgba(15, 23, 42, .14);
+}
+:global(html.light) .scopeGrid circle,
+:global(html.light) .scopeGrid path { stroke: #078766; }
+:global(html.light) .liveAircraft { fill: #465a73; }
+:global(html.light) .radarStatus,
+:global(html.light) .radarLabel,
+:global(html.light) .trafficProfile {
+  border-color: rgba(15, 23, 42, .14);
+  background: rgba(255, 255, 255, .9);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, .1);
+}
+:global(html.light) .radarLabel span,
+:global(html.light) .radarScale,
+:global(html.light) .profileHeader { color: #64748b; }
+:global(html.light) .radarLabel small,
+:global(html.light) .profileHeader > span:last-child,
+:global(html.light) .profileRow { color: #526176; }
+:global(html.light) .profileRow > div { background: #dbe3ec; }
+:global(html.light) .profileRow strong { color: #0f172a; }
+
+:global(html.light) .metrics {
+  border-color: rgba(15, 23, 42, .13);
+  background: #eef2f6;
+}
+:global(html.light) .metric { border-color: rgba(15, 23, 42, .13); }
+:global(html.light) .metric strong { color: #936500; }
+:global(html.light) .metric span { color: #526176; }
+
+:global(html.light) .features { background: #f7f9fc; }
+:global(html.light) .contentSection {
+  border-color: rgba(15, 23, 42, .13);
+  background: #fff;
+}
+:global(html.light) .journal { background: #eef2f6; }
+:global(html.light) .sectionHeading > span { color: #936500; }
+:global(html.light) .sectionHeading p,
+:global(html.light) .featureCard p,
+:global(html.light) .airportCard small { color: #526176; }
+:global(html.light) .featureCard {
+  border-color: rgba(15, 23, 42, .13);
+  background: #fff;
+}
+:global(html.light) .airportCard {
+  border-color: rgba(15, 23, 42, .14);
+  background: #fff;
+  color: #0f172a;
+}
+:global(html.light) .airportCode,
+:global(html.light) .journalTop > a,
+:global(html.light) .articleLink { color: #936500; }
+:global(html.light) .articleGrid {
+  border-color: rgba(15, 23, 42, .14);
+  background: rgba(15, 23, 42, .14);
+}
+:global(html.light) .articleCard { background: #fff; color: #0f172a; }
+:global(html.light) .articleNumber,
+:global(html.light) .footer p { color: #64748b; }
+:global(html.light) .footer { border-color: rgba(15, 23, 42, .13); background: #f7f9fc; }
+:global(html.light) .footer small { color: #64748b; }
+:global(html.light) .footer small a { color: #526176; }
+
 @keyframes livePulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: .52; transform: scale(.86); }
@@ -611,6 +766,8 @@
   .footerInner { width: min(100% - 28px, 1180px); }
   .headerInner { height: 66px; gap: 14px; }
   .nav { display: none; }
+  .themeToggle { min-width: 38px; width: 38px; padding: 0; }
+  .themeToggle > span:last-child { display: none; }
   .headerCta { margin-left: auto; padding: 9px 11px; font-size: 11px; }
   .hero { min-height: auto; }
   .heroLayout { padding: 66px 0 68px; gap: 42px; }
@@ -633,6 +790,7 @@
   .radarScale { display: none; }
   .metrics { grid-template-columns: repeat(2, 1fr); }
   .metric { min-height: 105px; border-bottom: 1px solid #22304a; }
+  :global(html.light) .metric { border-bottom-color: rgba(15, 23, 42, .13); }
   .metric:nth-child(2) { border-right: 0; }
   .metric:nth-last-child(-n + 2) { border-bottom: 0; }
   .features,

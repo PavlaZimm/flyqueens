@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
 import { LiveRadarPreview } from '@/components/Landing/LiveRadarPreview'
+import { HomeThemeToggle } from '@/components/Landing/HomeThemeToggle'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
@@ -60,6 +61,7 @@ export default function HomePage() {
             <Link href="/stats">Statistiky</Link>
             <Link href="/blog">Blog</Link>
           </nav>
+          <HomeThemeToggle className={styles.themeToggle} />
           <Link href="/radar" className={styles.headerCta}>Otevřít radar</Link>
         </div>
       </header>
