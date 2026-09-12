@@ -4,13 +4,13 @@ import { socialMetadata } from '@/lib/socialMetadata'
 
 // Stats stránka je client component, metadata proto žijí v tomhle layoutu.
 export const metadata: Metadata = {
-  title: 'Živé statistiky letového provozu nad Českem | FlyQueens',
+  title: 'Živé statistiky letadel v Evropě | FlyQueens',
   description:
-    'Kolik letadel je právě ve vzduchu nad Českem a okolím, které aerolinky vedou, průměrné výšky a rychlosti. Dostupná ADS-B data obnovovaná každých 10 sekund.',
+    'Aktuální ADS-B snímek z vybrané oblasti Evropy: počet letadel, výšky, rychlosti, směry letu a úplnost živých dat.',
   alternates: { canonical: 'https://www.flyqueens.cz/stats' },
   ...socialMetadata({
-    title: 'Živé statistiky letového provozu nad Českem | FlyQueens',
-    description: 'Počet zachycených letadel, výšky, rychlosti a aerolinky v aktuálních ADS-B datech.',
+    title: 'Živé statistiky letadel v Evropě | FlyQueens',
+    description: 'Aktuální počet zachycených letadel, výšky, rychlosti, směry letu a kvalita dostupných ADS-B dat.',
     url: 'https://www.flyqueens.cz/stats',
   }),
 }
