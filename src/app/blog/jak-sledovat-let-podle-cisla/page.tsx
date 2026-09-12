@@ -65,7 +65,7 @@ export default function TrackFlightNumberArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Sledování letů podle čísla: kde je letadlo online
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} updatedLabel="12. září 2026" />
 
         <ArticleHero
           src={post.image}
@@ -83,11 +83,11 @@ export default function TrackFlightNumberArticle() {
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlý postup</div>
-          <p style={{ ...S.p, margin: 0 }}>
-            Najděte číslo letu, například QS123 nebo FR1234, a zadejte je do vyhledávání na
-            <Link href="/radar" style={{ color: 'var(--gold)' }}> živé mapě FlyQueens</Link>. Pro skutečný stav odletu,
-            příletu, zpoždění a terminálu současně ověřte oficiální tabuli letiště nebo informaci aerolinky.
-          </p>
+          <ol style={{ ...S.p, margin: 0, paddingLeft: 20 }}>
+            <li>Najděte číslo letu na letence nebo v aplikaci aerolinky, například QS123 nebo FR1234.</li>
+            <li>Zadejte je do vyhledávání na <Link href="/radar" style={{ color: 'var(--gold)' }}>živé mapě FlyQueens</Link>.</li>
+            <li>Čas, zpoždění, terminál a bránu potvrďte na oficiální tabuli letiště nebo u aerolinky.</li>
+          </ol>
         </div>
 
         <h2 style={S.h2}>Kde najdu číslo letu?</h2>
@@ -199,7 +199,7 @@ export default function TrackFlightNumberArticle() {
             { label: 'FAA — Flight ID a identifikace v ADS-B', href: 'https://www.faa.gov/air_traffic/publications/atpubs/aip_html/chap4_section_5.html' },
             { label: 'FAA — proč musí volací znak odpovídat letovému plánu', href: 'https://www.faa.gov/air_traffic/technology/equipadsb/installation/know_adsb_system' },
           ]}
-          note="Fakta a odkazy ověřeny 11. září 2026. Pro provozní stav letu vždy použijte oficiální zdroj letiště nebo aerolinky."
+          note="Fakta a odkazy ověřeny 12. září 2026. Pro provozní stav letu vždy použijte oficiální zdroj letiště nebo aerolinky."
         />
       </div>
     </main>

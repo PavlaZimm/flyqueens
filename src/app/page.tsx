@@ -10,11 +10,11 @@ import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Živá mapa letadel nad Evropou | FlyQueens',
-  description: 'Sledujte letadla online na živé mapě. Zjistěte dostupnou polohu, výšku, rychlost a trasu letů ve vybraných oblastech Evropy.',
+  title: 'Sledování letů online: živá mapa letadel | FlyQueens',
+  description: 'Sledování letů online zdarma na živé mapě letadel. Zjistěte dostupnou polohu, výšku, rychlost a trasu ve vybraných oblastech Evropy.',
   alternates: { canonical: 'https://www.flyqueens.cz' },
   ...socialMetadata({
-    title: 'Živá mapa letadel nad Evropou | FlyQueens',
+    title: 'Sledování letů online: živá mapa letadel | FlyQueens',
     description: 'Zjistěte, co vám právě letí nad hlavou. Poloha, výška, rychlost a dostupná trasa na živé mapě letadel.',
     url: 'https://www.flyqueens.cz',
   }),
@@ -24,6 +24,7 @@ const AIRPORTS = [
   { code: 'PRG', city: 'Praha', note: 'provoz, počasí a parkování', href: '/letiste/praha' },
   { code: 'BRQ', city: 'Brno', note: 'Tuřany prakticky', href: '/letiste/brno' },
   { code: 'OSR', city: 'Ostrava', note: 'Mošnov a parkoviště', href: '/letiste/ostrava' },
+  { code: 'PED', city: 'Pardubice', note: 'parkování zdarma a doprava', href: '/letiste/pardubice' },
 ]
 
 function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {
@@ -80,7 +81,7 @@ export default function HomePage() {
                 </h1>
                 <p>
                   Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.
-                  Sleduj živá ADS-B data ve vybraných oblastech Evropy — zdarma a bez účtu.
+                  Sleduj živá ADS-B data ve vybraných oblastech Evropy. Zdarma a bez účtu.
                 </p>
                 <RadarSearch />
                 <div className={styles.popular}>
@@ -106,8 +107,8 @@ export default function HomePage() {
           <div className={styles.container}>
             <div className={styles.sectionHeading}>
               <span>CO UMÍ DNES</span>
-              <h2>Živá data bez zbytečného hledání.</h2>
-              <p>Poloha, výška, rychlost, směr a dostupná trasa letadla na jednom místě — včetně informace o zdroji a čerstvosti dat.</p>
+              <h2>Sledování letů online bez zbytečného hledání.</h2>
+              <p>Poloha, výška, rychlost, směr a dostupná trasa letadla na jednom místě, včetně informace o zdroji a čerstvosti dat.</p>
             </div>
             <div className={styles.featureGrid}>
               <article className={styles.featureCard}>

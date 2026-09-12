@@ -29,6 +29,7 @@ const AIRPORT_GUIDES: Record<string, string> = {
   LKPR: '/letiste/praha', PRG: '/letiste/praha',
   LKTB: '/letiste/brno', BRQ: '/letiste/brno',
   LKMT: '/letiste/ostrava', OSR: '/letiste/ostrava',
+  LKPD: '/letiste/pardubice', PED: '/letiste/pardubice',
 }
 
 function airportGuide(airport: FlightRoute['departure']): string | null {

@@ -20,7 +20,7 @@ const AIRPORTS = [
   { slug: 'brno', name: 'Letiště Brno-Tuřany', city: 'Brno', iata: 'BRQ', hasPage: true },
   { slug: 'ostrava', name: 'Letiště Leoše Janáčka', city: 'Ostrava', iata: 'OSR', hasPage: true },
   { slug: 'karlovy-vary', name: 'Letiště Karlovy Vary', city: 'Karlovy Vary', iata: 'KLV', hasPage: false },
-  { slug: 'pardubice', name: 'Letiště Pardubice', city: 'Pardubice', iata: 'PED', hasPage: false },
+  { slug: 'pardubice', name: 'Letiště Pardubice', city: 'Pardubice', iata: 'PED', hasPage: true },
 ]
 
 export default function LetisteIndexPage() {

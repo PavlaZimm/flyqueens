@@ -28,6 +28,7 @@ export function SiteFooter() {
             <Link href="/letiste/praha" style={link}>Praha (PRG)</Link>
             <Link href="/letiste/brno" style={link}>Brno (BRQ)</Link>
             <Link href="/letiste/ostrava" style={link}>Ostrava (OSR)</Link>
+            <Link href="/letiste/pardubice" style={link}>Pardubice (PED)</Link>
             <Link href="/letiste/praha/parkovani" style={link}>Parkování u letiště Praha</Link>
           </div>
 

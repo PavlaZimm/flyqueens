@@ -568,7 +568,7 @@
   text-decoration: none;
 }
 
-.airportGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 45px; }
+.airportGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 45px; }
 .airportCard {
   min-height: 118px;
   display: flex;
@@ -758,6 +758,7 @@
   .metric { padding-inline: 24px; }
   .footerInner { grid-template-columns: 1fr; gap: 24px; }
   .footer small { grid-column: auto; }
+  .airportGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px) {

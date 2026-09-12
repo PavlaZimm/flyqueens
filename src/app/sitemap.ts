@@ -5,7 +5,7 @@ const BASE = 'https://www.flyqueens.cz'
 const LAST_SIGNIFICANT_UPDATE = '2026-09-12'
 
 // Letiště, která mají hub + podstránky
-const AIRPORTS = ['praha', 'brno', 'ostrava']
+const AIRPORTS = ['praha', 'brno', 'ostrava', 'pardubice']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const core: MetadataRoute.Sitemap = [

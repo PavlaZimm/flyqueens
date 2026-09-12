@@ -31,7 +31,7 @@ export const POSTS: BlogPost[] = [
     title: 'Sledování letů podle čísla: kde je letadlo online',
     excerpt: 'Číslo letu, volací znak a registrace nejsou totéž. Ukážeme, co zadat do mapy, kde ověřit zpoždění a proč se některý let nemusí zobrazit.',
     date: '2026-09-11',
-    updatedAt: '2026-09-11',
+    updatedAt: '2026-09-12',
     dateLabel: '11. září 2026',
     tag: 'Návod',
     readingTime: '7 min čtení',
