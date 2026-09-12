@@ -28,10 +28,12 @@ function parseState(state: unknown[]): Flight | null {
   if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return null
 
   const icao24 = String(arr[IDX_ICAO24] ?? '')
-  const callsign = String(arr[IDX_CALLSIGN] ?? '').trim() || icao24.toUpperCase()
+  const reportedCallsign = String(arr[IDX_CALLSIGN] ?? '').trim()
+  const callsign = reportedCallsign || icao24.toUpperCase()
   const velocity = ((arr[IDX_VELOCITY] as number | null) ?? 0) * 3.6 // m/s → km/h
   const altitude = (arr[IDX_ALT_BARO] as number | null) ?? 0
-  const heading = (arr[IDX_HEADING] as number | null) ?? 0
+  const reportedHeading = arr[IDX_HEADING] as number | null
+  const heading = Number.isFinite(reportedHeading) ? Number(reportedHeading) : 0
   const onGround = Boolean(arr[IDX_ON_GROUND])
   const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
 
@@ -61,11 +63,13 @@ function parseState(state: unknown[]): Flight | null {
   return {
     icao24,
     callsign,
+    callsignReported: Boolean(reportedCallsign),
     lat,
     lng,
     altitude: Math.round(altitude),
     velocity: Math.round(velocity),
     heading: Math.round(heading),
+    headingReported: Number.isFinite(reportedHeading),
     onGround,
     positionUpdatedAt: unixTimestamp(arr[IDX_TIME_POSITION]),
     lastContactAt: unixTimestamp(arr[IDX_LAST_CONTACT]),

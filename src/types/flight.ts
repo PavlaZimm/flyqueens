@@ -16,11 +16,13 @@ export type FlightDataStatus = 'live' | 'stale' | 'unavailable'
 export interface Flight {
   icao24: string        // unikátní ID (ICAO24 hex)
   callsign: string      // např. "OK-FLY"
+  callsignReported?: boolean // false, pokud UI používá jako náhradu ICAO24 adresu
   lat: number
   lng: number
   altitude: number      // metry
   velocity: number      // km/h (přepočteno z m/s)
   heading: number       // stupně 0-360
+  headingReported?: boolean // zda zdroj kurz skutečně poskytl
   onGround: boolean
   positionUpdatedAt?: number // Unix timestamp poslední skutečné polohy
   lastContactAt?: number     // Unix timestamp poslední ADS-B zprávy

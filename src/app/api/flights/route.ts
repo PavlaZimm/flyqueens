@@ -176,7 +176,7 @@ function adsbToOpenSky(ac: Record<string, unknown>, snapshotAt: number): unknown
     : finiteNumber(ac.alt_baro) ?? finiteNumber(ac.alt_geom) ?? 0
   const alt = altitudeFeet * 0.3048
   const velocity = (finiteNumber(ac.gs) ?? 0) * 0.514444
-  const heading = finiteNumber(ac.track) ?? finiteNumber(ac.true_heading) ?? 0
+  const heading = finiteNumber(ac.track) ?? finiteNumber(ac.true_heading)
   const onGround = ac.alt_baro === 'ground'
   const seen = Math.max(0, finiteNumber(ac.seen) ?? 0)
   const seenPosition = Math.max(0, finiteNumber(ac.seen_pos) ?? seen)
