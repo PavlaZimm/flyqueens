@@ -28,8 +28,8 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'airbus-a380-praha-emirates',
-    title: 'Airbus A380 v Praze: kdy létá Emirates do Dubaje',
-    excerpt: 'A380 se na pravidelnou linku vrátil v prosinci 2024. Aktuální rozpis ale uvádí Boeing 777. Ukazujeme, jak před cestou nebo focením ověřit skutečný typ letadla.',
+    title: 'Airbus A380 se má vrátit do Prahy 1. října 2026',
+    excerpt: 'Emirates má od 1. října 2026 znovu nasadit A380 na každodenní linku Praha–Dubaj. Přehled změn, letové časy a návod, jak ověřit konkrétní let.',
     date: '2026-09-13',
     updatedAt: '2026-09-13',
     dateLabel: '13. září 2026',

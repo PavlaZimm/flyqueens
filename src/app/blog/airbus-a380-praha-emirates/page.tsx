@@ -12,15 +12,15 @@ import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
 const post = getPost('airbus-a380-praha-emirates')!
 
 export const metadata: Metadata = {
-  title: 'Airbus A380 Praha: aktuální letový řád Emirates',
+  title: 'Airbus A380 se má vrátit do Prahy 1. října 2026',
   description:
-    'Kdy létá Airbus A380 do Prahy? Návrat Emirates, aktuální stav linky Praha–Dubaj a návod, jak před cestou nebo focením ověřit typ letadla.',
+    'Emirates plánuje návrat Airbusu A380 na linku Praha–Dubaj od 1. října 2026. Aktuální letový řád EK139 a EK140, časy a předchozí odklady.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/airbus-a380-praha-emirates' },
   authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
   creator: AUTHOR.name,
   ...socialMetadata({
-    title: 'Airbus A380 v Praze: kdy létá Emirates do Dubaje',
-    description: 'Návrat A380, aktuální stav linky Praha–Dubaj a spolehlivý způsob ověření typu letadla.',
+    title: 'Airbus A380 se má vrátit do Prahy 1. října 2026',
+    description: 'Aktuální letový řád EK139 a EK140, předchozí odklady a návod, jak ověřit konkrétní let.',
     url: 'https://www.flyqueens.cz/blog/airbus-a380-praha-emirates',
     type: 'article',
     publishedTime: post.date,
@@ -35,7 +35,7 @@ const jsonLd = {
   headline: post.title,
   datePublished: post.date,
   dateModified: post.updatedAt,
-  description: 'Aktuální přehled nasazování Airbusu A380 společnosti Emirates na lince mezi Prahou a Dubají.',
+  description: 'Aktuální přehled plánovaného návratu Airbusu A380 společnosti Emirates na linku mezi Prahou a Dubají od 1. října 2026.',
   image: `https://www.flyqueens.cz${post.image}`,
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
@@ -65,7 +65,7 @@ export default function A380PrahaArticle() {
 
         <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Airbus A380 v Praze: kdy létá Emirates do Dubaje
+          Airbus A380 se má vrátit do Prahy 1. října 2026
         </h1>
         <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
 
@@ -80,24 +80,25 @@ export default function A380PrahaArticle() {
         />
 
         <p style={S.p}>
-          Airbus A380 se na pravidelnou linku Emirates mezi Dubají a Prahou vrátil 1. prosince 2024. To je pravda,
-          ale není to celý dnešní příběh. Typ letadla na trase se mění a aktuální oficiální rozpis Emirates při
-          kontrole 13. září 2026 uvádí pro přímé lety EK139 a EK140 Boeing 777.
+          Emirates má podle aktuálního letového řádu znovu nasadit Airbus A380 na každodenní linku mezi Dubají a
+          Prahou od 1. října 2026. Do konce září létá na spojích EK139 a EK140 Boeing 777-300ER. Pro fanoušky
+          největšího dopravního letadla světa je tedy podstatné jedno datum: návrat po letošní provozní pauze je
+          naplánovaný na čtvrtek 1. října.
         </p>
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Emirates aktuálně létá mezi Prahou a Dubají každý den, ale v oficiálním rozpisu je uveden Boeing 777,
-            nikoli Airbus A380. Pokud chcete letět nebo fotografovat právě A380, ověřte konkrétní datum přímo v
-            rezervačním systému Emirates. Typ se může změnit i po rezervaci.
+            Airbus A380 má do Prahy přiletět na letu EK139 z Dubaje od 1. října 2026 a zpět odlétat jako EK140.
+            Linka je v aktuálním rozpisu vedena denně. Od 1. do 24. října má EK139 přilétat v 13:10 a EK140 odlétat
+            v 16:10. Jde o plánovaný letový řád, který může Emirates ještě změnit.
           </p>
         </div>
 
-        <h2 style={S.h2}>Aktuální letový řád Emirates Praha–Dubaj</h2>
+        <h2 style={S.h2}>Letový řád A380 Praha–Dubaj od října 2026</h2>
         <p style={S.p}>
-          Emirates při poslední kontrole uváděl sedm letů týdně, tedy jeden let denně v každém směru. Následující
-          časy a typ letadla odpovídají zveřejněnému rozpisu, ne slibu pro každý budoucí termín.
+          Časy se při přechodu z letního na zimní letový řád mění. Všechna uvedená data jsou místní. Přílety do
+          Prahy míří na Terminál 1, stejně jako odlety do Dubaje.
         </p>
 
         <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
@@ -106,38 +107,77 @@ export default function A380PrahaArticle() {
               <tr style={{ textAlign: 'left', color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                 <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Let</th>
                 <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Trasa</th>
-                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Čas</th>
-                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Uvedený typ</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Období</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Místní čas</th>
               </tr>
             </thead>
             <tbody>
               {[
-                ['EK140', 'Praha → Dubaj', '15:40 → 23:35', 'Boeing 777'],
-                ['EK139', 'Dubaj → Praha', '08:40 → 13:10', 'Boeing 777'],
-              ].map(([flight, route, time, aircraft]) => (
-                <tr key={flight}>
+                ['EK139', 'Dubaj → Praha', '1.–24. října', '08:35 → 13:10'],
+                ['EK140', 'Praha → Dubaj', '1.–24. října', '16:10 → 23:55'],
+                ['EK139', 'Dubaj → Praha', '25. října–27. března', '08:40 → 12:30'],
+                ['EK140', 'Praha → Dubaj', '25. října–27. března', '14:45 → 23:40'],
+              ].map(([flight, route, period, time]) => (
+                <tr key={`${flight}-${period}`}>
                   <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontWeight: 700 }}>{flight}</td>
                   <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)' }}>{route}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>{period}</td>
                   <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)' }}>{time}</td>
-                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-muted)' }}>{aircraft}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <p style={{ ...S.p, color: 'var(--text-muted)', fontSize: 13 }}>
-          Časy jsou místní. Letový řád se mění podle sezony a provozní situace, proto jej před cestou znovu zkontrolujte.
+          Rozpis uvádí Airbus A380-800 každý den od 1. října 2026. Před cestou nebo fotografováním zkontrolujte
+          konkrétní datum, protože dopravce může typ letadla operativně změnit.
         </p>
 
-        <h2 style={S.h2}>Kdy se A380 vrátil do Prahy</h2>
+        <h2 style={S.h2}>Co se na pražské lince změnilo v roce 2026</h2>
         <p style={S.p}>
-          Pravidelný návrat přišel 1. prosince 2024 po více než čtyřleté přestávce. Emirates tehdy nasadil A380 na
-          spojení Dubaj–Praha a Letiště Praha návrat prezentovalo jako výrazné zvýšení kapacity. Články z roku 2024
-          proto nelžou, jen už nemusí popisovat současný rozpis.
+          Nejde o první návrat A380 po covidové přestávce. Ten proběhl už 1. prosince 2024 a letadlo na lince
+          pravidelně létalo také na začátku roku 2026. Ještě v březnovém rozpisu byl A380 vedený do 28. března.
+          Od 29. března ho v Praze nahradil Boeing 777-300ER.
         </p>
         <p style={S.p}>
-          Přesně tady vzniká zmatek. Ve výsledcích vyhledávání zůstávají starší zprávy s titulkem, že se A380 vrací,
-          zatímco cestující hledá let o dva roky později. Rozhodující je vždy typ uvedený u konkrétního data na webu Emirates.
+          Emirates v únoru 2026 oznámil, že od 1. června pošle do Prahy modernizovaný A380 s Premium Economy.
+          Následné provozní změny ale tento plán posunuly. Červencová aktualizace počítala s Boeingem 777 až do
+          30. září a nejnovější zveřejněný rozpis uvádí A380 znovu od 1. října.
+        </p>
+
+        <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead>
+              <tr style={{ textAlign: 'left', color: 'var(--text-dim)', fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Datum</th>
+                <th style={{ padding: '8px 10px', borderBottom: '1px solid var(--border-mid)' }}>Co platilo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['1. prosince 2024', 'A380 se vrátil na pravidelnou linku Praha–Dubaj'],
+                ['do 28. března 2026', 'A380 byl stále nasazený na EK139 a EK140'],
+                ['29. března–30. září 2026', 'Linku převzal Boeing 777-300ER'],
+                ['od 1. října 2026', 'Aktuálně plánovaný každodenní návrat A380'],
+              ].map(([date, change]) => (
+                <tr key={date}>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontWeight: 700, whiteSpace: 'nowrap' }}>{date}</td>
+                  <td style={{ padding: 10, borderBottom: '1px solid var(--border-subtle)' }}>{change}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ ...S.p, color: 'var(--text-muted)', fontSize: 13 }}>
+          Proto jsou ve vyhledávání současně vidět zprávy o návratu v roce 2024, modernizovaném A380 plánovaném na
+          červen 2026 i novém říjnovém termínu. Pro cestu nebo focení je rozhodující nejnovější rozpis konkrétního letu.
+        </p>
+
+        <h2 style={S.h2}>Co víme o plánovaném letadle</h2>
+        <p style={S.p}>
+          V rozpisu je uveden Airbus A380-800. Emirates v únoru pro Prahu oznámil modernizovaný stroj s Premium
+          Economy, ale po několika změnách nasazení nechceme bez potvrzení slibovat konkrétní registraci ani uspořádání
+          kabiny. Flotila Emirates má několik konfigurací A380 a výměna letadla je možná i krátce před odletem.
         </p>
 
         <h2 style={S.h2}>Jak ověřit, zda do Prahy poletí A380</h2>
@@ -198,10 +238,9 @@ export default function A380PrahaArticle() {
         </div>
 
         <h2 style={S.h2}>Časté otázky</h2>
-        <h3 style={S.h3}>Létá nyní A380 pravidelně do Prahy?</h3>
+        <h3 style={S.h3}>Kdy se A380 vrátí do Prahy?</h3>
         <p style={S.p}>
-          Aktuální oficiální rozpis Emirates při kontrole 13. září 2026 uváděl Boeing 777. Nasazení se může změnit,
-          proto ověřte svůj konkrétní den.
+          Aktuální letový řád počítá s každodenním nasazením od 1. října 2026. Do 30. září je veden Boeing 777-300ER.
         </p>
         <h3 style={S.h3}>Je Emirates totéž jako Dubai Airlines?</h3>
         <p style={S.p}>
@@ -238,10 +277,15 @@ export default function A380PrahaArticle() {
         <SourcesBox
           sources={[
             { label: 'Emirates: aktuální letový řád Praha–Dubaj', href: 'https://www.emirates.com/cz/czech/destinations/prg/dxb/flights-from-prague-to-dubai/' },
-            { label: 'Letiště Praha: oznámení návratu A380 na pravidelnou linku v prosinci 2024', href: 'https://cz.linkedin.com/posts/prague-airport_n%C3%A1vrat-super-jumba-spole%C4%8Dnosti-emirates-activity-7269976226398617600-0Ilt' },
+            { label: 'Emirates: původní oznámení modernizovaného A380 pro Prahu od června 2026', href: 'https://www.emirates.com/media-centre/emirates-extends-latest-cabin-experience-to-more-cities-worldwide/' },
+            { label: 'AeroRoutes: A380 na pražské lince do 28. března 2026', href: 'https://www.aeroroutes.com/eng/260316-ekmar26' },
+            { label: 'AeroRoutes: od 29. března 2026 Boeing 777 místo A380', href: 'https://www.aeroroutes.com/eng/260327-ekapr26' },
+            { label: 'AeroRoutes: Boeing 777 na pražské lince od července do konce září 2026', href: 'https://www.aeroroutes.com/eng/260713-ek3q26' },
+            { label: 'Flight.info: aktuální rozpis EK139 od 1. října 2026', href: 'https://www.flight.info/EK139' },
+            { label: 'Flight.info: aktuální rozpis EK140 od 1. října 2026', href: 'https://www.flight.info/EK140' },
             { label: 'Emirates: technické údaje a konfigurace Airbusu A380', href: 'https://www.emirates.com/cz/czech/experience/our-fleet/a380/' },
           ]}
-          note="Aktuální typ letadla, časy a frekvence ověřeny 13. září 2026. Typ letadla se může změnit i po rezervaci."
+          note="Plánovaný návrat A380, časy a denní frekvence ověřeny 13. září 2026. Typ letadla se může změnit i po rezervaci."
         />
       </div>
     </main>
