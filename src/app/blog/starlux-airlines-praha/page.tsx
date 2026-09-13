@@ -5,6 +5,7 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
+import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
 
@@ -42,6 +43,12 @@ const jsonLd = {
   publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/starlux-airlines-praha',
+  about: {
+    '@type': 'Airline',
+    name: 'STARLUX Airlines',
+    iataCode: 'JX',
+    url: 'https://www.starlux-airlines.com/',
+  },
 }
 
 const S = {
@@ -88,10 +95,30 @@ export default function StarluxPrahaArticle() {
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
             STARLUX Airlines létá z Prahy do Tchaj-peje pod číslem JX102. Opačný let do Prahy nese číslo JX101.
-            Do konce září 2026 jsou v oficiálním rozpisu tři lety týdně. Od října letiště oznámilo navýšení až na
-            čtyři lety týdně. Před cestou vždy ověřte konkrétní datum přímo u dopravce.
+            Do konce září 2026 jsou v oficiálním rozpisu tři lety týdně. Pro období od 1. do 24. října dopravce
+            zveřejnil čtyři lety týdně. Pozdější datum vždy ověřte přímo u STARLUX.
           </p>
         </div>
+
+        <AirlineCard
+          abbreviation="JX"
+          name="STARLUX Airlines"
+          country="Tchaj-wan"
+          facts={[
+            { label: 'IATA / ICAO kód', value: 'JX / SJX' },
+            { label: 'Domovské letiště', value: 'Tchaj-wan Tchao-jüan (TPE)' },
+            { label: 'Pražská linka', value: 'JX101 / JX102' },
+            { label: 'Zahájení provozu', value: '23. ledna 2020' },
+            { label: 'Osobní flotila', value: 'A321neo, A330neo, A350-900 a A350-1000' },
+            { label: 'Praha', value: 'První evropská linka dopravce' },
+          ]}
+          description="STARLUX je tchajwanská mezinárodní aerolinka založená v květnu 2018. Provozuje výhradně letadla Airbus a svou síť staví kolem letiště Tchaj-wan Tchao-jüan. Přímé spojení s Prahou zahájila 1. srpna 2026."
+          links={[
+            { href: 'https://www.starlux-airlines.com/', label: 'Oficiální web' },
+            { href: 'https://www.starlux-airlines.com/en-Global/experience/walk-into-starlux/our-fleet', label: 'Flotila STARLUX' },
+            { href: 'https://www.iata.org/en/about/members/airline-list/starlux-airlines/605/', label: 'Profil u IATA' },
+          ]}
+        />
 
         <h2 style={S.h2}>Letový řád STARLUX Praha a Tchaj-pej</h2>
         <p style={S.p}>
@@ -125,8 +152,9 @@ export default function StarluxPrahaArticle() {
           </table>
         </div>
         <p style={{ ...S.p, color: 'var(--text-muted)', fontSize: 13 }}>
-          Od 1. do 24. října 2026 uvádí dopravce lety v pondělí, úterý, čtvrtek a sobotu. JX101 má přilétat do
-          Prahy v 08:25 a JX102 odlétat v 10:45. Pro pozdější termíny použijte aktuální rezervační systém STARLUX.
+          Od 1. do 24. října 2026 uvádí dopravce lety v pondělí, úterý, čtvrtek a sobotu. JX101 má odlétat z
+          Tchaj-peje v 00:10 a přilétat do Prahy v 08:25. JX102 má odlétat z Prahy v 10:45 a do Tchaj-peje
+          přilétat v 05:10 následujícího dne. Pro pozdější termíny použijte aktuální rezervační systém STARLUX.
         </p>
 
         <h2 style={S.h2}>Jaké letadlo STARLUX do Prahy nasazuje</h2>
@@ -210,6 +238,8 @@ export default function StarluxPrahaArticle() {
           sources={[
             { label: 'Letiště Praha: STARLUX zahájil přímé spojení Praha–Tchaj-pej', href: 'https://www.prg.aero/starlux-airlines-vstupuji-do-evropy-nova-prima-linka-spojuje-od-dnesniho-dne-prahu-s-tchaj-peji' },
             { label: 'STARLUX Airlines: oficiální rozpis linky Tchaj-pej–Praha', href: 'https://latestnews.starlux-airlines.com/en-TH/about-us/travel-advisories/advisories/latest-news/fly_to_PRG' },
+            { label: 'STARLUX Airlines: oficiální přehled flotily', href: 'https://www.starlux-airlines.com/en-Global/experience/walk-into-starlux/our-fleet' },
+            { label: 'IATA: kódy a profil STARLUX Airlines', href: 'https://www.iata.org/en/about/members/airline-list/starlux-airlines/605/' },
             { label: 'Letiště Praha: informace o destinaci Tchaj-pej a Terminálu 1', href: 'https://www.prg.aero/tchaj-pej' },
           ]}
           note="Letový řád a nasazovaný typ letadla ověřeny 13. září 2026. Pro konkrétní datum vždy zkontrolujte informace dopravce."
