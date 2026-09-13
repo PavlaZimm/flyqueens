@@ -15,6 +15,30 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'starlux-airlines-praha',
+    title: 'STARLUX Airlines v Praze: přímá linka do Tchaj-peje',
+    excerpt: 'STARLUX otevřel v Praze svou první evropskou linku. Kdy létají spoje JX101 a JX102, jaký Airbus A350 je obsluhuje a kde let ověřit nebo sledovat.',
+    date: '2026-09-13',
+    updatedAt: '2026-09-13',
+    dateLabel: '13. září 2026',
+    tag: 'Nová linka',
+    readingTime: '6 min čtení',
+    image: '/blog/starlux-airlines-praha.jpg',
+    imageAlt: 'Airbus A350-1000 letecké společnosti STARLUX Airlines',
+  },
+  {
+    slug: 'airbus-a380-praha-emirates',
+    title: 'Airbus A380 v Praze: kdy létá Emirates do Dubaje',
+    excerpt: 'A380 se na pravidelnou linku vrátil v prosinci 2024. Aktuální rozpis ale uvádí Boeing 777. Ukazujeme, jak před cestou nebo focením ověřit skutečný typ letadla.',
+    date: '2026-09-13',
+    updatedAt: '2026-09-13',
+    dateLabel: '13. září 2026',
+    tag: 'Aktuální přehled',
+    readingTime: '6 min čtení',
+    image: '/blog/airbus-a380-praha-emirates.jpg',
+    imageAlt: 'Airbus A380 společnosti Emirates na letišti v Praze',
+  },
+  {
     slug: 'co-mi-leti-nad-hlavou',
     title: 'Co mi letí nad hlavou? Zjistěte letadlo online',
     excerpt: 'Otevřete živou mapu, povolte polohu nebo najděte své město a zjistěte, které letadlo právě vidíte. Vysvětlíme také, proč někdy chybí trasa nebo typ stroje.',

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { POSTS } from '@/lib/blog'
 
 const BASE = 'https://www.flyqueens.cz'
-const LAST_SIGNIFICANT_UPDATE = '2026-09-12'
+const LAST_SIGNIFICANT_UPDATE = '2026-09-13'
 
 // Letiště, která mají hub + podstránky
 const AIRPORTS = ['praha', 'brno', 'ostrava', 'pardubice', 'karlovy-vary']
