@@ -2,7 +2,7 @@ export const AUTHOR = {
   name: 'Pavla Zimmermannová',
   role: 'Zakladatelka a autorka FlyQueens',
   profileUrl: 'https://www.linklady.cz/o-mne',
-  bio: 'Pavla stojí za návrhem, obsahem a rozvojem FlyQueens. V online marketingu působí od roku 2015 a při tvorbě webu propojuje SEO, data a srozumitelný obsah. Letecká fakta ověřuje z dohledatelných zdrojů a otevřeně popisuje limity veřejných dat.',
+  bio: 'Deset let jsem pracovala ve společnosti EDUARD – MODEL ACCESSORIES. Právě tam jsem si zamilovala letadla i létání. Dnes tuhle lásku propojuji se zkušenostmi z online marketingu a stojím za obsahem i rozvojem FlyQueens.',
 } as const
 
 export const AUTHOR_JSON_LD = {
@@ -10,4 +10,5 @@ export const AUTHOR_JSON_LD = {
   name: AUTHOR.name,
   url: AUTHOR.profileUrl,
   jobTitle: AUTHOR.role,
+  description: AUTHOR.bio,
 }
