@@ -231,6 +231,14 @@ export default function A380PrahaArticle() {
             <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
               Otevřít živou mapu
             </Link>
+            <a
+              href="https://www.emirates.com/ae/english/destinations/prg/dxb/flights-from-prague-to-dubai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-block', background: 'var(--glass-bg)', border: '1px solid var(--gold)', color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}
+            >
+              Ověřit let u Emirates ↗
+            </a>
             <Link href="/letiste/praha" style={{ display: 'inline-block', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', fontFamily: 'Archivo, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
               Letiště Praha
             </Link>
