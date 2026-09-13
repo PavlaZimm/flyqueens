@@ -77,10 +77,10 @@ export default function KarlovyVaryAirportPage() {
             <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Živá mapa letadel</strong>
             <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Poslední dostupné polohy zachycených letadel. →</span>
           </Link>
-          <a href="https://www.airport-k-vary.cz/cs/odlety/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
-            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Aktuální odlety</strong>
-            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Otevřít oficiální letový řád letiště. ↗</span>
-          </a>
+          <Link href="/letiste/karlovy-vary/odlety" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Odlety a přílety</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Přehled dostupných letů a oficiální zdroj. →</span>
+          </Link>
         </div>
 
         <h2 style={S.h2}>Autobusem číslo 8</h2>

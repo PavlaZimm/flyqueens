@@ -73,7 +73,7 @@ export default function ParkovaniBrnoPage() {
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Oficiální dlouhodobé parkoviště stojí 300 Kč za den, týden 1 300 Kč a patnáct dní 2 500 Kč.
+            První den na oficiálním parkovišti stojí 300 Kč, týden 1 300 Kč a patnáct dní 2 500 Kč.
             Prvních 20 minut je jednou denně zdarma. Každá započatá hodina od 1 do 4 hodin stojí 60 Kč;
             pobyt od 5 do 24 hodin stojí 300 Kč.
           </p>

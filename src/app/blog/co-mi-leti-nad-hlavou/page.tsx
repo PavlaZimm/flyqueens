@@ -136,7 +136,7 @@ export default function OverheadAircraftArticle() {
         <p style={S.p}>
           ADS-B zpráva může obsahovat polohu, výšku, rychlost a identifikaci letu, ale ne hotový popis cesty pro
           cestující. Trasa se obvykle páruje s dalším zdrojem podle volacího znaku. Když je znak prázdný, zadaný chybně,
-          soukromý nebo se nepodaří najít odpovídající letový plán, je poctivější zobrazit „trasa není dostupná“ než hádat.
+          soukromý nebo se nepodaří najít odpovídající trasová metadata, je poctivější zobrazit „trasa není dostupná“ než hádat.
         </p>
 
         <h2 style={S.h2}>Uvidím na mapě každé letadlo?</h2>

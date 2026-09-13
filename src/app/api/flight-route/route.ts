@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAeroDataBoxConnection } from '@/lib/aerodatabox'
 import { checkRateLimit } from '@/lib/rateLimit'
 
 export const revalidate = 120  // cache 2 minuty
@@ -210,18 +211,14 @@ export async function GET(req: NextRequest) {
     ? { lat, lng, heading: heading ?? 0, velocity: velocity ?? 0 }
     : null
 
-  const aeroKey  = process.env.AERODATABOX_API_KEY
-  const aeroBase = process.env.AERODATABOX_BASE_URL
+  const aeroConnection = getAeroDataBoxConnection()
 
-  // ── Primárně: AeroDataBox — přesná data z flight plánu ──
-  if (aeroKey && aeroBase) {
+  // ── Primárně: AeroDataBox — plánované a provozní údaje o letu ──
+  if (aeroConnection) {
     try {
-      const url = `${aeroBase}/flights/icao24/${icao24}`
+      const url = `${aeroConnection.baseUrl}/flights/icao24/${icao24}`
       const res = await fetch(url, {
-        headers: {
-          'x-api-market-key': aeroKey,
-          'Accept': 'application/json',
-        },
+        headers: aeroConnection.headers,
         signal: AbortSignal.timeout(5000),
       })
 

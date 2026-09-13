@@ -70,17 +70,17 @@ export default function OstravaHubPage() {
 
         <div style={{ display: 'grid', gap: 10 }}>
           <Link href="/letiste/ostrava/parkovani" style={{ textDecoration: 'none', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
-            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Parkování P1 až P6</strong>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Veřejná parkoviště a ceny</strong>
             <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Ověřené ceny a vzdálenosti od terminálu. →</span>
           </Link>
           <Link href="/radar" style={{ textDecoration: 'none', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
             <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Živá mapa letadel nad Moravou</strong>
             <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Poslední dostupné polohy zachycených letadel. →</span>
           </Link>
-          <a href="https://www.airport-ostrava.cz/p/aktualni-prilety-a-odlety" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
-            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Aktuální odlety a přílety</strong>
-            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Otevřít oficiální letovou tabuli letiště. ↗</span>
-          </a>
+          <Link href="/letiste/ostrava/odlety" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Odlety a přílety</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Přehled dostupných letů a oficiální zdroj. →</span>
+          </Link>
         </div>
 
         <h2 style={S.h2}>Vlakem přímo k odletové hale</h2>

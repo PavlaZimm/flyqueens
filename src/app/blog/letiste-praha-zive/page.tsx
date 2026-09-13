@@ -65,7 +65,7 @@ export default function ZiveArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Letiště Praha živě: přílety, odlety a mapa letadel
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="13. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -95,8 +95,9 @@ export default function ZiveArticle() {
         <h2 style={S.h2}>Webkamera versus živá mapa</h2>
         <p style={S.p}>
           Webkamera je fajn na atmosféru. Vidíte počasí, provoz na stojánce, občas přistání. Má ale dvě slabiny:
-          záběr je pevný a v noci nebo v mlze neuvidíte skoro nic. Živá mapa tyhle limity nemá. Ukáže i letadlo
-          deset kilometrů daleko ve tmě, protože nepracuje s obrazem, ale s daty.
+          záběr je pevný a v noci nebo v mlze neuvidíte skoro nic. Živá mapa není závislá na denním světle ani
+          na jediném záběru, má ale vlastní limity pokrytí a dostupnosti dat. Letadlo může ukázat i ve tmě,
+          protože nepracuje s obrazem, ale s přijatými daty.
         </p>
 
         <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
@@ -141,9 +142,9 @@ export default function ZiveArticle() {
         <h2 style={S.h2}>Co se dá z letu vyčíst</h2>
         <p style={S.p}>
           Když na letadlo kliknete, dostanete víc než jen tečku na mapě. Uvidíte volací znak, typ stroje,
-          barometrickou výšku převedenou do metrů, rychlost a kurz. Pokud se podaří dohledat letový plán,
-          zobrazí se i odletové a cílové letiště. Vertikální rychlost napoví, zda stroj stoupá nebo klesá;
-          sama ale nepotvrzuje, na které letiště míří.
+          barometrickou výšku převedenou do metrů, rychlost a kurz. Pokud se podaří přiřadit trasová metadata,
+          zobrazí se uváděné odletové a cílové letiště. Nejde o potvrzený letový plán ani přesnou proletěnou
+          trasu. Vertikální rychlost napoví, zda stroj stoupá nebo klesá; sama ale nepotvrzuje, na které letiště míří.
         </p>
 
         <h2 style={S.h2}>Jak najít konkrétní let</h2>
@@ -222,7 +223,7 @@ export default function ZiveArticle() {
             { label: 'Letiště Praha — oficiální přílety a odlety', href: 'https://www.prg.aero/' },
             { label: 'Data o polohách: dostupné ADS-B zdroje uvedené přímo v mapě' },
           ]}
-          note="Princip ADS-B a omezení veřejných dat ověřeny 11. září 2026. Pro cestu na letiště kontrolujte oficiální tabuli."
+          note="Princip ADS-B, trasová metadata a omezení veřejných dat ověřeny 13. září 2026. Pro cestu na letiště kontrolujte oficiální tabuli."
         />
       </div>
     </main>

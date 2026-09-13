@@ -17,10 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/blog`, lastModified: LAST_SIGNIFICANT_UPDATE },
   ]
 
-  // Hub + parkování pro každé letiště
+  // Hub + parkování + odlety/přílety pro každé letiště
   const airports: MetadataRoute.Sitemap = AIRPORTS.flatMap((slug) => [
     { url: `${BASE}/letiste/${slug}`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/letiste/${slug}/parkovani`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/letiste/${slug}/odlety`, lastModified: LAST_SIGNIFICANT_UPDATE },
   ])
 
   // Blogové články se přidají automaticky z registru

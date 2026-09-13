@@ -29,7 +29,7 @@ const faqJsonLd = {
       name: 'Kolik stojí parkování u letiště Praha?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Dlouhodobé ceny jsou závislé na termínu a typu parkoviště. AeroParking při ověření 11. září 2026 uváděl nabídku od 890 Kč za 8 dní; konečnou cenu ukáže rezervace pro konkrétní termín.',
+        text: 'Dlouhodobé ceny závisejí na termínu, dostupnosti a typu parkoviště. Konečnou cenu ukáže rezervační systém po zadání konkrétního termínu.',
       },
     },
     {
@@ -64,7 +64,7 @@ export default function ParkovaniPrahaPage() {
   return (
     <main style={S.page}>
       { }
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, '\\u003c') }} />
 
       <div style={S.wrap}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)', letterSpacing: 0.3 }}>
@@ -87,7 +87,7 @@ export default function ParkovaniPrahaPage() {
           <p style={{ ...S.p, margin: 0 }}>
             P1, P2 a PB EXPRESS nabízí 10 minut zdarma jednou za 24 hodin; do 15 minut stojí 50 Kč.
             Krátkodobé PC COMFORT stojí 80 Kč za hodinu. U dlouhodobého parkování se cena mění podle
-            termínu; AeroParking při ověření uváděl nabídku od 890 Kč za 8 dní.
+            termínu a dostupnosti; přesnou částku ukáže rezervace až po zadání data příjezdu a odjezdu.
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export default function ParkovaniPrahaPage() {
         </div>
 
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 24 }}>
-          Ověřeno 11. září 2026. Dlouhodobé ceny jsou dynamické; aktuální částku vždy ověřte v rezervaci.
+          Ověřeno 13. září 2026. Dlouhodobé ceny jsou dynamické; aktuální částku vždy ověřte v rezervaci.
         </p>
         <AffiliateParkingCta airport="praha" />
         <SourcesBox
@@ -177,7 +177,7 @@ export default function ParkovaniPrahaPage() {
             { label: 'Letiště Praha — oficiální ceník parkování', href: 'https://www.prg.aero/parkovani' },
             { label: 'AeroParking — aktuální nabídka a rezervace', href: 'https://www.aeroparking.cz/' },
           ]}
-          note="Sazby expresního a hodinového stání a nabídka dlouhodobého parkování ověřeny 11. září 2026."
+          note="Sazby expresního a hodinového stání a princip dynamických cen dlouhodobého parkování ověřeny 13. září 2026."
         />
         <ParkingCrossLinks current="praha" />
       </div>

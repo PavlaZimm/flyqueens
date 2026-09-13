@@ -77,10 +77,10 @@ export default function PardubiceAirportPage() {
             <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Živá mapa letadel</strong>
             <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Poslední dostupné polohy letadel nad Českem. →</span>
           </Link>
-          <a href="https://www.airport-pardubice.cz/letovy-rad/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
-            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Aktuální odlety a přílety</strong>
-            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Otevřít oficiální letový řád Letiště Pardubice. ↗</span>
-          </a>
+          <Link href="/letiste/pardubice/odlety" style={{ textDecoration: 'none', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '15px 16px', color: 'var(--text-primary)' }}>
+            <strong style={{ fontFamily: 'Archivo, sans-serif', fontSize: 16 }}>Odlety a přílety</strong>
+            <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>Přehled dostupných letů a oficiální zdroj. →</span>
+          </Link>
         </div>
 
         <h2 style={S.h2}>Parkování přímo u terminálu</h2>

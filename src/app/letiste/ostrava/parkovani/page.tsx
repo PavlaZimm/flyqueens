@@ -6,12 +6,12 @@ import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
-  title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny P1 až P6',
+  title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny',
   description:
     'Aktuální oficiální ceny parkování u letiště Leoše Janáčka v Mošnově. Rozdíly mezi P1, P3, P4, P5 a P6 a vzdálenost od terminálu.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/ostrava/parkovani' },
   ...socialMetadata({
-    title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny P1 až P6',
+    title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny',
     description: 'Ověřené ceny oficiálních parkovišť a vzdálenost od terminálu.',
     url: 'https://www.flyqueens.cz/letiste/ostrava/parkovani',
     type: 'article',
@@ -69,7 +69,7 @@ export default function ParkovaniOstravaPage() {
         </nav>
 
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '18px 0 6px' }}>
-          Parkování u letiště Ostrava: ceny parkovišť P1 až P6
+          Parkování u letiště Ostrava: ceny veřejných parkovišť
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
           Oficiální parkoviště se liší cenou i vzdáleností. P1 je přímo před odletovou halou, levnější

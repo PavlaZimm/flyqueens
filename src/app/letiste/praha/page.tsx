@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
@@ -17,12 +18,22 @@ export const metadata: Metadata = {
 const LINKS = [
   { href: '/letiste/praha/parkovani', title: 'Parkování a ceny', desc: 'Kde zaparkovat levně, srovnání parkovišť a tipy na rezervaci.', ready: true },
   { href: '/radar', title: 'Živá mapa nad Prahou', desc: 'Poslední dostupné polohy letadel. Kliknutí ukáže detail.', ready: true },
-  { href: '/letiste/praha/odlety', title: 'Odlety a přílety', desc: 'Časy letů a zpoždění. Připravujeme.', ready: false },
+  { href: '/letiste/praha/odlety', title: 'Odlety a přílety', desc: 'Přehled dostupných letů a bezpečný odkaz na oficiální tabuli.', ready: true },
 ]
+
+const airportJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Airport',
+  name: 'Letiště Václava Havla Praha',
+  iataCode: 'PRG',
+  icaoCode: 'LKPR',
+  url: 'https://www.prg.aero/',
+}
 
 export default function PrahaHubPage() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(airportJsonLd).replace(/</g, '\\u003c') }} />
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
@@ -35,7 +46,7 @@ export default function PrahaHubPage() {
           Letiště Václava Havla Praha
         </h1>
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 26px' }}>
-          Letiště Václava Havla používá kód PRG. Vyberte si ověřený přehled parkování nebo živou mapu
+          Letiště Václava Havla používá kódy PRG a LKPR. Vyberte si ověřený přehled parkování nebo živou mapu
           dostupných letových dat; provozní časy letu vždy potvrďte na oficiální tabuli letiště.
         </p>
 
@@ -56,10 +67,21 @@ export default function PrahaHubPage() {
               </div>
             )
             return l.ready
-              ? <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>{inner}</Link>
+              ? <Link key={l.href} href={l.href} style={{ textDecoration: 'none', color: 'inherit' }}>{inner}</Link>
               : <div key={l.href}>{inner}</div>
           })}
         </div>
+
+        <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 22 }}>
+          Základní identifikace letiště a odkaz na přehled letů ověřeny 13. září 2026.
+        </p>
+        <SourcesBox
+          sources={[
+            { label: 'Letiště Praha: oficiální web', href: 'https://www.prg.aero/' },
+            { label: 'Letiště Praha: oficiální přehled letů', href: 'https://www.prg.aero/prehled-letu?hour=all' },
+          ]}
+          note="Provozní čas, zpoždění a terminál vždy ověřte na oficiální tabuli nebo u dopravce."
+        />
       </div>
     </main>
   )

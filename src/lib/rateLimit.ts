@@ -17,6 +17,7 @@ const LIMITS: Record<string, number> = {
   flights:       30,
   'flight-summary': 60,
   'flight-route': 30, // kliknutí na letadlo — max 30/min
+  'airport-flights': 30,
   metar:         20,
   taf:           20,
   'airport-details': 30,
