@@ -6,6 +6,7 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
+import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
 
@@ -43,6 +44,12 @@ const jsonLd = {
   publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/airbus-a380-praha-emirates',
+  about: {
+    '@type': 'Airline',
+    name: 'Emirates',
+    iataCode: 'EK',
+    url: 'https://www.emirates.com/',
+  },
 }
 
 const S = {
@@ -94,6 +101,23 @@ export default function A380PrahaArticle() {
             v 16:00. Jde o plánovaný letový řád, který může Emirates ještě změnit.
           </p>
         </div>
+
+        <AirlineCard
+          abbreviation="EK"
+          name="Emirates"
+          country="Spojené arabské emiráty"
+          facts={[
+            { label: 'IATA / ICAO', value: 'EK / UAE' },
+            { label: 'Domovské letiště', value: 'Dubaj (DXB)' },
+            { label: 'Pražská linka', value: 'EK139 / EK140' },
+            { label: 'Flotila cestujících', value: 'Airbus A350 a A380, Boeing 777' },
+          ]}
+          description="Dálková letecká společnost z Dubaje zahájila provoz v roce 1985. Mezi Prahou a Dubají provozuje přímou každodenní linku; konkrétní typ letadla se může podle data změnit."
+          links={[
+            { label: 'Oficiální web Emirates', href: 'https://www.emirates.com/cz/czech/' },
+            { label: 'Letový řád Praha–Dubaj', href: 'https://www.emirates.com/ae/english/destinations/prg/dxb/flights-from-prague-to-dubai/' },
+          ]}
+        />
 
         <h2 style={S.h2}>Letový řád A380 Praha–Dubaj od října 2026</h2>
         <p style={S.p}>
@@ -290,6 +314,8 @@ export default function A380PrahaArticle() {
             { label: 'AeroRoutes: od 29. března 2026 Boeing 777 místo A380', href: 'https://www.aeroroutes.com/eng/260327-ekapr26' },
             { label: 'AeroRoutes: Boeing 777 na pražské lince od července do konce září 2026', href: 'https://www.aeroroutes.com/eng/260713-ek3q26' },
             { label: 'Emirates: technické údaje a konfigurace Airbusu A380', href: 'https://www.emirates.com/cz/czech/experience/our-fleet/a380/' },
+            { label: 'IATA: oficiální kódy dopravce Emirates', href: 'https://www.iata.org/en/about/members/airline-list/emirates/73/' },
+            { label: 'Emirates: historie společnosti od roku 1985', href: 'https://www.emirates.com/us/english/about-us/timeline/' },
           ]}
           note="Plánovaný návrat A380, časy a denní frekvence ověřeny 13. září 2026 přímo v letovém řádu Emirates. Typ letadla se může změnit i po rezervaci."
         />

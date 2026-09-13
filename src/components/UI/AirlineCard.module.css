@@ -1,0 +1,126 @@
+.card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 16px;
+  margin: 22px 0 10px;
+  padding: 18px;
+  border: 1px solid var(--glass-border);
+  border-left: 3px solid #d71920;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 0 0, rgba(215, 25, 32, 0.11), transparent 38%),
+    var(--midnight-2);
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(215, 25, 32, 0.45);
+  border-radius: 14px;
+  background: rgba(215, 25, 32, 0.1);
+  color: #ff676c;
+  font-family: Archivo, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.eyebrow {
+  margin-bottom: 4px;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.name {
+  margin: 0;
+  font-family: Archivo, sans-serif;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.country {
+  margin-top: 3px;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 16px;
+  grid-column: 1 / -1;
+  margin: 1px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.fact {
+  min-width: 0;
+}
+
+.fact dt {
+  margin-bottom: 2px;
+  color: var(--text-dim);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fact dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.description {
+  grid-column: 1 / -1;
+  margin: 1px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  gap: 8px 16px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.links a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.links a:hover,
+.links a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .card {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .mark {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+  }
+
+  .facts {
+    grid-template-columns: 1fr;
+  }
+}
