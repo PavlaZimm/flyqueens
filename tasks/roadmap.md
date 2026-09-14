@@ -7,7 +7,7 @@
 
 ## ✅ Session 7 (2026-09-14) — průchozí 3D model města
 
-- [x] **/mesto-3d** — průchozí 3D model Prahy, Brna, Ostravy, Pardubic a Karlových Varů (MapLibre GL + OpenFreeMap vektorové dlaždice, budovy z OSM `render_height`)
+- [x] **/mesto-3d** — průchozí 3D model Prahy, Brna, Ostravy, Pardubic, Karlových Varů a Bíliny (bez letiště) (MapLibre GL + OpenFreeMap vektorové dlaždice, budovy z OSM `render_height`)
 - [x] Ovládání WASD/šipky + Shift běh, tažení myší = rozhlížení, dotykový D-pad na mobilu, přepínač Nadhled / ulice
 - [x] Výchozí místa (náměstí, terminál letiště) + zlatý marker letiště s odkazem na průvodce, `?mesto=` v URL
 - [x] Tmavý styl Fiord / světlý Liberty podle tématu webu, fallback na Liberty při chybě stylu

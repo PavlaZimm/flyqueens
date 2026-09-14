@@ -14,9 +14,9 @@ export interface CityWalkSpot {
 export interface CityWalkCity {
   slug: string
   name: string
-  /** Odkaz na letištní průvodce na webu. */
-  airportHref: string
-  airport: { icao: string; iata: string; name: string; lat: number; lng: number }
+  /** Odkaz na letištní průvodce na webu (jen u měst s letištěm). */
+  airportHref?: string
+  airport?: { icao: string; iata: string; name: string; lat: number; lng: number }
   spots: CityWalkSpot[]
 }
 
@@ -74,6 +74,16 @@ export const CITY_WALK_CITIES: CityWalkCity[] = [
     spots: [
       { id: 'kolonada', label: 'Mlýnská kolonáda', lat: 50.2246, lng: 12.8801, bearing: 160 },
       { id: 'terminal', label: 'Letiště Karlovy Vary, terminál', lat: 50.2035, lng: 12.9105, bearing: 90 },
+    ],
+  },
+  {
+    slug: 'bilina',
+    name: 'Bílina',
+    spots: [
+      { id: 'mirove',  label: 'Mírové náměstí',          lat: 50.5486, lng: 13.7757, bearing: 30 },
+      { id: 'zamek',   label: 'Zámek Bílina',            lat: 50.5474, lng: 13.7731, bearing: 120 },
+      { id: 'kyselka', label: 'Lázně Kyselka',           lat: 50.5602, lng: 13.7736, bearing: 340 },
+      { id: 'boren',   label: 'Pod Bořeněm',             lat: 50.5418, lng: 13.7650, bearing: 200 },
     ],
   },
 ]
