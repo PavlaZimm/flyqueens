@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
@@ -53,6 +54,8 @@ export default function KarlovyVaryAirportPage() {
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
           Letiště Karlovy Vary v Olšových Vratech používá kódy KLV a LKKV. Z města se k terminálu dostanete autobusem číslo 8. Parkovat lze na bezplatné P7 bez garance místa nebo na placených plochách s rezervací.
         </p>
+
+        <AirportDiagram icao="LKKV" iata="KLV" name="Letiště Karlovy Vary" />
 
         <section aria-label="Rychlá fakta" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: 9, marginBottom: 26 }}>
           {[

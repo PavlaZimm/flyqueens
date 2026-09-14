@@ -11,6 +11,8 @@ export interface BlogPost {
   readingTime: string
   image: string
   imageAlt: string
+  imageWidth: number   // skutečné rozměry souboru, jdou rovnou do og:image
+  imageHeight: number
 }
 
 export const POSTS: BlogPost[] = [
@@ -25,6 +27,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '6 min čtení',
     image: '/blog/starlux-airlines-praha.jpg',
     imageAlt: 'Airbus A350-1000 letecké společnosti STARLUX Airlines',
+    imageWidth: 1280,
+    imageHeight: 854,
   },
   {
     slug: 'airbus-a380-praha-emirates',
@@ -37,6 +41,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '6 min čtení',
     image: '/blog/airbus-a380-praha-emirates.jpg',
     imageAlt: 'Airbus A380 společnosti Emirates na letišti v Praze',
+    imageWidth: 1599,
+    imageHeight: 737,
   },
   {
     slug: 'co-mi-leti-nad-hlavou',
@@ -49,6 +55,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '6 min čtení',
     image: '/blog/co-mi-leti-nad-hlavou.jpg',
     imageAlt: 'Dopravní letadlo fotografované přímo zespodu proti modré obloze',
+    imageWidth: 1599,
+    imageHeight: 900,
   },
   {
     slug: 'jak-sledovat-let-podle-cisla',
@@ -61,6 +69,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '7 min čtení',
     image: '/blog/jak-sledovat-let-podle-cisla.jpg',
     imageAlt: 'Pohled z okna letadla na křídlo a krajinu pod ním',
+    imageWidth: 1599,
+    imageHeight: 900,
   },
   {
     slug: 'jak-vysoko-letaji-letadla',
@@ -73,6 +83,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '6 min čtení',
     image: '/blog/jak-vysoko-letaji-letadla.jpg',
     imageAlt: 'Dopravní letadlo letící nad souvislou vrstvou oblačnosti',
+    imageWidth: 1599,
+    imageHeight: 900,
   },
   {
     slug: 'letiste-praha-zive',
@@ -85,6 +97,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '6 min čtení',
     image: '/blog/letiste-praha-zive.jpg',
     imageAlt: 'Learjet pojíždějící po letišti Václava Havla Praha',
+    imageWidth: 1600,
+    imageHeight: 1065,
   },
   {
     slug: 'squawk-nouzove-kody',
@@ -97,6 +111,8 @@ export const POSTS: BlogPost[] = [
     readingTime: '5 min čtení',
     image: '/blog/squawk-nouzove-kody.jpg',
     imageAlt: 'Ovládací panel leteckého transpondéru v letadle DC-9',
+    imageWidth: 1600,
+    imageHeight: 1071,
   },
 ]
 

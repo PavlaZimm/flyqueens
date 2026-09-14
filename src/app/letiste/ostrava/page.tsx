@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
@@ -53,6 +54,8 @@ export default function OstravaHubPage() {
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
           Letiště Leoše Janáčka Ostrava v Mošnově používá kódy OSR a LKMT. K terminálu se dostanete autem, autobusem i vlakem. Železniční terminál stojí hned vedle odletové haly.
         </p>
+
+        <AirportDiagram icao="LKMT" iata="OSR" name="Letiště Leoše Janáčka Ostrava" />
 
         <section aria-label="Rychlá fakta" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: 9, marginBottom: 26 }}>
           {[

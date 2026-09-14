@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
@@ -53,6 +54,8 @@ export default function PardubiceAirportPage() {
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
           Letiště Pardubice používá kódy PED a LKPD. Terminál Jana Kašpara leží v Popkovicích a cestující mohou využít bezplatné parkování i spojení MHD z hlavního nádraží.
         </p>
+
+        <AirportDiagram icao="LKPD" iata="PED" name="Letiště Pardubice" />
 
         <section aria-label="Rychlá fakta" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: 9, marginBottom: 26 }}>
           {[

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: post.image, width: 1280, height: 854, alt: post.imageAlt },
+    image: { url: post.image, width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 

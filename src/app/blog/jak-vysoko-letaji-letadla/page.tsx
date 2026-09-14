@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/jak-vysoko-letaji-letadla.jpg', width: 1800, height: 1013, alt: post.imageAlt },
+    image: { url: '/blog/jak-vysoko-letaji-letadla.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 

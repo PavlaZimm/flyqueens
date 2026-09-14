@@ -1,6 +1,14 @@
 # FlyQueens — použité fotografie
 
-Aktualizováno 11. září 2026. Fotografie jsou uložené lokálně kvůli rychlosti, stabilitě a ochraně soukromí návštěvníků. V článcích je vždy viditelný autor i odkaz na licenci.
+Aktualizováno 14. září 2026. Fotografie jsou uložené lokálně kvůli rychlosti, stabilitě a ochraně soukromí návštěvníků. V článcích je vždy viditelný autor i odkaz na licenci.
+
+Všechny soubory jsou zmenšené na delší hranu nejvýše 1 600 px a znovu zakódované
+(`npm run images:optimize`). Důvod: hero fotka se vykresluje maximálně na 760 px,
+ale stejný soubor si v původní velikosti stahují roboti sociálních sítí — og:image
+míří přímo do `/public`, ne přes optimalizátor. Celkem 2 717 kB → 1 031 kB.
+Skutečné rozměry každého souboru jsou vedené v `src/lib/blog.ts` (`imageWidth`,
+`imageHeight`) a odtud jdou rovnou do og:image, takže se nemůžou rozejít.
+U snímků pod licencí CC BY-SA jde stále jen o zmenšenou kopii bez dalších úprav.
 
 | Soubor | Autor a zdroj | Licence | Poznámka |
 |---|---|---|---|

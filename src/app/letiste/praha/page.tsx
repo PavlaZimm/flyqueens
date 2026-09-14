@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
@@ -49,6 +50,8 @@ export default function PrahaHubPage() {
           Letiště Václava Havla používá kódy PRG a LKPR. Vyberte si ověřený přehled parkování nebo živou mapu
           dostupných letových dat; provozní časy letu vždy potvrďte na oficiální tabuli letiště.
         </p>
+
+        <AirportDiagram icao="LKPR" iata="PRG" name="Letiště Václava Havla Praha" />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {LINKS.map((l) => {

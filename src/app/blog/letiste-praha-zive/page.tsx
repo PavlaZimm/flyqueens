@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/letiste-praha-zive.jpg', width: 1920, height: 1278, alt: post.imageAlt },
+    image: { url: '/blog/letiste-praha-zive.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 
