@@ -19,45 +19,66 @@ function unixTimestamp(value: unknown): number | undefined {
   return Number.isFinite(number) && number > 0 ? Math.floor(number) : undefined
 }
 
-function parseState(state: unknown[]): Flight | null {
+type FlightWireFormat = 'opensky-extended-v1' | 'compact-v1'
+
+function parseState(state: unknown[], format: FlightWireFormat): Flight | null {
   const arr = state as Array<unknown>
-  const lat = arr[IDX_LAT] as number | null
-  const lng = arr[IDX_LNG] as number | null
+  const compact = format === 'compact-v1'
+  const at = (legacyIndex: number, compactIndex: number): unknown => arr[compact ? compactIndex : legacyIndex]
+  const lat = at(IDX_LAT, 5) as number | null
+  const lng = at(IDX_LNG, 4) as number | null
 
   // Odmítni chybějící i NaN souřadnice — jinak spadne Leaflet flyTo/marker
   if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return null
 
-  const icao24 = String(arr[IDX_ICAO24] ?? '')
-  const reportedCallsign = String(arr[IDX_CALLSIGN] ?? '').trim()
+  const icao24 = String(at(IDX_ICAO24, 0) ?? '')
+  const reportedCallsign = String(at(IDX_CALLSIGN, 1) ?? '').trim()
   const callsign = reportedCallsign || icao24.toUpperCase()
-  const velocity = ((arr[IDX_VELOCITY] as number | null) ?? 0) * 3.6 // m/s → km/h
-  const altitude = (arr[IDX_ALT_BARO] as number | null) ?? 0
-  const reportedHeading = arr[IDX_HEADING] as number | null
+  const velocity = ((at(IDX_VELOCITY, 8) as number | null) ?? 0) * 3.6 // m/s → km/h
+  const altitude = (at(IDX_ALT_BARO, 6) as number | null) ?? 0
+  const reportedHeading = at(IDX_HEADING, 9) as number | null
   const heading = Number.isFinite(reportedHeading) ? Number(reportedHeading) : 0
-  const onGround = Boolean(arr[IDX_ON_GROUND])
-  const origin_country = (arr[IDX_ORIGIN_COUNTRY] as string | null) ?? undefined
+  const onGround = Boolean(at(IDX_ON_GROUND, 7))
+  const origin_country = (at(IDX_ORIGIN_COUNTRY, 10) as string | null) ?? undefined
 
   // Rozšířený layout za nativními OpenSky poli. [17] je pouze ICAO typový
   // designátor (A320), nikoliv přesný výrobní model letadla.
-  const registration = arr[16] ? String(arr[16]) : undefined
-  const typeDesignator = arr[17] ? String(arr[17]) : undefined
-  const dbType   = arr[18] ? (arr[18] as AircraftType) : undefined
-  const oat      = arr[19] != null ? Number(arr[19]) : undefined
-  const windSpeed = arr[20] != null ? Number(arr[20]) : undefined
-  const mach     = arr[21] != null ? Number(arr[21]) : undefined
-  const baroRate = arr[22] != null ? Number(arr[22]) : undefined  // ft/min, + = stoupání
+  const registrationValue = at(16, 11)
+  const typeDesignatorValue = at(17, 12)
+  const dbTypeValue = at(18, 13)
+  const oatValue = at(19, 14)
+  const windSpeedValue = at(20, 15)
+  const machValue = at(21, 16)
+  const baroRateValue = at(22, 17)
+  const registration = registrationValue ? String(registrationValue) : undefined
+  const typeDesignator = typeDesignatorValue ? String(typeDesignatorValue) : undefined
+  const dbType = dbTypeValue ? (dbTypeValue as AircraftType) : undefined
+  const oat = oatValue != null ? Number(oatValue) : undefined
+  const windSpeed = windSpeedValue != null ? Number(windSpeedValue) : undefined
+  const mach = machValue != null ? Number(machValue) : undefined
+  const baroRate = baroRateValue != null ? Number(baroRateValue) : undefined  // ft/min, + = stoupání
   // OpenSky vrací squawk na indexu 14, rozšířený ADS-B formát ho duplikuje na 23.
-  const squawk   = arr[23] ? String(arr[23]) : (arr[14] ? String(arr[14]) : undefined)
-  const emergency = normalizeEmergency(arr[24])
-  const navAltFt = arr[25] != null ? Number(arr[25]) : undefined  // autopilot target ft
-  const iasKts = arr[27] != null ? Number(arr[27]) : undefined
-  const tasKts = arr[28] != null ? Number(arr[28]) : undefined
-  const navHeading = arr[29] != null ? Number(arr[29]) : undefined
-  const navQnh = arr[30] != null ? Number(arr[30]) : undefined
-  const geomRate = arr[31] != null ? Number(arr[31]) : undefined
-  const roll = arr[32] != null ? Number(arr[32]) : undefined
-  const navModes = Array.isArray(arr[33])
-    ? arr[33].map((mode) => String(mode)).filter(Boolean)
+  const squawkValue = compact ? arr[18] : (arr[23] ?? arr[14])
+  const emergencyValue = at(24, 19)
+  const navAltitudeValue = at(25, 20)
+  const iasValue = at(27, 21)
+  const tasValue = at(28, 22)
+  const navHeadingValue = at(29, 23)
+  const navQnhValue = at(30, 24)
+  const geomRateValue = at(31, 25)
+  const rollValue = at(32, 26)
+  const navModesValue = at(33, 27)
+  const squawk = squawkValue ? String(squawkValue) : undefined
+  const emergency = normalizeEmergency(emergencyValue)
+  const navAltFt = navAltitudeValue != null ? Number(navAltitudeValue) : undefined  // autopilot target ft
+  const iasKts = iasValue != null ? Number(iasValue) : undefined
+  const tasKts = tasValue != null ? Number(tasValue) : undefined
+  const navHeading = navHeadingValue != null ? Number(navHeadingValue) : undefined
+  const navQnh = navQnhValue != null ? Number(navQnhValue) : undefined
+  const geomRate = geomRateValue != null ? Number(geomRateValue) : undefined
+  const roll = rollValue != null ? Number(rollValue) : undefined
+  const navModes = Array.isArray(navModesValue)
+    ? navModesValue.map((mode) => String(mode)).filter(Boolean)
     : undefined
 
   return {
@@ -71,8 +92,8 @@ function parseState(state: unknown[]): Flight | null {
     heading: Math.round(heading),
     headingReported: Number.isFinite(reportedHeading),
     onGround,
-    positionUpdatedAt: unixTimestamp(arr[IDX_TIME_POSITION]),
-    lastContactAt: unixTimestamp(arr[IDX_LAST_CONTACT]),
+    positionUpdatedAt: unixTimestamp(at(IDX_TIME_POSITION, 2)),
+    lastContactAt: unixTimestamp(at(IDX_LAST_CONTACT, 3)),
     aircraftType: dbType ?? 'unknown',
     typeDesignator,
     registration: registration || undefined,
@@ -99,7 +120,7 @@ export async function fetchFlights(
   signal?: AbortSignal,
 ): Promise<{ flights: Flight[]; meta: FlightDataMeta }> {
   const timeoutSignal = AbortSignal.timeout(6500)
-  const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}`, {
+  const res = await fetch(`/api/flights?region=${encodeURIComponent(region)}&format=compact`, {
     // Odpověď má krátkou CDN cache řízenou serverem. `no-store` v klientovi by
     // ji při každém pollu zbytečně obcházel.
     signal: signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal,
@@ -107,6 +128,7 @@ export async function fetchFlights(
 
   const data = await res.json() as {
     states?: unknown[][]
+    format?: FlightWireFormat
     source?: FlightDataSource | null
     fetchedAt?: number | null
     status?: FlightDataStatus
@@ -118,7 +140,9 @@ export async function fetchFlights(
   }
 
   return {
-    flights: (data.states ?? []).map(parseState).filter((f): f is Flight => f !== null),
+    flights: (data.states ?? [])
+      .map((state) => parseState(state, data.format ?? 'opensky-extended-v1'))
+      .filter((f): f is Flight => f !== null),
     meta: {
       status: data.status ?? 'unavailable',
       source: data.source ?? null,

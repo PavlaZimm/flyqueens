@@ -11,6 +11,7 @@ type SourceResult = {
   fetchedAt: number
 }
 type CachedSnapshot = SourceResult & { cachedAt: number }
+type FlightWireFormat = 'opensky-extended-v1' | 'compact-v1'
 
 type FlightSummary = {
   count: number
@@ -148,6 +149,58 @@ function normalizeRows(states: unknown[][]): unknown[][] {
     while (row.length < 34) row.push(undefined)
     return row
   })
+}
+
+function rounded(value: unknown, decimals: number): unknown {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return value ?? null
+  const factor = 10 ** decimals
+  return Math.round(value * factor) / factor
+}
+
+// Kompaktní formát je určený pouze pro naši mapu. Zachovává všechny údaje,
+// které UI používá, ale zahodí šest prázdných pozic historického OpenSky pole
+// a zkrátí číselnou přesnost na úroveň, kterou mapa a detail skutečně zobrazí.
+// Původní formát zůstává dostupný klientům bez `format=compact`.
+function compactState(state: unknown[]): unknown[] {
+  const compact: unknown[] = [
+    state[0] ?? null,                 // ICAO24
+    state[1] ?? null,                 // callsign
+    state[3] ?? null,                 // time position
+    state[4] ?? null,                 // last contact
+    rounded(state[5], 5),             // longitude (~1 m)
+    rounded(state[6], 5),             // latitude (~1 m)
+    rounded(state[7], 0),             // altitude (m)
+    state[8] ?? false,                // on ground
+    rounded(state[9], 2),             // velocity (m/s)
+    rounded(state[10], 1),            // heading
+    state[2] ?? null,                 // origin country
+    state[16] ?? null,                // registration
+    state[17] ?? null,                // ICAO type designator
+    state[18] ?? null,                // classified aircraft type
+    rounded(state[19], 1),            // OAT
+    rounded(state[20], 1),            // wind
+    rounded(state[21], 3),            // Mach
+    rounded(state[22], 0),            // barometric rate
+    state[23] ?? state[14] ?? null,    // squawk
+    state[24] ?? null,                // emergency
+    rounded(state[25], 0),            // selected altitude
+    rounded(state[27], 0),            // IAS
+    rounded(state[28], 0),            // TAS
+    rounded(state[29], 0),            // selected heading
+    rounded(state[30], 1),            // QNH
+    rounded(state[31], 0),            // geometric rate
+    rounded(state[32], 1),            // roll
+    state[33] ?? null,                // navigation modes
+  ]
+
+  // Většina letadel neposílá rozšířenou telemetrii. Koncové null hodnoty není
+  // potřeba přenášet; parser s chybějící položkou zachází stejně jako s null.
+  while (compact.length > 0 && compact.at(-1) == null) compact.pop()
+  return compact
+}
+
+function serializeStates(states: unknown[][], format: FlightWireFormat): unknown[][] {
+  return format === 'compact-v1' ? states.map(compactState) : states
 }
 
 function classifyAircraft(ac: Record<string, unknown>): AircraftType | null {
@@ -319,6 +372,7 @@ function liveResponse(
   regionKey: string,
   region: (typeof REGION_CONFIGS)[string],
   summaryOnly: boolean,
+  format: FlightWireFormat,
 ) {
   return NextResponse.json(
     summaryOnly
@@ -330,7 +384,8 @@ function liveResponse(
           region: regionKey,
         }
       : {
-          states: result.states,
+          states: serializeStates(result.states, format),
+          format,
           source: result.source,
           fetchedAt: result.fetchedAt,
           status: 'live',
@@ -372,6 +427,9 @@ export async function GET(req: NextRequest) {
     ?? req.headers.get('x-real-ip')
     ?? '127.0.0.1'
   const summaryOnly = req.nextUrl.searchParams.get('summary') === '1'
+  const format: FlightWireFormat = req.nextUrl.searchParams.get('format') === 'compact'
+    ? 'compact-v1'
+    : 'opensky-extended-v1'
   const { allowed, retryAfter } = checkRateLimit(ip, summaryOnly ? 'flight-summary' : 'flights')
   if (!allowed) {
     return NextResponse.json(
@@ -386,14 +444,16 @@ export async function GET(req: NextRequest) {
   try {
     // Zdroje běží souběžně. Výpadek jednoho už nezablokuje uživatele součtem timeoutů.
     const result = await getLiveSnapshot(regionKey, region)
-    return liveResponse(result, regionKey, region, summaryOnly)
+    return liveResponse(result, regionKey, region, summaryOnly, format)
   } catch (error) {
     console.error(`[FlyQueens] All live flight sources failed for ${regionKey}`, error)
     const cached = lastGoodSnapshots.get(regionKey)
     if (cached && Date.now() - cached.cachedAt <= MAX_STALE_MS) {
       return NextResponse.json(
         {
-          ...(summaryOnly ? summarizeStates(cached.states, region) : { states: cached.states }),
+          ...(summaryOnly
+            ? summarizeStates(cached.states, region)
+            : { states: serializeStates(cached.states, format), format }),
           source: cached.source,
           fetchedAt: cached.fetchedAt,
           status: 'stale',

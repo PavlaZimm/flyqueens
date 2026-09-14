@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute, type FlightRoute } from '@/hooks/useFlightRoute'
@@ -8,7 +9,6 @@ import { useFaviconCount } from '@/hooks/useFaviconCount'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useNearbyFlights } from '@/hooks/useNearbyFlights'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { DetailPanel } from '@/components/DetailPanel/DetailPanel'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { DETAIL_PANEL_WIDTH } from '@/lib/constants'
 import { StatusBar } from '@/components/UI/StatusBar'
@@ -19,6 +19,13 @@ import { MapView } from '@/components/Map/MapView'
 import type { Flight } from '@/types/flight'
 import { isEmergencyFlight } from '@/lib/emergency'
 import { trackEvent } from '@/lib/analytics'
+
+// Rozsáhlý detail a fotografie letadla nejsou potřeba pro první vykreslení
+// mapy. Prohlížeč je stáhne až ve chvíli, kdy uživatel některý stroj otevře.
+const DetailPanel = dynamic(
+  () => import('@/components/DetailPanel/DetailPanel').then((module) => module.DetailPanel),
+  { loading: () => <div style={{ padding: 18, color: 'var(--text-muted)', fontSize: 12 }}>Načítám detail letadla…</div> },
+)
 
 function airportCode(airport: FlightRoute['departure']): string {
   return airport ? (airport.iata || airport.icao || '???') : '???'
