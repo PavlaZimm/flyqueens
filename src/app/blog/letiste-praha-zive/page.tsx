@@ -65,7 +65,7 @@ export default function ZiveArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Letiště Praha živě: přílety, odlety a mapa letadel
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="13. září 2026" readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -149,7 +149,7 @@ export default function ZiveArticle() {
 
         <h2 style={S.h2}>Jak najít konkrétní let</h2>
         <p style={S.p}>
-          Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru OK123 nebo
+          Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru QS123 nebo
           FR1234. Vyhledávání umí pracovat také s registrací letadla a ICAO adresou. Pokud číslo nic nenajde,
           letadlo ještě nemusí být ve sledované oblasti, nemusí vysílat použitelnou polohu nebo používá jiný
           volací znak. V takovém případě ověřte stav na oficiální tabuli letiště.

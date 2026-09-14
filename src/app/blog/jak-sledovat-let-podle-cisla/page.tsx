@@ -65,7 +65,7 @@ export default function TrackFlightNumberArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Sledování letů podle čísla: kde je letadlo online
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} updatedLabel="12. září 2026" />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} updatedLabel="14. září 2026" />
 
         <ArticleHero
           src={post.image}
@@ -109,8 +109,8 @@ export default function TrackFlightNumberArticle() {
             </thead>
             <tbody>
               {[
-                ['Číslo letu', 'OK 123 / QS123', 'cestující, letenky a letové řády'],
-                ['Volací znak', 'CSA123 / TVS123', 'identifikace letu v provozu a ADS-B'],
+                ['Číslo letu', 'QS123 / FR1234', 'cestující, letenky a letové řády'],
+                ['Volací znak', 'TVS123 / RYR1234', 'identifikace letu v provozu a ADS-B'],
                 ['Registrace', 'OK-ABC', 'konkrétní fyzické letadlo'],
                 ['ICAO adresa', '24bitový hex kód', 'technická jednoznačná identifikace odpovídače'],
               ].map(([type, example, use]) => (
@@ -127,6 +127,11 @@ export default function TrackFlightNumberArticle() {
           IATA používá dvoupísmenné kódy aerolinek v rezervacích a letových řádech. V provozních datech se častěji
           objeví třípísmenný ICAO designátor. Vyhledávač proto musí umět mezi těmito tvary převádět; u neobvyklého nebo
           sdíleného letu se to nemusí vždy podařit automaticky.
+        </p>
+        <p style={S.p}>
+          Pozor na kód <strong>OK</strong>: České aerolinie pod ním přestaly létat na konci října 2024 a jejich
+          spoje převzaly Smartwings s kódem QS a volacím znakem TVS. Starší návod nebo záložka s číslem ve tvaru
+          OK123 proto dnes ve vyhledávání nic nenajde.
         </p>
 
         <h2 style={S.h2}>Proč se číslo letu na mapě nezobrazuje?</h2>
@@ -196,10 +201,11 @@ export default function TrackFlightNumberArticle() {
         <SourcesBox
           sources={[
             { label: 'IATA — kódy aerolinek a jejich použití', href: 'https://www.iata.org/en/services/codes/' },
+            { label: 'Zdopravy.cz — lety ČSA přešly pod kód Smartwings (QS)', href: 'https://zdopravy.cz/misto-ok-uz-jen-qs-lety-ceskych-aerolinii-budou-zajistovat-smartwings-205986/' },
             { label: 'FAA — Flight ID a identifikace v ADS-B', href: 'https://www.faa.gov/air_traffic/publications/atpubs/aip_html/chap4_section_5.html' },
             { label: 'FAA — proč musí volací znak odpovídat letovému plánu', href: 'https://www.faa.gov/air_traffic/technology/equipadsb/installation/know_adsb_system' },
           ]}
-          note="Fakta a odkazy ověřeny 12. září 2026. Pro provozní stav letu vždy použijte oficiální zdroj letiště nebo aerolinky."
+          note="Fakta a odkazy ověřeny 14. září 2026. Pro provozní stav letu vždy použijte oficiální zdroj letiště nebo aerolinky."
         />
       </div>
     </main>

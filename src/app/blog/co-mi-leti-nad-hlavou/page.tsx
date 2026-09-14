@@ -65,7 +65,7 @@ export default function OverheadAircraftArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Co mi letí nad hlavou? Zjistěte letadlo online
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="13. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}

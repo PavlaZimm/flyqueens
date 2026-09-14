@@ -73,7 +73,7 @@ export default function StarluxPrahaArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           STARLUX Airlines v Praze: přímá linka do Tchaj-peje
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -159,16 +159,31 @@ export default function StarluxPrahaArticle() {
 
         <h2 style={S.h2}>Jaké letadlo STARLUX do Prahy nasazuje</h2>
         <p style={S.p}>
-          Linka začala s Airbusem A350-900. Letiště Praha při zahájení oznámilo, že od 1. září má přijít větší
-          Airbus A350-1000 s kapacitou 350 cestujících ve čtyřech cestovních třídách. Konkrétní letadlo se ale
-          může z provozních důvodů změnit. Typ zobrazený při nákupu proto berte jako plán, ne jako záruku.
+          Linka začala s Airbusem A350-900. Od 1. září 2026 ji převzal větší Airbus A350-1000 s kapacitou
+          350 cestujících ve čtyřech třídách: 4 místa v první třídě, 40 v business classu, 36 v premium economy
+          a 270 v ekonomické třídě. Konkrétní letadlo se ale může z provozních důvodů změnit. Typ zobrazený
+          při nákupu proto berte jako plán, ne jako záruku.
+        </p>
+
+        <h2 style={S.h2}>Zlatý Airbus AIRSORAYAMA Gold přistál v Praze</h2>
+        <p style={S.p}>
+          První A350-1000 na pražské lince nebyl obyčejný stroj. V úterý 1. září 2026 ráno přistál na Ruzyni
+          Airbus registrace B-58554 ve zlatém laku AIRSORAYAMA Gold. Šlo o vůbec první přílet letadla
+          AIRSORAYAMA do Evropy.
+        </p>
+        <p style={S.p}>
+          Zrcadlově kovový vzhled navrhl japonský umělec Hadžime Sorajama. STARLUX na něm spolupracoval
+          s Airbusem a výrobcem laků Mankiewicz: výsledkem je vícevrstvý nátěr se slídovými částicemi, který
+          drží kovový lesk a zároveň splňuje požadavky na bezpečnost provozu. Ve dvojici s ním létá stříbrná
+          verze AIRSORAYAMA Silver.
         </p>
 
         <h2 style={S.h2}>Proč je linka zajímavá</h2>
         <p style={S.p}>
           Cestující získali přímé spojení mezi Českem a Tchaj-wanem bez přestupu. Pro letecké fanoušky je zajímavé
-          také pravidelné nasazení A350-1000. Praha má být jednou z mála destinací, kde se mohou objevovat speciálně
-          zbarvené stroje AIRSORAYAMA Silver a Gold.
+          pravidelné nasazení A350-1000. Praha je navíc jednou ze tří destinací, kam STARLUX plánuje speciálně
+          zbarvené stroje AIRSORAYAMA vozit pravidelně; kromě Prahy jde o Tokio a Phoenix. Konkrétní den ale
+          zaručený není, protože i tady může dopravce letadlo prohodit.
         </p>
         <p style={S.p}>
           Ne každému se ale vyplatí vybírat spoj jen podle typu letadla. Při cestě do Asie porovnejte celkovou cenu,
@@ -207,7 +222,15 @@ export default function StarluxPrahaArticle() {
           v den odletu na letištní tabuli.
         </p>
         <h3 style={S.h3}>Je typ A350-1000 zaručený?</h3>
-        <p style={S.p}>Ne. Je plánovaný, ale aerolinka může z provozních důvodů nasadit jiný stroj.</p>
+        <p style={S.p}>
+          Ne. Od 1. září 2026 je na lince nasazený pravidelně, ale aerolinka může z provozních důvodů
+          poslat jiný stroj.
+        </p>
+        <h3 style={S.h3}>Přiletí zlatý Airbus AIRSORAYAMA i příště?</h3>
+        <p style={S.p}>
+          Praha je jednou ze tří destinací, kam STARLUX AIRSORAYAMA vozí pravidelně. Který den poletí zlatý
+          nebo stříbrný stroj, ale dopravce dopředu negarantuje — před cestou za focením si typ ověřte.
+        </p>
 
         <AuthorCard />
 
@@ -241,8 +264,11 @@ export default function StarluxPrahaArticle() {
             { label: 'STARLUX Airlines: oficiální přehled flotily', href: 'https://www.starlux-airlines.com/en-Global/experience/walk-into-starlux/our-fleet' },
             { label: 'IATA: kódy a profil STARLUX Airlines', href: 'https://www.iata.org/en/about/members/airline-list/starlux-airlines/605/' },
             { label: 'Letiště Praha: informace o destinaci Tchaj-pej a Terminálu 1', href: 'https://www.prg.aero/tchaj-pej' },
+            { label: 'Zdopravy.cz: zlatý Airbus AIRSORAYAMA Gold přistál v Praze 1. září 2026', href: 'https://zdopravy.cz/obrazem-neobvykle-rano-na-ruzyni-v-praze-pristalo-zlate-letadlo-297129/' },
+            { label: 'Aeroweb.cz: AIRSORAYAMA Gold poprvé v Praze, registrace B-58554', href: 'https://www.aeroweb.cz/clanky/12412-zlaty-skvost-poprve-v-praze-starlux-airlines-airsorayama-gold' },
+            { label: 'fZone.cz: A350-1000 pro Prahu a rozdělení 350 sedadel do čtyř tříd', href: 'https://fzone.cz/clanky/jeste-pred-startem-linky-zmena-starlux-posle-do-prahy-vetsi-letadlo-10170' },
           ]}
-          note="Letový řád a nasazovaný typ letadla ověřeny 13. září 2026. Pro konkrétní datum vždy zkontrolujte informace dopravce."
+          note="Letový řád ověřen 13. září 2026, nasazení A350-1000 a přílet AIRSORAYAMA Gold 14. září 2026. Pro konkrétní datum vždy zkontrolujte informace dopravce."
         />
       </div>
     </main>
