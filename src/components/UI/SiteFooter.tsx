@@ -19,6 +19,7 @@ export function SiteFooter() {
             <div style={col}>Prozkoumat</div>
             <Link href="/radar" style={link}>Živá mapa letadel</Link>
             <Link href="/stats" style={link}>Statistiky provozu</Link>
+            <Link href="/mesto-3d" style={link}>Průchozí 3D model města</Link>
             <Link href="/blog" style={link}>Blog</Link>
             <Link href="/o-projektu" style={link}>O projektu a zdrojích dat</Link>
           </div>

@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .env.local
 public/aircraftDatabase.csv
+
+# MapLibre worker kopírovaný z node_modules (scripts/copy-maplibre-worker.mjs)
+public/vendor/maplibre/

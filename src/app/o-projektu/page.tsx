@@ -62,6 +62,16 @@ export default function AboutProjectPage() {
           </section>
 
           <section style={section}>
+            <h2 style={heading}>3D model města</h2>
+            <p style={paragraph}>
+              <a href="/mesto-3d" style={{ color: 'var(--gold)' }}>Průchozí 3D model</a> staví budovy z dat OpenStreetMap
+              (licence ODbL) doručených jako vektorové dlaždice bezplatného projektu OpenFreeMap ve schématu OpenMapTiles.
+              Výška budovy odpovídá záznamu přispěvatelů; kde chybí, použije se jednotný odhad. Model je zábavní a
+              orientační, nenahrazuje mapu ani plán letiště.
+            </p>
+          </section>
+
+          <section style={section}>
             <h2 style={heading}>Transparentnost</h2>
             <p style={paragraph}>
               Ukázková letadla nevydáváme za živá data. Při výpadku zobrazíme poslední známý snapshot s upozorněním,

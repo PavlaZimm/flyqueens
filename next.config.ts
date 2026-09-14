@@ -26,7 +26,10 @@ const securityHeaders = [
       "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
       // API calls z klienta jdou přes /api/* (self); externě fotky a analytika.
       // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
-      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
+      // 3D model města (/mesto-3d) stahuje vektorové dlaždice, styl, sprity a fonty z OpenFreeMap.
+      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com https://tiles.openfreemap.org",
+      // MapLibre worker běží z /vendor/maplibre (self); blob: je záložní varianta knihovny.
+      "worker-src 'self' blob:",
       // Audio proxy běží přes /api/atc-stream (self)
       "media-src 'self'",
       "object-src 'none'",

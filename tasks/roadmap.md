@@ -1,7 +1,18 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-07-15 (session 6)
+> Poslední update: 2026-09-14 (session 7)
+
+---
+
+## ✅ Session 7 (2026-09-14) — průchozí 3D model města
+
+- [x] **/mesto-3d** — průchozí 3D model Prahy, Brna, Ostravy, Pardubic a Karlových Varů (MapLibre GL + OpenFreeMap vektorové dlaždice, budovy z OSM `render_height`)
+- [x] Ovládání WASD/šipky + Shift běh, tažení myší = rozhlížení, dotykový D-pad na mobilu, přepínač Nadhled / ulice
+- [x] Výchozí místa (náměstí, terminál letiště) + zlatý marker letiště s odkazem na průvodce, `?mesto=` v URL
+- [x] Tmavý styl Fiord / světlý Liberty podle tématu webu, fallback na Liberty při chybě stylu
+- [x] MapLibre worker se kopíruje do `public/vendor/maplibre` v `postinstall` (bundler neumí `import.meta.url`), CSP rozšířeno o `tiles.openfreemap.org` a `worker-src`
+- [ ] Nápad: promítnout živá letadla z `/api/flights` nad město (výška → 3D pozice)
 
 ---
 

@@ -185,6 +185,7 @@ export default function HomePage() {
           <p>FlyQueens zobrazuje dostupná veřejná ADS-B data. Mapa je informační a není určena pro navigaci ani bezpečnostní rozhodování.</p>
           <nav aria-label="Odkazy v patičce">
             <Link href="/radar">Živá mapa</Link>
+            <Link href="/mesto-3d">3D město</Link>
             <Link href="/o-projektu">O projektu a datech</Link>
             <Link href="/letiste">Letiště</Link>
             <Link href="/blog">Blog</Link>

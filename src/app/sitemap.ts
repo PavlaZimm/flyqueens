@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: BASE, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/radar`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/stats`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/mesto-3d`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/o-projektu`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/letiste`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/blog`, lastModified: LAST_SIGNIFICANT_UPDATE },
