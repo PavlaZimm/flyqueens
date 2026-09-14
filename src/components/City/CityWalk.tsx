@@ -128,23 +128,17 @@ function addBuildings(map: MapLibreMap, theme: Theme) {
   }, firstSymbol)
 }
 
-// Zlatý marker letiště s odkazem na průvodce. Města bez letiště marker nemají.
-function buildMarker(city: CityWalkCity): Marker | null {
-  const airport = city.airport
-  if (!airport) return null
+function buildMarker(city: CityWalkCity): Marker {
   const content = document.createElement('div')
   const title = document.createElement('strong')
-  title.textContent = `${airport.iata} · ${airport.name}`
-  content.append(title)
-  if (city.airportHref) {
-    const link = document.createElement('a')
-    link.href = city.airportHref
-    link.textContent = 'Průvodce letištěm →'
-    content.append(document.createElement('br'), link)
-  }
+  title.textContent = `${city.airport.iata} · ${city.airport.name}`
+  const link = document.createElement('a')
+  link.href = city.airportHref
+  link.textContent = 'Průvodce letištěm →'
+  content.append(title, document.createElement('br'), link)
 
   return new Marker({ color: '#F5B83D' })
-    .setLngLat([airport.lng, airport.lat])
+    .setLngLat([city.airport.lng, city.airport.lat])
     .setPopup(new Popup({ offset: 24, closeButton: true }).setDOMContent(content))
 }
 
@@ -236,7 +230,7 @@ export function CityWalk({ initialCitySlug = 'praha' }: CityWalkProps) {
       readyRef.current = true
       setStatus('ready')
       const marker = buildMarker(cityRef.current)
-      marker?.addTo(map)
+      marker.addTo(map)
       markerRef.current = marker
     })
 
@@ -390,10 +384,10 @@ export function CityWalk({ initialCitySlug = 'praha' }: CityWalkProps) {
       pitch: STREET_VIEW.pitch,
     })
     setView('street')
-    if (readyRef.current) {
-      markerRef.current?.remove()
+    if (markerRef.current) {
+      markerRef.current.remove()
       const marker = buildMarker(target)
-      marker?.addTo(map)
+      marker.addTo(map)
       markerRef.current = marker
     }
     trackEvent('City Walk Teleport', { city: target.slug, spot: spot.id })

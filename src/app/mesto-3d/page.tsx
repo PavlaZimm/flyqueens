@@ -24,8 +24,8 @@ export default function CityWalkPage() {
         <h1 id="mesto-3d-heading" style={heading}>Průchozí 3D model města</h1>
         <p style={paragraph}>
           Model nahoře je opravdové město: půdorysy a výšky budov pocházejí z OpenStreetMap, tvary ulic, parky
-          a řeky také. Kamera stojí těsně nad ulicí a můžete jí procházet jako ve hře. Začít lze na náměstí,
-          u zámku nebo přímo u terminálu letiště, které máme v průvodcích.
+          a řeky také. Kamera stojí těsně nad ulicí a můžete jí procházet jako ve hře. Začít lze na náměstí
+          nebo přímo u terminálu letiště, které máme v průvodcích.
         </p>
 
         <h2 style={subheading}>Ovládání</h2>
@@ -41,11 +41,7 @@ export default function CityWalkPage() {
           {CITY_WALK_CITIES.map((city, index) => (
             <span key={city.slug}>
               <Link href={`/mesto-3d?mesto=${city.slug}`} style={link}>{city.name}</Link>
-              {city.airport && city.airportHref && (
-                <>
-                  {' '}(<Link href={city.airportHref} style={{ ...link, fontWeight: 500 }}>{city.airport.iata}</Link>)
-                </>
-              )}
+              {' '}(<Link href={city.airportHref} style={{ ...link, fontWeight: 500 }}>{city.airport.iata}</Link>)
               {index < CITY_WALK_CITIES.length - 1 ? ' · ' : ''}
             </span>
           ))}
