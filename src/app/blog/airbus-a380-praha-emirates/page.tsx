@@ -97,8 +97,8 @@ export default function A380PrahaArticle() {
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
             Airbus A380 má do Prahy přiletět na letu EK139 z Dubaje od 1. října 2026 a zpět odlétat jako EK140.
-            Linka je v aktuálním rozpisu vedena denně. Od 1. do 24. října má EK139 přilétat v 13:10 a EK140 odlétat
-            v 16:00. Jde o plánovaný letový řád, který může Emirates ještě změnit.
+            Linka je v aktuálním rozpisu vedena denně. Od 1. do 24. října má EK139 přilétat ve 13:00 a EK140 odlétat
+            v 16:10. Jde o plánovaný letový řád, který může Emirates ještě změnit.
           </p>
         </div>
 
@@ -137,8 +137,8 @@ export default function A380PrahaArticle() {
             </thead>
             <tbody>
               {[
-                ['EK139', 'Dubaj → Praha', '1.–24. října', '08:35 → 13:10'],
-                ['EK140', 'Praha → Dubaj', '1.–24. října', '16:00 → 23:55'],
+                ['EK139', 'Dubaj → Praha', '1.–24. října', '08:35 → 13:00'],
+                ['EK140', 'Praha → Dubaj', '1.–24. října', '16:10 → 23:55'],
                 ['EK139', 'Dubaj → Praha', '25. října–27. března', '08:40 → 12:30'],
                 ['EK140', 'Praha → Dubaj', '25. října–27. března', '14:45 → 23:40'],
               ].map(([flight, route, period, time]) => (
@@ -325,7 +325,7 @@ export default function A380PrahaArticle() {
             { label: 'IATA: oficiální kódy dopravce Emirates', href: 'https://www.iata.org/en/about/members/airline-list/emirates/73/' },
             { label: 'Emirates: historie společnosti od roku 1985', href: 'https://www.emirates.com/us/english/about-us/timeline/' },
           ]}
-          note="Plánovaný návrat A380, časy a denní frekvence ověřeny 13. září 2026 přímo v letovém řádu Emirates. Typ letadla se může změnit i po rezervaci."
+          note="Plánovaný návrat A380 a denní frekvence ověřeny 13. září 2026. Říjnové časy překontrolovány 14. září 2026 proti veřejným databázím letových řádů; přesnou minutu si pro konkrétní datum potvrďte u Emirates. Typ letadla se může změnit i po rezervaci."
         />
       </div>
     </main>
