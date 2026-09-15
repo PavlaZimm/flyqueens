@@ -2,6 +2,8 @@
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
 > Poslední update: 2026-07-15 (session 6)
+>
+> Obsah a články mají vlastní backlog: [content-plan.md](content-plan.md).
 
 ---
 
