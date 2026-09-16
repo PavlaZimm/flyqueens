@@ -20,3 +20,9 @@ U snímků pod licencí CC BY-SA jde stále jen o zmenšenou kopii bez dalších
 | `starlux-airlines-praha.jpg` | [Steven Byles, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Starlux_Airlines_A350-1041_B-58553_-_TPE_RCTP_-_05-JUL-2026.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Skutečný Airbus A350-1000 STARLUX; zmenšená kopie bez dalších úprav. |
 | `airbus-a380-praha-emirates.jpg` | Pavla Zimmermannová / FlyQueens | vlastní fotografie | Airbus A380 Emirates po přistání na Letišti Praha dne 26. října 2025; zmenšená kopie bez dalších úprav. |
 | `airbus-a380-praha-pristani.jpg` | Pavla Zimmermannová / FlyQueens | vlastní fotografie | Airbus A380 Emirates při přistání na Letišti Praha dne 26. října 2025; zmenšená kopie bez dalších úprav. |
+
+## Čeká na doplnění
+
+| Soubor | Kde se používá | Co je potřeba |
+|---|---|---|
+| `hangar-7-salzburg.jpg` | `/blog/hangar-7-salzburg` | Vlastní fotografie Hangaru-7 (Pavla Zimmermannová / FlyQueens). Vložit do `public/blog/`, spustit `npm run images:optimize` a zapsat skutečné rozměry do `src/lib/blog.ts` — dočasně jsou tam uvedené 1600 × 900. Do té doby článek nepublikovat, hero obrázek by se nenačetl. |

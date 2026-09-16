@@ -17,6 +17,21 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'hangar-7-salzburg',
+    title: 'Hangar-7 v Salzburgu: letadla Flying Bulls zdarma',
+    excerpt:
+      'Prosklená hala u salzburského letiště, kde stojí historická letka Red Bullu. Vstup je zdarma, otevřeno do deseti večer — a proč tam některé letadlo nemusí být.',
+    date: '2026-09-16',
+    updatedAt: '2026-09-16',
+    dateLabel: '16. září 2026',
+    tag: 'Letiště a hangáry',
+    readingTime: '7 min čtení',
+    image: '/blog/hangar-7-salzburg.jpg',
+    imageAlt: 'Prosklená hala Hangaru-7 u letiště Salzburg s historickými letadly Flying Bulls',
+    imageWidth: 1600,
+    imageHeight: 900,
+  },
+  {
     slug: 'starlux-airlines-praha',
     title: 'STARLUX Airlines v Praze: přímá linka do Tchaj-peje',
     excerpt: 'STARLUX otevřel v Praze svou první evropskou linku. Kdy létají spoje JX101 a JX102, proč od 1. září létá větší A350-1000 a jak poznáte zlatou AIRSORAYAMU.',

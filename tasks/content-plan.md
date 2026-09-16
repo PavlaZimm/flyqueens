@@ -58,7 +58,7 @@ přirozeně vede na radar („podívejte se, co tam letí právě teď“).
 
 | P | Téma | Navržená URL | Primární KW | Hledanost/měs | Obtížnost | Rozhodnutí |
 |---|---|---|---|---:|---:|---|
-| **P0** | Hangar 7 + letiště Salzburg | `/blog/hangar-7-salzburg` | hangar 7 | 800 | 60 | psát jako první, sloučit se Salzburgem |
+| **P0** | Hangar 7 + letiště Salzburg | `/blog/hangar-7-salzburg` | hangar 7 | 800 | 60 | ✍️ **text hotový, čeká na fotku** |
 | **P0** | Letiště Drážďany | `/letiste/zahranici/drazdany` | letiště drážďany | 220 | 35 | psát, včetně parkování |
 | **P1** | Letiště Lipsko | `/letiste/zahranici/lipsko` | letiště lipsko | 130 | 42 | psát po Drážďanech, stejná šablona |
 | **P1** | Letiště Tivat | `/letiste/zahranici/tivat` | letiště tivat | 110 | neuvedena | psát do jara, sezónní téma |
