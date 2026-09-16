@@ -26,7 +26,7 @@ Pardubice, Karlovy Vary) + parkovací podstránky, odletová tabule
 | Vercel Speed Insights | `src/app/layout.tsx` | ✅ běží |
 | Google Analytics 4 (`G-SMFS92YP8L`) | `src/components/UI/CookieConsent.tsx`, načte se až po souhlasu | ✅ běží |
 | Vlastní eventy (`trackEvent`) | `src/lib/analytics.ts`, 24 míst v aplikaci | ✅ běží |
-| Google Search Console | — | ❌ **chybí, blokuje vyhodnocení obsahu** |
+| Google Search Console | `src/app/layout.tsx` — ověřovací meta tag od 26. 7. 2026 | ✅ property ověřená |
 
 Chybějící díly analytiky jsou v sekci [Co chybí v měření](#co-chybí-v-měření).
 
@@ -209,7 +209,9 @@ a v článku uvést datum návštěvy, ať je jasné, k čemu se popis vztahuje.
 
 | Priorita | Co | Proč to blokuje obsah |
 |---|---|---|
-| **P0** | Ověřit Google Search Console pro `www.flyqueens.cz`, odeslat sitemap | Bez GSC nevíme, jestli problém je indexace, záměr, CTR nebo obsah. Bez toho se nedá rozhodnout, co aktualizovat. |
+| **P0** | Napojit GSC na sync ve `webx` — `property_for()` se ptá na `https://flyqueens.cz/` bez www, property je ale ověřená jako `https://www.flyqueens.cz/`, takže sync hlásí `not_connected` | Property existuje a měří. Jen se na ni nikdo neptá správnou adresou, takže o výkonu webu nevíme nic. |
+| **P0** | Dát konektoru Marketing Mineru a servisnímu účtu ze `webx` přístup k té property | Bez toho nejde tahat GSC data do analýz. |
+| **P1** | Zapnout Web Analytics v projektu `flyqueens-app` na Vercelu | `<Analytics />` je v `layout.tsx`, ale API hlásí „Web Analytics not found“ — komponenta posílá data do prázdna. |
 | **P1** | Event při prokliku z článku do radaru | 24 eventů pokrývá radar, sidebar, statistiky a affiliate, ale ne cestu „článek → nástroj“ — tedy přesně to, co má obsah dělat. |
 | **P1** | `BreadcrumbList` schema na články a letiště | Zatím je jen na `/letiste/[airport]/odlety`. Vizuální drobečky jsou všude. |
 | **P2** | Přestavět `/blog` na tematické huby | Dnes je to chronologický seznam. Se 12+ články přestane fungovat. |
@@ -228,7 +230,7 @@ Podrobnosti a všechna data v [gap analýze](../docs/gap-analyza-2026-09-16.md).
 |---|---|---|---:|---:|
 | **P0** | Doladit existující článek na featured snippet | jak vysoko létají letadla | 240 | **2** |
 | **P0** | Krátký viditelný úvod na `/radar` | letadla online | 1 000–1 700 | **30** |
-| **P0** | Ověřit Search Console + sitemap | — | — | — |
+| **P0** | Opravit property ve `webx` syncu (www) + přístupy | — | — | — |
 | **P1** | Nový článek | kolik stojí letadlo | 170 | **16** |
 | **P1** | ICAO kódy viditelně na letištních stránkách | lkpr, lkpd | 290 + 220 | neuvedena |
 | **P2** | Test regionálního letiště přes generátor | letiště hradec králové | 650–920 | 39 |

@@ -77,7 +77,7 @@ export const POSTS: BlogPost[] = [
     title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
     excerpt: 'Dopravní letadla obvykle létají v devíti až dvanácti kilometrech. Proč je řidší vzduch výhodný, co znamená letová hladina a jak výšku vidíte na mapě.',
     date: '2026-07-20',
-    updatedAt: '2026-09-14',
+    updatedAt: '2026-09-16',
     dateLabel: '20. července 2026',
     tag: 'Jak to funguje',
     readingTime: '6 min čtení',

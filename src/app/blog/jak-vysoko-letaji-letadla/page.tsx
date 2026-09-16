@@ -73,7 +73,7 @@ export default function VyskaArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Jak vysoko létají letadla? Výška v metrech a FL350
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="16. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -84,17 +84,19 @@ export default function VyskaArticle() {
         />
 
         <p style={S.p}>
-          Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte.
-          Jak vysoko vlastně je? U běžného dopravního letu typicky mezi devíti a dvanácti kilometry. A že zrovna tam, to není náhoda,
-          ale kompromis výkonu, spotřeby, počasí, hmotnosti a řízení provozu.
+          Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte —
+          a přitom je nejčastěji devět až dvanáct kilometrů nad vámi. Že zrovna tam, to není náhoda, ale kompromis
+          výkonu, spotřeby, počasí, hmotnosti a řízení provozu.
         </p>
 
+        <h2 style={S.h2}>Jak vysoko létají letadla?</h2>
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Dopravní letadla létají nejčastěji v devíti až dvanácti kilometrech, tedy kolem letové hladiny FL350.
-            Řidší vzduch snižuje aerodynamický odpor, ale konkrétní hladina závisí na typu, hmotnosti,
-            trati a počasí. Malé stroje obvykle létají níž, některé byznys tryskáče až kolem 15 kilometrů.
+            Dopravní letadla létají nejčastěji <strong>9 až 12 km</strong> nad zemí, tedy přibližně 29 000 až
+            39 000 stop. Nejběžnější cestovní hladina je kolem FL350, což odpovídá asi 10 700 metrům.
+            Turbovrtulové stroje letí obvykle 6 až 7 km, malá letadla 1 až 3 km a některé byznys tryskáče
+            vystoupají až k 15 km.
           </p>
         </div>
 
@@ -232,7 +234,7 @@ export default function VyskaArticle() {
             { label: 'FAA Instrument Flying Handbook — tlaková výška a RVSM', href: 'https://www.faa.gov/sites/faa.gov/files/pilots/FAA-H-8083-15B.pdf' },
             { label: 'Airbus — technické charakteristiky rodiny A320', href: 'https://www.aircraft.airbus.com/en/customer-care/fleet-wide-care/airport-operations-and-aircraft-characteristics' },
           ]}
-          note="Fakta a odkazy ověřeny 11. září 2026. Uvedené výšky jsou obvyklé rozsahy, ne provozní pokyn."
+          note="Fakta a odkazy ověřeny 16. září 2026. Uvedené výšky jsou obvyklé rozsahy, ne provozní pokyn."
         />
       </div>
     </main>
