@@ -27,6 +27,7 @@ shrnuje [audit dat a rychlosti](docs/data-performance-audit-2026-09-11.md).
 Výzkum klíčových slov, publikační plán a bezpečný linkbuilding shrnuje
 [obsahová a linkbuildingová strategie](docs/seo-content-linkbuilding-strategy-2026-09-11.md).
 Co se píše teď a v jakém pořadí, je v [obsahovém plánu](tasks/content-plan.md).
+Kde je konkurence slabá, shrnuje [gap analýza](docs/gap-analyza-2026-09-16.md).
 
 Volitelné zdroje a funkce jsou výchozím stavem vypnuté:
 

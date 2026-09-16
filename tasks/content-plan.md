@@ -7,6 +7,8 @@
 > v [obsahové a linkbuildingové strategii](../docs/seo-content-linkbuilding-strategy-2026-09-11.md)
 > a v [SEO plánu podle Marketing Mineru](../docs/seo-keyword-plan-2026-09.md).
 > Ta dvě dokumenty se nepřepisují, tady se jen rozhoduje, co se píše teď.
+> Kde je konkurence slabá a co jde vyhrát nejdřív, řeší
+> [gap analýza](../docs/gap-analyza-2026-09-16.md).
 
 ---
 
@@ -214,6 +216,30 @@ a v článku uvést datum návštěvy, ať je jasné, k čemu se popis vztahuje.
 
 GA4 i Vercel Analytics už měří, takže tady **není co nasazovat** — je potřeba
 jen dodat Search Console a dva chybějící eventy.
+
+---
+
+## Rychlé výhry (z gap analýzy, 16. 9. 2026)
+
+Tohle jde před psaním nových článků — je to hotové rychleji a levněji.
+Podrobnosti a všechna data v [gap analýze](../docs/gap-analyza-2026-09-16.md).
+
+| P | Akce | Dotaz | Hledanost | Obtížnost |
+|---|---|---|---:|---:|
+| **P0** | Doladit existující článek na featured snippet | jak vysoko létají letadla | 240 | **2** |
+| **P0** | Krátký viditelný úvod na `/radar` | letadla online | 1 000–1 700 | **30** |
+| **P0** | Ověřit Search Console + sitemap | — | — | — |
+| **P1** | Nový článek | kolik stojí letadlo | 170 | **16** |
+| **P1** | ICAO kódy viditelně na letištních stránkách | lkpr, lkpd | 290 + 220 | neuvedena |
+| **P2** | Test regionálního letiště přes generátor | letiště hradec králové | 650–920 | 39 |
+
+Klastr „živé sledování“ je nejlepší příležitost webu: konkurence na
+`letadla online`, `mapa letadel` a `letecky radar` rankuje na pozicích 20–34
+článkem o letišti Praha, protože **žádná z těch stránek není živá mapa**.
+
+**Nechodit do:** zavazadla a „co nesmí do letadla“ (cizí záměr),
+encyklopedie typů letadel (konkurence má roky obsahu), `flight radar`
+(navigační dotaz na globální trackery).
 
 ---
 
