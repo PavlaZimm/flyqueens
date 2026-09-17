@@ -161,6 +161,15 @@ export default function OverheadAircraftArticle() {
           </Link>
         </div>
 
+        <h2 style={S.h2}>Když si chcete létání také vyzkoušet</h2>
+        <p style={S.p}>
+          Sledování letadel může být začátek. Pokud vybíráte první vyhlídkový let, let balónem
+          nebo zážitek v simulátoru, na našem dalším webu Flylady najdete{' '}
+          <a href="https://www.flylady.cz/blog/jak-vybrat-letecky-zazitek" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>
+            průvodce výběrem leteckého zážitku
+          </a>. Před koupí porovnejte místo konání, délku zážitku a podmínky rezervace.
+        </p>
+
         <AuthorCard />
 
         <RelatedReading

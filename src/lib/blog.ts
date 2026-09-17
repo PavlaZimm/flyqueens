@@ -49,7 +49,7 @@ export const POSTS: BlogPost[] = [
     title: 'Co mi letí nad hlavou? Zjistěte letadlo online',
     excerpt: 'Otevřete živou mapu, povolte polohu nebo najděte své město a zjistěte, které letadlo právě vidíte. Vysvětlíme také, proč někdy chybí trasa nebo typ stroje.',
     date: '2026-09-11',
-    updatedAt: '2026-09-13',
+    updatedAt: '2026-09-17',
     dateLabel: '11. září 2026',
     tag: 'Praktický návod',
     readingTime: '6 min čtení',
