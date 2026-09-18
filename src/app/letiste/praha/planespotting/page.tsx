@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
   ...socialMetadata({
     title, description, url, type: 'article', publishedTime: date, modifiedTime: date,
-    image: { url: '/spotting/praha-vyhlidkovy-val.webp', width: 1800, height: 1350, alt: 'Vyhlídkový val v Kněževsi s návštěvníky a přístupovou cestou' },
+    image: { url: '/spotting/praha-vyhlidkovy-val.webp', width: 1600, height: 1200, alt: 'Vyhlídkový val v Kněževsi s návštěvníky a přístupovou cestou' },
   }),
 }
 
@@ -47,10 +47,10 @@ const structuredData = {
   ],
 }
 
-function Photo({ name, alt, caption, height = 1350, preload = false }: { name: string; alt: string; caption: string; height?: number; preload?: boolean }) {
+function Photo({ name, alt, caption, height = 1200, preload = false }: { name: string; alt: string; caption: string; height?: number; preload?: boolean }) {
   return (
     <figure className={styles.photo}>
-      <Image src={`/spotting/${name}.webp`} width={1800} height={height} sizes="(max-width: 800px) calc(100vw - 36px), 760px" alt={alt} preload={preload} />
+      <Image src={`/spotting/${name}.webp`} width={1600} height={height} sizes="(max-width: 800px) calc(100vw - 36px), 760px" alt={alt} preload={preload} />
       <figcaption>{caption} · Foto: vlastní archiv FlyQueens</figcaption>
     </figure>
   )
@@ -133,7 +133,7 @@ export default function PrahaPlanespottingPage() {
           <p><strong>Máte číslo letu?</strong> V návodu <Link href="/blog/jak-sledovat-let-podle-cisla">sledování letů podle čísla</Link> vysvětlujeme, proč se obchodní číslo letu může lišit od volacího znaku na mapě.</p>
           <div className={styles.actions}><Link className={styles.primary} href="/radar">Otevřít radar letadel</Link><Link href="/blog/airbus-a380-praha-emirates">A380 v Praze</Link></div>
         </div>
-        <Photo name="praha-boeing-747-fly-meta" height={877} alt="Boeing 747 v barvách Fly Meta na Letišti Praha, fotografovaný z Kněževsi" caption="Boeing 747 v barvách Fly Meta při přistání v Praze, fotografovaný z Kněževsi." />
+        <Photo name="praha-boeing-747-fly-meta" height={780} alt="Boeing 747 v barvách Fly Meta na Letišti Praha, fotografovaný z Kněževsi" caption="Boeing 747 v barvách Fly Meta při přistání v Praze, fotografovaný z Kněževsi." />
         <h2 id="foceni">Co si vzít a jak fotografovat</h2>
         <p>
           Na první návštěvu doporučujeme telefon, nabitou baterii, vodu a oblečení podle počasí.

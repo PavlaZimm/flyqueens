@@ -5,7 +5,7 @@
 Zdroj všech čtyř snímků: vlastní archiv FlyQueens, `Fotografie/val praha.zip`.
 Kněževes potvrzena uživatelkou. Kredit je záměrně veden jako archiv, konkrétní
 autorství jednotlivých nových snímků nebylo samostatně potvrzeno. WebP kopie
-jsou zmenšené na šířku 1 800 px; originály zůstaly zachované.
+jsou zmenšené na šířku 1 600 px; originály zůstaly zachované.
 
 | Webový soubor v `public/spotting` | Originál | Obsah |
 |---|---|---|
@@ -44,3 +44,11 @@ U snímků pod licencí CC BY-SA jde stále jen o zmenšenou kopii bez dalších
 Budova Terminálu 1 Letiště Václava Havla Praha. Zmenšeno na 1600 × 1200 px,
 WebP; ilustrační fotografie letiště, nikoli hotelu. Použita na kartě v přehledu blogu.
 Náhled planespottingu používá již evidovaný snímek `praha-vyhlidkovy-val.webp`.
+
+## Optimalizace 18. září 2026
+
+Čtyři spottingové WebP zmenšeny z šířky 1800 na 1600 px a úsporněji
+zakódovány. Tři fotografie mají 1600 × 1200 px, Boeing 747 má 1600 × 780 px.
+Spolu s náhledem terminálu klesly dnešní webové soubory z 1 431 014 B na
+746 718 B (o 48 %). Náhled terminálu měl již 1600 × 1200 px a 142 278 B,
+proto se znovu nepřekódoval. Originály zůstaly zachované.

@@ -143,7 +143,7 @@ export const BLOG_CARDS: (BlogPost & { href: string; imagePosition?: string })[]
     tag: 'Planespotting · Praha', readingTime: '5 min čtení',
     image: '/spotting/praha-vyhlidkovy-val.webp', imagePosition: 'center 65%',
     imageAlt: 'Vyhlídkový val v Kněževsi s návštěvníky a přístupovou cestou',
-    imageWidth: 1800, imageHeight: 1350,
+    imageWidth: 1600, imageHeight: 1200,
   },
   ...POSTS.map(post => ({ ...post, href: `/blog/${post.slug}` })),
 ]

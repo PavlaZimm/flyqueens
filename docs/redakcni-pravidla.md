@@ -21,6 +21,9 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 
 ## Stránka
 
+- **Každou fotografii před zveřejněním optimalizovat: rozměry i velikost souboru.** Výslovný požadavek Pavly, 18. 9. 2026. Originály zachovat mimo `public/`, pro web vytvořit samostatné kopie. Standardně nejdelší strana nejvýše 1600 px (přibližně 2× šířka článku), preferovat WebP, cílit přibližně na 100–200 kB. Menší náhledy mohou mít menší rozměry. Výjimku kvůli čitelnosti detailů vědomě posoudit a zaznamenat.
+- Spustit `npm run images:optimize` (blog i spotting, podporuje JPEG/PNG/WebP) nebo předat konkrétní soubory. Kontrolovat skutečnou velikost a rozměry, ostrost důležitých detailů a mobilní ořez. `next/image` tuto přípravu zdrojového souboru nenahrazuje. Po změně rozměrů upravit registr, komponentu Image i sociální metadata.
+
 - **Každý článek v přehledu blogu musí mít náhledovou fotografii**, stejně jako ostatní články. Platí i pro průvodce uložené pod `/letiste/`. Žádné samostatné textové karty bez fotky. Výslovný požadavek Pavly, 18. 9. 2026.
 - Karty vykreslovat jednotnou šablonou z `BLOG_CARDS` v `src/lib/blog.ts`: fotografie nahoře ve formátu 16 : 6, pod ní rubrika, titulek, perex a autor s datem. U každého záznamu vyplnit obrazový soubor, ALT a skutečné rozměry.
 - Před zveřejněním ověřit přímo `/blog` na mobilu i desktopu: obrázek se načítá, ořez zachovává hlavní motiv, celá karta odkazuje na správný článek. Fotografie musí věcně odpovídat tématu; u ubytování lze použít vlastní fotku letiště, která se neoznačuje jako fotografie hotelu.
