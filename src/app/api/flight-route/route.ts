@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAeroSnapshot, airportFlightsPath } from '@/lib/aerodataboxCache'
+import { airportBoardRefreshSeconds } from '@/lib/airportFlightBoards'
 import { getAeroDataBoxConnection } from '@/lib/aerodatabox'
 import { checkRateLimit } from '@/lib/rateLimit'
 
@@ -32,7 +34,16 @@ interface AeroDataBoxFlight {
   arrival?:   AeroDataBoxMovement
   status?: string
   number?: string
+  callSign?: string
+  aircraft?: { reg?: string; modeS?: string; model?: string }
   airline?: { name?: string }
+}
+
+function movementTime(value?: AeroDataBoxTime): string | null {
+  const text = value?.utc ?? value?.local
+  if (!text) return null
+  const time = new Date(text.replace(' ', 'T'))
+  return Number.isFinite(time.getTime()) ? time.toISOString() : null
 }
 
 // Zpoždění v minutách z rozdílu plánovaného a revidovaného času (kladné = zpoždění)
@@ -216,16 +227,26 @@ export async function GET(req: NextRequest) {
   // ── Primárně: AeroDataBox — plánované a provozní údaje o letu ──
   if (aeroConnection) {
     try {
-      const url = `${aeroConnection.baseUrl}/flights/icao24/${icao24}`
-      const res = await fetch(url, {
-        headers: aeroConnection.headers,
-        signal: AbortSignal.timeout(5000),
-      })
-
-      if (res.ok) {
-        const data: AeroDataBoxFlight[] | AeroDataBoxFlight = await res.json()
+      // Reuse Prague's airport snapshot before requesting a single aircraft.
+      const board = await getAeroSnapshot<{ departures?: AeroDataBoxFlight[]; arrivals?: AeroDataBoxFlight[] }>(
+        airportFlightsPath('PRG'), airportBoardRefreshSeconds('PRG'),
+      ).catch(() => null)
+      const boardCandidates = [...(board?.data?.departures ?? []), ...(board?.data?.arrivals ?? [])]
+        .filter(flight => flight.aircraft?.modeS?.toLowerCase() === icao24 &&
+          (!callsign || !flight.callSign || flight.callSign.replace(/\s/g, '').toUpperCase() === callsign))
+      const snapshot = boardCandidates.length && board
+        ? { data: boardCandidates, fetchedAt: board.fetchedAt }
+        : await getAeroSnapshot<AeroDataBoxFlight[]>(`/flights/icao24/${icao24}`, 1800)
+      if (snapshot.data) {
+        const data = snapshot.data
         const candidates = Array.isArray(data) ? data : [data]
         const ranked = candidates.flatMap((candidate) => {
+          const departureTime = Date.parse(movementTime(candidate.departure?.revisedTime ?? candidate.departure?.scheduledTime) ?? '')
+          const arrivalTime = Date.parse(movementTime(candidate.arrival?.revisedTime ?? candidate.arrival?.scheduledTime) ?? '')
+          if (!Number.isFinite(departureTime) && !Number.isFinite(arrivalTime)) return []
+          if (departureTime > Date.now() + 90 * 60_000 || arrivalTime < Date.now() - 60 * 60_000) return []
+          if (/cancel|divert/i.test(candidate.status ?? '')) return []
+          if (callsign && candidate.callSign && candidate.callSign.replace(/\s/g, '').toUpperCase() !== callsign) return []
           const dep = candidate?.departure?.airport
           const arr = candidate?.arrival?.airport
           const depAp: RouteAirport = {
@@ -250,13 +271,13 @@ export async function GET(req: NextRequest) {
             number:  flight?.number ?? null,
             airline: flight?.airline?.name ?? null,
             status:  flight?.status ?? null,
-            depScheduled:   d?.scheduledTime?.local ?? null,
-            depActual:      d?.revisedTime?.local ?? d?.predictedTime?.local ?? null,
+            depScheduled:   movementTime(d?.scheduledTime),
+            depActual:      movementTime(d?.revisedTime ?? d?.predictedTime),
             depTerminal:    d?.terminal ?? null,
             depGate:        d?.gate ?? null,
             depDelayMin:    delayMin(d?.scheduledTime, d?.revisedTime),
-            arrScheduled:   a?.scheduledTime?.local ?? null,
-            arrActual:      a?.revisedTime?.local ?? a?.predictedTime?.local ?? null,
+            arrScheduled:   movementTime(a?.scheduledTime),
+            arrActual:      movementTime(a?.revisedTime ?? a?.predictedTime),
             arrTerminal:    a?.terminal ?? null,
             arrGate:        a?.gate ?? null,
             arrBaggageBelt: a?.baggageBelt ?? null,
@@ -265,7 +286,12 @@ export async function GET(req: NextRequest) {
           return NextResponse.json({
             route: { departure: selected.depAp, arrival: selected.arrAp },
             schedule,
-            aircraft: null,
+            aircraft: flight.aircraft ? {
+              type: flight.aircraft.model ?? null, registration: flight.aircraft.reg ?? null,
+              typeDesignator: null, manufacturer: null, registeredOwnerCountry: null,
+              registeredOwnerCountryIso: null, registeredOwnerOperatorCode: null, registeredOwner: null,
+            } : null,
+            fetchedAt: snapshot.fetchedAt,
             source: 'aerodatabox',
             confidence: selected.fit.confidence === 'unverified' ? 'schedule' : selected.fit.confidence,
           })

@@ -1,3 +1,4 @@
+import { ArticleFlightStatus } from '@/components/Airport/ArticleFlightStatus'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -156,6 +157,7 @@ export default function PrahaPlanespottingPage() {
         <p>Takové setkání nelze slíbit. Boeing 747 v barvách Fly Meta je zachycený na naší fotografii; termín dalšího příletu z ní ale nezjistíte. U A380 sledujte <Link href="/blog/airbus-a380-praha-emirates">přehled nasazení Emirates v Praze</Link> a ověřte konkrétní den.</p>
         <h3>Co když se na val nedostanu?</h3>
         <p>Letiště uvádí i další vyhlídková místa. Aktuální přístup si ověřte v <a href={officialSpots}>oficiálním seznamu</a>. Pro sledování z domova máme <Link href="/blog/letiste-praha-zive">rozcestník živých zdrojů z Prahy</Link>.</p>
+        <ArticleFlightStatus title="Dostupné přílety do Prahy" />
         <AuthorCard />
         <RelatedReading items={[
           { href: '/letiste/praha', eyebrow: 'Letiště', title: 'Letiště Praha', description: 'Přehled letů, parkování a dostupná živá mapa.' },

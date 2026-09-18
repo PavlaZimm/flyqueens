@@ -1,5 +1,7 @@
 # Další kroky FlyQueens
 
+**Aktualizace 18. 9. večer:** Pro již předplaceno a živé dotazy úspěšně ověřeny. Aktuální implementaci, intervaly a omezení popisuje `aerodatabox-aktivace-2026-09-18.md`. Níže uvedený plán AeroDataBox je původní návrh před zaplacením. Stay22 nadále čeká na skript.
+
 Stav k 18. září 2026. Dnešní články, fotografie a sekce novinek dokončujeme před zapojením placených dat.
 
 ## Stay22: čeká na skript od Pavly

@@ -490,6 +490,10 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
               )}
               <div style={{ marginTop: 8, fontSize: 8, lineHeight: 1.4, color: 'var(--text-dim)' }}>
                 Přímá spojnice letišť přes aktuální polohu. Nejde o skutečně proletěnou trajektorii ani letový plán.
+                {route.source === 'aerodatabox' && <div>
+                  AeroDataBox{route.fetchedAt ? ` · načteno ${new Intl.DateTimeFormat('cs-CZ', { hour: '2-digit', minute: '2-digit' }).format(new Date(route.fetchedAt))}` : ''}.
+                  {' '}Stav a časy se obnovují méně často než poloha letadla; aktualizovaný čas může být odhad.
+                </div>}
                 {route.source === 'adsbdb' && ' Bezplatný zdroj neposkytuje časy, zpoždění, terminál ani bránu.'}
               </div>
             </>

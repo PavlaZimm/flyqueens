@@ -95,5 +95,11 @@ export interface AirportBoardResponse {
   arrivals: AirportBoardFlight[]
   fetchedAt: string | null
   source: 'aerodatabox' | 'official'
+  refreshMinutes?: number
   message?: string
+}
+
+// Paid requests happen only on demand. Fixed keys share results across readers.
+export function airportBoardRefreshSeconds(iata: string): number {
+  return iata === 'PRG' ? 3600 : 21600
 }

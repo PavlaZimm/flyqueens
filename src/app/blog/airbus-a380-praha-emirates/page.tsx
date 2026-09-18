@@ -1,3 +1,4 @@
+import { ArticleFlightStatus } from '@/components/Airport/ArticleFlightStatus'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -291,6 +292,7 @@ export default function A380PrahaArticle() {
         <h3 style={S.h3}>Jaké číslo má let Emirates do Prahy?</h3>
         <p style={S.p}>Přímý let z Dubaje do Prahy je EK139. Z Prahy do Dubaje létá EK140.</p>
 
+        <ArticleFlightStatus title="Dostupné lety Emirates v Praze" numbers={['EK139', 'EK140']} />
         <AuthorCard />
 
         <RelatedReading

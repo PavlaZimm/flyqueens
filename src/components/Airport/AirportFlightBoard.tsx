@@ -31,8 +31,8 @@ const STATUS_LABELS: Record<string, string> = {
   unknown: 'Bez potvrzení',
 }
 
-const TIME_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { hour: '2-digit', minute: '2-digit' })
-const DATE_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric' })
+const TIME_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Prague' })
+const DATE_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', timeZone: 'Europe/Prague' })
 const INITIAL_FLIGHT_COUNT = 30
 
 function normalizedStatus(status: string): string {
@@ -217,6 +217,10 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
               </span>
             </div>
 
+            <p className={styles.messageText}>
+              Časy jsou v pražském časovém pásmu. Přehled se obnovuje přibližně po {data.refreshMinutes ?? 60} minutách.
+              {' '}<a href={airport.officialFlightsUrl} target="_blank" rel="noopener noreferrer">Poslední změny ověřte u letiště.</a>
+            </p>
             {flights.length > 0 ? (
               <>
                 <div className={styles.tableHeader} aria-hidden="true">

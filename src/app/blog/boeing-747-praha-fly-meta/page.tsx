@@ -1,3 +1,4 @@
+import { ArticleFlightStatus } from '@/components/Airport/ArticleFlightStatus'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -77,6 +78,7 @@ export default function Boeing747FlyMetaArticle() {
         <p>Na <Link href="/radar">radaru FlyQueens</Link> otevřete oblast pražského letiště a detail vybraného letadla. Pokud zdroj dat poskytne jeho registraci, porovnejte ji s označením 9H-FLM. Dostupnost typu a dalších údajů se liší; prázdné pole ani chybějící bod na mapě nepotvrzují, že letadlo neletí.</p>
         <p>Registrace patří konkrétnímu stroji, číslo letu označuje spoj. Rozdíl vysvětlujeme v návodu <Link href="/blog/jak-sledovat-let-podle-cisla">jak sledovat let podle čísla</Link>. Živá mapa pomůže s aktuální polohou. Termín dalšího příletu tohoto Boeingu z ní předem nevyčtete.</p>
         <div className={styles.actions}><Link className={styles.primary} href="/radar">Otevřít radar letadel</Link></div>
+        <ArticleFlightStatus title="Je 9H-FLM v dostupném přehledu Prahy?" registration="9H-FLM" />
         <AuthorCard />
         <RelatedReading items={[
           { href: '/letiste/praha/planespotting', eyebrow: 'Kam za letadly', title: 'Planespotting v Praze', description: 'Vyhlídkové valy v Kněževsi a u Hostivice, přístup a vlastní fotografie.' },

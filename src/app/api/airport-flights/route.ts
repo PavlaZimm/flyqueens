@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAeroSnapshot, airportFlightsPath } from '@/lib/aerodataboxCache'
+import { airportBoardRefreshSeconds } from '@/lib/airportFlightBoards'
 import { getAeroDataBoxConnection } from '@/lib/aerodatabox'
 import {
   airportFlightBoardByIata,
@@ -58,7 +60,7 @@ function clean(value: unknown, maxLength = 120): string | null {
 function iso(value: AeroDateTime | undefined): string | null {
   const candidate = clean(value?.local ?? value?.utc, 40)
   if (!candidate || !Number.isFinite(Date.parse(candidate))) return null
-  return candidate
+  return new Date(candidate.replace(' ', 'T')).toISOString()
 }
 
 function normalizedAirport(airport: AeroAirport | undefined) {
@@ -177,48 +179,25 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  const url = new URL(`${connection.baseUrl}/flights/airports/iata/${iata}`)
-  url.searchParams.set('offsetMinutes', '-120')
-  url.searchParams.set('durationMinutes', '720')
-  url.searchParams.set('direction', 'Both')
-  url.searchParams.set('withLeg', 'true')
-  url.searchParams.set('withCancelled', 'true')
-  url.searchParams.set('withCodeshared', 'false')
-  url.searchParams.set('withCargo', 'true')
-  url.searchParams.set('withPrivate', 'true')
-  url.searchParams.set('withLocation', 'false')
-
   try {
-    const upstream = await fetch(url, {
-      headers: connection.headers,
-      next: { revalidate: iata === 'PRG' ? 300 : 600 },
-      signal: AbortSignal.timeout(7000),
-    })
-
-    if (upstream.status === 204) {
+    const snapshot = await getAeroSnapshot<AeroFids>(airportFlightsPath(iata), airportBoardRefreshSeconds(iata))
+    if (snapshot.data === null) {
       return NextResponse.json({
         ...response,
         status: 'ready',
         source: 'aerodatabox',
-        fetchedAt: new Date().toISOString(),
+        fetchedAt: snapshot.fetchedAt,
         message: 'Ve zvoleném časovém okně nejsou dostupné žádné lety.',
       })
     }
 
-    if (!upstream.ok) {
-      return NextResponse.json({
-        ...response,
-        status: 'unavailable',
-        message: 'Datová tabule je dočasně nedostupná. Použijte oficiální informace letiště.',
-      }, { status: 502 })
-    }
-
-    const data = await upstream.json() as AeroFids
+    const data = snapshot.data
     return NextResponse.json({
       ...response,
       status: 'ready',
       source: 'aerodatabox',
-      fetchedAt: new Date().toISOString(),
+      refreshMinutes: airportBoardRefreshSeconds(iata) / 60,
+      fetchedAt: snapshot.fetchedAt,
       departures: normalizeFlights(data.departures, 'departure'),
       arrivals: normalizeFlights(data.arrivals, 'arrival'),
     }, {

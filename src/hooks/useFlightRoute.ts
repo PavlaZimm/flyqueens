@@ -41,6 +41,7 @@ export interface FlightRoute {
   totalDist: number          // celková vzdálenost km
   schedule:  FlightSchedule | null  // časy, zpoždění, brána (AeroDataBox)
   source: 'aerodatabox' | 'adsbdb' | null
+  fetchedAt?: string | null
   confidence: 'schedule' | 'position-checked' | 'unverified'
 }
 
@@ -151,6 +152,7 @@ export function useFlightRoute(
         schedule?: FlightSchedule | null
         aircraft?: AircraftDetails | null
         source?: 'aerodatabox' | 'adsbdb'
+        fetchedAt?: string | null
         confidence?: 'schedule' | 'position-checked' | 'unverified'
       }) => {
         if (!active) return
@@ -171,7 +173,7 @@ export function useFlightRoute(
           const partial: FlightRoute = {
             departure: dep, arrival: null, progress: 0, remaining: 0, etaMin: 0,
             totalDist: 0, schedule, source: data.source ?? null,
-            confidence: data.confidence ?? 'unverified',
+            fetchedAt: data.fetchedAt ?? null, confidence: data.confidence ?? 'unverified',
           }
           routeCache.set(cacheKey, { route: partial, expiresAt: Date.now() + ROUTE_CACHE_MS })
           setRoute(partial)
@@ -188,7 +190,7 @@ export function useFlightRoute(
         const complete: FlightRoute = {
           departure: dep, arrival: arr, progress, remaining: Math.round(distRemaining), etaMin,
           totalDist: Math.round(totalDist), schedule, source: data.source ?? null,
-          confidence: data.confidence ?? 'unverified',
+          fetchedAt: data.fetchedAt ?? null, confidence: data.confidence ?? 'unverified',
         }
         routeCache.set(cacheKey, { route: complete, expiresAt: Date.now() + ROUTE_CACHE_MS })
         setRoute(complete)

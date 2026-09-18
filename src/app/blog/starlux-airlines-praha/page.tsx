@@ -1,3 +1,4 @@
+import { ArticleFlightStatus } from '@/components/Airport/ArticleFlightStatus'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPost } from '@/lib/blog'
@@ -232,6 +233,7 @@ export default function StarluxPrahaArticle() {
           nebo stříbrný stroj, ale dopravce dopředu negarantuje — před cestou za focením si typ ověřte.
         </p>
 
+        <ArticleFlightStatus title="Dostupné lety STARLUX v Praze" numbers={['JX101', 'JX102']} />
         <AuthorCard />
 
         <RelatedReading
