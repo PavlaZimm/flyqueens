@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFlights } from '@/hooks/useFlights'
-import { useTheme } from '@/hooks/useTheme'
 import { czechPlural } from '@/lib/plural'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { isEmergencyFlight } from '@/lib/emergency'
@@ -155,7 +154,6 @@ function CoverageRow({ label, count, total }: { label: string; count: number; to
 
 export default function StatsPage() {
   const { flights, count, loading, dataMeta, region, setRegion } = useFlights()
-  const { theme, toggleTheme } = useTheme()
   const historyRef = useRef<number[]>([])
   const countRef = useRef(0)
   const [history, setHistory] = useState<number[]>([])
@@ -257,13 +255,11 @@ export default function StatsPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link href="/radar" className={`btn-cta ${styles.backLink}`}>← MAPA</Link>
         <div className={styles.titleBlock}>
           <span>ŽIVÝ PŘEHLED</span>
           <h1>Co je právě ve vzduchu</h1>
           <p>Aktuální ADS-B snímek. Nejde o dlouhodobou statistiku ani úplný přehled všech letů.</p>
         </div>
-        <button className={styles.themeButton} onClick={toggleTheme} aria-label={theme === 'dark' ? 'Zapnout světlý režim' : 'Zapnout tmavý režim'}>{theme === 'dark' ? '☀️' : '🌙'}</button>
       </header>
 
       <section className={styles.scopeBar} aria-label="Nastavení sledované oblasti">

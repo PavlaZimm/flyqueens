@@ -1,3 +1,4 @@
+import { SiteHeader } from '@/components/UI/SiteHeader'
 import type { Metadata } from 'next'
 import { SiteFooter } from '@/components/UI/SiteFooter'
 import { socialMetadata } from '@/lib/socialMetadata'
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function StatsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <SiteHeader activeSection="stats" />
       {children}
       <SiteFooter />
     </>

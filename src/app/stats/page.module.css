@@ -31,31 +31,13 @@
 .inlineLoading strong { display: block; font: 800 15px/1.3 'Archivo', sans-serif; }
 .inlineLoading small { display: block; max-width: 470px; margin-top: 4px; color: var(--text-dim); font-size: 10px; line-height: 1.5; }
 
-.header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: start;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-.backLink { margin-top: 4px; padding: 7px 15px; font-size: 10px; text-decoration: none; }
+.header { margin-bottom: 24px; }
 .titleBlock span,
 .atmosphereIntro > span { color: var(--gold); font: 700 10px/1.2 'Archivo', sans-serif; letter-spacing: 2px; }
 .titleBlock h1 { margin: 5px 0; font: 800 clamp(25px, 4vw, 42px)/1.05 'Archivo', sans-serif; letter-spacing: -1.2px; }
 .titleBlock p,
 .atmosphereIntro p,
 .coveragePanel > p { max-width: 660px; margin: 0; color: var(--text-muted); font-size: 12px; line-height: 1.55; }
-
-.themeButton {
-  min-width: 40px;
-  height: 40px;
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  background: var(--glass-bg);
-  cursor: pointer;
-  font-size: 16px;
-}
-.themeButton:hover { border-color: rgba(245, 184, 61, .52); }
 
 .scopeBar {
   display: flex;
@@ -226,8 +208,6 @@ a.rankRow:hover { background: var(--glass-bg); }
 
 @media (max-width: 420px) {
   .page { padding-inline: 10px; }
-  .backLink { padding: 7px 10px; }
-  .themeButton { min-width: 36px; width: 36px; height: 36px; }
   .titleBlock h1 { font-size: 20px; }
   .metrics { gap: 8px; }
   .metric { padding: 14px 11px; }

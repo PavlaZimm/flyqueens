@@ -5,7 +5,7 @@
 .eyebrow { color: var(--gold); text-transform: uppercase; letter-spacing: 1.6px; font-size: 11px; margin: 28px 0 10px; }
 .article h1, .article h2, .article h3 { font-family: var(--font-archivo), sans-serif; }
 .article h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.12; letter-spacing: -1px; margin: 0 0 16px; }
-.article h2 { font-size: 25px; line-height: 1.25; margin: 38px 0 14px; scroll-margin-top: 24px; }
+.article h2 { font-size: 25px; line-height: 1.25; margin: 38px 0 14px; scroll-margin-top: 130px; }
 .article h3 { font-size: 18px; margin: 22px 0 10px; }
 .article p, .article li { font-size: 16px; line-height: 1.8; }
 .article p { margin: 0 0 16px; }
@@ -34,3 +34,5 @@
 .tableWrap th, .tableWrap td { padding: 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--border-mid); }
 .tableWrap th { background: var(--midnight-2); }
 @media (max-width: 560px) { .tableWrap th, .tableWrap td { padding: 10px; min-width: 120px; } }
+
+.article h3 { scroll-margin-top: 130px; }

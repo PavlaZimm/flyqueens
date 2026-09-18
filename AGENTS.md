@@ -15,3 +15,5 @@ Při psaní nebo úpravě článků čti `docs/redakcni-pravidla.md`. Podklady u
 Každý článek v přehledu `/blog` musí mít náhledovou fotografii. Používej společnou šablonu karet a registr `BLOG_CARDS` v `src/lib/blog.ts`, včetně článků pod `/letiste/`. Před publikací zkontroluj náhled na mobilu a desktopu.
 
 Všechny fotografie před zveřejněním optimalizuj co do rozměrů i datové velikosti. Zachovej originály; webové kopie standardně do 1600 px na delší straně a přibližně 100–200 kB. Používej `npm run images:optimize`, ověř vizuální kvalitu a oprav metadata skutečných rozměrů.
+
+Běžné obsahové sekce (blog, letiště a statistiky) musí mít společný `SiteHeader` s hlavní navigací, aktivní sekcí a dostupnými odkazy i na mobilu. Při přidání stránky ověř přechody mezi sekcemi.

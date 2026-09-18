@@ -1,10 +1,10 @@
-import { BlogHeader } from '@/components/UI/BlogHeader'
+import { SiteHeader } from '@/components/UI/SiteHeader'
 import { SiteFooter } from '@/components/UI/SiteFooter'
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <BlogHeader />
+      <SiteHeader activeSection="blog" />
       {children}
       <SiteFooter />
     </>
