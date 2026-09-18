@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import Script from 'next/script'
 
-// Version 2 includes Stay22; the old analytics-only consent is not reused.
-const KEY = 'fq-cookie-consent-v2'
+// Version 3 adds Impact; earlier grants do not cover this additional provider.
+const KEY = 'fq-cookie-consent-v3'
 type Consent = 'granted' | 'denied' | null
 
 export function PrivacySettingsButton() {
@@ -22,7 +22,11 @@ export function CookieConsent() {
 
   useEffect(() => {
     let saved: string | null = null
-    try { saved = localStorage.getItem(KEY) } catch { /* Keep the choice usable without storage. */ }
+    try {
+      saved = localStorage.getItem(KEY)
+      // Preserve an earlier refusal, but ask again before enabling a new provider.
+      if (saved === null && localStorage.getItem('fq-cookie-consent-v2') === 'denied') saved = 'denied'
+    } catch { /* Keep the choice usable without storage. */ }
     if (saved === 'granted' || saved === 'denied') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(saved)
@@ -46,6 +50,18 @@ export function CookieConsent() {
     <>
       {consent === 'granted' && (
         <>
+          <Script id="impact-init" strategy="lazyOnload">{`
+            (function(i,m,p,a,c,t){
+              c.ire_o=p;
+              c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};
+              t=a.createElement(m);
+              var z=a.getElementsByTagName(m)[0];
+              t.async=1; t.id='impact-loader'; t.src=i;
+              z.parentNode.insertBefore(t,z);
+            })('https://utt.impactcdn.com/P-A7803755-1409-47d0-891e-92d7562279a31.js','script','impactStat',document,window);
+            impactStat('transformLinks');
+            impactStat('trackImpression');
+          `}</Script>
           <Script id="stay22-init" strategy="lazyOnload">{`
             (function (s, t, a, y, twenty, two) {
               s.Stay22 = s.Stay22 || {};
@@ -88,7 +104,7 @@ export function CookieConsent() {
           }}
         >
           <span style={{ fontSize: 11, lineHeight: 1.45, color: 'rgba(255,255,255,0.75)', flex: '1 1 210px' }}>
-            S vaším souhlasem zapneme Google Analytics a partnerská doporučení Stay22, včetně měření rezervací.
+            S vaším souhlasem zapneme Google Analytics a partnerské služby Stay22 a Impact pro doporučení, úpravu odkazů a měření návštěv a rezervací.
             Volbu můžete změnit na stránce <a href="/o-projektu#soukromi" style={{ color: 'inherit', textDecoration: 'underline' }}>O projektu</a>.
           </span>
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>

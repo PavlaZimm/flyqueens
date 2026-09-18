@@ -71,7 +71,7 @@ export default function AboutProjectPage() {
           </section>
           <section id="soukromi" style={{ ...section, scrollMarginTop: 100 }}>
             <h2 style={heading}>Soukromí a partnerské odkazy</h2>
-            <p style={paragraph}>Google Analytics a skript Stay22 spouštíme až po souhlasu. Stay22 může doplnit partnerské nabídky a upravit podporované rezervační odkazy. Z rezervací přes partnerské odkazy může FlyQueens získat provizi.</p>
+            <p style={paragraph}>Google Analytics a skripty Stay22 a Impact spouštíme až po souhlasu. Stay22 může doplnit partnerské nabídky a upravit podporované rezervační odkazy. Impact upravuje podporované odkazy na partnerské a měří zobrazení stránek. Z nákupů a rezervací přes partnerské odkazy může FlyQueens získat provizi.</p>
             <p style={paragraph}>Odmítnutí nebrání čtení článků ani používání radaru. Označené rezervační odkazy lze otevřít i bez zapnutého skriptu; poté přecházíte na službu partnera. Při odvolání souhlasu stránku znovu načteme, aby se již spuštěné skripty zastavily.</p>
             <PrivacySettingsButton />
           </section>
