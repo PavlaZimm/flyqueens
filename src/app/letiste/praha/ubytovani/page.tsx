@@ -68,6 +68,14 @@ export default function PrahaUbytovaniPage() {
           Samotné slovo „Airport“ v názvu hotelu vám cestu k odbavení nevyřeší.
         </p>
         <p>Polohu a dopravu jsme ověřili na webech letiště a hotelů 18. září 2026. Jde o praktické srovnání zveřejněných informací, nikoli recenze z vlastních pobytů.</p>
+        <aside className={styles.tip} aria-label="Partnerská nabídka ubytování">
+          <h2 style={{ marginTop: 0 }}>Volné pokoje u letiště Praha</h2>
+          <p>Vyberte termín a porovnejte nabídky u Letiště Václava Havla. Cenu, dostupnost a podmínky rezervace zjistíte na Booking.com.</p>
+          <div className={styles.actions}>
+            <a className={styles.primary} href="https://booking.stay22.com/trip/aj0UA5GAPS" target="_blank" rel="sponsored noopener">Zobrazit ubytování u letiště Praha</a>
+          </div>
+          <p style={{ fontSize: 13, marginTop: 14 }}>Partnerský odkaz přes Stay22. Pokud přes něj rezervujete, FlyQueens může získat provizi. Odkazy na oficiální weby hotelů v průvodci slouží jako zdroje informací.</p>
+        </aside>
         <nav className={styles.contents} aria-label="Obsah průvodce">
           <a href="#srovnani">Srovnání hotelů</a><a href="#pesky">K terminálu pěšky</a>
           <a href="#doprava">Hotely s dojezdem</a><a href="#cena">Cena a parkování</a>

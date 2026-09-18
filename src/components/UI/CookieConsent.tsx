@@ -3,34 +3,58 @@
 import { useEffect, useState } from 'react'
 import Script from 'next/script'
 
-const KEY = 'fq-cookie-consent'
+// Version 2 includes Stay22; the old analytics-only consent is not reused.
+const KEY = 'fq-cookie-consent-v2'
 type Consent = 'granted' | 'denied' | null
 
-// GDPR: Google Analytics se načte až po souhlasu. Vercel Analytics je
-// cookieless, takže lištou procházet nemusí.
+export function PrivacySettingsButton() {
+  return <button type="button" onClick={() => window.dispatchEvent(new Event('fq-open-consent'))}
+    style={{ padding: '10px 16px', minHeight: 44, borderRadius: 8, border: '1px solid var(--border-mid)', background: 'var(--midnight-2)', color: 'var(--text-primary)', cursor: 'pointer' }}>
+    Nastavit soukromí a partnerské služby
+  </button>
+}
+
+// Optional third-party scripts load only after this version's consent.
 export function CookieConsent() {
   const [consent, setConsent] = useState<Consent>(null)
   const [ready, setReady] = useState(false)
+  const [editing, setEditing] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem(KEY)
+    let saved: string | null = null
+    try { saved = localStorage.getItem(KEY) } catch { /* Keep the choice usable without storage. */ }
     if (saved === 'granted' || saved === 'denied') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(saved)
     }
      
     setReady(true)
+    const reopen = () => setEditing(true)
+    window.addEventListener('fq-open-consent', reopen)
+    return () => window.removeEventListener('fq-open-consent', reopen)
   }, [])
 
   const decide = (value: Exclude<Consent, null>) => {
-    localStorage.setItem(KEY, value)
+    try { localStorage.setItem(KEY, value) } catch { /* The choice still applies to this page. */ }
+    const needsReload = consent === 'granted' && value === 'denied'
     setConsent(value)
+    setEditing(false)
+    if (needsReload) window.location.reload()
   }
 
   return (
     <>
       {consent === 'granted' && (
         <>
+          <Script id="stay22-init" strategy="lazyOnload">{`
+            (function (s, t, a, y, twenty, two) {
+              s.Stay22 = s.Stay22 || {};
+              s.Stay22.params = { lmaID: '6aad790b12895152a4028ac0' };
+              twenty = t.createElement(a); two = t.getElementsByTagName(a)[0];
+              twenty.async = 1; twenty.id = 'stay22-loader'; twenty.src = y;
+              two.parentNode.insertBefore(twenty, two);
+            })(window, document, 'script', 'https://scripts.stay22.com/letmeallez.js');
+          `}</Script>
           <Script src="https://www.googletagmanager.com/gtag/js?id=G-SMFS92YP8L" strategy="afterInteractive" />
           <Script id="gtag-init" strategy="afterInteractive">{`
             window.dataLayer = window.dataLayer || [];
@@ -41,7 +65,7 @@ export function CookieConsent() {
         </>
       )}
 
-      {ready && consent === null && (
+      {ready && (consent === null || editing) && (
         <div
           role="dialog"
           aria-label="Souhlas s cookies"
@@ -64,7 +88,8 @@ export function CookieConsent() {
           }}
         >
           <span style={{ fontSize: 11, lineHeight: 1.45, color: 'rgba(255,255,255,0.75)', flex: '1 1 210px' }}>
-            Pomůžeš nám zjistit, co na FlyQueens funguje? Google Analytics zapneme jen s tvým souhlasem.
+            S vaším souhlasem zapneme Google Analytics a partnerská doporučení Stay22, včetně měření rezervací.
+            Volbu můžete změnit na stránce <a href="/o-projektu#soukromi" style={{ color: 'inherit', textDecoration: 'underline' }}>O projektu</a>.
           </span>
           <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
             <button

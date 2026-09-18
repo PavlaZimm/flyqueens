@@ -1,17 +1,15 @@
 # Další kroky FlyQueens
 
-**Aktualizace 18. 9. večer:** Pro již předplaceno a živé dotazy úspěšně ověřeny. Aktuální implementaci, intervaly a omezení popisuje `aerodatabox-aktivace-2026-09-18.md`. Níže uvedený plán AeroDataBox je původní návrh před zaplacením. Stay22 nadále čeká na skript.
+**Aktualizace 18. 9. večer:** Pro již předplaceno a živé dotazy úspěšně ověřeny. Aktuální implementaci, intervaly a omezení popisuje `aerodatabox-aktivace-2026-09-18.md`. Níže uvedený plán AeroDataBox je původní návrh před zaplacením. Stay22 skript získán z přihlášeného Hubu; stav implementace a ověření v `stay22-integrace-2026-09-18.md`.
 
 Stav k 18. září 2026. Dnešní články, fotografie a sekce novinek dokončujeme před zapojením placených dat.
 
-## Stay22: čeká na skript od Pavly
+## Stay22
 
-- Cílový článek: `/letiste/praha/ubytovani`.
-- Skript dosud nebyl dodán. Integrace není aktivní.
-- Po dodání určit, zda jde o automatickou úpravu rezervačních odkazů, mapu nebo jiný widget. Převzít přesný partnerský identifikátor ze zadání, nic nevymýšlet.
-- Zapojit jednou, ověřit také přechod na článek přes interní navigaci, správný cíl Praha letiště a chování na mobilu.
-- Provizní odkazy viditelně označit a podle skutečné integrace použít `rel="sponsored"`. Zkontrolovat načítání, případné souhlasy a rychlost stránky.
-- Nevkládat prázdný rezervační box ani vymyšlené ceny. Existující praktický hotelový průvodce je použitelný i bez skriptu.
+- Doména `flyqueens.cz` přidána do existujícího účtu Pavly, AID `trip`.
+- Vlastní skript `6aad790b12895152a4028ac0`, načítání přes souhlas s doplňkovými službami.
+- Článek `/letiste/praha/ubytovani` obsahuje označený partnerský odkaz na ubytování u PRG, kampaň `flyqueensprg`.
+- Podrobný stav a omezení: `stay22-integrace-2026-09-18.md`.
 
 ## AeroDataBox: pilot po návratu Pavly
 

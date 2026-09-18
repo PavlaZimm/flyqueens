@@ -41,7 +41,7 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 
 Oddělená kontrola faktů a českého stylu podle Webx postupu. Technicky ověřit build, metadata, odkazy a mobilní zobrazení. Výsledek připravit lokálně k revizi; zveřejnění schvaluje Pavla. Uvést zbývající nejistoty.
 
-Stay22 se zapojí až po dodání konkrétního skriptu. Potom ověřit umístění, načítání, chování odkazů, mobilní zobrazení a potřebné označení partnerských odkazů. Bez skriptu netvoříme předstíranou dostupnost pokojů ani ceny.
+Stay22 je zapojen přes vlastní skript FlyQueens; viz `stay22-integrace-2026-09-18.md`. Partnerské odkazy viditelně označit a použít `rel="sponsored"`. Odkazy na primární zdroje neoznačovat jako placené. Při přidání rezervací ověřit cílové místo, mobilní zobrazení i cestu přes interní navigaci. Ceny a dostupnost pokojů nevymýšlet; návštěvník je ověřuje u poskytovatele.
 
 ## Původ pravidel
 

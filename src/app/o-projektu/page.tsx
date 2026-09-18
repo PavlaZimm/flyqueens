@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SiteFooter } from '@/components/UI/SiteFooter'
+import { PrivacySettingsButton } from '@/components/UI/CookieConsent'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 export const metadata: Metadata = {
@@ -67,6 +68,12 @@ export default function AboutProjectPage() {
               Ukázková letadla nevydáváme za živá data. Při výpadku zobrazíme poslední známý snapshot s upozorněním,
               nebo jasný stav nedostupnosti. Dynamické ceny na obsahových stránkách je potřeba před nákupem ověřit u poskytovatele.
             </p>
+          </section>
+          <section id="soukromi" style={{ ...section, scrollMarginTop: 100 }}>
+            <h2 style={heading}>Soukromí a partnerské odkazy</h2>
+            <p style={paragraph}>Google Analytics a skript Stay22 spouštíme až po souhlasu. Stay22 může doplnit partnerské nabídky a upravit podporované rezervační odkazy. Z rezervací přes partnerské odkazy může FlyQueens získat provizi.</p>
+            <p style={paragraph}>Odmítnutí nebrání čtení článků ani používání radaru. Označené rezervační odkazy lze otevřít i bez zapnutého skriptu; poté přecházíte na službu partnera. Při odvolání souhlasu stránku znovu načteme, aby se již spuštěné skripty zastavily.</p>
+            <PrivacySettingsButton />
           </section>
         </article>
       </main>
