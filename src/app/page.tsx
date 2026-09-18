@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { LiveFlightCount } from '@/components/Landing/LiveFlightCount'
 import { LiveRadarPreview } from '@/components/Landing/LiveRadarPreview'
 import { HomeThemeToggle } from '@/components/Landing/HomeThemeToggle'
 import { RadarLink, RadarSearch } from '@/components/Landing/RadarActions'
-import { POSTS } from '@/lib/blog'
+import { BLOG_CARDS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
@@ -38,7 +39,7 @@ function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {
 }
 
 export default function HomePage() {
-  const latestPosts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
+  const latestPosts = [...BLOG_CARDS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
 
   const organizationJsonLd = {
     '@context': 'https://schema.org',
@@ -167,11 +168,17 @@ export default function HomePage() {
               <Link href="/blog">Všechny články →</Link>
             </div>
             <div className={styles.articleGrid}>
-              {latestPosts.map((post, index) => (
-                <Link href={`/blog/${post.slug}`} key={post.slug} className={styles.articleCard}>
-                  <span className={styles.articleNumber}>0{index + 1}</span>
-                  <h3>{post.title}</h3>
-                  <span className={styles.articleLink}>Číst článek →</span>
+              {latestPosts.map((post) => (
+                <Link href={post.href} key={post.href} className={styles.articleCard}>
+                  <Image className={styles.articleImage} src={post.image} alt={post.imageAlt}
+                    width={post.imageWidth} height={post.imageHeight}
+                    sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1220px) 33vw, 393px"
+                    style={{ objectPosition: post.imagePosition ?? 'center' }} />
+                  <div className={styles.articleBody}>
+                    <span className={styles.articleNumber}>{post.tag} · {post.dateLabel}</span>
+                    <h3>{post.title}</h3>
+                    <span className={styles.articleLink}>Číst článek →</span>
+                  </div>
                 </Link>
               ))}
             </div>

@@ -9,12 +9,12 @@ const AIRPORTS = ['praha', 'brno', 'ostrava', 'pardubice', 'karlovy-vary']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const core: MetadataRoute.Sitemap = [
-    { url: BASE, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: BASE, lastModified: '2026-09-18' },
     { url: `${BASE}/radar`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/stats`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/o-projektu`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/letiste`, lastModified: LAST_SIGNIFICANT_UPDATE },
-    { url: `${BASE}/blog`, lastModified: LAST_SIGNIFICANT_UPDATE },
+    { url: `${BASE}/blog`, lastModified: '2026-09-18' },
   ]
 
   // Hub + parkování + odlety/přílety pro každé letiště

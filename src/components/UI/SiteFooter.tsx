@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { POSTS } from '@/lib/blog'
+import { BLOG_CARDS } from '@/lib/blog'
 
 // Patička obsahových stránek (letiště, blog, statistiky).
 // Objevitelnost pro návštěvníky + interní prolinkování pro SEO.
@@ -8,7 +8,7 @@ const col = { fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', colo
 const link = { display: 'block', fontSize: 13, color: 'var(--text-muted)', textDecoration: 'none', padding: '3px 0', lineHeight: 1.5 } as const
 
 export function SiteFooter() {
-  const posts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
+  const posts = [...BLOG_CARDS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3)
 
   return (
     <footer style={{ background: 'var(--midnight)', borderTop: '1px solid var(--border-subtle)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
@@ -36,7 +36,7 @@ export function SiteFooter() {
           <div>
             <div style={col}>Z blogu</div>
             {posts.map((p) => (
-              <Link key={p.slug} href={`/blog/${p.slug}`} style={link}>{p.title}</Link>
+              <Link key={p.href} href={p.href} style={link}>{p.title}</Link>
             ))}
           </div>
 

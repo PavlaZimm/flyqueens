@@ -17,6 +17,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'boeing-747-praha-fly-meta',
+    title: 'Boeing 747 v Praze: Fly Meta na fotkách z Kněževsi',
+    excerpt: 'Nákladní Boeing 747-400F s registrací 9H-FLM při přistání v Praze. Vlastní fotky z Kněževsi a rozdíl mezi Fly Meta a provozovatelem letadla.',
+    date: '2026-09-18', updatedAt: '2026-09-18', dateLabel: '18. září 2026',
+    tag: 'Boeing 747 · Vlastní fotografie', readingTime: '4 min čtení',
+    image: '/spotting/praha-boeing-747-fly-meta.webp',
+    imageAlt: 'Boeing 747 v barvách Fly Meta při přistání v Praze, fotografovaný z Kněževsi',
+    imageWidth: 1600, imageHeight: 780,
+  },
+  {
     slug: 'starlux-airlines-praha',
     title: 'STARLUX Airlines v Praze: přímá linka do Tchaj-peje',
     excerpt: 'STARLUX otevřel v Praze svou první evropskou linku. Kdy létají spoje JX101 a JX102, proč od 1. září létá větší A350-1000 a jak poznáte zlatou AIRSORAYAMU.',

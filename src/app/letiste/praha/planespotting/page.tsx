@@ -134,6 +134,7 @@ export default function PrahaPlanespottingPage() {
           <div className={styles.actions}><Link className={styles.primary} href="/radar">Otevřít radar letadel</Link><Link href="/blog/airbus-a380-praha-emirates">A380 v Praze</Link></div>
         </div>
         <Photo name="praha-boeing-747-fly-meta" height={780} alt="Boeing 747 v barvách Fly Meta na Letišti Praha, fotografovaný z Kněževsi" caption="Boeing 747 v barvách Fly Meta při přistání v Praze, fotografovaný z Kněževsi." />
+        <p>Na snímku je nákladní <Link href="/blog/boeing-747-praha-fly-meta">Boeing 747-400F v barvách Fly Meta</Link>. V samostatném článku najdete další fotografii přistání a údaje ke stroji 9H-FLM.</p>
         <h2 id="foceni">Co si vzít a jak fotografovat</h2>
         <p>
           Na první návštěvu doporučujeme telefon, nabitou baterii, vodu a oblečení podle počasí.

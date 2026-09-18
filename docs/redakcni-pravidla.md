@@ -9,6 +9,8 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 3. Pokud je dostupná Search Console, použít vlastní měření; nemíchat je s odhady MM. Nedostupnost přiznat.
 4. Fakta dohledat u provozovatelů. Uložit zdroje, datum, rozpory a neověřené údaje do `Vyzkum/<tema>/`. Rešerše nikdy nenahrazuje osobní návštěvu.
 
+**Povinná kontrola konkurence před každým článkem** (výslovný požadavek Pavly 18. 9. 2026): otevřít několik relevantních výsledků pro hlavní téma, zapsat URL, datum kontroly, pokrytá témata, mezery a případné rozpory do `Vyzkum/<tema>/serp.md`. Pouhé přečtení úryvků ve vyhledávači není úplná kontrola; nedostupné stránky označit. Konkurenční text nepřebírat a jeho tvrzení ověřovat u původních zdrojů. Pravdivost má přednost před délkou, pozicí konkurence i SEO.
+
 ## Hlas a obsah
 
 - Přirozená čeština, vykání, konkrétní praktická pomoc. Střídat délku vět, přiznat nevýhody.
@@ -27,6 +29,7 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 - **Každý článek v přehledu blogu musí mít náhledovou fotografii**, stejně jako ostatní články. Platí i pro průvodce uložené pod `/letiste/`. Žádné samostatné textové karty bez fotky. Výslovný požadavek Pavly, 18. 9. 2026.
 - Karty vykreslovat jednotnou šablonou z `BLOG_CARDS` v `src/lib/blog.ts`: fotografie nahoře ve formátu 16 : 6, pod ní rubrika, titulek, perex a autor s datem. U každého záznamu vyplnit obrazový soubor, ALT a skutečné rozměry.
 - Před zveřejněním ověřit přímo `/blog` na mobilu i desktopu: obrázek se načítá, ořez zachovává hlavní motiv, celá karta odkazuje na správný článek. Fotografie musí věcně odpovídat tématu; u ubytování lze použít vlastní fotku letiště, která se neoznačuje jako fotografie hotelu.
+- Ověřit i novinky na homepage a odkazy v patičce. Používají stejný registr `BLOG_CARDS`, řadí podle data a zahrnují články pod `/letiste/`. Homepage má u každé karty vlastní náhledovou fotografii; pro její užší sloupce používá formát 16 : 9. Adresu brát z `href`, neskládat automaticky `/blog/`.
 
 - Jedno H1, smysluplná H2/H3. Titulek přibližně 40–60 znaků, popisek 120–155; srozumitelnost má přednost před mechanickým limitem.
 - Úvod odpoví, komu stránka pomůže. Fotografie až pod úvodem, pouze oprávněně použité, správný kredit a popisný ALT do 100 znaků. Chybějící fotografie hotelu nenahrazovat falešnou vizualizací.

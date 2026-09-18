@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 }
 
 const LINKS = [
+  { href: '/blog/boeing-747-praha-fly-meta', title: 'Boeing 747 Fly Meta v Praze', desc: 'Vlastní fotografie nákladního jumba 9H-FLM při přistání, pořízené z Kněževsi.', ready: true },
   { href: '/letiste/praha/ubytovani', title: 'Ubytování u letiště', desc: 'Hotely u terminálů, pěší přístup a doprava před ranním odletem.', ready: true },
   { href: '/letiste/praha/planespotting', title: 'Planespotting: kam na letadla', desc: 'Vyhlídky Kněževes a Hostivice, vlastní fotografie a radar při pozorování.', ready: true },
   { href: '/letiste/praha/parkovani', title: 'Parkování a ceny', desc: 'Kde zaparkovat levně, srovnání parkovišť a tipy na rezervaci.', ready: true },

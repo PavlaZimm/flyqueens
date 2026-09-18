@@ -14,6 +14,10 @@ Při psaní nebo úpravě článků čti `docs/redakcni-pravidla.md`. Podklady u
 
 Každý článek v přehledu `/blog` musí mít náhledovou fotografii. Používej společnou šablonu karet a registr `BLOG_CARDS` v `src/lib/blog.ts`, včetně článků pod `/letiste/`. Před publikací zkontroluj náhled na mobilu a desktopu.
 
+Před každým článkem povinně projdi relevantní konkurenci. Do rešerše zaznamenej skutečně otevřené stránky, témata, mezery a rozpory. Konkurenční tvrzení ověřuj u primárních zdrojů; konkurence sama není důkaz pravdivosti. Nekopíruj text ani fotografie.
+
+Nové články musí být dohledatelné i na hlavní stránce a v patičce. Obě sekce čerpají z `BLOG_CARDS` se skutečným `href`, nikoli jen z `POSTS`. Při publikaci kontroluj tři nejnovější články na homepage včetně fotografií a cílových adres.
+
 Všechny fotografie před zveřejněním optimalizuj co do rozměrů i datové velikosti. Zachovej originály; webové kopie standardně do 1600 px na delší straně a přibližně 100–200 kB. Používej `npm run images:optimize`, ověř vizuální kvalitu a oprav metadata skutečných rozměrů.
 
 Běžné obsahové sekce (blog, letiště a statistiky) musí mít společný `SiteHeader` s hlavní navigací, aktivní sekcí a dostupnými odkazy i na mobilu. Při přidání stránky ověř přechody mezi sekcemi.

@@ -591,7 +591,9 @@
 .journalTop { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .journalTop > a { color: #f5b83d; font-size: 13px; text-decoration: none; }
 .articleGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 42px; background: #22304a; border: 1px solid #22304a; }
-.articleCard { min-height: 240px; display: flex; flex-direction: column; padding: 28px; background: #0b111b; color: #e9eef6; text-decoration: none; }
+.articleCard { min-height: 240px; display: flex; flex-direction: column; background: #0b111b; color: #e9eef6; text-decoration: none; min-width: 0; }
+.articleImage { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.articleBody { display: flex; flex-direction: column; flex: 1; padding: 28px; }
 .articleNumber { color: #61728a; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 11px; }
 .articleCard h3 { margin: 34px 0 auto; font-family: var(--font-archivo), Archivo, sans-serif; font-size: 21px; line-height: 1.25; }
 .articleLink { margin-top: 25px; color: #f5b83d; font-size: 12px; }

@@ -52,3 +52,10 @@ zakódovány. Tři fotografie mají 1600 × 1200 px, Boeing 747 má 1600 × 780 
 Spolu s náhledem terminálu klesly dnešní webové soubory z 1 431 014 B na
 746 718 B (o 48 %). Náhled terminálu měl již 1600 × 1200 px a 142 278 B,
 proto se znovu nepřekódoval. Originály zůstaly zachované.
+
+## Boeing 747 Fly Meta: článek (18. září 2026)
+
+- Hlavní snímek i náhled: již evidovaný `/spotting/praha-boeing-747-fly-meta.webp`, 1600 × 780 px, 115 508 B.
+- `/blog/boeing-747-fly-meta-priblizeni.webp`: originál `Fotografie/val praha.zip :: 20260916_165727.jpg`, letadlo těsně nad dráhou, 1400 × 1050 px, WebP, 195 346 B. Zmenšeno přímo z originálu, vizuálně ověřeno.
+- Stanoviště: již evidovaný `/spotting/praha-vyhlidkovy-val.webp`, 1600 × 1200 px.
+- Všechny snímky: vlastní archiv FlyQueens. Kněževes potvrzena uživatelkou. Datum leteckých fotografií 16. 9. 2026 potvrzeno EXIF DateTimeOriginal, časový posun +02:00. Originály zachované. Detail registrace pro rešerši se nezveřejňuje jako samostatná fotografie.
