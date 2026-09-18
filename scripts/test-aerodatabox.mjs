@@ -30,7 +30,8 @@ const deps = {
   '@/lib/airportFlightBoards': boards,
   '@/lib/aerodataboxCache': { airportFlightsPath: code => `/board/${code}`, getAeroSnapshot: async p => { paidPaths.push(p); return { data: p.startsWith('/board') ? data : singles, fetchedAt: stamp } } },
 }
-const route = load('src/app/api/flight-route/route.ts', deps, async () => Response.json({ response: {} }))
+let freeMetadata = { response: {} }
+const route = load('src/app/api/flight-route/route.ts', deps, async () => Response.json(freeMetadata))
 const airport = load('src/app/api/airport-flights/route.ts', deps)
 ;(async () => {
   assert.equal((await route.GET(request('/?icao24=invalid'))).status, 400)
@@ -50,6 +51,12 @@ const airport = load('src/app/api/airport-flights/route.ts', deps)
   const implicit = await (await route.GET(request('/?icao24=abcdef&callsign=DLH1234'))).json()
   assert.equal(implicit.route.arrival.iata, 'PRG', 'FIDS omits the queried airport; restore it from context')
   assert.equal(typeof implicit.route.arrival.lat, 'number', 'Route coordinates must use local airport metadata')
+  data = { arrivals: [{ ...flight, departure: { ...flight.departure, airport: { icao: 'EHAM', iata: 'AMS' } }, arrival: { ...flight.arrival, airport: undefined } }] }
+  freeMetadata = { response: { flightroute: { origin: { icao_code: 'EHAM', iata_code: 'AMS', latitude: 52.308601, longitude: 4.76389 }, destination: { icao_code: 'XXXX', latitude: 0, longitude: 0 } } } }
+  const world = await (await route.GET(request('/?icao24=abcdef&callsign=DLH1234'))).json()
+  assert.equal(world.route.departure.iata, 'AMS')
+  assert.equal(world.route.departure.lat, 52.308601, 'Fill foreign airport coordinates by matching code')
+  assert.equal(world.route.arrival.iata, 'PRG', 'Free route must never replace paid destination')
   data = { departures: [flight, flight], arrivals: [] }
   const board = await (await airport.GET(request('/?airport=PRG'))).json()
   assert.equal(board.departures.length, 1)

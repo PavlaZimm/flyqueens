@@ -82,12 +82,13 @@ interface RouteAirport {
   lng:  number | null
 }
 
-function routeAirport(airport?: AeroDataBoxAirport): RouteAirport {
+function routeAirport(airport?: AeroDataBoxAirport, hints: AdsbdbAirport[] = []): RouteAirport {
   const local = airports.find(a => (airport?.icao && a.icao === airport.icao) || (airport?.iata && a.iata === airport.iata))
+  const hint = hints.find(a => (airport?.icao && a.icao_code === airport.icao) || (airport?.iata && a.iata_code === airport.iata))
   return {
     icao: airport?.icao ?? local?.icao ?? null, iata: airport?.iata ?? local?.iata ?? null,
-    name: airport?.name ?? local?.name ?? null, city: airport?.municipalityName ?? local?.city ?? null,
-    lat: airport?.location?.lat ?? local?.lat ?? null, lng: airport?.location?.lon ?? local?.lng ?? null,
+    name: airport?.name ?? local?.name ?? null, city: airport?.municipalityName ?? local?.city ?? hint?.municipality ?? null,
+    lat: airport?.location?.lat ?? local?.lat ?? hint?.latitude ?? null, lng: airport?.location?.lon ?? local?.lng ?? hint?.longitude ?? null,
   }
 }
 
@@ -255,6 +256,22 @@ export async function GET(req: NextRequest) {
       if (snapshot.data) {
         const data = snapshot.data
         const candidates = Array.isArray(data) ? data : [data]
+        // FIDS does not include coordinates for the opposite airport. Reuse
+        // free airport metadata, matched by code; never replace the paid route.
+        let airportHints: AdsbdbAirport[] = []
+        if (callsign && candidates.some(candidate =>
+          routeAirport(candidate.departure?.airport).lat == null || routeAirport(candidate.arrival?.airport).lat == null)) {
+          try {
+            const hints = await fetch(`https://api.adsbdb.com/v0/aircraft/${icao24}?callsign=${encodeURIComponent(callsign)}`, {
+              headers: { Accept: 'application/json' }, next: { revalidate: 600 }, signal: AbortSignal.timeout(2500),
+            })
+            if (hints.ok) {
+              const metadata = await hints.json() as { response?: { flightroute?: { origin?: AdsbdbAirport; destination?: AdsbdbAirport } } }
+              const route = metadata.response?.flightroute
+              airportHints = [route?.origin, route?.destination].filter((airport): airport is AdsbdbAirport => Boolean(airport))
+            }
+          } catch { /* Partial airport labels remain usable without coordinates. */ }
+        }
         const ranked = candidates.flatMap((candidate) => {
           const departureTime = Date.parse(movementTime(candidate.departure?.revisedTime ?? candidate.departure?.scheduledTime) ?? '')
           const arrivalTime = Date.parse(movementTime(candidate.arrival?.revisedTime ?? candidate.arrival?.scheduledTime) ?? '')
@@ -264,8 +281,8 @@ export async function GET(req: NextRequest) {
           if (callsign && candidate.callSign && candidate.callSign.replace(/\s/g, '').toUpperCase() !== callsign) return []
           const dep = candidate?.departure?.airport
           const arr = candidate?.arrival?.airport
-          const depAp = routeAirport(dep)
-          const arrAp = routeAirport(arr)
+          const depAp = routeAirport(dep, airportHints)
+          const arrAp = routeAirport(arr, airportHints)
           if (!dep && !arr) return []
           const fit = routeFit(depAp, arrAp, current)
           return fit.valid ? [{ flight: candidate, depAp, arrAp, fit }] : []
