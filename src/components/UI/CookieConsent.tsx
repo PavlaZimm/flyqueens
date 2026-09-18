@@ -55,9 +55,8 @@ export function CookieConsent() {
               c.ire_o=p;
               c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};
               t=a.createElement(m);
-              var z=a.getElementsByTagName(m)[0];
               t.async=1; t.id='impact-loader'; t.src=i;
-              z.parentNode.insertBefore(t,z);
+              a.head.appendChild(t);
             })('https://utt.impactcdn.com/P-A7803755-1409-47d0-891e-92d7562279a31.js','script','impactStat',document,window);
             impactStat('transformLinks');
             impactStat('trackImpression');
