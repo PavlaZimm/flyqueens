@@ -11,3 +11,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Redakční obsah FlyQueens
 
 Při psaní nebo úpravě článků čti `docs/redakcni-pravidla.md`. Podklady ukládej do `Vyzkum/<tema>/`, SEO data do `docs/`. Převzaté originály Webx jsou v `docs/redakce/podklady-webx/`; projektová pravidla sjednocují jejich rozpory.
+
+Každý článek v přehledu `/blog` musí mít náhledovou fotografii. Používej společnou šablonu karet a registr `BLOG_CARDS` v `src/lib/blog.ts`, včetně článků pod `/letiste/`. Před publikací zkontroluj náhled na mobilu a desktopu.

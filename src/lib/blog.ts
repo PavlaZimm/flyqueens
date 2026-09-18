@@ -119,3 +119,31 @@ export const POSTS: BlogPost[] = [
 export function getPost(slug: string): BlogPost | undefined {
   return POSTS.find((p) => p.slug === slug)
 }
+
+// Jednotná karta všech článků v blogu, včetně průvodců pod /letiste.
+// Povinná image/imageAlt brání přidání textové karty bez náhledové fotografie.
+export const BLOG_CARDS: (BlogPost & { href: string; imagePosition?: string })[] = [
+  {
+    slug: 'ubytovani-letiste-praha',
+    href: '/letiste/praha/ubytovani',
+    title: 'Ubytování u letiště Praha: hotely a cesta k terminálu',
+    excerpt: 'Kde přespíte přímo u terminálů a odkud potřebujete dopravu. Srovnání pěti možností a podmínky transferů.',
+    date: '2026-09-18', updatedAt: '2026-09-18', dateLabel: '18. září 2026',
+    tag: 'Před odletem · Praha', readingTime: '5 min čtení',
+    image: '/blog/praha-terminal-ubytovani.webp', imagePosition: 'center 65%',
+    imageAlt: 'Budova Terminálu 1 Letiště Václava Havla Praha',
+    imageWidth: 1600, imageHeight: 1200,
+  },
+  {
+    slug: 'planespotting-praha',
+    href: '/letiste/praha/planespotting',
+    title: 'Planespotting Praha: vyhlídky, Kněževes a Hostivice',
+    excerpt: 'Kam vyrazit na letadla, jak se dostat k valům a jak při pozorování využít radar. Průvodce s vlastními fotografiemi.',
+    date: '2026-09-18', updatedAt: '2026-09-18', dateLabel: '18. září 2026',
+    tag: 'Planespotting · Praha', readingTime: '5 min čtení',
+    image: '/spotting/praha-vyhlidkovy-val.webp', imagePosition: 'center 65%',
+    imageAlt: 'Vyhlídkový val v Kněževsi s návštěvníky a přístupovou cestou',
+    imageWidth: 1800, imageHeight: 1350,
+  },
+  ...POSTS.map(post => ({ ...post, href: `/blog/${post.slug}` })),
+]

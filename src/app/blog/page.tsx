@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { POSTS } from '@/lib/blog'
+import { BLOG_CARDS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR } from '@/lib/author'
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 }
 
 export default function BlogIndexPage() {
-  const posts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date))
+  const posts = [...BLOG_CARDS].sort((a, b) => b.date.localeCompare(a.date))
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 18px 60px' }}>
@@ -37,25 +37,11 @@ export default function BlogIndexPage() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <Link href="/letiste/praha/ubytovani" style={{ textDecoration: 'none', color: 'var(--text-primary)' }}>
-            <article style={{ padding: 20, background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12 }}>
-              <div style={{ fontSize: 11, color: 'var(--gold)', marginBottom: 8 }}>PŘED ODLETEM · PRAHA</div>
-              <h2 style={{ fontSize: 20, margin: '0 0 8px' }}>Ubytování u letiště Praha: hotely a cesta k terminálu</h2>
-              <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>Kde přespíte přímo u terminálů a odkud potřebujete dopravu. Srovnání pěti možností a podmínky transferů. Číst průvodce →</p>
-            </article>
-          </Link>
-          <Link href="/letiste/praha/planespotting" style={{ textDecoration: 'none', color: 'var(--text-primary)' }}>
-            <article style={{ padding: '20px', background: 'var(--midnight-2)', border: '1px solid var(--gold)', borderRadius: 12 }}>
-              <div style={{ fontSize: 11, color: 'var(--gold)', marginBottom: 8 }}>NOVÝ PRŮVODCE · VLASTNÍ FOTOGRAFIE</div>
-              <h2 style={{ fontSize: 20, margin: '0 0 8px' }}>Planespotting Praha: vyhlídky, Kněževes a Hostivice</h2>
-              <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>Kam vyrazit na letadla, jak se dostat k valům a jak při pozorování využít radar. Číst průvodce →</p>
-            </article>
-          </Link>
           {posts.map((p) => (
-            <Link key={p.slug} href={`/blog/${p.slug}`} style={{ textDecoration: 'none' }}>
+            <Link key={p.slug} href={p.href} style={{ textDecoration: 'none' }}>
               <article style={{ overflow: 'hidden', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12 }}>
                 <div style={{ position: 'relative', aspectRatio: '16 / 6', background: 'var(--midnight-3)' }}>
-                  <Image src={p.image} alt={p.imageAlt} fill sizes="(max-width: 796px) calc(100vw - 36px), 760px" style={{ objectFit: 'cover' }} />
+                  <Image src={p.image} alt={p.imageAlt} fill sizes="(max-width: 796px) calc(100vw - 36px), 760px" style={{ objectFit: 'cover', objectPosition: p.imagePosition ?? 'center' }} />
                 </div>
                 <div style={{ padding: '16px 18px' }}>
                   <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>{p.tag}</div>

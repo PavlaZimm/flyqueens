@@ -21,6 +21,10 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 
 ## Stránka
 
+- **Každý článek v přehledu blogu musí mít náhledovou fotografii**, stejně jako ostatní články. Platí i pro průvodce uložené pod `/letiste/`. Žádné samostatné textové karty bez fotky. Výslovný požadavek Pavly, 18. 9. 2026.
+- Karty vykreslovat jednotnou šablonou z `BLOG_CARDS` v `src/lib/blog.ts`: fotografie nahoře ve formátu 16 : 6, pod ní rubrika, titulek, perex a autor s datem. U každého záznamu vyplnit obrazový soubor, ALT a skutečné rozměry.
+- Před zveřejněním ověřit přímo `/blog` na mobilu i desktopu: obrázek se načítá, ořez zachovává hlavní motiv, celá karta odkazuje na správný článek. Fotografie musí věcně odpovídat tématu; u ubytování lze použít vlastní fotku letiště, která se neoznačuje jako fotografie hotelu.
+
 - Jedno H1, smysluplná H2/H3. Titulek přibližně 40–60 znaků, popisek 120–155; srozumitelnost má přednost před mechanickým limitem.
 - Úvod odpoví, komu stránka pomůže. Fotografie až pod úvodem, pouze oprávněně použité, správný kredit a popisný ALT do 100 znaků. Chybějící fotografie hotelu nenahrazovat falešnou vizualizací.
 - U srovnání přehledná tabulka, čitelná i na mobilu. Externí primární zdroje u tvrzení; interní odkazy mají pomoci s dalším krokem.

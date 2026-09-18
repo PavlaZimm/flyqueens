@@ -36,3 +36,11 @@ U snímků pod licencí CC BY-SA jde stále jen o zmenšenou kopii bez dalších
 | `starlux-airlines-praha.jpg` | [Steven Byles, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Starlux_Airlines_A350-1041_B-58553_-_TPE_RCTP_-_05-JUL-2026.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Skutečný Airbus A350-1000 STARLUX; zmenšená kopie bez dalších úprav. |
 | `airbus-a380-praha-emirates.jpg` | Pavla Zimmermannová / FlyQueens | vlastní fotografie | Airbus A380 Emirates po přistání na Letišti Praha dne 26. října 2025; zmenšená kopie bez dalších úprav. |
 | `airbus-a380-praha-pristani.jpg` | Pavla Zimmermannová / FlyQueens | vlastní fotografie | Airbus A380 Emirates při přistání na Letišti Praha dne 26. října 2025; zmenšená kopie bez dalších úprav. |
+
+## Náhled ubytování u letiště (18. září 2026)
+
+`public/blog/praha-terminal-ubytovani.webp`: vlastní archiv FlyQueens, originál
+`Fotografie/Letiště Praha/Photos-1-001 (1).zip :: IMG_20220608_151953.jpg`.
+Budova Terminálu 1 Letiště Václava Havla Praha. Zmenšeno na 1600 × 1200 px,
+WebP; ilustrační fotografie letiště, nikoli hotelu. Použita na kartě v přehledu blogu.
+Náhled planespottingu používá již evidovaný snímek `praha-vyhlidkovy-val.webp`.
