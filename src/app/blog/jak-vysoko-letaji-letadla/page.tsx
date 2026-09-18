@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/jak-vysoko-letaji-letadla.jpg', width: 1800, height: 1013, alt: post.imageAlt },
+    image: { url: '/blog/jak-vysoko-letaji-letadla.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 
@@ -73,7 +73,7 @@ export default function VyskaArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Jak vysoko létají letadla? Výška v metrech a FL350
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -92,7 +92,7 @@ export default function VyskaArticle() {
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Dopravní letadla létají nejčastěji v 10 až 12 kilometrech, tedy kolem letové hladiny FL350.
+            Dopravní letadla létají nejčastěji v devíti až dvanácti kilometrech, tedy kolem letové hladiny FL350.
             Řidší vzduch snižuje aerodynamický odpor, ale konkrétní hladina závisí na typu, hmotnosti,
             trati a počasí. Malé stroje obvykle létají níž, některé byznys tryskáče až kolem 15 kilometrů.
           </p>

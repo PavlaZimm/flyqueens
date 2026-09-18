@@ -13,18 +13,18 @@ const post = getPost('letiste-praha-zive')!
 export const metadata: Metadata = {
   title: 'Letiště Praha živě: přílety, odlety a mapa letadel',
   description:
-    'Sledujte letadla nad Ruzyní na živé mapě a ověřte přílety či odlety na oficiální tabuli. Jak se liší radar, webkamera a stav letu.',
+    'Kde najdete oficiální webkameru letiště Praha, jak ji doplnit živou mapou letadel a kde ověřit skutečný přílet nebo odlet.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/letiste-praha-zive' },
   authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
   creator: AUTHOR.name,
   ...socialMetadata({
     title: 'Letiště Praha živě: přílety, odlety a mapa letadel',
-    description: 'Sledujte provoz nad Ruzyní a zjistěte, kde správně ověřit přílet, odlet nebo zpoždění.',
+    description: 'Oficiální webkamera z dráhy 06/24, živá mapa letadel a kde ověřit skutečný stav letu.',
     url: 'https://www.flyqueens.cz/blog/letiste-praha-zive',
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/letiste-praha-zive.jpg', width: 1920, height: 1278, alt: post.imageAlt },
+    image: { url: '/blog/letiste-praha-zive.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 
@@ -65,7 +65,7 @@ export default function ZiveArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Letiště Praha živě: přílety, odlety a mapa letadel
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="13. září 2026" readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -79,14 +79,15 @@ export default function ZiveArticle() {
 
         <p style={S.p}>
           Někdo čeká na babičku z Barcelony a chce vědět, jestli už doletěla. Někoho jen baví koukat, co se
-          nad hlavou děje. Sledovat Ruzyň online jde dvěma způsoby a každý ukáže něco jiného. Webkamera vám dá
-          obrázek kusu plochy. Živá mapa ukáže letadla zachycená ADS-B přijímači, včetně provozu nad širším okolím Prahy. Pokrytí ale není stoprocentní.
+          nad hlavou děje. Sledovat Ruzyň online jde dvěma způsoby a každý ukáže něco jiného. Oficiální webkamera letiště vám dá
+          živý obraz hlavní dráhy. Živá mapa ukáže letadla zachycená ADS-B přijímači, včetně provozu nad širším okolím Prahy. Pokrytí ale není stoprocentní.
         </p>
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ ...S.p, margin: 0 }}>
-            Webkamera ukazuje záběr terminálu nebo dráhy. Živá mapa letadel funguje jinak: letadla sama
+            Webkameru provozuje samo letiště na stránce prg.aero/planespotting a míří na hlavní dráhu 06/24.
+            Živá mapa letadel funguje jinak: letadla sama
             vysílají svoji polohu, výšku a rychlost, a mapa vykresluje poslední dostupné záznamy. Kliknete na letadlo
             a uvidíte jeho identifikaci a dostupné letové údaje; trasa nemusí být vždy dostupná.
           </p>
@@ -112,7 +113,7 @@ export default function ZiveArticle() {
             <tbody>
               {[
                 ['Živá mapa', 'polohu, výšku, rychlost', 'kde letadlo právě je'],
-                ['Webkamera', 'skutečný obraz části letiště', 'počasí a atmosféra'],
+                ['Webkamera letiště', 'živý obraz dráhy 06/24', 'sledování přistání a počasí'],
                 ['Tabule letiště', 'stav, čas a terminál', 'cesta na letiště'],
               ].map(([source, shows, use]) => (
                 <tr key={source}>
@@ -124,6 +125,36 @@ export default function ZiveArticle() {
             </tbody>
           </table>
         </div>
+
+        <h2 style={S.h2}>Kde najdete webkameru z pražského letiště</h2>
+        <p style={S.p}>
+          Letiště Praha provozuje vlastní živý přenos a má pro něj samostatnou stránku{' '}
+          <a href="https://www.prg.aero/planespotting" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)' }}>
+            prg.aero/planespotting
+          </a>. Kamera stojí zhruba půl kilometru od dráhy, vysílá ve vysokém rozlišení a záběr doplňují
+          informace o aktuálních odletech a příletech. Přenos běžel i na YouTube a na Mall.tv pod názvem
+          „Živě z Letiště Praha“.
+        </p>
+        <p style={S.p}>
+          Doporučujeme jít vždy přes oficiální stránku letiště, ne přes uložený odkaz na konkrétní video.
+          Přenos totiž není vždy dostupný — čas od času se vypíná a odkazy na jednotlivá videa zastarávají,
+          zatímco stránka letiště vede na to, co zrovna běží.
+        </p>
+
+        <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '16px 0 8px' }}>
+          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Proč občas kamera nic neukáže</div>
+          <p style={{ ...S.p, margin: 0 }}>
+            Kamera míří na hlavní dráhu <strong>06/24</strong>. Praha má ale ještě druhou dráhu 12/30, a když
+            provoz běží po ní, v záběru se toho moc dít nebude — i kdyby bylo letiště plné. Který směr se zrovna
+            používá, se řídí hlavně větrem. Orientaci obou drah najdete na{' '}
+            <Link href="/letiste/praha" style={{ color: 'var(--gold)' }}>stránce Letiště Praha</Link>.
+          </p>
+        </div>
+
+        <p style={S.p}>
+          Na stejné stránce letiště najdete i mapu míst, odkud se dá provoz legálně pozorovat přímo na místě.
+          Pokud vás baví spíš focení než sledování z gauče, je to lepší start než bloudění kolem plotu.
+        </p>
 
         <h2 style={S.h2}>PRG, LKPR nebo Ruzyně: jaký je mezi nimi rozdíl?</h2>
         <p style={S.p}>
@@ -149,7 +180,7 @@ export default function ZiveArticle() {
 
         <h2 style={S.h2}>Jak najít konkrétní let</h2>
         <p style={S.p}>
-          Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru OK123 nebo
+          Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru QS123 nebo
           FR1234. Vyhledávání umí pracovat také s registrací letadla a ICAO adresou. Pokud číslo nic nenajde,
           letadlo ještě nemusí být ve sledované oblasti, nemusí vysílat použitelnou polohu nebo používá jiný
           volací znak. V takovém případě ověřte stav na oficiální tabuli letiště.
@@ -221,9 +252,10 @@ export default function ZiveArticle() {
           sources={[
             { label: 'EUROCONTROL — Automatic Dependent Surveillance–Broadcast', href: 'https://www.eurocontrol.int/service/automatic-dependent-surveillance-broadcast' },
             { label: 'Letiště Praha — oficiální přílety a odlety', href: 'https://www.prg.aero/' },
+            { label: 'Letiště Praha — planespotting, živý přenos z dráhy a mapa míst k pozorování', href: 'https://www.prg.aero/planespotting' },
             { label: 'Data o polohách: dostupné ADS-B zdroje uvedené přímo v mapě' },
           ]}
-          note="Princip ADS-B, trasová metadata a omezení veřejných dat ověřeny 13. září 2026. Pro cestu na letiště kontrolujte oficiální tabuli."
+          note="Princip ADS-B, trasová metadata a omezení veřejných dat ověřeny 13. září 2026, webkamera letiště 14. září 2026. Dostupnost živého přenosu se může měnit. Pro cestu na letiště kontrolujte oficiální tabuli."
         />
       </div>
     </main>

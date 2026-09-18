@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
+import { czechPlural } from '@/lib/plural'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { isEmergencyFlight } from '@/lib/emergency'
 import { trackEvent } from '@/lib/analytics'
@@ -329,7 +330,7 @@ export default function StatsPage() {
         </div>
       </section>
 
-      {stats.emergencyCount > 0 && <section className={styles.emergency} role="alert"><span aria-hidden="true">🚨</span><div><strong>{stats.emergencyCount} {stats.emergencyCount === 1 ? 'let vysílá' : 'lety vysílají'} nouzový údaj</strong><small>Nouzový stav nebo squawk 7700, 7600 či 7500. Veřejná data mohou být neúplná.</small></div></section>}
+      {stats.emergencyCount > 0 && <section className={styles.emergency} role="alert"><span aria-hidden="true">🚨</span><div><strong>{stats.emergencyCount} {czechPlural(stats.emergencyCount, 'let vysílá', 'lety vysílají', 'letů vysílá')} nouzový údaj</strong><small>Nouzový stav nebo squawk 7700, 7600 či 7500. Veřejná data mohou být neúplná.</small></div></section>}
 
       <footer className={styles.footerNote}><strong>{dataMeta.status === 'live' ? `Živá data · ${dataMeta.source}` : 'Živá data nejsou dostupná'}</strong><span>Obnova přibližně každých 10 sekund · žádné hodnoty na této stránce nejsou dlouhodobě ukládány</span></footer>
       </>}

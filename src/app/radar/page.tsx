@@ -11,6 +11,7 @@ import { useNearbyFlights } from '@/hooks/useNearbyFlights'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { TopBar, type FilterType } from '@/components/UI/TopBar'
 import { DETAIL_PANEL_WIDTH } from '@/lib/constants'
+import { czechPlural } from '@/lib/plural'
 import { StatusBar } from '@/components/UI/StatusBar'
 import { LoadingScreen } from '@/components/UI/LoadingScreen'
 import { ErrorBoundary } from '@/components/UI/ErrorBoundary'
@@ -469,7 +470,7 @@ export default function RadarPage() {
                 {dataMeta.status === 'unavailable' && flights.length === 0
                   ? 'Živá data jsou teď nedostupná'
                   : searchMatches.length
-                  ? `${searchMatches.length} ${searchMatches.length === 1 ? 'nalezený let' : 'nalezených letů'}`
+                  ? `${searchMatches.length} ${czechPlural(searchMatches.length, 'nalezený let', 'nalezené lety', 'nalezených letů')}`
                   : 'Let jsme v aktuálních datech nenašli'}
               </div>
               <div style={{ color: 'var(--text-dim)', fontSize: 10, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

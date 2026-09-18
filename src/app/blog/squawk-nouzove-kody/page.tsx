@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/squawk-nouzove-kody.jpg', width: 1920, height: 1285, alt: post.imageAlt },
+    image: { url: '/blog/squawk-nouzove-kody.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 

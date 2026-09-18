@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 
@@ -53,6 +54,8 @@ export default function BrnoHubPage() {
         <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--text-muted)', margin: '0 0 22px' }}>
           Letiště Brno-Tuřany používá kódy BRQ a LKTB. Z centra se k terminálu dostanete denními linkami 21 a 77, v noci linkou N89. Aktuální stav konkrétního letu vždy ověřte na oficiální tabuli letiště.
         </p>
+
+        <AirportDiagram icao="LKTB" iata="BRQ" name="Letiště Brno-Tuřany" />
 
         <section aria-label="Rychlá fakta" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px, 1fr))', gap: 9, marginBottom: 26 }}>
           {[

@@ -8,6 +8,7 @@
     "build:webpack": "next build --webpack",
     "start": "next start",
     "data:airports": "node scripts/generate-airport-details.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck && npm run build:webpack"

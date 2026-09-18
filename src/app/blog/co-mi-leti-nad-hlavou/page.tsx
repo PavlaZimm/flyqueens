@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: post.date,
     modifiedTime: post.updatedAt,
-    image: { url: '/blog/co-mi-leti-nad-hlavou.jpg', width: 1800, height: 1013, alt: post.imageAlt },
+    image: { url: '/blog/co-mi-leti-nad-hlavou.jpg', width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 
@@ -65,7 +65,7 @@ export default function OverheadAircraftArticle() {
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
           Co mi letí nad hlavou? Zjistěte letadlo online
         </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="13. září 2026" readingTime={post.readingTime} />
 
         <ArticleHero
           src={post.image}
@@ -160,6 +160,15 @@ export default function OverheadAircraftArticle() {
             Otevřít živou mapu
           </Link>
         </div>
+
+        <h2 style={S.h2}>Když si chcete létání také vyzkoušet</h2>
+        <p style={S.p}>
+          Sledování letadel může být začátek. Pokud vybíráte první vyhlídkový let, let balónem
+          nebo zážitek v simulátoru, na našem dalším webu Flylady najdete{' '}
+          <a href="https://www.flylady.cz/blog/jak-vybrat-letecky-zazitek" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>
+            průvodce výběrem leteckého zážitku
+          </a>. Před koupí porovnejte místo konání, délku zážitku a podmínky rezervace.
+        </p>
 
         <AuthorCard />
 
