@@ -91,6 +91,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <meta name="impact-site-verification" content="a3b0fde4-f8f0-4760-a162-47cc1a925d93" {...{ value: "a3b0fde4-f8f0-4760-a162-47cc1a925d93" }} />
         <script
           dangerouslySetInnerHTML={{
             __html: "try{if(localStorage.getItem('flyqueens-theme')==='light')document.documentElement.classList.add('light')}catch{}",

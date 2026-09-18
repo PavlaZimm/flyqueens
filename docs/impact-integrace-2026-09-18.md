@@ -8,5 +8,6 @@ Uživatelka dodala Impact tag P-A7803755-1409-47d0-891e-92d7562279a31 a požáda
 - Verze souhlasu v3 zahrnuje Impact. Starší odmítnutí v2 zůstává platné, starší udělený souhlas se nepřenáší na nového poskytovatele.
 - Text souhlasu a stránka O projektu uvádějí Impact. Odvolání souhlasu znovu načte stránku a zastaví načítání volitelných skriptů.
 - Vložení tagu samo nepotvrzuje schválení partnerství Airalo ani připsání provizí. To je třeba ověřit v Impact účtu.
+- Impact při kontrole účtu hlásil neúspěšné ověření webu skriptem. Pro ověření vlastnictví je proto ve statickém head samostatný meta tag impact-site-verification s hodnotou a3b0fde4-f8f0-4760-a162-47cc1a925d93. Zachovává atribut value z kódu dodaného Impactem a doplňuje standardní content. Neprovádí sledování a není podmíněn souhlasem.
 
 Kontroly: npm run check (ESLint, TypeScript, produkční build). Přímé stažení veřejného vendor skriptu přes curl v tomto prostředí vrátilo HTTP 403; samo o sobě nepotvrzuje chybu v prohlížeči.
