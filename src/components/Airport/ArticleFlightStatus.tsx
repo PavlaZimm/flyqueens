@@ -31,7 +31,7 @@ export function ArticleFlightStatus({ title, numbers, registration }: Props) {
   const flights = [...(data?.arrivals ?? []), ...(data?.departures ?? [])].filter(flight => {
     if (registration) return normalize(flight.aircraft?.registration ?? '') === normalize(registration)
     if (numbers?.length) return numbers.some(number => normalize(number) === normalize(flight.number))
-    return flight.direction === 'arrival'
+    return flight.direction === 'arrival' && !/arrived|cancel/i.test(flight.status)
   }).slice(0, 4)
 
   return <aside className={styles.box} aria-label={title}>
@@ -40,7 +40,7 @@ export function ArticleFlightStatus({ title, numbers, registration }: Props) {
     {failed ? <p>Provozní data jsou nyní nedostupná. Použijte oficiální přehled letiště.</p>
       : !data ? <p role="status">Načítám dostupné lety…</p>
       : flights.length ? <ul className={styles.list}>{flights.map(flight => <li key={flight.id}>
-        <strong>{flight.number} · {flight.direction === 'arrival' ? 'přílet z' : 'odlet do'} {flight.oppositeAirport.name ?? flight.oppositeAirport.iata ?? 'neuvedeného letiště'}</strong>
+        <strong>{flight.number} · {flight.direction === 'arrival' ? 'přílet z' : 'odlet do'} {(flight.oppositeAirport.name && flight.oppositeAirport.name !== 'Unknown' ? flight.oppositeAirport.name : flight.oppositeAirport.iata) ?? 'neuvedeného letiště'}</strong>
         <span>{flight.revisedTime || flight.scheduledTime ? timeFormat.format(new Date((flight.revisedTime ?? flight.scheduledTime)!)) : 'Čas nepotvrzen'} · {labels[flight.status.toLowerCase()] ?? 'Stav nepotvrzen'}</span>
         {flight.aircraft?.model && <span>Typ podle zdroje: {flight.aircraft.model}{flight.aircraft.registration ? ` · ${flight.aircraft.registration}` : ''}</span>}
       </li>)}</ul> : <p>Ve zobrazeném časovém okně není odpovídající let. Neznamená to zrušení spoje ani potvrzení termínu další návštěvy.</p>}

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { airports } from '@/lib/airportData'
 import { getAeroSnapshot, airportFlightsPath } from '@/lib/aerodataboxCache'
 import { airportBoardRefreshSeconds } from '@/lib/airportFlightBoards'
 import { getAeroDataBoxConnection } from '@/lib/aerodatabox'
@@ -79,6 +80,15 @@ interface RouteAirport {
   city: string | null
   lat:  number | null
   lng:  number | null
+}
+
+function routeAirport(airport?: AeroDataBoxAirport): RouteAirport {
+  const local = airports.find(a => (airport?.icao && a.icao === airport.icao) || (airport?.iata && a.iata === airport.iata))
+  return {
+    icao: airport?.icao ?? local?.icao ?? null, iata: airport?.iata ?? local?.iata ?? null,
+    name: airport?.name ?? local?.name ?? null, city: airport?.municipalityName ?? local?.city ?? null,
+    lat: airport?.location?.lat ?? local?.lat ?? null, lng: airport?.location?.lon ?? local?.lng ?? null,
+  }
 }
 
 interface AdsbdbAirport {
@@ -231,7 +241,12 @@ export async function GET(req: NextRequest) {
       const board = await getAeroSnapshot<{ departures?: AeroDataBoxFlight[]; arrivals?: AeroDataBoxFlight[] }>(
         airportFlightsPath('PRG'), airportBoardRefreshSeconds('PRG'),
       ).catch(() => null)
-      const boardCandidates = [...(board?.data?.departures ?? []), ...(board?.data?.arrivals ?? [])]
+      // FIDS omits the queried airport on its own side of the leg.
+      const prg: AeroDataBoxAirport = { iata: 'PRG', icao: 'LKPR' }
+      const boardCandidates = [
+        ...(board?.data?.departures ?? []).map(flight => ({ ...flight, departure: { ...flight.departure, airport: flight.departure?.airport ?? prg } })),
+        ...(board?.data?.arrivals ?? []).map(flight => ({ ...flight, arrival: { ...flight.arrival, airport: flight.arrival?.airport ?? prg } })),
+      ]
         .filter(flight => flight.aircraft?.modeS?.toLowerCase() === icao24 &&
           (!callsign || !flight.callSign || flight.callSign.replace(/\s/g, '').toUpperCase() === callsign))
       const snapshot = boardCandidates.length && board
@@ -249,14 +264,8 @@ export async function GET(req: NextRequest) {
           if (callsign && candidate.callSign && candidate.callSign.replace(/\s/g, '').toUpperCase() !== callsign) return []
           const dep = candidate?.departure?.airport
           const arr = candidate?.arrival?.airport
-          const depAp: RouteAirport = {
-            icao: dep?.icao ?? null, iata: dep?.iata ?? null, name: dep?.name ?? null,
-            city: dep?.municipalityName ?? null, lat: dep?.location?.lat ?? null, lng: dep?.location?.lon ?? null,
-          }
-          const arrAp: RouteAirport = {
-            icao: arr?.icao ?? null, iata: arr?.iata ?? null, name: arr?.name ?? null,
-            city: arr?.municipalityName ?? null, lat: arr?.location?.lat ?? null, lng: arr?.location?.lon ?? null,
-          }
+          const depAp = routeAirport(dep)
+          const arrAp = routeAirport(arr)
           if (!dep && !arr) return []
           const fit = routeFit(depAp, arrAp, current)
           return fit.valid ? [{ flight: candidate, depAp, arrAp, fit }] : []

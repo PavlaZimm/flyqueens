@@ -24,6 +24,7 @@ const boards = load(path.resolve('src/lib/airportFlightBoards.ts'), {})
 let paidPaths = [], data = { arrivals: [flight], departures: [] }, singles = [flight]
 const deps = {
   'next/server': next,
+  '@/lib/airportData': { airports: JSON.parse(fs.readFileSync('src/data/airports.json', 'utf8')) },
   '@/lib/aerodatabox': { getAeroDataBoxConnection: () => ({}) },
   '@/lib/rateLimit': { checkRateLimit: () => ({ allowed: true }) },
   '@/lib/airportFlightBoards': boards,
@@ -45,6 +46,10 @@ const airport = load('src/app/api/airport-flights/route.ts', deps)
   assert.equal(selected.schedule.arrScheduled, flight.arrival.scheduledTime.utc, 'Old rotation must not win')
   const mismatch = await (await route.GET(request('/?icao24=abcdef&callsign=OTHER'))).json()
   assert.equal(mismatch.route, null, 'Different callsign must not get a paid schedule')
+  data = { arrivals: [{ ...flight, arrival: { ...flight.arrival, airport: undefined } }] }
+  const implicit = await (await route.GET(request('/?icao24=abcdef&callsign=DLH1234'))).json()
+  assert.equal(implicit.route.arrival.iata, 'PRG', 'FIDS omits the queried airport; restore it from context')
+  assert.equal(typeof implicit.route.arrival.lat, 'number', 'Route coordinates must use local airport metadata')
   data = { departures: [flight, flight], arrivals: [] }
   const board = await (await airport.GET(request('/?airport=PRG'))).json()
   assert.equal(board.departures.length, 1)

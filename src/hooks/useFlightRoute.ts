@@ -112,6 +112,15 @@ export function useFlightRoute(
   const [route, setRoute] = useState<FlightRoute | null>(null)
   const [aircraft, setAircraft] = useState<AircraftDetails | null>(null)
   const [loading, setLoading] = useState(false)
+  const [refresh, setRefresh] = useState(0)
+
+  useEffect(() => {
+    if (!icao24) return
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setRefresh(value => value + 1)
+    }, 30 * 60_000)
+    return () => window.clearInterval(timer)
+  }, [icao24, callsign])
 
   useEffect(() => {
     if (!icao24) { setRoute(null); setAircraft(null); return }
@@ -203,7 +212,7 @@ export function useFlightRoute(
   // přepočítávají lokálně při každé nové poloze, takže nevzniká placené API
   // volání každých deset sekund.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [icao24, callsign])
+  }, [icao24, callsign, refresh])
 
   const updatedRoute = useMemo(() => {
     if (!route?.arrival) return route

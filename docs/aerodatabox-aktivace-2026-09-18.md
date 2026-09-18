@@ -30,3 +30,10 @@ HARD limit předplatného brání placenému přečerpání, ale po dosažení k
 `node scripts/test-aerodatabox.mjs` ověřuje chybné vstupy bez placeného dotazu, sdílení tabule s radarem, zachování času cache, souběžné čtenáře, odmítnutí staré rotace a jiného callsignu, náhradní zdroj a normalizaci tabule. Testy nepoužívají síť ani klíče.
 
 Před nasazením spustit `npm run check`; po nasazení ověřit produkční tabuli, widget článku a detail konkrétního letu. Stay22 stále čeká na dodání skriptu.
+
+### Výsledek ověřování
+
+- Lint, TypeScript a produkční build prošly. Mobilní box bez dat ověřen při 390 px bez horizontálního přesahu, desktop vizuálně zkontrolován.
+- První nasazení `ecdfdfa`: skutečná produkční tabule vrátila 83 odletů, 95 příletů a interval 60 minut. Widget planespottingu se naplnil skutečnými lety.
+- Radarový endpoint pro KL 1359 / KLM75R vrátil letový řád, Embraer 175, registraci PH-EXN, časy, terminál a zavazadlový pás. Jeho `fetchedAt` byl totožný s tabulí, tedy nepředstíral novější data.
+- Živý test odhalil chybějící explicitní letiště Praha na vlastní straně FIDS záznamu. Doplněno z kontextu dotazu a souřadnice z lokálního letištního katalogu. Přidán regresní test pro tento skutečný tvar odpovědi. Generický box spottingu přednostně zobrazuje nepřistálé a nezrušené přílety.

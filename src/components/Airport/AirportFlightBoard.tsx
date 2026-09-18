@@ -254,7 +254,7 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
                         </div>
                         <div className={styles.detailsCell}>
                           <span className={styles.details}>{details.length ? details.join(' · ') : 'Provozní detail neuveden'}</span>
-                          {flight.hasLiveData && <span className={styles.subtle}>Živý údaj zdroje</span>}
+                          {flight.hasLiveData && <span className={styles.subtle}>Provozní údaj zdroje</span>}
                         </div>
                         <div className={styles.radarCell}>
                           {radar ? <Link className={styles.radarLink} href={`/radar?flight=${encodeURIComponent(radar)}`}>Na mapě →</Link> : null}
