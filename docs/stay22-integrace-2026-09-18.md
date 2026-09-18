@@ -17,3 +17,9 @@
 Ověřit nepřítomnost skriptu před souhlasem a při odmítnutí, jeho jediné načtení po souhlasu, funkci při interní navigaci, odvolání souhlasu a mobilní rozložení rezervačního boxu. Úspěšné načtení neprokazuje započítání budoucí rezervace; to se ověřuje později v partnerském přehledu.
 
 Oficiální postup: https://community.stay22.com/how-to-set-up-your-letmeallez-script
+
+## Výsledek produkční kontroly
+
+Nasazení `00bbc62` úspěšné. Lint, TypeScript a build prošly. Na produkci ověřeno: před souhlasem žádný Stay22 skript, po souhlasu právě jeden loader se správným LMA ID, po interní navigaci stále jediný loader, po odvolání souhlasu žádný Stay22 ani Google Analytics skript. Partnerský odkaz zůstává dostupný i po odmítnutí. Mobil 390 px: box bez vodorovného přesahu, označení i tlačítko čitelné.
+
+Omezení ověření: Hub při závěrečné kontrole stále ukazoval Inactive a potvrzující zprávu LetMeAllez se nepodařilo zachytit. Veřejný skript vrací HTTP 200. Vložení loaderu není důkaz dokončené inicializace vzdálené služby. Automatické úpravy odkazů/Spark/Nova proto zatím nepovažovat za potvrzené; příští kontrolu zaměřit na aktivitu v Hubu. Vygenerovaný přímý partnerský odkaz byl ověřen nezávisle a funguje.
