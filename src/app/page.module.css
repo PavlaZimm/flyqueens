@@ -188,11 +188,28 @@
 
 .search {
   max-width: 610px;
-  height: 58px;
+  margin-top: 31px;
+}
+
+.searchLabel {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.searchHelp {
+  margin: 9px 0 0;
+  color: #8698b0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.searchControls {
+  min-height: 58px;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 31px;
   padding: 5px 6px 5px 17px;
   border: 1px solid #22304a;
   border-radius: 11px;
@@ -200,7 +217,7 @@
   box-shadow: 0 18px 55px rgba(0, 0, 0, .2);
 }
 
-.search:focus-within {
+.searchControls:focus-within {
   border-color: rgba(245, 184, 61, .72);
   box-shadow: 0 0 0 3px rgba(245, 184, 61, .08);
 }
@@ -216,12 +233,13 @@
 
 .search input {
   min-width: 0;
+  min-height: 44px;
   flex: 1;
   border: 0;
   outline: 0;
   background: transparent;
   color: #e9eef6;
-  font: 15px var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif;
+  font: 16px var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif;
 }
 
 .search input::placeholder { color: #61728a; }
@@ -657,7 +675,7 @@
   color: #526176;
 }
 
-:global(html.light) .search {
+:global(html.light) .searchControls {
   border-color: rgba(15, 23, 42, .16);
   background: rgba(255, 255, 255, .94);
   box-shadow: 0 18px 55px rgba(15, 23, 42, .1);
@@ -665,6 +683,7 @@
 :global(html.light) .search svg { stroke: #64748b; }
 :global(html.light) .search input { color: #0f172a; }
 :global(html.light) .search input::placeholder { color: #718096; }
+:global(html.light) .searchHelp { color: #526176; }
 :global(html.light) .popular > span { color: #64748b; }
 :global(html.light) .popular a { border-color: rgba(15, 23, 42, .15); color: #526176; }
 :global(html.light) .popular a:hover { border-color: #b47e00; color: #936500; }
@@ -776,10 +795,10 @@
   .heroLayout { padding: 66px 0 68px; gap: 42px; }
   .heroCopy h1 { margin-top: 22px; font-size: clamp(46px, 15vw, 66px); }
   .heroCopy > p { font-size: 16px; }
-  .search { height: auto; min-height: 56px; flex-wrap: wrap; padding: 7px; }
-  .search svg { margin-left: 8px; }
-  .search input { width: calc(100% - 48px); min-width: 220px; }
-  .search button { width: 100%; min-height: 43px; }
+  .searchControls { display: grid; grid-template-columns: 19px minmax(0, 1fr); gap: 8px 10px; padding: 8px; }
+  .search svg { margin-left: 4px; }
+  .search input { width: 100%; min-width: 0; min-height: 48px; }
+  .search button { grid-column: 1 / -1; width: 100%; min-height: 48px; }
   .radarCard { aspect-ratio: .96; }
   .radarGraphic { width: 128%; max-width: none; transform: translateX(-11%); }
   .radarStatus { top: 13px; left: 13px; }

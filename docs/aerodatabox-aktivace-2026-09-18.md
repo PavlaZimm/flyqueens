@@ -37,3 +37,6 @@ Před nasazením spustit `npm run check`; po nasazení ověřit produkční tabu
 - První nasazení `ecdfdfa`: skutečná produkční tabule vrátila 83 odletů, 95 příletů a interval 60 minut. Widget planespottingu se naplnil skutečnými lety.
 - Radarový endpoint pro KL 1359 / KLM75R vrátil letový řád, Embraer 175, registraci PH-EXN, časy, terminál a zavazadlový pás. Jeho `fetchedAt` byl totožný s tabulí, tedy nepředstíral novější data.
 - Živý test odhalil chybějící explicitní letiště Praha na vlastní straně FIDS záznamu. Doplněno z kontextu dotazu a souřadnice z lokálního letištního katalogu. Přidán regresní test pro tento skutečný tvar odpovědi. Generický box spottingu přednostně zobrazuje nepřistálé a nezrušené přílety.
+
+- Produkční oprava `3568dcd`: trasa KL 1359 má souřadnice obou letišť AMS–PRG a kontrolu `position-checked`. Chybějící souřadnice se doplňují z bezplatných metadat pouze při shodě kódu letiště; placená trasa se nemění. Regresní test ověřuje i neshodný cíl bezplatné odpovědi.
+- V prohlížeči ověřen skutečný BA 856 / BAW856Z: mapa LHR–PRG, Airbus A320, G-TTOE, časy, terminály, zpoždění a zdroj AeroDataBox s časem načtení. Mobilní přechod z vyhledávání homepage otevřel tento konkrétní detail.
