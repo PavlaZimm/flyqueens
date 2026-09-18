@@ -150,6 +150,11 @@ export default function ParkovaniPrahaPage() {
           nedoporučujeme, protože pravidla a místní omezení se mohou měnit.
         </p>
 
+        <p style={S.p}>
+          Přijíždíte už večer před odletem? Porovnejte také <Link href="/letiste/praha/ubytovani">ubytování u letiště Praha</Link>.
+          U hotelového balíčku si ověřte, zda parkování platí i po celou dobu vaší cesty.
+        </p>
+
         <h2 style={S.h2}>Kdy a jak rezervovat</h2>
         <p style={S.p}>
           Letiště uvádí, že online rezervace může být až o 50 % levnější a nabízí bezplatné zrušení rezervace.

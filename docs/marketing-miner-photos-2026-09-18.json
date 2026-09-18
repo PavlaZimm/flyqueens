@@ -1,0 +1,3487 @@
+{
+  "source": "Marketing Miner",
+  "retrieved_at": "2026-09-18",
+  "market": "cs",
+  "note": "Market estimates, not GSC measurements. Null difficulty means unknown. Suggestion responses are capped at 25 rows.",
+  "suggestions": [
+    {
+      "keyword": "planespotting",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "planespotting",
+              "search_volume": 1300,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 68,
+              "serp_features": [
+                "knowledge_graph"
+              ],
+              "yoy_change": -9,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1200,
+                "12": 1200,
+                "04": 1500,
+                "05": 930,
+                "06": 930,
+                "07": 930,
+                "08": 1800,
+                "09": 1500,
+                "01": 1500,
+                "02": 1200,
+                "03": 1500
+              }
+            },
+            {
+              "keyword": "planespotting praha",
+              "search_volume": 820,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 31,
+              "serp_features": [],
+              "yoy_change": -4,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 940,
+                "12": 830,
+                "04": 830,
+                "05": 250,
+                "06": 250,
+                "07": 300,
+                "08": 1500,
+                "09": 1200,
+                "01": 830,
+                "02": 680,
+                "03": 940
+              }
+            },
+            {
+              "keyword": "planespotting letiště václava havla",
+              "search_volume": 150,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 42,
+              "serp_features": [
+                "images",
+                "paid",
+                "videos"
+              ],
+              "yoy_change": 24,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 90,
+                "11": 110,
+                "12": 70,
+                "04": 170,
+                "05": 170,
+                "06": 140,
+                "07": 110,
+                "08": 210,
+                "09": 110,
+                "01": 170,
+                "02": 140,
+                "03": 260
+              }
+            },
+            {
+              "keyword": "planespotting letiště praha",
+              "search_volume": 100,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 10,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 50,
+                "12": 90,
+                "04": 140,
+                "05": 70,
+                "06": 50,
+                "07": 90,
+                "08": 110,
+                "09": 110,
+                "01": 170,
+                "02": 170,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "planespotting playtvak",
+              "search_volume": 50,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 10,
+              "serp_features": [
+                "paid",
+                "images"
+              ],
+              "yoy_change": 322.2,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 20,
+                "12": 60,
+                "04": 20,
+                "05": 40,
+                "06": 40,
+                "07": 10,
+                "08": 40,
+                "09": 40,
+                "01": 140,
+                "02": 80,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "planespotting mall",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 4.8,
+              "peak_month": "2020-08-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 70,
+                "01": 10,
+                "02": 20,
+                "03": 30,
+                "04": 20,
+                "05": 50,
+                "06": 50,
+                "07": 30,
+                "08": 110,
+                "09": 30
+              }
+            },
+            {
+              "keyword": "planespotting idnes",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -37,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 40,
+                "12": 50,
+                "04": 30,
+                "05": 50,
+                "06": 40,
+                "07": 40,
+                "08": 50,
+                "09": 50,
+                "01": 50,
+                "02": 30,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "planespotting prague",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -28,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 10,
+                "06": 20,
+                "07": 30,
+                "08": 40,
+                "09": 40,
+                "01": 30,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "planespotting ruzyně",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -45,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 20,
+                "06": 20,
+                "07": 30,
+                "08": 50,
+                "09": 40,
+                "01": 30,
+                "02": 10,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "slow tv planespotting",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 51,
+              "serp_features": [
+                "paid",
+                "videos",
+                "images"
+              ],
+              "yoy_change": -53,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 20,
+                "12": 20,
+                "04": 70,
+                "05": 70,
+                "06": 70,
+                "07": 30,
+                "08": 50,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "planespotting live",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -3,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 20,
+                "06": 10,
+                "07": 40,
+                "08": 50,
+                "09": 40,
+                "01": 20,
+                "02": 10,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "idnes planespotting",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -12,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 30,
+                "06": 40,
+                "07": 20,
+                "08": 20,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "frankfurt planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -9,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "www planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -57,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "planespotting frankfurt online",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "letiště planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 150,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "planespotting be",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "playtvak tv planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 67,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "planespotting slow tv idnes",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 70,
+              "serp_features": [],
+              "yoy_change": 50,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "planespotting online",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 38,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "playtvak planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 14,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "planespotting wien",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 12,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "planespotting brno",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "mall planespotting",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "planespotting frankfurt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -8,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            }
+          ],
+          "rows_count": 31
+        }
+      }
+    },
+    {
+      "keyword": "vyhlídka letiště",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "vyhlídka na letiště kněževes",
+              "search_volume": 280,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 55,
+              "serp_features": [
+                "knowledge_graph",
+                "images",
+                "find_on_website"
+              ],
+              "yoy_change": 264,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 330,
+                "11": 210,
+                "12": 180,
+                "04": 150,
+                "05": 270,
+                "06": 220,
+                "07": 330,
+                "08": 500,
+                "09": 410,
+                "01": 180,
+                "02": 270,
+                "03": 330
+              }
+            },
+            {
+              "keyword": "vyhlídka letiště praha",
+              "search_volume": 220,
+              "cpc": {
+                "value": 0.54,
+                "text": "0.54 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 80,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": 3,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 200,
+                "11": 130,
+                "12": 100,
+                "04": 240,
+                "05": 300,
+                "06": 200,
+                "07": 300,
+                "08": 360,
+                "09": 200,
+                "01": 100,
+                "02": 160,
+                "03": 300
+              }
+            },
+            {
+              "keyword": "vyhlidka letiste",
+              "search_volume": 140,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 65,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 90,
+                "12": 70,
+                "04": 380,
+                "05": 140,
+                "06": 110,
+                "07": 140,
+                "08": 260,
+                "09": 170,
+                "01": 50,
+                "02": 70,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "vyhlídka na letiště praha",
+              "search_volume": 50,
+              "cpc": {
+                "value": 0.53,
+                "text": "0.53 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 77,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 30,
+                "12": 30,
+                "04": 30,
+                "05": 50,
+                "06": 50,
+                "07": 90,
+                "08": 140,
+                "09": 70,
+                "01": 20,
+                "02": 30,
+                "03": 70
+              }
+            },
+            {
+              "keyword": "letiště praha vyhlídka",
+              "search_volume": 50,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 80,
+              "serp_features": [
+                "local_pack",
+                "find_on_website",
+                "images",
+                "videos"
+              ],
+              "yoy_change": -20,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 20,
+                "12": 30,
+                "04": 50,
+                "05": 50,
+                "06": 30,
+                "07": 70,
+                "08": 140,
+                "09": 70,
+                "01": 30,
+                "02": 40,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "vyhlídka letiště ruzyně",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -30,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 0,
+                "12": 10,
+                "04": 50,
+                "05": 90,
+                "06": 50,
+                "07": 70,
+                "08": 50,
+                "09": 30,
+                "01": 10,
+                "02": 20,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "letiště vyhlídka",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -61,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 40,
+                "12": 10,
+                "04": 70,
+                "05": 70,
+                "06": 50,
+                "07": 0,
+                "08": 90,
+                "09": 40,
+                "01": 20,
+                "02": 20,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "vyhlídka letiště václava havla",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 74,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 30,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 30,
+                "08": 70,
+                "09": 20,
+                "01": 10,
+                "02": 40,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "letiště václava havla vyhlídka",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -7,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 10,
+                "04": 30,
+                "05": 20,
+                "06": 30,
+                "07": 50,
+                "08": 40,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "vyhlidka praha letiste",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -12,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 40,
+                "05": 20,
+                "06": 20,
+                "07": 20,
+                "08": 30,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "vyhlídka letiště praha kněževes",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -54,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 0,
+                "04": 20,
+                "05": 20,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 10,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 11
+        }
+      }
+    },
+    {
+      "keyword": "hangar 7",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "hangar brno",
+              "search_volume": 9300,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 70,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": 22,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 11000,
+                "11": 11000,
+                "12": 9200,
+                "04": 7600,
+                "05": 7600,
+                "06": 6200,
+                "07": 7600,
+                "08": 7600,
+                "09": 9200,
+                "01": 11000,
+                "02": 11000,
+                "03": 11000
+              }
+            },
+            {
+              "keyword": "hangar ostrava",
+              "search_volume": 4300,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 2,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 4400,
+                "11": 4400,
+                "12": 5300,
+                "04": 3600,
+                "05": 3600,
+                "06": 3600,
+                "07": 4400,
+                "08": 3600,
+                "09": 3600,
+                "01": 5300,
+                "02": 5300,
+                "03": 4400
+              }
+            },
+            {
+              "keyword": "hangar",
+              "search_volume": 2200,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 47,
+              "serp_features": [
+                "local_pack"
+              ],
+              "yoy_change": -11,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 2200,
+                "11": 2700,
+                "12": 2700,
+                "04": 2200,
+                "05": 1800,
+                "06": 1800,
+                "07": 1800,
+                "08": 2200,
+                "09": 1800,
+                "01": 2700,
+                "02": 2200,
+                "03": 2700
+              }
+            },
+            {
+              "keyword": "plzeňka hangár",
+              "search_volume": 1600,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 36,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 1500,
+                "11": 1500,
+                "12": 1200,
+                "04": 1200,
+                "05": 1500,
+                "06": 1500,
+                "07": 2700,
+                "08": 2200,
+                "09": 1200,
+                "01": 1200,
+                "02": 1500,
+                "03": 1500
+              }
+            },
+            {
+              "keyword": "hangár strakonice",
+              "search_volume": 1300,
+              "cpc": {
+                "value": 7.77,
+                "text": "7.77 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 69,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": 38,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 1300,
+                "11": 1300,
+                "12": 1300,
+                "04": 870,
+                "05": 1300,
+                "06": 1300,
+                "07": 1600,
+                "08": 1300,
+                "09": 990,
+                "01": 1300,
+                "02": 1300,
+                "03": 1300
+              }
+            },
+            {
+              "keyword": "hangár pečky",
+              "search_volume": 1000,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 60,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": 42,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1500,
+                "12": 930,
+                "04": 930,
+                "05": 1800,
+                "06": 820,
+                "07": 1200,
+                "08": 550,
+                "09": 820,
+                "01": 450,
+                "02": 670,
+                "03": 1500
+              }
+            },
+            {
+              "keyword": "hangar 7",
+              "search_volume": 800,
+              "cpc": {
+                "value": 13.8,
+                "text": "13.80 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 60,
+              "serp_features": [
+                "knowledge_graph",
+                "videos",
+                "images"
+              ],
+              "yoy_change": 19,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 560,
+                "11": 450,
+                "12": 680,
+                "04": 450,
+                "05": 830,
+                "06": 940,
+                "07": 1500,
+                "08": 1200,
+                "09": 680,
+                "01": 680,
+                "02": 830,
+                "03": 830
+              }
+            },
+            {
+              "keyword": "hangar 13",
+              "search_volume": 800,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 30,
+              "serp_features": [
+                "knowledge_graph"
+              ],
+              "yoy_change": -13,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 560,
+                "11": 560,
+                "12": 560,
+                "04": 680,
+                "05": 450,
+                "06": 450,
+                "07": 450,
+                "08": 3400,
+                "09": 940,
+                "01": 560,
+                "02": 450,
+                "03": 560
+              }
+            },
+            {
+              "keyword": "plzenka hangar",
+              "search_volume": 620,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 36,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 600,
+                "11": 600,
+                "12": 480,
+                "04": 480,
+                "05": 600,
+                "06": 600,
+                "07": 1100,
+                "08": 900,
+                "09": 480,
+                "01": 480,
+                "02": 600,
+                "03": 600
+              }
+            },
+            {
+              "keyword": "hangár ostrava",
+              "search_volume": 610,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 2,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 620,
+                "11": 620,
+                "12": 760,
+                "04": 510,
+                "05": 510,
+                "06": 510,
+                "07": 620,
+                "08": 510,
+                "09": 510,
+                "01": 760,
+                "02": 760,
+                "03": 620
+              }
+            },
+            {
+              "keyword": "hangar chrastava",
+              "search_volume": 550,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 14,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 560,
+                "11": 830,
+                "12": 680,
+                "04": 680,
+                "05": 680,
+                "06": 450,
+                "07": 560,
+                "08": 450,
+                "09": 450,
+                "01": 370,
+                "02": 370,
+                "03": 560
+              }
+            },
+            {
+              "keyword": "hangár chrastava",
+              "search_volume": 540,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 14,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 550,
+                "11": 820,
+                "12": 670,
+                "04": 670,
+                "05": 670,
+                "06": 440,
+                "07": 550,
+                "08": 440,
+                "09": 440,
+                "01": 360,
+                "02": 360,
+                "03": 550
+              }
+            },
+            {
+              "keyword": "hangár",
+              "search_volume": 500,
+              "cpc": {
+                "value": 8.17,
+                "text": "8.17 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 20,
+              "serp_features": [
+                "local_pack"
+              ],
+              "yoy_change": 2,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 560,
+                "11": 560,
+                "12": 560,
+                "04": 450,
+                "05": 450,
+                "06": 370,
+                "07": 450,
+                "08": 370,
+                "09": 680,
+                "01": 560,
+                "02": 560,
+                "03": 450
+              }
+            },
+            {
+              "keyword": "hangár brno",
+              "search_volume": 360,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 50,
+              "serp_features": [
+                "knowledge_graph",
+                "videos",
+                "images"
+              ],
+              "yoy_change": -1,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 470,
+                "11": 470,
+                "12": 470,
+                "04": 310,
+                "05": 250,
+                "06": 310,
+                "07": 250,
+                "08": 250,
+                "09": 310,
+                "01": 470,
+                "02": 380,
+                "03": 380
+              }
+            },
+            {
+              "keyword": "hanga roa",
+              "search_volume": 340,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 59,
+              "serp_features": [
+                "knowledge_graph",
+                "images",
+                "videos"
+              ],
+              "yoy_change": 2,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 370,
+                "11": 370,
+                "12": 300,
+                "04": 370,
+                "05": 300,
+                "06": 370,
+                "07": 300,
+                "08": 300,
+                "09": 240,
+                "01": 550,
+                "02": 300,
+                "03": 370
+              }
+            },
+            {
+              "keyword": "restaurace hangár",
+              "search_volume": 320,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -9,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 370,
+                "11": 300,
+                "12": 450,
+                "04": 300,
+                "05": 160,
+                "06": 130,
+                "07": 450,
+                "08": 450,
+                "09": 370,
+                "01": 450,
+                "02": 300,
+                "03": 160
+              }
+            },
+            {
+              "keyword": "red bull hangar 7",
+              "search_volume": 210,
+              "cpc": {
+                "value": 28.76,
+                "text": "28.76 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -26,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 150,
+                "11": 120,
+                "12": 150,
+                "04": 80,
+                "05": 220,
+                "06": 330,
+                "07": 410,
+                "08": 330,
+                "09": 180,
+                "01": 150,
+                "02": 220,
+                "03": 180
+              }
+            },
+            {
+              "keyword": "hangar strakonice",
+              "search_volume": 210,
+              "cpc": {
+                "value": 6.04,
+                "text": "6.04 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 6,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 170,
+                "11": 210,
+                "12": 210,
+                "04": 260,
+                "05": 260,
+                "06": 170,
+                "07": 260,
+                "08": 260,
+                "09": 170,
+                "01": 170,
+                "02": 170,
+                "03": 210
+              }
+            },
+            {
+              "keyword": "red bull hangar",
+              "search_volume": 200,
+              "cpc": {
+                "value": 22.61,
+                "text": "22.61 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 35,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 140,
+                "12": 170,
+                "04": 110,
+                "05": 170,
+                "06": 250,
+                "07": 310,
+                "08": 310,
+                "09": 140,
+                "01": 200,
+                "02": 250,
+                "03": 200
+              }
+            },
+            {
+              "keyword": "hangar pecky",
+              "search_volume": 200,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 45,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 200,
+                "11": 310,
+                "12": 200,
+                "04": 250,
+                "05": 250,
+                "06": 110,
+                "07": 160,
+                "08": 140,
+                "09": 170,
+                "01": 90,
+                "02": 140,
+                "03": 310
+              }
+            },
+            {
+              "keyword": "restaurace hangár strakonice",
+              "search_volume": 170,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 69,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": 49,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 210,
+                "11": 210,
+                "12": 210,
+                "04": 110,
+                "05": 170,
+                "06": 170,
+                "07": 170,
+                "08": 170,
+                "09": 170,
+                "01": 140,
+                "02": 170,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "hangar club & bar prague",
+              "search_volume": 170,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 60,
+              "serp_features": [],
+              "yoy_change": -56.6,
+              "peak_month": "2023-12-01",
+              "monthly_sv": {
+                "10": 210,
+                "11": 170,
+                "12": 260,
+                "01": 210,
+                "02": 170,
+                "03": 170,
+                "04": 170,
+                "05": 170,
+                "06": 110,
+                "07": 140,
+                "08": 110,
+                "09": 110
+              }
+            },
+            {
+              "keyword": "plzenka hangar strakonice",
+              "search_volume": 160,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 21,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 320,
+                "11": 260,
+                "12": 140,
+                "04": 140,
+                "05": 170,
+                "06": 140,
+                "07": 110,
+                "08": 140,
+                "09": 170,
+                "01": 110,
+                "02": 140,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "brno hangar",
+              "search_volume": 160,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 1,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 140,
+                "11": 170,
+                "12": 140,
+                "04": 170,
+                "05": 110,
+                "06": 140,
+                "07": 140,
+                "08": 170,
+                "09": 140,
+                "01": 210,
+                "02": 170,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "hangár 7 salzburg",
+              "search_volume": 150,
+              "cpc": {
+                "value": 18.49,
+                "text": "18.49 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 54,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 140,
+                "04": 70,
+                "05": 170,
+                "06": 210,
+                "07": 320,
+                "08": 210,
+                "09": 90,
+                "01": 140,
+                "02": 170,
+                "03": 170
+              }
+            }
+          ],
+          "rows_count": 897
+        }
+      }
+    },
+    {
+      "keyword": "letiště gibraltar",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "letiště gibraltar",
+              "search_volume": 80,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 51,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": -7,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 110,
+                "12": 70,
+                "04": 70,
+                "05": 70,
+                "06": 70,
+                "07": 70,
+                "08": 70,
+                "09": 70,
+                "01": 70,
+                "02": 70,
+                "03": 110
+              }
+            },
+            {
+              "keyword": "gibraltar letiště",
+              "search_volume": 70,
+              "cpc": {
+                "value": 1.97,
+                "text": "1.97 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -20,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 110,
+                "12": 70,
+                "04": 70,
+                "05": 70,
+                "06": 50,
+                "07": 70,
+                "08": 50,
+                "09": 50,
+                "01": 70,
+                "02": 50,
+                "03": 90
+              }
+            }
+          ],
+          "rows_count": 2
+        }
+      }
+    },
+    {
+      "keyword": "letiště lipsko",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "letiště lipsko",
+              "search_volume": 130,
+              "cpc": {
+                "value": 6.57,
+                "text": "6.57 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 42,
+              "serp_features": [
+                "knowledge_graph",
+                "images",
+                "paid",
+                "videos"
+              ],
+              "yoy_change": -1,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 200,
+                "11": 110,
+                "12": 90,
+                "04": 130,
+                "05": 140,
+                "06": 250,
+                "07": 140,
+                "08": 130,
+                "09": 110,
+                "01": 90,
+                "02": 110,
+                "03": 110
+              }
+            },
+            {
+              "keyword": "lipsko letiště",
+              "search_volume": 80,
+              "cpc": {
+                "value": 7.4,
+                "text": "7.40 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 55,
+              "serp_features": [
+                "knowledge_graph",
+                "images",
+                "paid",
+                "find_on_website",
+                "local_pack"
+              ],
+              "yoy_change": -15,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 80,
+                "11": 50,
+                "12": 50,
+                "04": 80,
+                "05": 100,
+                "06": 100,
+                "07": 80,
+                "08": 80,
+                "09": 80,
+                "01": 70,
+                "02": 80,
+                "03": 70
+              }
+            },
+            {
+              "keyword": "parkování letiště lipsko",
+              "search_volume": 50,
+              "cpc": {
+                "value": 7.04,
+                "text": "7.04 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -3,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 100,
+                "11": 50,
+                "12": 40,
+                "04": 60,
+                "05": 60,
+                "06": 60,
+                "07": 50,
+                "08": 40,
+                "09": 30,
+                "01": 30,
+                "02": 40,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "lipsko letiště parkování",
+              "search_volume": 20,
+              "cpc": {
+                "value": 9.26,
+                "text": "9.26 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 11,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 20,
+                "07": 30,
+                "08": 20,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "praha lipsko letiště",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 33,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "letiště lipsko zkušenosti",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "letiště lipsko terminály",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 50,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "letiště lipsko parkování",
+              "search_volume": 10,
+              "cpc": {
+                "value": 3.58,
+                "text": "3.58 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 31,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 20,
+                "07": 10,
+                "08": 10,
+                "09": 20,
+                "01": 20,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "letiště lipsko odlety",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 30,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "letiště lipsko mapa",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 10
+        }
+      }
+    },
+    {
+      "keyword": "pozorování letadel",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "pozorování letadel",
+              "search_volume": 60,
+              "cpc": {
+                "value": 1.14,
+                "text": "1.14 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -5,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 30,
+                "12": 30,
+                "04": 60,
+                "05": 60,
+                "06": 50,
+                "07": 60,
+                "08": 160,
+                "09": 200,
+                "01": 20,
+                "02": 40,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "pozorování letadel praha",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -6,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 50,
+                "05": 40,
+                "06": 30,
+                "07": 40,
+                "08": 50,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "pozorovani letadel letiste praha",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 38,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 30,
+                "06": 20,
+                "07": 30,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "dalekohled na pozorování letadel",
+              "search_volume": 20,
+              "cpc": {
+                "value": 2.16,
+                "text": "2.16 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -33,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 30,
+                "12": 20,
+                "04": 20,
+                "05": 30,
+                "06": 30,
+                "07": 30,
+                "08": 20,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "pozorování letadel kněževes",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "pozorování letadel ruzyně",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -53,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 6
+        }
+      }
+    },
+    {
+      "keyword": "vyhlídkový val",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "vyhlídkový val hostivice",
+              "search_volume": 130,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -27,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 30,
+                "12": 20,
+                "04": 320,
+                "05": 170,
+                "06": 140,
+                "07": 320,
+                "08": 210,
+                "09": 110,
+                "01": 30,
+                "02": 30,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "vyhlídkový val kněževes",
+              "search_volume": 80,
+              "cpc": {
+                "value": 0.5,
+                "text": "0.50 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 51,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": -5,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 40,
+                "12": 40,
+                "04": 90,
+                "05": 140,
+                "06": 70,
+                "07": 140,
+                "08": 140,
+                "09": 70,
+                "01": 50,
+                "02": 40,
+                "03": 90
+              }
+            }
+          ],
+          "rows_count": 2
+        }
+      }
+    },
+    {
+      "keyword": "kněževes letiště",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "vyhlídka na letiště kněževes",
+              "search_volume": 280,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 55,
+              "serp_features": [
+                "knowledge_graph",
+                "images",
+                "find_on_website"
+              ],
+              "yoy_change": 264,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 330,
+                "11": 210,
+                "12": 180,
+                "04": 150,
+                "05": 270,
+                "06": 220,
+                "07": 330,
+                "08": 500,
+                "09": 410,
+                "01": 180,
+                "02": 270,
+                "03": 330
+              }
+            },
+            {
+              "keyword": "vyhlídka letiště praha kněževes",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -54,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 0,
+                "04": 20,
+                "05": 20,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 10,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 2
+        }
+      }
+    },
+    {
+      "keyword": "hostivice letiště",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [],
+          "rows_count": 0
+        }
+      }
+    },
+    {
+      "keyword": "hangar 7 salzburg",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "hangár 7 salzburg",
+              "search_volume": 150,
+              "cpc": {
+                "value": 18.49,
+                "text": "18.49 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 54,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 140,
+                "04": 70,
+                "05": 170,
+                "06": 210,
+                "07": 320,
+                "08": 210,
+                "09": 90,
+                "01": 140,
+                "02": 170,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "hangar 7 salzburg",
+              "search_volume": 150,
+              "cpc": {
+                "value": 18.49,
+                "text": "18.49 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 54,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 140,
+                "04": 70,
+                "05": 170,
+                "06": 210,
+                "07": 320,
+                "08": 210,
+                "09": 90,
+                "01": 140,
+                "02": 170,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "red bull salzburg hangar",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 30,
+                "12": 40,
+                "04": 10,
+                "05": 20,
+                "06": 30,
+                "07": 50,
+                "08": 70,
+                "09": 40,
+                "01": 30,
+                "02": 70,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "salzburg red bull hangar",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 30,
+                "12": 40,
+                "04": 10,
+                "05": 20,
+                "06": 30,
+                "07": 50,
+                "08": 70,
+                "09": 40,
+                "01": 30,
+                "02": 70,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "hangar salzburg",
+              "search_volume": 30,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 23,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 20,
+                "04": 20,
+                "05": 20,
+                "06": 40,
+                "07": 50,
+                "08": 50,
+                "09": 20,
+                "01": 20,
+                "02": 30,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "hangar red bull salzburg",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 91,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 50,
+                "08": 50,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "red bull hangar 7 salzburg austria",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 50,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "red bull hangar 7 salzburg airport",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 14,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "red bull salzburg hangar 7",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 10,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "restaurant hangar salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "restaurant hangar 7 salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 20,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "bar mayday red bull hangar 7 salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2019-01-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0
+              }
+            },
+            {
+              "keyword": "hangar 2 salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "salzburg hangar 7 öffnungszeiten",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 200,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "salzburg airport hangar 7",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 150,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "hangar 7 salzburg red bull",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "hangar 7 salzburg ikarus",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "hangar 7 salzburg tickets",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 67,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "hangar sieben salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 60,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 10,
+                "07": 10,
+                "08": 0,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "hangar 8 salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 18,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 20,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "salzburg airport red bull hangar 7",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 14,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "hangar 7 red bull salzburg",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 10,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "salzburg hangar 7 restaurant",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 20,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "hangar salzburg red bull",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "salzburg red bull hangar 7",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -8,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 33
+        }
+      }
+    },
+    {
+      "keyword": "letecké muzeum zruč",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "letecké muzeum zruč",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 20,
+                "06": 10,
+                "07": 40,
+                "08": 70,
+                "09": 30,
+                "01": 20,
+                "02": 10,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "letecké muzeum zruč u plzně",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 18,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 2
+        }
+      }
+    },
+    {
+      "keyword": "letiště innsbruck",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [],
+          "rows_count": 0
+        }
+      }
+    },
+    {
+      "keyword": "letiště tivat",
+      "response": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "letiště tivat",
+              "search_volume": 110,
+              "cpc": {
+                "value": 4.15,
+                "text": "4.15 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -17,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 30,
+                "12": 50,
+                "04": 90,
+                "05": 90,
+                "06": 210,
+                "07": 260,
+                "08": 210,
+                "09": 90,
+                "01": 70,
+                "02": 70,
+                "03": 110
+              }
+            }
+          ],
+          "rows_count": 1
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "keyword": "planespotting praha",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "planespotting praha",
+            "search_volume": 820,
+            "cpc": {
+              "value": 0,
+              "text": "0.00 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": -4,
+            "peak_month": "2026-08-01",
+            "monthly_sv": {
+              "10": 1200,
+              "11": 940,
+              "12": 830,
+              "04": 830,
+              "05": 250,
+              "06": 250,
+              "07": 300,
+              "08": 1500,
+              "09": 1200,
+              "01": 830,
+              "02": 680,
+              "03": 940
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "vyhlídka na letiště kněževes",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "vyhlídka na letiště kněževes",
+            "search_volume": 280,
+            "cpc": {
+              "value": 0,
+              "text": "0.00 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": 264,
+            "peak_month": "2026-08-01",
+            "monthly_sv": {
+              "10": 330,
+              "11": 210,
+              "12": 180,
+              "04": 150,
+              "05": 270,
+              "06": 220,
+              "07": 330,
+              "08": 500,
+              "09": 410,
+              "01": 180,
+              "02": 270,
+              "03": 330
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "vyhlídka letiště praha",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "vyhlídka letiště praha",
+            "search_volume": 220,
+            "cpc": {
+              "value": 0.54,
+              "text": "0.54 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": 3,
+            "peak_month": "2026-08-01",
+            "monthly_sv": {
+              "10": 200,
+              "11": 130,
+              "12": 100,
+              "04": 240,
+              "05": 300,
+              "06": 200,
+              "07": 300,
+              "08": 360,
+              "09": 200,
+              "01": 100,
+              "02": 160,
+              "03": 300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "vyhlídkový val hostivice",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "vyhlídkový val hostivice",
+            "search_volume": 130,
+            "cpc": {
+              "value": 0,
+              "text": "0.00 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": -27,
+            "peak_month": "2026-04-01",
+            "monthly_sv": {
+              "10": 50,
+              "11": 30,
+              "12": 20,
+              "04": 320,
+              "05": 170,
+              "06": 140,
+              "07": 320,
+              "08": 210,
+              "09": 110,
+              "01": 30,
+              "02": 30,
+              "03": 90
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "vyhlídkový val kněževes",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "vyhlídkový val kněževes",
+            "search_volume": 80,
+            "cpc": {
+              "value": 0.5,
+              "text": "0.50 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": -5,
+            "peak_month": "2026-05-01",
+            "monthly_sv": {
+              "10": 50,
+              "11": 40,
+              "12": 40,
+              "04": 90,
+              "05": 140,
+              "06": 70,
+              "07": 140,
+              "08": 140,
+              "09": 70,
+              "01": 50,
+              "02": 40,
+              "03": 90
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "hangar 7",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "hangar 7",
+            "search_volume": 800,
+            "cpc": {
+              "value": 13.8,
+              "text": "13.80 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": 19,
+            "peak_month": "2026-07-01",
+            "monthly_sv": {
+              "10": 560,
+              "11": 450,
+              "12": 680,
+              "04": 450,
+              "05": 830,
+              "06": 940,
+              "07": 1500,
+              "08": 1200,
+              "09": 680,
+              "01": 680,
+              "02": 830,
+              "03": 830
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "letiště gibraltar",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "letiště gibraltar",
+            "search_volume": 80,
+            "cpc": {
+              "value": 0,
+              "text": "0.00 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": -7,
+            "peak_month": "2025-10-01",
+            "monthly_sv": {
+              "10": 110,
+              "11": 110,
+              "12": 70,
+              "04": 70,
+              "05": 70,
+              "06": 70,
+              "07": 70,
+              "08": 70,
+              "09": 70,
+              "01": 70,
+              "02": 70,
+              "03": 110
+            }
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "letiště lipsko",
+      "response": {
+        "status": "success",
+        "data": [
+          {
+            "keyword": "letiště lipsko",
+            "search_volume": 130,
+            "cpc": {
+              "value": 6.57,
+              "text": "6.57 Kč",
+              "currency_code": "CZK"
+            },
+            "yoy_change": -1,
+            "peak_month": "2026-06-01",
+            "monthly_sv": {
+              "10": 200,
+              "11": 110,
+              "12": 90,
+              "04": 130,
+              "05": 140,
+              "06": 250,
+              "07": 140,
+              "08": 130,
+              "09": 110,
+              "01": 90,
+              "02": 110,
+              "03": 110
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

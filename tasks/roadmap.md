@@ -1,7 +1,17 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-07-15 (session 6)
+> Poslední update: 2026-09-18 (obsah: spotting a Fly Meta). Historické technické body níže ještě vyžadují srovnání s aktuálním kódem.
+
+## Obsah, 18. září 2026
+
+- [x] Inventura vlastních fotografií a KW výzkum v Marketing Mineru.
+- [x] Zadání pro pražský spotting a Fly Meta Boeing 747: `docs/zadani-spotting-a-fly-meta-2026-09-18.md`.
+- [x] Lokální draft `/letiste/praha/planespotting`: vlastní fotografie Kněževsi, radar, metadata, sitemap, odkazy z hubu, blogu a A380. Kontrola faktů a češtiny; `npm run check` prošel.
+- [ ] Vizuální kontrola draftu v prohlížeči a finální optimalizace obrázků před publikací.
+- [ ] Doplnit GSC baseline (konektor nyní vrací 403) a přesný český SERP.
+- [ ] U Fly Meta identifikovat registraci a přesnou variantu; teprve potom dokončit samostatný článek.
+- [ ] Publikace: aktuální obsahové změny jsou pouze lokální.
 
 ---
 
@@ -109,3 +119,13 @@
 - [ ] Otestovat na Safari / iOS 16
 - [ ] Lighthouse audit — cíl Performance ≥ 85
 - [ ] `metadataBase` URL sjednotit na flyqueens.cz (je tam stará vercel URL)
+
+## Ubytování u letiště Praha (18. 9. 2026)
+
+- [x] KW z Marketing Mineru včetně dostupné obtížnosti, uložené surové odpovědi.
+- [x] Rešerše primárních hotelových zdrojů a rozporů v transferech.
+- [x] Převzatá pravidla Webx a sjednocená redakční pravidla FlyQueens.
+- [ ] Schválení a zveřejnění článku Pavlou po lokální revizi.
+- [ ] Stay22: čeká se na konkrétní skript od Pavly; potom integrace a ověření.
+- [x] Článek implementovaný na `/letiste/praha/ubytovani`, interní odkazy a sitemap.
+- [x] Faktická a česká kontrola, build a mobilní/desktopový náhled.

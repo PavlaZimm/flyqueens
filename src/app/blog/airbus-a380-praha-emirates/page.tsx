@@ -225,6 +225,9 @@ export default function A380PrahaArticle() {
 
         <h2 style={S.h2}>Jak sledovat A380 nad Prahou</h2>
         <p style={S.p}>
+          Chcete přílet vidět na vlastní oči? V průvodci <Link href="/letiste/praha/planespotting" style={{ color: 'var(--gold)' }}>planespottingem v Praze</Link> najdete vyhlídkové valy v Kněževsi a u Hostivice, přístup a vlastní fotografie.
+        </p>
+        <p style={S.p}>
           Pokud je na daný den A380 skutečně nasazený, hledejte let EK139 při příletu z Dubaje nebo EK140 po odletu
           z Prahy. Mapa může ukázat polohu, výšku, rychlost a dostupný typ stroje. Data mají zpoždění a letadlo se
           nemusí objevit okamžitě, proto před cestou za focením sledujte také oficiální přílety a odlety letiště.

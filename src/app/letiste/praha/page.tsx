@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 }
 
 const LINKS = [
+  { href: '/letiste/praha/ubytovani', title: 'Ubytování u letiště', desc: 'Hotely u terminálů, pěší přístup a doprava před ranním odletem.', ready: true },
+  { href: '/letiste/praha/planespotting', title: 'Planespotting: kam na letadla', desc: 'Vyhlídky Kněževes a Hostivice, vlastní fotografie a radar při pozorování.', ready: true },
   { href: '/letiste/praha/parkovani', title: 'Parkování a ceny', desc: 'Kde zaparkovat levně, srovnání parkovišť a tipy na rezervaci.', ready: true },
   { href: '/radar', title: 'Živá mapa nad Prahou', desc: 'Poslední dostupné polohy letadel. Kliknutí ukáže detail.', ready: true },
   { href: '/letiste/praha/odlety', title: 'Odlety a přílety', desc: 'Přehled dostupných letů a bezpečný odkaz na oficiální tabuli.', ready: true },

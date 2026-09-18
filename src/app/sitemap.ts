@@ -31,5 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${BASE}${p.image}`],
   }))
 
-  return [...core, ...airports, ...posts]
+  return [...core, ...airports, ...posts, {
+    url: `${BASE}/letiste/praha/ubytovani`,
+    lastModified: '2026-09-18',
+  }, {
+    url: `${BASE}/letiste/praha/planespotting`,
+    lastModified: '2026-09-18',
+    images: [`${BASE}/spotting/praha-vyhlidkovy-val.webp`, `${BASE}/spotting/praha-boeing-747-fly-meta.webp`],
+  }]
 }

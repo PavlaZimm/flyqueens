@@ -1,5 +1,21 @@
 # FlyQueens — použité fotografie
 
+## Pražský spotting (lokální draft, 18. září 2026)
+
+Zdroj všech čtyř snímků: vlastní archiv FlyQueens, `Fotografie/val praha.zip`.
+Kněževes potvrzena uživatelkou. Kredit je záměrně veden jako archiv, konkrétní
+autorství jednotlivých nových snímků nebylo samostatně potvrzeno. WebP kopie
+jsou zmenšené na šířku 1 800 px; originály zůstaly zachované.
+
+| Webový soubor v `public/spotting` | Originál | Obsah |
+|---|---|---|
+| `praha-vyhlidkovy-val.webp` | `20260916_171618.jpg` | Val Kněževes a cesta |
+| `praha-pristup-k-valu.webp` | `20260916_171539.jpg` | Přístup a schody |
+| `praha-poznavani-letadel.webp` | `20260916_171513.jpg` | Tabule s typy letadel |
+| `praha-boeing-747-fly-meta.webp` | `20260916_165732(0).jpg` | Boeing 747 v barvách Fly Meta při přistání |
+
+## Dříve použité fotografie
+
 Aktualizováno 11. září 2026. Fotografie jsou uložené lokálně kvůli rychlosti, stabilitě a ochraně soukromí návštěvníků. V článcích je vždy viditelný autor i odkaz na licenci.
 
 | Soubor | Autor a zdroj | Licence | Poznámka |

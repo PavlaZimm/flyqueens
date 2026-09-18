@@ -1,0 +1,93 @@
+{
+  "source": "Marketing Miner",
+  "market": "cs",
+  "retrievedAt": "2026-09-18",
+  "suggestions": [
+    {
+      "keyword": "fly meta",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": {\"keywords\": [], \"rows_count\": 0}}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "keyword": "boeing 747",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": {\"keywords\": [{\"keyword\": \"boeing 747\", \"search_volume\": 6000, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 62, \"serp_features\": [], \"yoy_change\": 73.0, \"peak_month\": \"2026-05-01\", \"monthly_sv\": {\"04\": 2800, \"05\": 39000, \"06\": 2800, \"07\": 3500, \"08\": 3500, \"09\": 3500, \"10\": 4200, \"11\": 2800, \"12\": 2300, \"01\": 2800, \"02\": 2300, \"03\": 2800}}, {\"keyword\": \"boeing 747 v ohrožení\", \"search_volume\": 330, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 44, \"serp_features\": [\"knowledge_graph\"], \"yoy_change\": 20.0, \"peak_month\": \"2026-03-01\", \"monthly_sv\": {\"04\": 250, \"05\": 250, \"06\": 170, \"07\": 200, \"08\": 250, \"09\": 580, \"10\": 250, \"11\": 250, \"12\": 380, \"01\": 250, \"02\": 250, \"03\": 860}}, {\"keyword\": \"747 boeing\", \"search_volume\": 200, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -8.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 160, \"05\": 200, \"06\": 160, \"07\": 200, \"08\": 310, \"09\": 250, \"10\": 250, \"11\": 200, \"12\": 160, \"01\": 160, \"02\": 160, \"03\": 160}}, {\"keyword\": \"lego boeing 747\", \"search_volume\": 140, \"cpc\": {\"value\": 2.5, \"text\": \"2.50 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 16.0, \"peak_month\": \"2025-11-01\", \"monthly_sv\": {\"04\": 80, \"05\": 80, \"06\": 50, \"07\": 200, \"08\": 160, \"09\": 160, \"10\": 130, \"11\": 240, \"12\": 240, \"01\": 160, \"02\": 100, \"03\": 100}}, {\"keyword\": \"747 800 boeing\", \"search_volume\": 110, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 7.0, \"peak_month\": \"2026-06-01\", \"monthly_sv\": {\"04\": 70, \"05\": 50, \"06\": 390, \"07\": 110, \"08\": 110, \"09\": 110, \"10\": 70, \"11\": 70, \"12\": 70, \"01\": 90, \"02\": 110, \"03\": 70}}, {\"keyword\": \"boeing 747 800\", \"search_volume\": 110, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 6.0, \"peak_month\": \"2026-06-01\", \"monthly_sv\": {\"04\": 70, \"05\": 50, \"06\": 390, \"07\": 110, \"08\": 110, \"09\": 110, \"10\": 70, \"11\": 70, \"12\": 70, \"01\": 90, \"02\": 110, \"03\": 70}}, {\"keyword\": \"boeing 747 dreamlifter\", \"search_volume\": 110, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 40, \"serp_features\": [\"knowledge_graph\", \"videos\"], \"yoy_change\": -12.0, \"peak_month\": \"2025-09-01\", \"monthly_sv\": {\"04\": 120, \"05\": 40, \"06\": 30, \"07\": 70, \"08\": 150, \"09\": 190, \"10\": 100, \"11\": 120, \"12\": 100, \"01\": 120, \"02\": 100, \"03\": 120}}, {\"keyword\": \"boeing 747 lcf\", \"search_volume\": 90, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -19.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 110, \"05\": 70, \"06\": 50, \"07\": 90, \"08\": 140, \"09\": 110, \"10\": 90, \"11\": 90, \"12\": 90, \"01\": 90, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 large cargo freighter\", \"search_volume\": 90, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -19.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 110, \"05\": 70, \"06\": 50, \"07\": 90, \"08\": 140, \"09\": 110, \"10\": 90, \"11\": 90, \"12\": 90, \"01\": 90, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 jumbo\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 40, \"serp_features\": [\"knowledge_graph\", \"shopping_ads\", \"videos\"], \"yoy_change\": -8.0, \"peak_month\": \"2026-05-01\", \"monthly_sv\": {\"04\": 90, \"05\": 100, \"06\": 100, \"07\": 100, \"08\": 50, \"09\": 90, \"10\": 70, \"11\": 70, \"12\": 70, \"01\": 100, \"02\": 90, \"03\": 90}}, {\"keyword\": \"lufthansa boeing 747 8\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -9.0, \"peak_month\": \"2026-01-01\", \"monthly_sv\": {\"04\": 90, \"05\": 50, \"06\": 50, \"07\": 70, \"08\": 90, \"09\": 90, \"10\": 90, \"11\": 70, \"12\": 90, \"01\": 110, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 8 lufthansa\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -9.0, \"peak_month\": \"2026-01-01\", \"monthly_sv\": {\"04\": 90, \"05\": 50, \"06\": 50, \"07\": 70, \"08\": 90, \"09\": 90, \"10\": 90, \"11\": 70, \"12\": 90, \"01\": 110, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing dreamlifter 747\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -12.0, \"peak_month\": \"2025-09-01\", \"monthly_sv\": {\"04\": 90, \"05\": 30, \"06\": 20, \"07\": 50, \"08\": 110, \"09\": 140, \"10\": 70, \"11\": 90, \"12\": 70, \"01\": 90, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 lcf dreamlifter\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -12.0, \"peak_month\": \"2025-09-01\", \"monthly_sv\": {\"04\": 90, \"05\": 30, \"06\": 20, \"07\": 50, \"08\": 110, \"09\": 140, \"10\": 70, \"11\": 90, \"12\": 70, \"01\": 90, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 dream lifter\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -12.0, \"peak_month\": \"2025-09-01\", \"monthly_sv\": {\"04\": 90, \"05\": 30, \"06\": 20, \"07\": 50, \"08\": 110, \"09\": 140, \"10\": 70, \"11\": 90, \"12\": 70, \"01\": 90, \"02\": 70, \"03\": 90}}, {\"keyword\": \"boeing 747 8\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 48, \"serp_features\": [\"knowledge_graph\"], \"yoy_change\": -37.0, \"peak_month\": \"2026-06-01\", \"monthly_sv\": {\"04\": 80, \"05\": 50, \"06\": 100, \"07\": 100, \"08\": 100, \"09\": 100, \"10\": 80, \"11\": 80, \"12\": 80, \"01\": 80, \"02\": 60, \"03\": 80}}, {\"keyword\": \"airbus a380 vs boeing 747\", \"search_volume\": 70, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 4.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 70, \"05\": 40, \"06\": 50, \"07\": 50, \"08\": 110, \"09\": 90, \"10\": 70, \"11\": 90, \"12\": 50, \"01\": 70, \"02\": 50, \"03\": 90}}, {\"keyword\": \"airbus a380 versus boeing 747\", \"search_volume\": 70, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 4.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 70, \"05\": 40, \"06\": 50, \"07\": 50, \"08\": 110, \"09\": 90, \"10\": 70, \"11\": 90, \"12\": 50, \"01\": 70, \"02\": 50, \"03\": 90}}, {\"keyword\": \"airbus a380 v boeing 747\", \"search_volume\": 70, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 4.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 70, \"05\": 40, \"06\": 50, \"07\": 50, \"08\": 110, \"09\": 90, \"10\": 70, \"11\": 90, \"12\": 50, \"01\": 70, \"02\": 50, \"03\": 90}}, {\"keyword\": \"boeing 747 400\", \"search_volume\": 70, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": 50, \"serp_features\": [\"knowledge_graph\", \"videos\"], \"yoy_change\": -13.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 70, \"05\": 70, \"06\": 50, \"07\": 60, \"08\": 90, \"09\": 90, \"10\": 70, \"11\": 60, \"12\": 70, \"01\": 70, \"02\": 50, \"03\": 70}}, {\"keyword\": \"boeing 747 crash\", \"search_volume\": 60, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 20.0, \"peak_month\": \"2025-10-01\", \"monthly_sv\": {\"04\": 50, \"05\": 50, \"06\": 50, \"07\": 50, \"08\": 70, \"09\": 70, \"10\": 110, \"11\": 70, \"12\": 70, \"01\": 90, \"02\": 50, \"03\": 50}}, {\"keyword\": \"747 200 boeing\", \"search_volume\": 60, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -5.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 50, \"05\": 50, \"06\": 70, \"07\": 40, \"08\": 90, \"09\": 70, \"10\": 70, \"11\": 70, \"12\": 50, \"01\": 50, \"02\": 40, \"03\": 70}}, {\"keyword\": \"boeing 747 200f\", \"search_volume\": 60, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -5.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 50, \"05\": 50, \"06\": 70, \"07\": 40, \"08\": 90, \"09\": 70, \"10\": 70, \"11\": 70, \"12\": 50, \"01\": 50, \"02\": 40, \"03\": 70}}, {\"keyword\": \"boeing 747 200b\", \"search_volume\": 60, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -5.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 50, \"05\": 50, \"06\": 70, \"07\": 40, \"08\": 90, \"09\": 70, \"10\": 70, \"11\": 70, \"12\": 50, \"01\": 50, \"02\": 40, \"03\": 70}}, {\"keyword\": \"boeing 747 200\", \"search_volume\": 60, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": -5.0, \"peak_month\": \"2026-08-01\", \"monthly_sv\": {\"04\": 50, \"05\": 50, \"06\": 70, \"07\": 40, \"08\": 90, \"09\": 70, \"10\": 70, \"11\": 70, \"12\": 50, \"01\": 50, \"02\": 40, \"03\": 70}}], \"rows_count\": 1197}}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "keyword": "boeing 747 praha",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": {\"keywords\": [{\"keyword\": \"boeing 747 praha\", \"search_volume\": 30, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"difficulty\": null, \"serp_features\": [], \"yoy_change\": 9.0, \"peak_month\": \"2025-07-01\", \"monthly_sv\": {\"04\": 30, \"05\": 20, \"06\": 30, \"07\": 50, \"08\": 50, \"09\": 40, \"10\": 30, \"11\": 20, \"12\": 20, \"01\": 50, \"02\": 20, \"03\": 20}}], \"rows_count\": 1}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "keyword": "fly meta",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": []}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "keyword": "boeing 747 praha",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": [{\"keyword\": \"boeing 747 praha\", \"search_volume\": 30, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"yoy_change\": 9.0, \"peak_month\": \"2025-07-01\", \"monthly_sv\": {\"04\": 30, \"05\": 20, \"06\": 30, \"07\": 50, \"08\": 50, \"09\": 40, \"10\": 30, \"11\": 20, \"12\": 20, \"01\": 50, \"02\": 20, \"03\": 20}}]}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "keyword": "boeing 747",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": [{\"keyword\": \"boeing 747\", \"search_volume\": 6000, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"yoy_change\": 73.0, \"peak_month\": \"2026-05-01\", \"monthly_sv\": {\"04\": 2800, \"05\": 39000, \"06\": 2800, \"07\": 3500, \"08\": 3500, \"09\": 3500, \"10\": 4200, \"11\": 2800, \"12\": 2300, \"01\": 2800, \"02\": 2300, \"03\": 2800}}]}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "keyword": "boeing 747 jumbo",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"status\": \"success\", \"data\": [{\"keyword\": \"boeing 747 jumbo\", \"search_volume\": 80, \"cpc\": {\"value\": 0.0, \"text\": \"0.00 Kč\", \"currency_code\": \"CZK\"}, \"yoy_change\": -8.0, \"peak_month\": \"2026-05-01\", \"monthly_sv\": {\"04\": 90, \"05\": 100, \"06\": 100, \"07\": 100, \"08\": 50, \"09\": 90, \"10\": 70, \"11\": 70, \"12\": 70, \"01\": 100, \"02\": 90, \"03\": 90}}]}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ]
+}

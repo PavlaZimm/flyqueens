@@ -37,6 +37,20 @@ export default function BlogIndexPage() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <Link href="/letiste/praha/ubytovani" style={{ textDecoration: 'none', color: 'var(--text-primary)' }}>
+            <article style={{ padding: 20, background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12 }}>
+              <div style={{ fontSize: 11, color: 'var(--gold)', marginBottom: 8 }}>PŘED ODLETEM · PRAHA</div>
+              <h2 style={{ fontSize: 20, margin: '0 0 8px' }}>Ubytování u letiště Praha: hotely a cesta k terminálu</h2>
+              <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>Kde přespíte přímo u terminálů a odkud potřebujete dopravu. Srovnání pěti možností a podmínky transferů. Číst průvodce →</p>
+            </article>
+          </Link>
+          <Link href="/letiste/praha/planespotting" style={{ textDecoration: 'none', color: 'var(--text-primary)' }}>
+            <article style={{ padding: '20px', background: 'var(--midnight-2)', border: '1px solid var(--gold)', borderRadius: 12 }}>
+              <div style={{ fontSize: 11, color: 'var(--gold)', marginBottom: 8 }}>NOVÝ PRŮVODCE · VLASTNÍ FOTOGRAFIE</div>
+              <h2 style={{ fontSize: 20, margin: '0 0 8px' }}>Planespotting Praha: vyhlídky, Kněževes a Hostivice</h2>
+              <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>Kam vyrazit na letadla, jak se dostat k valům a jak při pozorování využít radar. Číst průvodce →</p>
+            </article>
+          </Link>
           {posts.map((p) => (
             <Link key={p.slug} href={`/blog/${p.slug}`} style={{ textDecoration: 'none' }}>
               <article style={{ overflow: 'hidden', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12 }}>
