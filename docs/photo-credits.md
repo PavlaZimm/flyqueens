@@ -59,3 +59,21 @@ proto se znovu nepřekódoval. Originály zůstaly zachované.
 - `/blog/boeing-747-fly-meta-priblizeni.webp`: originál `Fotografie/val praha.zip :: 20260916_165727.jpg`, letadlo těsně nad dráhou, 1400 × 1050 px, WebP, 195 346 B. Zmenšeno přímo z originálu, vizuálně ověřeno.
 - Stanoviště: již evidovaný `/spotting/praha-vyhlidkovy-val.webp`, 1600 × 1200 px.
 - Všechny snímky: vlastní archiv FlyQueens. Kněževes potvrzena uživatelkou. Datum leteckých fotografií 16. 9. 2026 potvrzeno EXIF DateTimeOriginal, časový posun +02:00. Originály zachované. Detail registrace pro rešerši se nezveřejňuje jako samostatná fotografie.
+
+## Tivat, Lipsko a Air Park Zruč (lokální draft, 21. září 2026)
+
+Zdroj: vlastní archiv FlyQueens, složky `Fotografie/Letiště Tivat`, `Fotografie/Letiště Lipsko`, `Fotografie/Letadla plzen zruč `. Kredit veden jako archiv; autorství jednotlivých snímků nebylo samostatně potvrzeno. Data podle názvů souborů. WebP kopie 1 600 px, 16–133 kB; originály beze změny. Podrobnosti v `Vyzkum/<tema>/fotografie.md`.
+
+| Webový soubor v `public/blog` | Originál | Obsah |
+|---|---|---|
+| `letiste-tivat-draha-hory.webp` | `20250728_175016.jpg` | Dráha, terminál a hory v Tivatu |
+| `letiste-tivat-easyjet-pristani.webp` | `20250728_173925.jpg` (výřez) | easyJet G-EZOP nad Tivatem |
+| `letiste-tivat-plot-odstavna-plocha.webp` | `20250728_180233.jpg` | Odstavná plocha za plotem |
+| `letiste-tivat-turkish-airlines-hrnek.webp` | `20250728_191639.jpg` | Turkish Airlines nad plecháčkem |
+| `letiste-lipsko-antonov-an-124.webp` | `IMG_20251224_125631.jpg` | Příď An-124-100M |
+| `letiste-lipsko-an-124-ur-82027.webp` | `IMG_20251224_125337.jpg` | An-124 UR-82027 z boku |
+| `letiste-lipsko-vystava-antonov.webp` | `IMG_20251224_114827.jpg` (výřez) | Výstava Light and Shadow |
+| `air-park-zruc-expozice.webp` | `20260308_114318.jpg` | Letadla na louce Air Parku |
+| `air-park-zruc-letadla-na-louce.webp` | `20260308_112814.jpg` | Stíhačka a zemědělský letoun |
+| `air-park-zruc-vrtulovy-dopravni.webp` | `20260308_113124.jpg` | Pístový dopravní letoun |
+| `air-park-zruc-migy-slovenske.webp` | `20260308_113126.jpg` | Stíhačky se slovenskými znaky |

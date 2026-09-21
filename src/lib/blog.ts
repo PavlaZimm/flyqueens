@@ -17,6 +17,36 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'letiste-lipsko',
+    title: 'Letiště Lipsko 2026: doprava z Česka, parkování, Antonov',
+    excerpt: 'Jak se z Česka dostanete na letiště Lipsko/Halle, kolik stojí týden na jednotlivých parkovištích a proč tu stojí obří Antonovy. Terasa je dočasně zavřená.',
+    date: '2026-09-21', updatedAt: '2026-09-21', dateLabel: '21. září 2026',
+    tag: 'Letiště · Německo', readingTime: '7 min čtení',
+    image: '/blog/letiste-lipsko-antonov-an-124.webp',
+    imageAlt: 'Příď nákladního Antonovu An-124 s nápisem Be Brave Like Kharkiv na letišti Lipsko',
+    imageWidth: 1600, imageHeight: 698,
+  },
+  {
+    slug: 'air-park-zruc',
+    title: 'Air Park Zruč: letecké muzeum u Plzně, vstupné 2026',
+    excerpt: 'Air Park Zruč u Plzně má na louce desítky letadel, vrtulníků a obrněné techniky. Otevírací doba, vstupné, letadla, do kterých se dá vstoupit, a cesta MHD.',
+    date: '2026-09-21', updatedAt: '2026-09-21', dateLabel: '21. září 2026',
+    tag: 'Výlet · Letecké muzeum', readingTime: '6 min čtení',
+    image: '/blog/air-park-zruc-expozice.webp',
+    imageAlt: 'Letadla na louce Air Parku Zruč, vpředu stíhačka v polských barvách a za ní An-30',
+    imageWidth: 1600, imageHeight: 738,
+  },
+  {
+    slug: 'letiste-tivat',
+    title: 'Letiště Tivat: lety z Prahy, parkování a provoz 2026',
+    excerpt: 'Letiště Tivat leží na pobřeží Boky kotorské pod horami. Jak se z něj dostanete do Kotoru a Budvy, kolik stojí parkování a proč tu letadla po setmění nelétají.',
+    date: '2026-09-21', updatedAt: '2026-09-21', dateLabel: '21. září 2026',
+    tag: 'Letiště · Černá Hora', readingTime: '6 min čtení',
+    image: '/blog/letiste-tivat-draha-hory.webp',
+    imageAlt: 'Dráha letiště Tivat, terminál a věž, v pozadí hory nad Bokou kotorskou',
+    imageWidth: 1600, imageHeight: 738,
+  },
+  {
     slug: 'boeing-747-praha-fly-meta',
     title: 'Boeing 747 v Praze: Fly Meta na fotkách z Kněževsi',
     excerpt: 'Nákladní Boeing 747-400F s registrací 9H-FLM při přistání v Praze. Vlastní fotky z Kněževsi a rozdíl mezi Fly Meta a provozovatelem letadla.',

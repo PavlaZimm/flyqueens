@@ -83,6 +83,7 @@ export default function Boeing747FlyMetaArticle() {
         <RelatedReading items={[
           { href: '/letiste/praha/planespotting', eyebrow: 'Kam za letadly', title: 'Planespotting v Praze', description: 'Vyhlídkové valy v Kněževsi a u Hostivice, přístup a vlastní fotografie.' },
           { href: '/blog/airbus-a380-praha-emirates', eyebrow: 'Další velké letadlo', title: 'Airbus A380 v Praze', description: 'Plánované nasazení Emirates a ověření typu před cestou na letiště.' },
+          { href: '/blog/letiste-lipsko', eyebrow: 'Nákladní letiště', title: 'Letiště Lipsko a Antonovy', description: 'Uzel DHL, An-124 na našich fotkách a doprava z Česka.' },
         ]} />
         <SourcesBox sources={[
           { label: 'Transport Malta: registr 9H-FLM, stav k 19. srpnu 2026, strana 10', href: 'https://www.transport.gov.mt/Query-Registration-19-08-2026.pdf-f11802#page=10' },
