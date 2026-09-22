@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieConsent } from "@/components/UI/CookieConsent";
 import { socialMetadata } from "@/lib/socialMetadata";
 import "./globals.css";
-import "leaflet/dist/leaflet.css";
 
 const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
@@ -24,6 +23,8 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
   variable: "--font-ibm-plex-mono",
   display: "swap",
+  // Mono je jen v drobných popiscích; nepřednačítat, ať nebrzdí hlavní text.
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -97,8 +98,6 @@ export default function RootLayout({
             __html: "try{if(localStorage.getItem('flyqueens-theme')==='light')document.documentElement.classList.add('light')}catch{}",
           }}
         />
-        <link rel="preconnect" href="https://tile.openstreetmap.org" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="//tile.openstreetmap.org" />
       </head>
       <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif", background: "var(--midnight)", color: "var(--text-primary)" }} suppressHydrationWarning>
         {children}
