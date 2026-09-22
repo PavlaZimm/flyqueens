@@ -22,12 +22,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/icons/icon-512.png?v=20260911-2",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
   ]
 }
