@@ -251,6 +251,12 @@ export default function StarluxPrahaArticle() {
               description: 'Historie návratu, aktuální stav a správné ověření typu letadla.',
             },
             {
+              href: '/blog/praha-santiago-de-compostela',
+              eyebrow: 'Další nová linka',
+              title: 'Z Prahy přímo do Santiaga de Compostela',
+              description: 'Fly2Galicia od prosince 2026: kdo lety provádí a co obsahuje letenka.',
+            },
+            {
               href: '/blog/letiste-praha-zive',
               eyebrow: 'Praha živě',
               title: 'Přílety, odlety a živá mapa Letiště Praha',

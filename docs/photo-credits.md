@@ -77,3 +77,12 @@ Zdroj: vlastní archiv FlyQueens, složky `Fotografie/Letiště Tivat`, `Fotogra
 | `air-park-zruc-letadla-na-louce.webp` | `20260308_112814.jpg` | Stíhačka a zemědělský letoun |
 | `air-park-zruc-vrtulovy-dopravni.webp` | `20260308_113124.jpg` | Pístový dopravní letoun |
 | `air-park-zruc-migy-slovenske.webp` | `20260308_113126.jpg` | Stíhačky se slovenskými znaky |
+
+## Praha–Santiago de Compostela (lokální draft, 22. září 2026)
+
+Originály uložené v `Fotografie/Santiago de Compostela/`. WebP kopie 1600 px, zmenšené bez dalších úprav, vizuálně zkontrolované. Kredit a licence jsou viditelné v popisku fotografie v článku.
+
+| Webový soubor v `public/blog` | Autor a zdroj | Licence | Obsah |
+|---|---|---|---|
+| `santiago-de-compostela-katedrala.webp` (1600 × 1067, 204 kB) | [Fernando Pascullo, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Santiago_Compostela_Cathedral_2023_-_View_from_Alameda_Park.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Katedrála z parku Alameda, 30. 4. 2023. Náhled článku. |
+| `fly2galicia-flyyo-a320.webp` (1600 × 1067, 33 kB) | [André Gerwing, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Airbus_A320-214_(c-n_3256,_YR-ADC)_2026-05-08_Andre_Gerwing_Collection_ID_028659.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | A320 YR-ADC dopravce FLYYO, Berlín, 8. 5. 2026. Ilustrační, není jisté, že bude létat do Prahy. |

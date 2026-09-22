@@ -13,9 +13,20 @@ export interface BlogPost {
   imageAlt: string
   imageWidth: number   // skutečné rozměry souboru, jdou rovnou do og:image
   imageHeight: number
+  imagePosition?: string  // object-position pro ořez karet
 }
 
 export const POSTS: BlogPost[] = [
+  {
+    slug: 'praha-santiago-de-compostela',
+    title: 'Praha–Santiago de Compostela přímo: Fly2Galicia od prosince',
+    excerpt: 'Od 2. prosince 2026 se z Prahy létá přímo do Santiaga de Compostela, ve středu a v neděli. Kdo lety skutečně provádí, co zahrnuje nejlevnější letenka a jak z letiště do města.',
+    date: '2026-09-22', updatedAt: '2026-09-22', dateLabel: '22. září 2026',
+    tag: 'Nová linka · Španělsko', readingTime: '6 min čtení',
+    image: '/blog/santiago-de-compostela-katedrala.webp',
+    imageAlt: 'Věže katedrály v Santiagu de Compostela nad střechami starého města ve večerním světle',
+    imageWidth: 1600, imageHeight: 1067, imagePosition: 'center 25%',
+  },
   {
     slug: 'letiste-lipsko',
     title: 'Letiště Lipsko 2026: doprava z Česka, parkování, Antonov',
@@ -162,7 +173,7 @@ export function getPost(slug: string): BlogPost | undefined {
 
 // Jednotná karta všech článků v blogu, včetně průvodců pod /letiste.
 // Povinná image/imageAlt brání přidání textové karty bez náhledové fotografie.
-export const BLOG_CARDS: (BlogPost & { href: string; imagePosition?: string })[] = [
+export const BLOG_CARDS: (BlogPost & { href: string })[] = [
   {
     slug: 'ubytovani-letiste-praha',
     href: '/letiste/praha/ubytovani',
