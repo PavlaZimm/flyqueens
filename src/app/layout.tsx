@@ -33,7 +33,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Pavla Zimmermannová", url: "https://www.linklady.cz/o-mne" }],
   creator: "Pavla Zimmermannová",
   publisher: "FlyQueens",
-  keywords: ["flight tracker", "letadla live", "sledování letů", "mapa letadel", "ADS-B"],
   ...socialMetadata({
     title: "Sledování letů online: živá mapa letadel | FlyQueens",
     description: "Dostupná ADS-B data o letadlech ve vybraných oblastech Evropy na interaktivní mapě.",

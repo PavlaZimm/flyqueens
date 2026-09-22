@@ -20,7 +20,7 @@
 
   --text-primary:    #E9EEF6;
   --text-muted:      #8698B0;
-  --text-dim:        #61728A;
+  --text-dim:        #74859C;  /* WCAG AA (≥ 4,5 : 1) i na --midnight-2 */
 
   --border-subtle:   rgba(34, 48, 74, 0.62);
   --border-mid:      rgba(34, 48, 74, 0.88);
@@ -58,7 +58,7 @@ html.light {
 
   --text-primary:    #0F172A;
   --text-muted:      rgba(15, 23, 42, 0.72);
-  --text-dim:        rgba(15, 23, 42, 0.52);
+  --text-dim:        rgba(15, 23, 42, 0.62);  /* WCAG AA i na --midnight-2 */
 
   --border-subtle:   rgba(15, 23, 42, 0.07);
   --border-mid:      rgba(15, 23, 42, 0.12);

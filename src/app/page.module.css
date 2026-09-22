@@ -242,7 +242,7 @@
   font: 16px var(--font-ibm-plex-sans), 'IBM Plex Sans', sans-serif;
 }
 
-.search input::placeholder { color: #61728a; }
+.search input::placeholder { color: #74859c; }
 
 .search button {
   align-self: stretch;
@@ -266,7 +266,7 @@
   font-size: 10px;
 }
 
-.popular > span { color: #61728a; letter-spacing: .1em; }
+.popular > span { color: #74859c; letter-spacing: .1em; }
 .popular a {
   padding: 5px 8px;
   border: 1px solid #22304a;
@@ -411,7 +411,7 @@
   font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   text-transform: uppercase;
 }
-.radarLabel span { color: #61728a; font-size: 9px; letter-spacing: .14em; }
+.radarLabel span { color: #74859c; font-size: 9px; letter-spacing: .14em; }
 .radarLabel strong { font-family: var(--font-archivo), Archivo, sans-serif; font-size: 17px; }
 .radarLabel small { color: #8698b0; font-size: 8px; }
 
@@ -434,14 +434,14 @@
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 9px;
-  color: #61728a;
+  color: #74859c;
   font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   font-size: 8px;
   letter-spacing: .12em;
 }
 
 .profileHeader > span:last-child { color: #a8b6c8; letter-spacing: .02em; }
-.profileHeader i { margin: 0 5px; color: #4a5a72; font-style: normal; }
+.profileHeader i { margin: 0 5px; color: #74859c; font-style: normal; }
 
 .profileBars {
   display: grid;
@@ -482,7 +482,7 @@
   position: absolute;
   left: 20px;
   bottom: 105px;
-  color: #61728a;
+  color: #74859c;
   font-size: 8px;
   letter-spacing: .12em;
 }
@@ -604,7 +604,7 @@
 .airportCard > span:nth-child(2) { display: flex; flex: 1; flex-direction: column; gap: 4px; }
 .airportCard strong { font-family: var(--font-archivo), Archivo, sans-serif; font-size: 19px; }
 .airportCard small { color: #8698b0; font-size: 12px; }
-.arrow { color: #61728a; }
+.arrow { color: #74859c; }
 
 .journalTop { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .journalTop > a { color: #f5b83d; font-size: 13px; text-decoration: none; }
@@ -612,15 +612,15 @@
 .articleCard { min-height: 240px; display: flex; flex-direction: column; background: #0b111b; color: #e9eef6; text-decoration: none; min-width: 0; }
 .articleImage { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 .articleBody { display: flex; flex-direction: column; flex: 1; padding: 28px; }
-.articleNumber { color: #61728a; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 11px; }
+.articleNumber { color: #74859c; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 11px; }
 .articleCard h3 { margin: 34px 0 auto; font-family: var(--font-archivo), Archivo, sans-serif; font-size: 21px; line-height: 1.25; }
 .articleLink { margin-top: 25px; color: #f5b83d; font-size: 12px; }
 
 .footer { border-top: 1px solid #22304a; background: #05080d; }
 .footerInner { width: min(1180px, calc(100% - 40px)); min-height: 190px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 45px; padding: 42px 0; }
-.footer p { max-width: 440px; margin: 0; color: #61728a; font-size: 12px; line-height: 1.6; }
+.footer p { max-width: 440px; margin: 0; color: #74859c; font-size: 12px; line-height: 1.6; }
 .footer nav { display: flex; gap: 18px; }
-.footer small { grid-column: 1 / -1; color: #4a5a72; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .13em; }
+.footer small { grid-column: 1 / -1; color: #74859c; font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .13em; }
 .footer small a { color: #8698b0; font: inherit; }
 
 /* Homepage má vlastní výrazný tmavý vizuál. Tyto cílené přepisy zachovají
