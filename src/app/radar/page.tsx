@@ -471,7 +471,7 @@ export default function RadarPage() {
                   ? 'Živá data jsou teď nedostupná'
                   : searchMatches.length
                   ? `${searchMatches.length} ${czechPlural(searchMatches.length, 'nalezený let', 'nalezené lety', 'nalezených letů')}`
-                  : 'Let jsme v aktuálních datech nenašli'}
+                  : 'Let teď není ve vzduchu v této oblasti'}
               </div>
               <div style={{ color: 'var(--text-dim)', fontSize: 10, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 Hledání „{searchQuery}“{searchMatches.length === 0 ? ' · zkus číslo letu nebo registraci' : ''}

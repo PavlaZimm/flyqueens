@@ -86,6 +86,21 @@ function radarValue(flight: AirportBoardFlight): string | null {
   return flight.callSign ?? flight.aircraft?.modeS ?? flight.aircraft?.registration ?? null
 }
 
+// Mapa ukazuje jen letadla, která jsou právě ve vzduchu v okolí Česka.
+// Odkaz nabízíme jen v okně, kdy může let na mapě skutečně být.
+const MINUTE = 60_000
+
+function canBeOnMap(flight: AirportBoardFlight, now: number): boolean {
+  const status = normalizedStatus(flight.status)
+  if (['cancelled', 'canceled', 'diverted'].includes(status)) return false
+  if (flight.direction === 'arrival' && status === 'arrived') return false
+  const time = parsedDate(flight.revisedTime ?? flight.scheduledTime)?.getTime()
+  if (time == null) return false
+  return flight.direction === 'departure'
+    ? now >= time - 15 * MINUTE && now <= time + 45 * MINUTE
+    : now >= time - 60 * MINUTE && now <= time + 10 * MINUTE
+}
+
 function operationalDetails(flight: AirportBoardFlight): string[] {
   if (flight.direction === 'departure') {
     return [
@@ -107,6 +122,12 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
   const [visibleCount, setVisibleCount] = useState(INITIAL_FLIGHT_COUNT)
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), MINUTE)
+    return () => window.clearInterval(timer)
+  }, [])
 
   const load = useCallback(async (signal?: AbortSignal) => {
     setLoading(true)
@@ -234,7 +255,7 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
                     const delay = delayMinutes(flight)
                     const opposite = airportLabel(flight)
                     const details = operationalDetails(flight)
-                    const radar = radarValue(flight)
+                    const radar = canBeOnMap(flight, now) ? radarValue(flight) : null
                     return (
                       <li className={styles.flight} key={flight.id}>
                         <div className={styles.timeCell}>
