@@ -4,6 +4,7 @@ import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Parkování letiště Praha: ceny a kde zaparkovat levně (2026)',
@@ -91,7 +92,15 @@ export default function ParkovaniPrahaPage() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Srovnání oficiálních možností</h2>
+        <ArticleContents items={[
+          { id: 'srovnani-oficialnich-moznosti', label: "Srovnání oficiálních možností" },
+          { id: 'primo-u-terminalu-expresni-a-hodinove', label: "Přímo u terminálu: expresní a hodinové stání" },
+          { id: 'soukroma-parkoviste-s-odvozem', label: "Soukromá parkoviště s odvozem" },
+          { id: 'da-se-u-letiste-parkovat-zdarma', label: "Dá se u letiště parkovat zdarma?" },
+          { id: 'kdy-a-jak-rezervovat', label: "Kdy a jak rezervovat" },
+        ]} />
+
+        <h2 id="srovnani-oficialnich-moznosti" style={S.h2}>Srovnání oficiálních možností</h2>
         <p style={S.p}>Přesnou dlouhodobou cenu ukáže rezervační systém až po zadání termínu. Tohle jsou ověřené rozdíly mezi parkovišti.</p>
 
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
@@ -121,14 +130,14 @@ export default function ParkovaniPrahaPage() {
         </div>
         <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '4px 0 0' }}>Uvedené doby chůze a typy parkovišť pocházejí z oficiálního přehledu letiště.</p>
 
-        <h2 style={S.h2}>Přímo u terminálu: expresní a hodinové stání</h2>
+        <h2 id="primo-u-terminalu-expresni-a-hodinove" style={S.h2}>Přímo u terminálu: expresní a hodinové stání</h2>
         <p style={S.p}>
           P1 EXPRESS je před Terminálem 1, P2 EXPRESS před odlety Terminálu 2 a PB EXPRESS před jeho přílety.
           Každé nabízí 10 minut zdarma jednou za 24 hodin; do 15 minut stojí 50 Kč. Pokud potřebujete
           delší neurčenou dobu, letiště uvádí PC COMFORT s tarifem 80 Kč za hodinu.
         </p>
 
-        <h2 style={S.h2}>Soukromá parkoviště s odvozem</h2>
+        <h2 id="soukroma-parkoviste-s-odvozem" style={S.h2}>Soukromá parkoviště s odvozem</h2>
         <p style={S.p}>
           Kolem letiště fungují i provozovatelé s transferem. Cenu ani úroveň zabezpečení nelze zobecnit:
           ověřte celkovou cenu pro konkrétní termín, četnost odvozu, storno a podmínky odpovědnosti za auto.
@@ -143,7 +152,7 @@ export default function ParkovaniPrahaPage() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Dá se u letiště parkovat zdarma?</h2>
+        <h2 id="da-se-u-letiste-parkovat-zdarma" style={S.h2}>Dá se u letiště parkovat zdarma?</h2>
         <p style={S.p}>
           Pro vysazení nebo vyzvednutí ano: na P1, P2 nebo PB EXPRESS je 10 minut zdarma jednou za 24 hodin.
           Oficiální web bezplatné dlouhodobé parkování nenabízí. Parkování v okolních ulicích zde
@@ -155,7 +164,7 @@ export default function ParkovaniPrahaPage() {
           U hotelového balíčku si ověřte, zda parkování platí i po celou dobu vaší cesty.
         </p>
 
-        <h2 style={S.h2}>Kdy a jak rezervovat</h2>
+        <h2 id="kdy-a-jak-rezervovat" style={S.h2}>Kdy a jak rezervovat</h2>
         <p style={S.p}>
           Letiště uvádí, že online rezervace může být až o 50 % levnější a nabízí bezplatné zrušení rezervace.
           Před zaplacením zkontrolujte konkrétní storno podmínky, rozměrová omezení vozu a správný terminál.

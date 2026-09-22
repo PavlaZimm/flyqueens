@@ -9,6 +9,7 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('starlux-airlines-praha')!
 
@@ -131,7 +132,16 @@ export default function StarluxPrahaArticle() {
           ]}
         />
 
-        <h2 style={S.h2}>Letový řád STARLUX Praha a Tchaj-pej</h2>
+        <ArticleContents items={[
+          { id: 'letovy-rad-starlux-praha-a-tchaj-pej', label: "Letový řád STARLUX Praha a Tchaj-pej" },
+          { id: 'jake-letadlo-starlux-do-prahy-nasazuje', label: "Jaké letadlo STARLUX do Prahy nasazuje" },
+          { id: 'zlaty-airbus-airsorayama-gold-pristal-v', label: "Zlatý Airbus AIRSORAYAMA Gold přistál v Praze" },
+          { id: 'proc-je-linka-zajimava', label: "Proč je linka zajímavá" },
+          { id: 'jak-sledovat-lety-jx101-a-jx102', label: "Jak sledovat lety JX101 a JX102" },
+          { id: 'caste-otazky', label: "Časté otázky" },
+        ]} />
+
+        <h2 id="letovy-rad-starlux-praha-a-tchaj-pej" style={S.h2}>Letový řád STARLUX Praha a Tchaj-pej</h2>
         <p style={S.p}>
           Pro období od 1. srpna do 30. září 2026 zveřejnil STARLUX následující rozpis. Časy jsou místní a přílet
           do Tchaj-peje je následující den.
@@ -168,7 +178,7 @@ export default function StarluxPrahaArticle() {
           přilétat v 05:10 následujícího dne. Pro pozdější termíny použijte aktuální rezervační systém STARLUX.
         </p>
 
-        <h2 style={S.h2}>Jaké letadlo STARLUX do Prahy nasazuje</h2>
+        <h2 id="jake-letadlo-starlux-do-prahy-nasazuje" style={S.h2}>Jaké letadlo STARLUX do Prahy nasazuje</h2>
         <p style={S.p}>
           Linka začala s Airbusem A350-900. Od 1. září 2026 ji převzal větší Airbus A350-1000 s kapacitou
           350 cestujících ve čtyřech třídách: 4 místa v první třídě, 40 v business classu, 36 v premium economy
@@ -176,7 +186,7 @@ export default function StarluxPrahaArticle() {
           při nákupu proto berte jako plán, ne jako záruku.
         </p>
 
-        <h2 style={S.h2}>Zlatý Airbus AIRSORAYAMA Gold přistál v Praze</h2>
+        <h2 id="zlaty-airbus-airsorayama-gold-pristal-v" style={S.h2}>Zlatý Airbus AIRSORAYAMA Gold přistál v Praze</h2>
         <p style={S.p}>
           První A350-1000 na pražské lince nebyl obyčejný stroj. V úterý 1. září 2026 ráno přistál na Ruzyni
           Airbus registrace B-58554 ve zlatém laku AIRSORAYAMA Gold. Šlo o vůbec první přílet letadla
@@ -189,7 +199,7 @@ export default function StarluxPrahaArticle() {
           verze AIRSORAYAMA Silver.
         </p>
 
-        <h2 style={S.h2}>Proč je linka zajímavá</h2>
+        <h2 id="proc-je-linka-zajimava" style={S.h2}>Proč je linka zajímavá</h2>
         <p style={S.p}>
           Cestující získali přímé spojení mezi Českem a Tchaj-wanem bez přestupu. Pro letecké fanoušky je zajímavé
           pravidelné nasazení A350-1000. Praha je navíc jednou ze tří destinací, kam STARLUX plánuje speciálně
@@ -201,7 +211,7 @@ export default function StarluxPrahaArticle() {
           zavazadla, návazný let a podmínky změny rezervace. Nejlevnější nabídka v konkrétní den nemusí být nejpraktičtější.
         </p>
 
-        <h2 style={S.h2}>Jak sledovat lety JX101 a JX102</h2>
+        <h2 id="jak-sledovat-lety-jx101-a-jx102" style={S.h2}>Jak sledovat lety JX101 a JX102</h2>
         <p style={S.p}>
           Do vyhledávání na mapě zadejte číslo JX101 nebo JX102. Uvidíte polohu letadla, pokud je právě ve vzduchu,
           nachází se v pokryté oblasti a veřejný zdroj přijímá jeho data. Volací znak se může lišit od čísla uvedeného
@@ -224,7 +234,7 @@ export default function StarluxPrahaArticle() {
           </div>
         </div>
 
-        <h2 style={S.h2}>Časté otázky</h2>
+        <h2 id="caste-otazky" style={S.h2}>Časté otázky</h2>
         <h3 style={S.h3}>Létá STARLUX z Prahy přímo?</h3>
         <p style={S.p}>Ano. JX102 je přímý pravidelný let z Prahy do Tchaj-peje. JX101 létá opačným směrem.</p>
         <h3 style={S.h3}>Ze kterého terminálu STARLUX odlétá?</h3>

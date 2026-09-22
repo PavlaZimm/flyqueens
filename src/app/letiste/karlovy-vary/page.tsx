@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Letiště Karlovy Vary: doprava, parkování a odlety',
@@ -86,22 +87,29 @@ export default function KarlovyVaryAirportPage() {
           </Link>
         </div>
 
-        <h2 style={S.h2}>Autobusem číslo 8</h2>
+        <ArticleContents items={[
+          { id: 'autobusem-cislo-8', label: "Autobusem číslo 8" },
+          { id: 'parkovani-zdarma-i-s-rezervaci', label: "Parkování zdarma i s rezervací" },
+          { id: 'kdy-dorazit-na-odbaveni', label: "Kdy dorazit na odbavení" },
+          { id: 'odlety-a-prilety', label: "Odlety a přílety" },
+        ]} />
+
+        <h2 id="autobusem-cislo-8" style={S.h2}>Autobusem číslo 8</h2>
         <p style={S.p}>
           Veřejnou dopravu mezi městem a letištěm zajišťuje Dopravní podnik Karlovy Vary linkou číslo 8. Protože návaznost na sezonní lety i jízdní řád se mohou měnit, zkontrolujte si před cestou konkrétní spoj.
         </p>
 
-        <h2 style={S.h2}>Parkování zdarma i s rezervací</h2>
+        <h2 id="parkovani-zdarma-i-s-rezervaci" style={S.h2}>Parkování zdarma i s rezervací</h2>
         <p style={S.p}>
           Bezplatné krátkodobé i dlouhodobé stání nabízí vyznačený pruh P7 podél příjezdové komunikace. Letiště ale výslovně negarantuje volné místo. Garanci nabízí P1, P4 a P5. Ceny, vzdálenosti a podmínky shrnuje samostatná stránka <Link href="/letiste/karlovy-vary/parkovani" style={{ color: 'var(--gold)' }}>parkování u letiště Karlovy Vary</Link>.
         </p>
 
-        <h2 style={S.h2}>Kdy dorazit na odbavení</h2>
+        <h2 id="kdy-dorazit-na-odbaveni" style={S.h2}>Kdy dorazit na odbavení</h2>
         <p style={S.p}>
           Standardní check-in podle letiště běžně začíná dvě hodiny před letem a přepážka se zavírá 40 minut před plánovaným odletem. Čas se může lišit podle dopravce a destinace, proto jsou rozhodující pokyny k vašemu letu.
         </p>
 
-        <h2 style={S.h2}>Odlety a přílety</h2>
+        <h2 id="odlety-a-prilety" style={S.h2}>Odlety a přílety</h2>
         <p style={S.p}>
           Letový řád se mění podle sezony. FlyQueens proto neopisuje seznam linek, který by rychle zastaral. Pro plánovaný čas a provozní poznámku použijte oficiální stránku odletů nebo příletů. Na naší mapě můžete sledovat poslední dostupnou ADS-B polohu letadla, ale ne potvrzený čas odbavení nebo gate.
         </p>

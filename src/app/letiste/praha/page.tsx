@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Letiště Praha: doprava, terminály, parkování a živá mapa',
@@ -113,7 +114,16 @@ export default function PrahaHubPage() {
           })}
         </div>
 
-        <h2 style={S.h2}>Jak se dostat na letiště Praha MHD</h2>
+        <ArticleContents items={[
+          { id: 'jak-se-dostat-na-letiste-praha-mhd', label: "Jak se dostat na letiště Praha MHD" },
+          { id: 'airport-express-z-hlavniho-nadrazi', label: "Airport Express z hlavního nádraží" },
+          { id: 'terminal-1-2-3-a-4-ze-ktereho-letite', label: "Terminál 1, 2, 3 a 4: ze kterého letíte" },
+          { id: 'kdy-dorazit-na-odbaveni', label: "Kdy dorazit na odbavení" },
+          { id: 'autem-a-parkovani', label: "Autem a parkování" },
+          { id: 'co-ukaze-flyqueens-a-co-overit-jinde', label: "Co ukáže FlyQueens a co ověřit jinde" },
+        ]} />
+
+        <h2 id="jak-se-dostat-na-letiste-praha-mhd" style={S.h2}>Jak se dostat na letiště Praha MHD</h2>
         <p style={S.p}>
           Na letiště nevede metro ani tramvaj, takže cesta městskou dopravou vždy znamená přestup na autobus
           nebo trolejbus. Ve dne jsou hlavní dvě linky, v noci další dvě. Na všech platí běžné jízdné PID.
@@ -151,7 +161,7 @@ export default function PrahaHubPage() {
           na přepážce dopravního podniku nebo v mobilu. Konkrétní spoj si před cestou ověřte v jízdním řádu PID.
         </p>
 
-        <h2 style={S.h2}>Airport Express z hlavního nádraží</h2>
+        <h2 id="airport-express-z-hlavniho-nadrazi" style={S.h2}>Airport Express z hlavního nádraží</h2>
         <p style={S.p}>
           Airport Express jezdí přímo mezi letištěm a Prahou hlavním nádražím, takže se hodí hlavně při
           navazující cestě vlakem. Má ale <strong>vlastní jízdné</strong>: běžná jízdenka PID ani předplatní
@@ -160,7 +170,7 @@ export default function PrahaHubPage() {
           navíc zastavují na Náměstí Republiky kvůli návaznosti na noční tramvaje.
         </p>
 
-        <h2 style={S.h2}>Terminál 1, 2, 3 a 4: ze kterého letíte</h2>
+        <h2 id="terminal-1-2-3-a-4-ze-ktereho-letite" style={S.h2}>Terminál 1, 2, 3 a 4: ze kterého letíte</h2>
         <p style={S.p}>
           Terminál si nevybíráte, určuje ho cílová destinace. <strong>Terminál 2</strong> odbavuje lety
           uvnitř schengenského prostoru, tedy většinu Evropy — letí se na občanský průkaz a pasová kontrola
@@ -179,7 +189,7 @@ export default function PrahaHubPage() {
           U přestupu mezi schengenským a neschengenským letem počítejte s pasovou kontrolou navíc.
         </p>
 
-        <h2 style={S.h2}>Kdy dorazit na odbavení</h2>
+        <h2 id="kdy-dorazit-na-odbaveni" style={S.h2}>Kdy dorazit na odbavení</h2>
         <p style={S.p}>
           Odbavovací přepážky se podle letiště otevírají zpravidla dvě hodiny před odletem a uzavírají
           40 minut před ním. Samotný příjezd na letiště ale plánujte dřív: letiště doporučuje být na místě
@@ -191,7 +201,7 @@ export default function PrahaHubPage() {
           Rozhodující jsou vždy pokyny vašeho dopravce.
         </p>
 
-        <h2 style={S.h2}>Autem a parkování</h2>
+        <h2 id="autem-a-parkovani" style={S.h2}>Autem a parkování</h2>
         <p style={S.p}>
           Na expresních parkovištích P1, P2 a PB je prvních 10 minut jednou za 24 hodin zdarma, takže na
           vysazení nebo vyzvednutí stačí. Pro delší stání se ceny liší podle parkoviště a termínu; srovnání
@@ -199,7 +209,7 @@ export default function PrahaHubPage() {
           <Link href="/letiste/praha/parkovani" style={{ color: 'var(--gold)' }}>přehledu parkování u Letiště Praha</Link>.
         </p>
 
-        <h2 style={S.h2}>Co ukáže FlyQueens a co ověřit jinde</h2>
+        <h2 id="co-ukaze-flyqueens-a-co-overit-jinde" style={S.h2}>Co ukáže FlyQueens a co ověřit jinde</h2>
         <p style={S.p}>
           Na mapě FlyQueens vidíte poslední dostupnou ADS-B polohu, výšku, rychlost a směr zachycených letadel
           nad Prahou a okolím. Mapa nenahrazuje letištní tabuli: čas odletu a příletu, zpoždění, terminál,

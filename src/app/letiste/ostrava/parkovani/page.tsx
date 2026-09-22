@@ -4,6 +4,7 @@ import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AffiliateParkingCta } from '@/components/Affiliate/AffiliateParkingCta'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Parkování u letiště Ostrava (Mošnov): aktuální ceny',
@@ -85,7 +86,14 @@ export default function ParkovaniOstravaPage() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Srovnání parkovišť</h2>
+        <ArticleContents items={[
+          { id: 'srovnani-parkovist', label: "Srovnání parkovišť" },
+          { id: 'kdy-se-vyplati-p1', label: "Kdy se vyplatí P1" },
+          { id: 'soukroma-parkoviste-v-okoli', label: "Soukromá parkoviště v okolí" },
+          { id: 'na-co-si-dat-pozor', label: "Na co si dát pozor" },
+        ]} />
+
+        <h2 id="srovnani-parkovist" style={S.h2}>Srovnání parkovišť</h2>
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
@@ -107,21 +115,21 @@ export default function ParkovaniOstravaPage() {
           </table>
         </div>
 
-        <h2 style={S.h2}>Kdy se vyplatí P1</h2>
+        <h2 id="kdy-se-vyplati-p1" style={S.h2}>Kdy se vyplatí P1</h2>
         <p style={S.p}>
           P1 je přímo před odletovou halou. Prvních 15 minut je jednou za 24 hodin zdarma, hodina stojí
           60 Kč a sazba od pěti hodin do jednoho dne je 360 Kč. Pro delší pobyt vycházejí P3 až P6
           levněji; jejich denní sazba je 130 Kč.
         </p>
 
-        <h2 style={S.h2}>Soukromá parkoviště v okolí</h2>
+        <h2 id="soukroma-parkoviste-v-okoli" style={S.h2}>Soukromá parkoviště v okolí</h2>
         <p style={S.p}>
           V okolí fungují i soukromí provozovatelé. Jejich ceny, dohled a podmínky transferu se mění podle
           termínu, proto je zde bez aktuální nabídky nesrovnáváme. Před rezervací ověřte celkovou cenu,
           provozní dobu odvozu a odpovědnost za vozidlo přímo u konkrétního provozovatele.
         </p>
 
-        <h2 style={S.h2}>Na co si dát pozor</h2>
+        <h2 id="na-co-si-dat-pozor" style={S.h2}>Na co si dát pozor</h2>
         <p style={S.p}>
           Oficiální web upozorňuje, že parkoviště nejsou hlídaná. Zkontrolujte také, na kterou plochu platí
           případný voucher cestovní kanceláře; při zaplnění P3 letiště určuje pořadí náhradních parkovišť.

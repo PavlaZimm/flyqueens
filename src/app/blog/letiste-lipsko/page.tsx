@@ -8,6 +8,7 @@ import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'letiste-lipsko')!
 const title = 'Letiště Lipsko 2026: doprava z Česka, parkování, Antonov'
@@ -86,13 +87,22 @@ export default function LetisteLipskoArticle() {
 
         <figure className={styles.photo}><Image src="/blog/letiste-lipsko-antonov-an-124.webp" alt="Příď nákladního Antonovu An-124 s nápisem Be Brave Like Kharkiv na letišti Lipsko" width={1600} height={698} sizes={sizes} preload /><figcaption>Příď An-124-100M s nápisem „Be Brave Like Kharkiv“. Foto: vlastní archiv FlyQueens, 24. prosince 2025.</figcaption></figure>
 
-        <h2>Jak se z Česka dostanete na letiště Lipsko</h2>
+        <ArticleContents items={[
+          { id: 'jak-se-z-ceska-dostanete-na-letiste', label: "Jak se z Česka dostanete na letiště Lipsko" },
+          { id: 'parkovani-na-letisti-lipsko-kolik', label: "Parkování na letišti Lipsko: kolik zaplatíte" },
+          { id: 'provozni-doba-a-nocni-lety-na-letisti', label: "Provozní doba a noční lety na letišti Lipsko" },
+          { id: 'nakladni-letiste-dhl-a-antonov', label: "Nákladní letiště: DHL a Antonov" },
+          { id: 'vyhlidkova-terasa-a-prohlidky-letiste', label: "Vyhlídková terasa a prohlídky letiště Lipsko" },
+          { id: 'caste-otazky-o-letisti-lipsko', label: "Časté otázky o letišti Lipsko" },
+        ]} />
+
+        <h2 id="jak-se-z-ceska-dostanete-na-letiste">Jak se z Česka dostanete na letiště Lipsko</h2>
         <p>Nejjednodušší cesta vede přes Drážďany. Odtud jezdí na letiště každé dvě hodiny přímý vlak IC (<a href={`${lej}/anreise-abreise/bus-bahn/`}>Letiště Lipsko/Halle, vlak a autobus</a>). Spojení z Prahy do Drážďan si vyhledejte v jízdním řádu Českých drah nebo v aplikaci DB Navigator.</p>
         <p>Nádraží letiště je přímo pod odbavovací halou, dolů vede eskalátor i výtah. Linky S-Bahn S5 a S5X jezdí každých 30 minut a jízda trvá 14 minut z hlavního nádraží v Lipsku a 10 minut z Halle. Cenu jízdenky vám spočítá aplikace dopravního svazu <a href="https://www.mdv.de/">MDV</a> nebo DB Navigator.</p>
         <p>Autem vede k terminálu přímý přivaděč z dálnice A14 (Drážďany–Magdeburg), další možnost je sjezd z A9 přes Schkeuditzer Kreuz nebo Großkugel (<a href={`${lej}/anreise-abreise/auto/`}>Letiště Lipsko/Halle, autem</a>). Oficiální vzdálenost od center letiště neuvádí. Podle našeho výpočtu ze souřadnic letiště je to vzdušnou čarou zhruba 13 km k hlavnímu nádraží v Lipsku a 18 km k nádraží v Halle, po silnici o kus víc.</p>
         <p>Pokud přiletíte pozdě večer nebo letíte brzy ráno, pomůže noční autobus NXL lipského dopravce LVB. Z hlavního nádraží v Lipsku jede v 0:50 a ve 2:22, z letiště zpátky v 1:35 a ve 3:05, platí běžný tarif MDV. Podle letiště se s ním pohodlně dostanete k letům před 6:30.</p>
 
-        <h2>Parkování na letišti Lipsko: kolik zaplatíte</h2>
+        <h2 id="parkovani-na-letisti-lipsko-kolik">Parkování na letišti Lipsko: kolik zaplatíte</h2>
         <p>Letiště má přes 5 500 míst na deseti venkovních parkovištích a v parkovacím domě, všechna otevřená nonstop. Týden u závory vyjde podle vzdálenosti od terminálu na 67 až 200 eur. U většiny parkovišť je online rezervace levnější, na P1, P3 a P4 ale online rezervovat nejde (<a href={`${lej}/parken/parken-am-flughafen-leipzig/halle/`}>Letiště Lipsko/Halle, parkování</a>).</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -113,11 +123,11 @@ export default function LetisteLipskoArticle() {
         <p className={styles.tableNote}>Zdroj: tarify u závory podle <a href={`${lej}/parken/parken-am-flughafen-leipzig/halle/`}>webu letiště</a> a stránek jednotlivých parkovišť, stav k 21. 9. 2026. Letiště upozorňuje, že se ceny mohou měnit podle sezony a obsazenosti.</p>
         <p>Pokud někoho jen vysazujete, můžete krátce stát na P11 přímo před centrálním odbavením. Platí se tam jen mincemi a nejdéle 3 hodiny. Když někoho vyzvedáváte, v pruhu Kiss &amp; Fly u terminálu B máte prvních 10 minut zdarma, jednou za den. Pro srovnání se podívejte na <Link href="/letiste/praha/parkovani">parkování u letiště Praha</Link>.</p>
 
-        <h2>Provozní doba a noční lety na letišti Lipsko</h2>
+        <h2 id="provozni-doba-a-nocni-lety-na-letisti">Provozní doba a noční lety na letišti Lipsko</h2>
         <p>Pravidelné osobní lety smějí v Lipsku startovat a přistávat jen mezi 5:30 a 23:30. Zákaz nočních osobních letů platí od letního letového řádu 2008 (<a href={mfagNoise}>MFAG, ochrana proti hluku</a>). Nákladní provoz běží nonstop. Cvičné lety jsou povolené jen od pondělí do soboty mezi 6:00 a 22:00.</p>
         <p>Nákladní letadla, která v Lipsku v noci startují a přistávají, můžete dohledat na <Link href="/radar">radaru letadel FlyQueens</Link>.</p>
 
-        <h2>Nákladní letiště: DHL a Antonov</h2>
+        <h2 id="nakladni-letiste-dhl-a-antonov">Nákladní letiště: DHL a Antonov</h2>
         <p>Podle statistiky německého svazu letišť ADV prošlo Lipskem v roce 2025 celkem 1 391 681 tun nákladu. Po Frankfurtu je to druhé největší nákladní letiště v Německu (<a href={adv}>ADV, 12/2025</a>). Mateřská společnost letiště, Mitteldeutsche Flughafen AG, ho označuje za největší uzel DHL na světě. Podle ní sem létá přes 45 nákladních aerolinek, dohromady do více než 160 cílů (<a href={mfagNews}>MFAG, 27. 1. 2026</a>).</p>
         <p>Letiště uvádí zhruba 70 pravidelných a charterových nákladních letů denně a World Cargo Center s plochou 20 000 m² a nepřetržitým celním odbavením (<a href={`${lej}/luftfracht/luftfracht-am-flughafen-leipzig/halle/`}>Letiště Lipsko/Halle, letecký náklad</a>). Obě dráhy mají 3 600 metrů. Kategorie CAT IIIb umožňuje přistání i za velmi špatné viditelnosti a dráhy jsou podle letiště dimenzované i pro největší letadla (kód F).</p>
         <figure className={styles.photo}><Image src="/blog/letiste-lipsko-an-124-ur-82027.webp" alt="Antonov An-124 s registrací UR-82027 z boku na odstavné ploše letiště Lipsko" width={1600} height={698} sizes={sizes} /><figcaption>An-124-100M s registrací UR-82027 a zakrytými motory. Foto: vlastní archiv FlyQueens, 24. prosince 2025.</figcaption></figure>
@@ -126,12 +136,12 @@ export default function LetisteLipskoArticle() {
         <figure className={styles.photo}><Image src="/blog/letiste-lipsko-vystava-antonov.webp" alt="Nápis výstavy Light and Shadow: The Antonov Story v terminálu letiště Lipsko" width={1600} height={989} sizes={sizes} /><figcaption>Výstava o společnosti Antonov v terminálu, prosinec 2025. Foto: vlastní archiv FlyQueens.</figcaption></figure>
         <p>Další velké nákladní letadlo na našich fotkách je <Link href="/blog/boeing-747-praha-fly-meta">Boeing 747 v barvách Fly Meta</Link> při přistání v Praze.</p>
 
-        <h2>Vyhlídková terasa a prohlídky letiště Lipsko</h2>
+        <h2 id="vyhlidkova-terasa-a-prohlidky-letiste">Vyhlídková terasa a prohlídky letiště Lipsko</h2>
         <p>K 21. 9. 2026 je vyhlídková terasa podle webu letiště dočasně zavřená, důvod ani termín otevření neuvádí. Prohlídky letiště jsou preventivně pozastavené kvůli „aktuálnímu incidentu“ a probíhajícímu vyšetřování. Zájemce letiště zatím odkazuje na prohlídky na letišti v Drážďanech (<a href={`${lej}/fuehrungen/`}>Letiště Lipsko/Halle, prohlídky</a>).</p>
         <p>O jaký incident jde, letiště na stránce prohlídek neuvádí. V noci na 5. srpna 2026 letiště kvůli pozorovanému dronu v 0:05 zastavilo letový provoz. Od 1:55 se znovu létalo po severní dráze, jižní dráhu letiště uvolnilo 5. srpna v 18:46. Případ vyšetřuje generální státní zastupitelství v Drážďanech a saský zemský kriminální úřad. Osobní dopravu incident díky nočnímu omezení skoro nezasáhl, jedno zpožděné letadlo Marabu bylo odkloněno do Norimberku (<a href={mfagDrone}>MFAG, tisková zpráva 6. 8. 2026</a>).</p>
         <p>Za běžného provozu je terasa na střeše správní budovy ve výšce 30 metrů. Má 200 m² a vejde se na ni kolem 80 lidí. Vstup stojí 2 eura na osobu, parkovat můžete na P1 nebo P3 (<a href={`${lej}/freizeitangebote/`}>Letiště Lipsko/Halle, volný čas</a>). Mimo terasu místa ke sledování letadel u plotu neuvádíme. Dron k letišti nevozte.</p>
 
-        <h2>Časté otázky o letišti Lipsko</h2>
+        <h2 id="caste-otazky-o-letisti-lipsko">Časté otázky o letišti Lipsko</h2>
         <div className={styles.faq}>
           <h3>Jak se dostanu z Prahy na letiště Lipsko?</h3>
           <p>Vlakem přes Drážďany, odkud jezdí na letiště každé dvě hodiny přímý IC. Autem po dálnici přes Drážďany a dál po A14, která má k terminálu přímý přivaděč. Aktuální spojení z Prahy najdete v jízdním řádu Českých drah nebo DB.</p>

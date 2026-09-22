@@ -8,6 +8,7 @@ import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'air-park-zruc')!
 const title = 'Air Park Zruč: letecké muzeum u Plzně, vstupné 2026'
@@ -75,7 +76,16 @@ export default function AirParkZrucArticle() {
 
         <figure className={styles.photo}><Image src="/blog/air-park-zruc-expozice.webp" alt="Letadla na louce Air Parku Zruč, vpředu stíhačka v polských barvách a za ní An-30" width={1600} height={738} sizes={sizes} preload /><figcaption>Vpředu stíhačka v polských barvách s číslem 526, za ní An-30 č. 1107 s nápisem OPEN SKIES, podle inventáře muzea unikát (<a href={ap.inventory}>Air Park</a>). Foto: vlastní archiv FlyQueens, 8. března 2026.</figcaption></figure>
 
-        <h2>Co v Air Parku uvidíte</h2>
+        <ArticleContents items={[
+          { id: 'co-v-air-parku-uvidite', label: "Co v Air Parku uvidíte" },
+          { id: 'jak-muzeum-vzniklo', label: "Jak muzeum vzniklo" },
+          { id: 'oteviraci-doba', label: "Otevírací doba" },
+          { id: 'vstupne', label: "Vstupné" },
+          { id: 'jak-se-tam-dostat', label: "Jak se tam dostat" },
+          { id: 'caste-otazky', label: "Časté otázky" },
+        ]} />
+
+        <h2 id="co-v-air-parku-uvidite">Co v Air Parku uvidíte</h2>
         <p>Na otevřené louce stojí desítky letadel, vrtulníků a pozemní vojenské techniky. Muzeum dělí exponáty na základní a speciální oddělení. Do speciálního se podle Visit Plzeň chodí jen s průvodcem ve skupinách nejvýše po čtyřech.</p>
         <p>Kolik strojů muzeum má, záleží na tom, koho se ptáte. Oficiální web s poslední aktualizací z května 2021 uvádí, že počet vystavených letadel a jejich motorů „se blíží 50 kusům“ a dalších 10 je v depozitáři (<a href={ap.planes}>Air Park, Letadla</a>). Visit Plzeň píše o více než 80 exponátech, z toho 32 letadlech a 20 kusech další vojenské techniky v základním oddělení. Miloš Tarantík v roce 2025 řekl, že letadel mají „asi osmdesát, z toho deset dopravních“ (<a href={aktualne}>Aktuálně.cz</a>).</p>
         <p>Podle ceníku je bez příplatku přístupných sedm exponátů: tank T-34, samohybné dělo SU-100, obrněný transportér OT-64, obrněný průzkumný vůz BRDM-2, vrtulník Mi-24 a stíhačky MiG-15 a MiG-19PM. K nahlédnutí je i kabina MiG-21MF (<a href={ap.prices}>Air Park, ceník</a>). Inventář na stejném webu jmenuje zčásti jiné přístupné stroje, takže se na místě může výčet lišit.</p>
@@ -84,11 +94,11 @@ export default function AirParkZrucArticle() {
         <p>Za příplatek se podle ceníku dá vstoupit do vládního speciálu Tu-154M, kterým podle provozovatele létali prezidenti Václav Havel a Václav Klaus. Dále do dopravního Tu-104A, který stojí u vchodu jako poutač muzea, a do letounů Il-14T, Il-18 a An-24V (<a href={ap.prices}>Air Park, ceník</a>).</p>
         <figure className={styles.photo}><Image src="/blog/air-park-zruc-vrtulovy-dopravni.webp" alt="MiG-15SB č. 0543 a dopravní Il-14T č. 3146 v Air Parku Zruč" width={1600} height={737} sizes={sizes} /><figcaption>Vpředu MiG-15SB č. 0543 s československým znakem, za ním Il-14T č. 3146, do kterého se dá za příplatek vstoupit. Foto: vlastní archiv FlyQueens, 8. března 2026.</figcaption></figure>
 
-        <h2>Jak muzeum vzniklo</h2>
+        <h2 id="jak-muzeum-vzniklo">Jak muzeum vzniklo</h2>
         <p>Karel Tarantík začal se synem sbírat letadla v roce 1990, nejprve v sousední Druztové. Na louku ve Zruči přivezli první kus, vrtulník Mi-8, o Vánocích 1992 (<a href={ap.about}>Air Park, O nás</a>). Rok 1993, který uvádějí některé starší články, tedy nesedí. Karel Tarantík zemřel 25. února 2022 ve věku 72 let po pádu ze schůdků vedoucích do vrtulníku (<a href="https://plzensky.denik.cz/zpravy-region/zemrel-zakladatel-leteckeho-muzea-ve-zruci-spadl-z-jednoho-z-exponatu/">Plzeňský deník</a>). Muzeum dnes vede jeho syn Miloš Tarantík (<a href={aktualne}>Aktuálně.cz, 2025</a>).</p>
         <figure className={styles.photo}><Image src="/blog/air-park-zruc-migy-slovenske.webp" alt="Řada stříbrných stíhaček se slovenskými znaky v Air Parku Zruč" width={1600} height={737} sizes={sizes} /><figcaption>Stříbrné stíhačky se slovenskými znaky. Foto: vlastní archiv FlyQueens, 8. března 2026.</figcaption></figure>
 
-        <h2>Otevírací doba</h2>
+        <h2 id="oteviraci-doba">Otevírací doba</h2>
         <p>Od března do října je Air Park podle webu provozovatele otevřený denně od 10:00, v červenci a srpnu do 20:00, jinak do 18:00. V listopadu se otevírá jen o víkendech do 17:00. Od prosince do února je zavřeno a prohlídku lze domluvit jen telefonicky.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -105,7 +115,7 @@ export default function AirParkZrucArticle() {
         <p className={styles.tableNote}>Podle <a href={ap.prices}>webu provozovatele</a> (poslední aktualizace květen 2021), <a href={visitPlzen}>Visit Plzeň</a> a <a href="https://www.kudyznudy.cz/aktivity/air-park-zruc-u-plzne">Kudy z nudy</a>. Stav zdrojů k 21. 9. 2026, u provozovatele zatím neověřeno.</p>
         <p>Oficiální web muzea je z května 2021 a poslední novinka na něm pochází ze začátku roku 2022. Visit Plzeň a Kudy z nudy uvádějí stejné časy.</p>
 
-        <h2>Vstupné</h2>
+        <h2 id="vstupne">Vstupné</h2>
         <p>Podle ceníku provozovatele stojí vstup do základního oddělení 200 Kč pro dospělého, 100 Kč pro dítě od 6 do 15 let a 50 Kč pro dítě do 6 let. Speciální oddělení stojí 200 Kč za osobu. Vstup do jednotlivých velkých letadel se platí zvlášť: 100 Kč, do Tu-154M 200 Kč.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -124,11 +134,11 @@ export default function AirParkZrucArticle() {
         <p className={styles.tableNote}>Ceník podle <a href={ap.prices}>webu provozovatele</a> (aktualizace květen 2021) a <a href={visitPlzen}>Visit Plzeň</a>. Stav zdrojů k 21. 9. 2026, u provozovatele zatím neověřeno.</p>
         <p>Ceník z roku 2021 popisuje vstupy do letadel jako prohlídky s výkladem majitele. Jestli probíhají stejně i dnes, web neuvádí. Fotografování a natáčení je podle ceníku zdarma. Platbu kartou provozovatel nezmiňuje, vezměte si proto hotovost.</p>
 
-        <h2>Jak se tam dostat</h2>
+        <h2 id="jak-se-tam-dostat">Jak se tam dostat</h2>
         <p>Air Park najdete na adrese Ke Křižovatce 538, Zruč-Senec (<a href={ap.contact}>Air Park, Kontakt</a>). Z Plzně tam jezdí linka MHD 58 a některé spoje linky 20, zastávka Zruč - Senec, rozc. (<a href={visitPlzen}>Visit Plzeň</a>, <a href="https://jizdnirady.pmdp.cz/">jízdní řády PMDP</a>). Zastávka je od areálu vzdušnou čarou zhruba 400 až 450 metrů daleko.</p>
         <p>Autem zaparkujete přímo u muzea. Provozovatel upozorňuje, že parkoviště částečně zastiňuje křídlo Tu-104A (<a href={ap.about}>Air Park, O nás</a>). Kapacitu ani cenu parkování neuvádí.</p>
 
-        <h2>Časté otázky</h2>
+        <h2 id="caste-otazky">Časté otázky</h2>
         <div className={styles.faq}>
           <h3>Můžu do Air Parku vzít psa?</h3>
           <p>Ano. Podle ceníku na webu provozovatele smějí psi do areálu na vodítku a majitelé po nich mají uklízet.</p>

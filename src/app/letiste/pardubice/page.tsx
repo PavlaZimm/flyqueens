@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Letiště Pardubice: parkování, doprava a živá mapa',
@@ -86,7 +87,14 @@ export default function PardubiceAirportPage() {
           </Link>
         </div>
 
-        <h2 style={S.h2}>Parkování přímo u terminálu</h2>
+        <ArticleContents items={[
+          { id: 'parkovani-primo-u-terminalu', label: "Parkování přímo u terminálu" },
+          { id: 'jak-se-dostat-na-letiste-mhd', label: "Jak se dostat na letiště MHD" },
+          { id: 'kdy-prijet-a-kde-overit-let', label: "Kdy přijet a kde ověřit let" },
+          { id: 'co-ukaze-ziva-mapa-flyqueens', label: "Co ukáže živá mapa FlyQueens" },
+        ]} />
+
+        <h2 id="parkovani-primo-u-terminalu" style={S.h2}>Parkování přímo u terminálu</h2>
         <p style={S.p}>
           Oficiální parkoviště P1 a P2 má podle letiště kapacitu 1 200 míst, leží přibližně 100 metrů od terminálu a je bezplatné bez nutnosti rezervace. Pro rychlé vysazení nebo vyzvednutí slouží K+R před hlavní budovou s maximální dobou stání 20 minut.
         </p>
@@ -94,17 +102,17 @@ export default function PardubiceAirportPage() {
           Podrobná pravidla a praktické doporučení najdete na stránce <Link href="/letiste/pardubice/parkovani" style={{ color: 'var(--gold)' }}>parkování u letiště Pardubice</Link>.
         </p>
 
-        <h2 style={S.h2}>Jak se dostat na letiště MHD</h2>
+        <h2 id="jak-se-dostat-na-letiste-mhd" style={S.h2}>Jak se dostat na letiště MHD</h2>
         <p style={S.p}>
           Speciální linka 90 spojuje pardubické hlavní nádraží se zastávkou Letiště terminál. Jízdní řád se může měnit podle sezony, proto před cestou zkontrolujte aktuální spoj na webu Dopravního podniku města Pardubic.
         </p>
 
-        <h2 style={S.h2}>Kdy přijet a kde ověřit let</h2>
+        <h2 id="kdy-prijet-a-kde-overit-let" style={S.h2}>Kdy přijet a kde ověřit let</h2>
         <p style={S.p}>
           Letiště doporučuje dorazit dvě hodiny před plánovaným odletem. Standardní odbavení se zpravidla uzavírá 40 minut před odletem, ale rozhodující jsou pokyny dopravce a cestovní kanceláře. Skutečný čas, zpoždění a přepážku vždy ověřte v oficiálním letovém řádu.
         </p>
 
-        <h2 style={S.h2}>Co ukáže živá mapa FlyQueens</h2>
+        <h2 id="co-ukaze-ziva-mapa-flyqueens" style={S.h2}>Co ukáže živá mapa FlyQueens</h2>
         <p style={S.p}>
           Mapa ukazuje poslední dostupnou ADS-B polohu, výšku, rychlost a směr zachycených letadel. Nenahrazuje letištní tabuli a sama nepotvrzuje čas odletu, příletu, terminál ani bránu. Pokud je u letu dostupná přiřazená trasa, zobrazujeme ji jako orientační spojnici.
         </p>

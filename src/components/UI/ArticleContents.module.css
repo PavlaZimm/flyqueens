@@ -1,0 +1,45 @@
+/* Dvojité selektory, aby styly článku (např. `.article p`) obsah nepřebily. */
+.contents {
+  margin: 24px 0 8px;
+  padding: 16px 18px;
+  background: var(--midnight-2);
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+}
+
+.contents .title {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.contents .list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contents .list > li {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.contents .list > li > a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.contents .list > li > a:hover,
+.contents .list > li > a:focus-visible {
+  color: var(--gold);
+  text-decoration: underline;
+}

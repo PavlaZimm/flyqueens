@@ -7,6 +7,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
@@ -108,7 +109,18 @@ export default function VyskaArticle() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Proč se létá tak vysoko?</h2>
+        <ArticleContents items={[
+          { id: 'proc-se-leta-tak-vysoko', label: "Proč se létá tak vysoko?" },
+          { id: 'kolik-ma-ktere-letadlo', label: "Kolik má které letadlo" },
+          { id: 'co-znamena-fl350', label: "Co znamená FL350" },
+          { id: 'kolik-metru-je-jedna-stopa-a-fl350', label: "Kolik metrů je jedna stopa a FL350?" },
+          { id: 'proc-ne-jeste-vys', label: "Proč ne ještě výš?" },
+          { id: 'je-vyska-na-mape-nad-zemi', label: "Je výška na mapě nad zemí?" },
+          { id: 'proc-letadlo-behem-cesty-jeste-stoupa', label: "Proč letadlo během cesty ještě stoupá?" },
+          { id: 'jak-zjistim-vysku-letadla-nad-hlavou', label: "Jak zjistím výšku letadla nad hlavou?" },
+        ]} />
+
+        <h2 id="proc-se-leta-tak-vysoko" style={S.h2}>Proč se létá tak vysoko?</h2>
         <p style={S.p}>
           Ve standardní atmosféře má vzduch kolem deseti kilometrů přibližně třetinovou hustotu proti hladině
           moře, což snižuje odpor. Optimální hladinu ale ovlivňuje i výkon motorů, hmotnost a vítr. Letové
@@ -116,7 +128,7 @@ export default function VyskaArticle() {
           1 000 stop (přibližně 305 metrů). Bouřky i turbulence mohou zasahovat také cestovní hladiny.
         </p>
 
-        <h2 style={S.h2}>Kolik má které letadlo</h2>
+        <h2 id="kolik-ma-ktere-letadlo" style={S.h2}>Kolik má které letadlo</h2>
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
@@ -138,14 +150,14 @@ export default function VyskaArticle() {
           </table>
         </div>
 
-        <h2 style={S.h2}>Co znamená FL350</h2>
+        <h2 id="co-znamena-fl350" style={S.h2}>Co znamená FL350</h2>
         <p style={S.p}>
           Ve vyšších hladinách se používají letové hladiny vztažené ke standardnímu tlaku 1013,2 hPa.
           FL350 znamená tlakovou hladinu 35 000 stop, přibližně 10,7 kilometru ve standardní atmosféře.
           Není to totéž co přesná geometrická výška nad terénem, protože skutečný tlak a teplota se mění.
         </p>
 
-        <h2 style={S.h2}>Kolik metrů je jedna stopa a FL350?</h2>
+        <h2 id="kolik-metru-je-jedna-stopa-a-fl350" style={S.h2}>Kolik metrů je jedna stopa a FL350?</h2>
         <p style={S.p}>
           Jedna stopa má přesně 0,3048 metru. Výška 35 000 stop tedy odpovídá přibližně 10 668 metrům.
           Označení FL350 ale není prostý údaj z výškoměru nad zemí: jde o tlakovou hladinu při standardním
@@ -165,14 +177,14 @@ export default function VyskaArticle() {
           ))}
         </div>
 
-        <h2 style={S.h2}>Proč ne ještě výš?</h2>
+        <h2 id="proc-ne-jeste-vys" style={S.h2}>Proč ne ještě výš?</h2>
         <p style={S.p}>
           Každý typ má certifikované limity. Pro rodinu A320 výrobce uvádí maximální provozní výšku kolem
           39 800 stop, tedy asi 12,1 kilometru. Limit souvisí s aerodynamikou, výkonem, přetlakováním i
           certifikací; není to jedna univerzální hranice pro všechna letadla.
         </p>
 
-        <h2 style={S.h2}>Je výška na mapě nad zemí?</h2>
+        <h2 id="je-vyska-na-mape-nad-zemi" style={S.h2}>Je výška na mapě nad zemí?</h2>
         <p style={S.p}>
           Většinou ne. FlyQueens zobrazuje dostupnou barometrickou výšku vztaženou k tlakové hladině nebo
           hladině moře, nikoli přesnou vzdálenost od terénu přímo pod letadlem. Nad horami proto může být
@@ -180,7 +192,7 @@ export default function VyskaArticle() {
           chybějících datech je potřeba údaj brát zvlášť opatrně.
         </p>
 
-        <h2 style={S.h2}>Proč letadlo během cesty ještě stoupá?</h2>
+        <h2 id="proc-letadlo-behem-cesty-jeste-stoupa" style={S.h2}>Proč letadlo během cesty ještě stoupá?</h2>
         <p style={S.p}>
           Dopravní letadlo je po startu kvůli palivu těžší. Jak palivo spotřebovává, může být hospodárnější
           vystoupat do vyšší letové hladiny. Takzvané postupné stoupání proto nemusí znamenat problém ani
@@ -188,7 +200,7 @@ export default function VyskaArticle() {
           porovnat průměrnou výšku s nejvýše letícími stroji v právě sledované oblasti.
         </p>
 
-        <h2 style={S.h2}>Jak zjistím výšku letadla nad hlavou?</h2>
+        <h2 id="jak-zjistim-vysku-letadla-nad-hlavou" style={S.h2}>Jak zjistím výšku letadla nad hlavou?</h2>
         <p style={S.p}>
           Otevřete živou mapu, najděte letadlo a klikněte na něj. U každého stroje vidíte výšku v metrech,
           tlakovou výšku, rychlost i to, jestli stoupá nebo klesá. Samotná výška ale nestačí k bezpečnému

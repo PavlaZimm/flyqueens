@@ -210,6 +210,27 @@ function routeFit(
   }
 }
 
+// Placený dotaz na AeroDataBox jen pro letadlo, které ADS-B právě vidí.
+// Chrání kredit před zkoušením náhodných kódů. Při výpadku ADSB.lol dotaz
+// pustíme, aby běžní návštěvníci o data nepřišli.
+async function isTrackedNow(icao24: string): Promise<boolean> {
+  try {
+    const response = await fetch(`https://api.adsb.lol/v2/hex/${icao24}`, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'FlyQueens/1.0 (+https://www.flyqueens.cz/o-projektu)',
+      },
+      next: { revalidate: 60 },
+      signal: AbortSignal.timeout(2500),
+    })
+    if (!response.ok) return true
+    const data = await response.json() as { ac?: unknown[] }
+    return !Array.isArray(data.ac) || data.ac.length > 0
+  } catch {
+    return true
+  }
+}
+
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
     ?? req.headers.get('x-real-ip')
@@ -252,7 +273,9 @@ export async function GET(req: NextRequest) {
           (!callsign || !flight.callSign || flight.callSign.replace(/\s/g, '').toUpperCase() === callsign))
       const snapshot = boardCandidates.length && board
         ? { data: boardCandidates, fetchedAt: board.fetchedAt }
-        : await getAeroSnapshot<AeroDataBoxFlight[]>(`/flights/icao24/${icao24}`, 1800)
+        : await isTrackedNow(icao24)
+          ? await getAeroSnapshot<AeroDataBoxFlight[]>(`/flights/icao24/${icao24}`, 1800)
+          : { data: null, fetchedAt: new Date().toISOString() }
       if (snapshot.data) {
         const data = snapshot.data
         const candidates = Array.isArray(data) ? data : [data]
