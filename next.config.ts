@@ -19,14 +19,17 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // React používá eval jen při vývoji; v produkci ho nepovolujeme.
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com`,
+      // Google Analytics, Impact a Stay22 se spouští až po souhlasu (CookieConsent).
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://*.googletagmanager.com https://*.impactcdn.com https://*.impactradius-event.com https://*.stay22.com`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       // Leaflet markery, mapové dlaždice a planespotters fotky.
-      "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io",
+      "img-src 'self' data: blob: https://tile.openstreetmap.org https://*.planespotters.net https://*.plnspttrs.net https://pics.avs.io https://*.google-analytics.com https://*.googletagmanager.com https://*.impactcdn.com https://*.impactradius-event.com https://*.stay22.com",
       // API calls z klienta jdou přes /api/* (self); externě fotky a analytika.
       // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
-      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://www.google-analytics.com https://analytics.google.com",
+      "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://*.googletagmanager.com https://*.impactcdn.com https://*.impactradius-event.com https://*.stay22.com",
+      // Widgety Stay22 (mapa, nabídky) se vkládají jako iframe.
+      "frame-src 'self' https://*.stay22.com",
       // Audio proxy běží přes /api/atc-stream (self)
       "media-src 'self'",
       "object-src 'none'",
