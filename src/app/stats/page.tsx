@@ -257,7 +257,7 @@ export default function StatsPage() {
       <header className={styles.header}>
         <div className={styles.titleBlock}>
           <span>ŽIVÝ PŘEHLED</span>
-          <h1>Co je právě ve vzduchu</h1>
+          <h1>Živé statistiky letadel: co je právě ve vzduchu</h1>
           <p>Aktuální ADS-B snímek. Nejde o dlouhodobou statistiku ani úplný přehled všech letů.</p>
         </div>
       </header>

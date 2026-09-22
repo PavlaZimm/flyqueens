@@ -88,7 +88,7 @@ export default function HomePage() {
               <div className={styles.heroCopy}>
                 <LiveFlightCount className={styles.liveFlightCount} dotClassName={styles.liveDot} />
                 <h1>
-                  Víš, co ti právě letí <span>nad hlavou.</span>
+                  Sledování letů online: víš, co ti letí <span>nad hlavou?</span>
                 </h1>
                 <p>
                   Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.
