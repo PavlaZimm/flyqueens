@@ -122,7 +122,7 @@ export default function KarlovyVaryParkingPage() {
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '28px 0 10px' }}>
           <strong style={{ display: 'block', fontFamily: 'Archivo, sans-serif', fontSize: 15, marginBottom: 6 }}>Než vyrazíte</strong>
           <p style={{ ...S.p, marginBottom: 12 }}>Ověřte cenu i dostupnost na oficiálním webu. Na živé mapě FlyQueens můžete zkontrolovat poslední dostupné polohy letadel, nikoliv garantovaný čas odletu.</p>
-          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>Otevřít živou mapu</Link>
+          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>Otevřít živou mapu</Link>
         </div>
 
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 22 }}>Ceny a podmínky ověřeny 12. září 2026. Před cestou zkontrolujte aktuální informace provozovatele.</p>

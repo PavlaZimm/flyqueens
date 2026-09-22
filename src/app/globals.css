@@ -31,6 +31,8 @@
 
   --cta-bg:          #F5B83D;
   --cta-text:        #05080D;
+  /* Text a ikony na zlatém pozadí; tmavé v obou režimech. */
+  --on-gold:         #05080D;
 
   --accent-blue:     #5AA9FF;
   --accent-green:    #4FE0B0;

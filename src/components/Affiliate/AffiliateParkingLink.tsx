@@ -16,7 +16,7 @@ export function AffiliateParkingLink({ href, airport }: { href: string; airport:
         target="_blank"
         rel="sponsored noopener noreferrer"
         onClick={() => trackEvent('Parking Affiliate Clicked', { airport })}
-        style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase', padding: '10px 16px', borderRadius: 9, textDecoration: 'none' }}
+        style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase', padding: '10px 16px', borderRadius: 9, textDecoration: 'none' }}
       >
         Zobrazit aktuální nabídky ↗
       </a>
