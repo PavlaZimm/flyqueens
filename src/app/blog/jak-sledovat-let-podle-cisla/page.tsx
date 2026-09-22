@@ -6,7 +6,7 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
-import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
+import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 
 const post = getPost('jak-sledovat-let-podle-cisla')!
 
@@ -39,9 +39,19 @@ const jsonLd = {
   inLanguage: 'cs-CZ',
   timeRequired: 'PT7M',
   author: AUTHOR_JSON_LD,
-  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
+  publisher: PUBLISHER_JSON_LD,
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla',
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'FlyQueens', item: 'https://www.flyqueens.cz' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.flyqueens.cz/blog' },
+    { '@type': 'ListItem', position: 3, name: post.title, item: 'https://www.flyqueens.cz/blog/jak-sledovat-let-podle-cisla' },
+  ],
 }
 
 const S = {
@@ -52,7 +62,7 @@ const S = {
 export default function TrackFlightNumberArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
@@ -174,7 +184,7 @@ export default function TrackFlightNumberArticle() {
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Máte číslo letu?</div>
           <p style={{ ...S.p, marginBottom: 12 }}>Zadejte je do mapy. Vyhledávat můžete také podle registrace nebo ICAO adresy.</p>
-          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
+          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
             Sledovat let online
           </Link>
         </div>

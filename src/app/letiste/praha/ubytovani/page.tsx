@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
-import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
+import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
@@ -32,7 +32,7 @@ const structuredData = {
     {
       '@type': 'Article', headline: title, description, datePublished: date, dateModified: date,
       author: AUTHOR_JSON_LD,
-      publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
+      publisher: PUBLISHER_JSON_LD,
       mainEntityOfPage: url, inLanguage: 'cs-CZ',
     },
     {

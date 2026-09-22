@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
-import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
+import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
@@ -39,7 +39,7 @@ const structuredData = {
     {
       '@type': 'Article', headline: title, description, datePublished: post.date, dateModified: post.updatedAt,
       author: AUTHOR_JSON_LD,
-      publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
+      publisher: PUBLISHER_JSON_LD,
       mainEntityOfPage: url, inLanguage: 'cs-CZ',
       about: { '@type': 'Museum', name: 'Air Park Zruč u Plzně', address: 'Ke Křižovatce 538, 330 08 Zruč-Senec', sameAs: ['http://airpark.wz.cz/', visitPlzen] },
       image: [
