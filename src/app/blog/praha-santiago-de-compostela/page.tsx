@@ -62,7 +62,7 @@ export default function PrahaSantiagoArticle() {
         </nav>
         <h1>{title}</h1>
         <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
-        <p className={styles.lead}>Od středy 2. prosince 2026 se z Prahy dá letět přímo do Santiaga de Compostela, do cíle Svatojakubské cesty. Spoje jsou ve středu a v neděli a prodávají se pod značkou Fly2Galicia. Samotný let ale provádí jiná, rumunská společnost. Tady je, co to pro vás znamená, co zahrnuje nejlevnější letenka a jak se po večerním příletu dostanete do města.</p>
+        <p className={styles.lead}>Od středy 2. prosince 2026 se z Prahy dá letět přímo do Santiaga de Compostela, do cíle Svatojakubské cesty. Spoje jsou ve středu a v neděli a prodávají se pod značkou Fly2Galicia. Samotný let ale provádí rumunský dopravce FLYYO, a to má vliv na reklamace. Nejlevnější letenka zahrnuje jen příruční zavazadlo. Z letiště se po příletu ve 21:50 dostanete do města autobusem za 1 euro nebo taxíkem.</p>
 
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -85,43 +85,43 @@ export default function PrahaSantiagoArticle() {
 
         <h2>Kdy a v kolik se létá?</h2>
         <p>Spoj je dvakrát týdně, ve středu a v neděli. Oba dny uvádí Fly2Galicia u Prahy na <a href="https://fly2galicia.com/destino/praga/">svém webu</a>, začátek 2. prosince potvrdilo i <a href="https://x.com/PragueAirport/status/2089736858250932398">Letiště Praha</a>. Celá síť Fly2Galicia má začít o den dřív, 1. prosince 2026.</p>
-        <p>Z Prahy se podle údajů z rezervace odlétá v 18:40 a v Santiagu se přistává ve 21:50. Zpět letadlo odlétá ve 14:35 a do Prahy přiletí v 17:50. Španělsko má stejný čas jako Česko, let tedy trvá přibližně 3 hodiny a 10 minut. Konečné časy si zkontrolujte přímo v rezervaci, u nového spoje se ještě mohou změnit.</p>
-        <p>Ze středy do neděle vychází výlet na čtyři noci, z neděle do středy na tři. Delší pobyt je o týden nebo více.</p>
+        <p>Z Prahy se podle údajů z rezervace odlétá v 18:40 a v Santiagu se přistává ve 21:50. Zpět letadlo odlétá ve 14:35 a do Prahy přiletí v 17:50. Španělsko má stejný čas jako Česko, cesta tam tedy trvá 3 hodiny 10 minut a zpátky o pět minut déle. Konečné časy si zkontrolujte přímo v rezervaci, u nového spoje se ještě mohou změnit.</p>
+        <p>Ze středy do neděle vychází výlet na čtyři noci, z neděle do středy na tři. Na delší pobyt si zpáteční let posuňte o jeden nebo více týdnů.</p>
 
         <h2>Kdo let skutečně provádí?</h2>
         <p>Fly2Galicia není letecká společnost v obvyklém smyslu. Nemá vlastní osvědčení leteckého provozovatele (AOC), bez kterého nelze vozit cestující. Značku používá španělská firma Aviation &amp; Mobility Services Group, S.L. se sídlem v Santiagu. Ta letenky prodává a plánuje linky. Právní upozornění na <a href="https://fly2galicia.com/aviso-legal/">webu Fly2Galicia</a> to říká přímo: prodej letu pod touto značkou neznamená, že firma je držitelem AOC.</p>
-        <p>Letadlo, posádku, údržbu a pojištění dodává rumunský dopravce FLYYO v režimu takzvaného wet lease. Podle španělského oborového webu <a href="https://www.hosteltur.com/178170_la-rumana-flyyo-operara-los-vuelos-de-fly2galicia-en-regimen-de-wet-lease.html">Hosteltur</a> FLYYO vznikl v roce 2021, létá od dubna 2024 a používá Airbusy A320 se 180 sedadly. Podobně to funguje i jinde, velcí dopravci si v létě běžně pronajímají letadla i s posádkou.</p>
+        <p>Letadlo, posádku, údržbu a pojištění dodává rumunský dopravce FLYYO v režimu takzvaného wet lease. Podle španělského oborového webu <a href="https://www.hosteltur.com/178170_la-rumana-flyyo-operara-los-vuelos-de-fly2galicia-en-regimen-de-wet-lease.html">Hosteltur</a> FLYYO vznikl v roce 2021, létá od dubna 2024 a používá Airbusy A320 se 180 sedadly.</p>
         <figure className={styles.photo}><Image src="/blog/fly2galicia-flyyo-a320.webp" alt="Bílý Airbus A320 s registrací YR-ADC dopravce FLYYO při přistání" width={1600} height={1067} sizes={sizes} /><figcaption>Airbus A320 YR-ADC dopravce FLYYO, 8. května 2026 v Berlíně. Které letadlo bude létat do Prahy, zatím není známo. Foto: <a href="https://commons.wikimedia.org/wiki/File:Airbus_A320-214_(c-n_3256,_YR-ADC)_2026-05-08_Andre_Gerwing_Collection_ID_028659.jpg">André Gerwing, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, zmenšeno.</figcaption></figure>
-        <p>Pro vás z toho plyne hlavně tohle. Podle <a href={conditions}>přepravních podmínek</a> odpovídá za samotnou přepravu skutečný dopravce, tedy FLYYO, a platí i jeho přepravní podmínky. Reklamace týkající se rezervace řeší Fly2Galicia. Práva podle evropského nařízení 261/2004 při zpoždění nebo zrušení letu podmínky výslovně neomezují. Fly2Galicia si v nich ale vyhrazuje možnost změnit letadlo, a pokud je to nezbytné a právně možné, i skutečného dopravce.</p>
+        <p>Podle <a href={conditions}>přepravních podmínek</a> odpovídá za samotnou přepravu skutečný dopravce, tedy FLYYO, a platí i jeho přepravní podmínky. Reklamace týkající se rezervace řeší Fly2Galicia. Práva podle evropského nařízení 261/2004 při zpoždění nebo zrušení letu podmínky výslovně neomezují. Fly2Galicia si v nich ale vyhrazuje možnost změnit letadlo, a pokud je to nezbytné a právně možné, i skutečného dopravce.</p>
 
         <h2>Na co si dát pozor u nového dopravce?</h2>
-        <p>Firma za značkou Fly2Galicia vznikla v lednu 2026. Podle galicijského serveru <a href="https://www.galiciapress.es/articulo/empresas/2026-09-02/5999611-hay-realmente-detras-polemica-fly2galicia">Galiciapress</a> má základní kapitál 1 euro a je zapsaná hlavně jako cestovní agentura. To je legální, jenže to málo říká o finanční síle. Zatím nezveřejnila žádnou účetní závěrku a podle <a href="https://aviaciondigital.com/fly2galicia-no-es-aerolinea-aoc-propio/">Aviación Digital</a> má celý začátek stát na jediném letadle. Ve Španělsku se o projektu vede veřejná debata, předseda galicijské vlády se od něj podle <a href="https://www.elcorreogallego.es/santiago/2026/09/02/rueda-fly2galicia-raxoi-aeropuerto-santiago-133865812.html">El Correo Gallego</a> distancoval.</p>
+        <p>Firma za značkou Fly2Galicia vznikla v lednu 2026. Podle galicijského serveru <a href="https://www.galiciapress.es/articulo/empresas/2026-09-02/5999611-hay-realmente-detras-polemica-fly2galicia">Galiciapress</a> má základní kapitál 1 euro a je zapsaná hlavně jako cestovní agentura. To je legální, o finanční síle to ale moc neříká. Účetní závěrku firma zatím nemá, protože vznikla letos, a podle <a href="https://aviaciondigital.com/fly2galicia-no-es-aerolinea-aoc-propio/">Aviación Digital</a> má celý začátek stát na jediném letadle. Ve Španělsku se o projektu vede veřejná debata, předseda galicijské vlády se od něj podle <a href="https://www.elcorreogallego.es/santiago/2026/09/02/rueda-fly2galicia-raxoi-aeropuerto-santiago-133865812.html">El Correo Gallego</a> distancoval.</p>
         <p>Nic z toho neznamená, že lety nepoletí. Až do prvního odletu ale nikdo neví, jak spolehlivý provoz bude. Pokud hodně záleží na přesném termínu, například kvůli svatbě nebo navazujícímu spoji, počítejte s rezervou. Letenku zaplaťte platební kartou. Pokud by let neproběhl a peníze se nevrátily, můžete platbu reklamovat u své banky. A nekupujte zbytečně daleko dopředu.</p>
 
         <h2>Kolik stojí letenka a co obsahuje?</h2>
-        <p>Cestujlevne.com v srpnu našel zpáteční letenku za 100,50 eur, přibližně 2 432 Kč, na lety od ledna do léta 2027. Honzovy letenky psaly o 2 489 Kč. Zpráva Zdopravy.cz uvádí ceny od 49 eur za jednu cestu. Ceny jsme v rezervačním systému sami neověřili, protože se nám ho nepodařilo vyplnit. Nejnižší cena platí pro tarif Economy Go a vybrané termíny.</p>
+        <p>Server Cestujlevne.com v srpnu našel zpáteční letenku za 100,50 eur, přibližně 2 432 Kč, na lety od ledna do léta 2027. Honzovy letenky psaly o 2 489 Kč, bez upřesnění, jestli jde o zpáteční cenu. Zdopravy.cz uvádějí ceny od 49 eur za jednu cestu. Sami jsme ceny v rezervačním systému neověřili, protože se nám ho nepodařilo vyplnit. Takové ceny se týkají nejlevnějšího tarifu Economy Go a jen některých termínů.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead><tr><th scope="col">Tarif</th><th scope="col">Zavazadla</th><th scope="col">Sedadlo a změny</th></tr></thead>
             <tbody>
-              <tr><td>Economy Go</td><td>osobní věc + kufr do kabiny 8 kg, místo pro kufr nad hlavou není zaručené</td><td>sedadlo náhodně, změna 60 € + rozdíl ceny</td></tr>
-              <tr><td>Economy Plus</td><td>totéž, místo pro kufr v kabině zaručené</td><td>sedadlo v řadách 15–30, změna 60 € + rozdíl ceny</td></tr>
-              <tr><td>Economy Premium</td><td>navíc 1 odbavené zavazadlo 20 kg</td><td>sedadlo XL nebo u nouzového východu, první změna bez poplatku</td></tr>
-              <tr><td>Business Premium</td><td>navíc 2 odbavená zavazadla po 20 kg</td><td>volné prostřední sedadlo, jídlo, salonek, zrušení za voucher</td></tr>
+              <tr><td>Economy Go</td><td>osobní věc + kufr do kabiny 8 kg, místo pro kufr nad hlavou není zaručené</td><td>sedadlo přidělené náhodně, výběr za příplatek; změna 60 € + rozdíl ceny</td></tr>
+              <tr><td>Economy Plus</td><td>totéž, místo pro kufr v kabině zaručené</td><td>sedadlo v řadách 15–30; změna 60 € + rozdíl ceny</td></tr>
+              <tr><td>Economy Premium</td><td>navíc 1 odbavené zavazadlo 20 kg</td><td>sedadlo XL nebo u nouzového východu; první změna bez poplatku</td></tr>
+              <tr><td>Business Premium</td><td>navíc 2 odbavená zavazadla po 20 kg</td><td>volné prostřední sedadlo, jídlo, salonek; změna do 2 h před odletem bez poplatku, při zrušení voucher</td></tr>
             </tbody>
           </table>
         </div>
         <p className={styles.tableNote}>Zdroj: <a href={faq}>časté otázky Fly2Galicia</a>, stav k 22. 9. 2026. Kufr do kabiny smí mít nejvýš 55 × 40 × 20 cm, osobní věc 40 × 30 × 20 cm.</p>
-        <p>Economy Go, Plus ani Premium nejsou vratné. Změnit let lze nejpozději 24 hodin před odletem a poplatek se platí za každého cestujícího a každý úsek zvlášť. Když je nový let levnější, rozdíl vám nevrátí. Změna jména stojí 70 eur a jde nejpozději 7 dní před odletem. Na palubě dostanete v ekonomické třídě kávu nebo čaj a malé občerstvení zdarma (<a href={faq}>Fly2Galicia</a>).</p>
-        <p>Pokud jedete na Svatojakubskou cestu, batoh do kabiny musí splnit rozměr 55 × 40 × 20 cm a 8 kilogramů, což u většího trekového batohu nevyjde. Trekové hole nebo nůž si před cestou ověřte v pravidlech bezpečnostní kontroly. Pokud do kabiny nesmějí, budete potřebovat odbavené zavazadlo.</p>
+        <p>Tarify Economy Go, Plus ani Premium nejsou vratné. Let v nich změníte nejpozději 24 hodin před odletem a poplatek se platí za každého cestujícího a každý úsek zvlášť. Když je nový let levnější, rozdíl vám nevrátí. Změna jména stojí 70 eur plus případný rozdíl ceny a jde nejpozději 7 dní před odletem. Na palubě dostanete v ekonomické třídě kávu nebo čaj a malé občerstvení zdarma (<a href={faq}>Fly2Galicia</a>).</p>
+        <p>Pokud jedete na Svatojakubskou cestu, batoh do kabiny smí mít nejvýš 55 × 40 × 20 cm a 8 kilogramů. Větší trekový batoh se do toho nevejde. Trekové hole nebo nůž si před cestou ověřte v pravidlech bezpečnostní kontroly. Pokud do kabiny nesmějí, budete potřebovat odbavené zavazadlo.</p>
 
         <h2>Jak se z letiště dostanete do Santiaga?</h2>
-        <p>Letiště Santiago–Rosalía de Castro, místně Lavacolla, leží asi 12 kilometrů od historického centra. Po příletu ve 21:50 máte dvě hlavní možnosti (<a href="https://santiago.es/aeropuerto">město Santiago de Compostela</a>, <a href="https://www.aena.es/en/santiago-rosalia-de-castro/getting-there/bus.html">Aena</a>):</p>
+        <p>Letiště Santiago–Rosalía de Castro, místně Lavacolla, leží asi 12 kilometrů od historického centra. Po příletu ve 21:50 máte dvě možnosti (<a href="https://santiago.es/aeropuerto">město Santiago de Compostela</a>, <a href="https://www.aena.es/en/santiago-rosalia-de-castro/getting-there/bus.html">Aena</a>):</p>
         <ul>
           <li><strong>Autobus 6A</strong> jezdí zhruba do půl jedné v noci, v pracovní dny jednou za 20–30 minut, o víkendu jednou za 30–60 minut. Stojí 1 euro v hotovosti u řidiče, cesta trvá 25–50 minut a končí na náměstí Praza de Galicia na kraji starého města. Po cestě staví i u vlakového a autobusového nádraží (Estación Intermodal).</li>
           <li><strong>Taxi</strong> stojí asi 20–25 eur a do centra jede 15–20 minut. Stanoviště je u východu z terminálu.</li>
         </ul>
-        <p>Při zpoždění večerního letu už nemusíte stihnout poslední autobus. Město zvažuje zvláštní letištní jízdné 6 eur, zatím ale platí 1 euro. Přímo z letiště jezdí také meziměstské autobusy Monbus do A Coruñi a Luga, s mezizastávkami mimo jiné v Arzúe a Palas de Rei.</p>
+        <p>Když večerní let nabere velké zpoždění, poslední autobus už stihnout nemusíte. Město zvažuje zvláštní letištní jízdné 6 eur, zatím ale platí 1 euro. Z letiště jezdí také meziměstské autobusy Monbus do A Coruñi a do Luga. Ty do Luga staví mimo jiné v obcích Arzúa a Palas de Rei na Svatojakubské cestě.</p>
 
         <h2>Časté otázky</h2>
         <div className={styles.faq}>
@@ -132,7 +132,7 @@ export default function PrahaSantiagoArticle() {
           <h3>Létá se do Santiaga přímo i z Brna nebo Vídně?</h3>
           <p>Ne. Síť Fly2Galicia obsahuje z Česka jen Prahu, Vídeň v ní také není. V Evropě dál létá do Mnichova, Bruselu, Milána a Benátek, ve Španělsku do Alicante, Granady a Zaragozy.</p>
           <h3>Může se let ještě zrušit nebo posunout?</h3>
-          <p>U každého nového spoje se může změnit letový řád. U Fly2Galicia je nejistota o něco větší, protože firma zatím nic neprovozovala a celý začátek stojí na jednom letadle. Sledujte e-maily k rezervaci a den před odletem si let zkontrolujte.</p>
+          <p>U každého nového spoje se může změnit letový řád. U Fly2Galicia je nejistota o něco větší, protože pod touto značkou zatím neodletěl ani jeden let a celý začátek stojí na jednom letadle. Sledujte e-maily k rezervaci a den před odletem si let zkontrolujte.</p>
         </div>
 
         <p>V den odletu uvidíte letadlo z Prahy na radaru FlyQueens. Jak najít konkrétní spoj, popisuje návod <Link href="/blog/jak-sledovat-let-podle-cisla">jak sledovat let podle čísla</Link>.</p>
