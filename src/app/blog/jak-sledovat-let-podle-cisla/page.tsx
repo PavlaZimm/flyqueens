@@ -7,6 +7,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('jak-sledovat-let-podle-cisla')!
 
@@ -100,14 +101,24 @@ export default function TrackFlightNumberArticle() {
           </ol>
         </div>
 
-        <h2 style={S.h2}>Kde najdu číslo letu?</h2>
+        <ArticleContents items={[
+          { id: 'kde-najdu-cislo-letu', label: "Kde najdu číslo letu?" },
+          { id: 'cislo-letu-volaci-znak-a-registrace', label: "Číslo letu, volací znak a registrace nejsou totéž" },
+          { id: 'proc-se-cislo-letu-na-mape-nezobrazuje', label: "Proč se číslo letu na mapě nezobrazuje?" },
+          { id: 'mapa-letu-a-letistni-tabule-resi-jinou', label: "Mapa letu a letištní tabule řeší jinou otázku" },
+          { id: 'jak-sledovat-prilet-do-prahy', label: "Jak sledovat přílet do Prahy" },
+          { id: 'lze-dohledat-vcerejsi-nebo-starsi-let', label: "Lze dohledat včerejší nebo starší let?" },
+          { id: 'kteremu-udaji-verit-pri-ceste-na-letiste', label: "Kterému údaji věřit při cestě na letiště?" },
+        ]} />
+
+        <h2 id="kde-najdu-cislo-letu" style={S.h2}>Kde najdu číslo letu?</h2>
         <p style={S.p}>
           Hledejte krátký kód aerolinky a číslo, ne číslo rezervace. Číslo letu bývá na letence, palubní vstupence,
           potvrzovacím e-mailu a v aplikaci dopravce. Rezervační kód bývá samostatná kombinace písmen a číslic a pro
           veřejné sledování letu obvykle nepomůže.
         </p>
 
-        <h2 style={S.h2}>Číslo letu, volací znak a registrace nejsou totéž</h2>
+        <h2 id="cislo-letu-volaci-znak-a-registrace" style={S.h2}>Číslo letu, volací znak a registrace nejsou totéž</h2>
         <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
@@ -144,7 +155,7 @@ export default function TrackFlightNumberArticle() {
           OK123 proto dnes ve vyhledávání nic nenajde.
         </p>
 
-        <h2 style={S.h2}>Proč se číslo letu na mapě nezobrazuje?</h2>
+        <h2 id="proc-se-cislo-letu-na-mape-nezobrazuje" style={S.h2}>Proč se číslo letu na mapě nezobrazuje?</h2>
         <ul style={{ ...S.p, paddingLeft: 22 }}>
           <li style={{ marginBottom: 8 }}>Let ještě neodstartoval nebo zatím není v oblasti načtené mapou.</li>
           <li style={{ marginBottom: 8 }}>Letadlo nevysílá použitelnou polohu nebo ji dostupný zdroj nezachytil.</li>
@@ -153,28 +164,28 @@ export default function TrackFlightNumberArticle() {
           <li>Trasa nebo identifikace ve zdroji chybí; mapa proto spoj raději nepřiřadí.</li>
         </ul>
 
-        <h2 style={S.h2}>Mapa letu a letištní tabule řeší jinou otázku</h2>
+        <h2 id="mapa-letu-a-letistni-tabule-resi-jinou" style={S.h2}>Mapa letu a letištní tabule řeší jinou otázku</h2>
         <p style={S.p}>
           Živá mapa odpovídá hlavně na „kde je letadlo a co právě dělá“. Letištní tabule odpovídá na „kdy přiletí,
           z jakého terminálu odlétá a zda je spoj zpožděný“. Pro vyzvednutí cestujícího je rozhodující oficiální stav
           letiště nebo dopravce; mapa je užitečný doplněk, ne náhrada provozního oznámení.
         </p>
 
-        <h2 style={S.h2}>Jak sledovat přílet do Prahy</h2>
+        <h2 id="jak-sledovat-prilet-do-prahy" style={S.h2}>Jak sledovat přílet do Prahy</h2>
         <p style={S.p}>
           Nejprve ověřte číslo a stav letu na oficiální tabuli Letiště Praha. Když je let ve vzduchu, otevřete mapu a
           vyhledejte číslo. Uvidíte, zda se zachycené letadlo blíží k Praze, jakou má výšku a zda klesá. Podrobněji
           postup popisujeme v článku <Link href="/blog/letiste-praha-zive" style={{ color: 'var(--gold)' }}>Letiště Praha živě</Link>.
         </p>
 
-        <h2 style={S.h2}>Lze dohledat včerejší nebo starší let?</h2>
+        <h2 id="lze-dohledat-vcerejsi-nebo-starsi-let" style={S.h2}>Lze dohledat včerejší nebo starší let?</h2>
         <p style={S.p}>
           FlyQueens se soustředí na aktuální provoz a negarantuje veřejný archiv historie. Pokud let už přistál a není
           v živých datech, ověřte nejprve historii u dopravce nebo letiště. Plnohodnotná historie tras bývá u některých
           specializovaných služeb placená.
         </p>
 
-        <h2 style={S.h2}>Kterému údaji věřit při cestě na letiště?</h2>
+        <h2 id="kteremu-udaji-verit-pri-ceste-na-letiste" style={S.h2}>Kterému údaji věřit při cestě na letiště?</h2>
         <p style={S.p}>
           Praktické pravidlo je jednoduché: polohu sledujte na mapě, ale čas, terminál, bránu a pokyny cestujícím
           kontrolujte u aerolinky a letiště. Veřejná ADS-B data mohou mít zpoždění, výpadek nebo chybějící propojení s

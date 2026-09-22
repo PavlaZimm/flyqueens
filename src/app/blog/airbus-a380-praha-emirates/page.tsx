@@ -10,6 +10,7 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('airbus-a380-praha-emirates')!
 
@@ -130,7 +131,17 @@ export default function A380PrahaArticle() {
           ]}
         />
 
-        <h2 style={S.h2}>Letový řád A380 Praha–Dubaj od října 2026</h2>
+        <ArticleContents items={[
+          { id: 'letovy-rad-a380-prahadubaj-od-rijna-2026', label: "Letový řád A380 Praha–Dubaj od října 2026" },
+          { id: 'co-se-na-prazske-lince-zmenilo-v-roce', label: "Co se na pražské lince změnilo v roce 2026" },
+          { id: 'co-vime-o-planovanem-letadle', label: "Co víme o plánovaném letadle" },
+          { id: 'jak-overit-zda-do-prahy-poleti-a380', label: "Jak ověřit, zda do Prahy poletí A380" },
+          { id: 'proc-se-typ-letadla-meni', label: "Proč se typ letadla mění" },
+          { id: 'jak-sledovat-a380-nad-prahou', label: "Jak sledovat A380 nad Prahou" },
+          { id: 'caste-otazky', label: "Časté otázky" },
+        ]} />
+
+        <h2 id="letovy-rad-a380-prahadubaj-od-rijna-2026" style={S.h2}>Letový řád A380 Praha–Dubaj od října 2026</h2>
         <p style={S.p}>
           Časy se při přechodu z letního na zimní letový řád mění. Všechna uvedená data jsou místní. Přílety do
           Prahy míří na Terminál 1, stejně jako odlety do Dubaje.
@@ -168,7 +179,7 @@ export default function A380PrahaArticle() {
           konkrétní datum, protože dopravce může typ letadla operativně změnit.
         </p>
 
-        <h2 style={S.h2}>Co se na pražské lince změnilo v roce 2026</h2>
+        <h2 id="co-se-na-prazske-lince-zmenilo-v-roce" style={S.h2}>Co se na pražské lince změnilo v roce 2026</h2>
         <p style={S.p}>
           Nejde o první návrat A380 po covidové přestávce. Ten proběhl už 1. prosince 2024 a letadlo na lince
           pravidelně létalo také na začátku roku 2026. Ještě v březnovém rozpisu byl A380 vedený do 28. března.
@@ -215,14 +226,14 @@ export default function A380PrahaArticle() {
           červen 2026 i novém říjnovém termínu. Pro cestu nebo focení je rozhodující nejnovější rozpis konkrétního letu.
         </p>
 
-        <h2 style={S.h2}>Co víme o plánovaném letadle</h2>
+        <h2 id="co-vime-o-planovanem-letadle" style={S.h2}>Co víme o plánovaném letadle</h2>
         <p style={S.p}>
           V rozpisu je uveden Airbus A380-800. Emirates v únoru pro Prahu oznámil modernizovaný stroj s Premium
           Economy, ale po několika změnách nasazení nechceme bez potvrzení slibovat konkrétní registraci ani uspořádání
           kabiny. Flotila Emirates má několik konfigurací A380 a výměna letadla je možná i krátce před odletem.
         </p>
 
-        <h2 style={S.h2}>Jak ověřit, zda do Prahy poletí A380</h2>
+        <h2 id="jak-overit-zda-do-prahy-poleti-a380" style={S.h2}>Jak ověřit, zda do Prahy poletí A380</h2>
         <ol style={{ ...S.p, paddingLeft: 22 }}>
           <li style={{ marginBottom: 7 }}>Otevřete oficiální vyhledávání letů Emirates.</li>
           <li style={{ marginBottom: 7 }}>Zadejte trasu PRG–DXB nebo DXB–PRG a konkrétní datum.</li>
@@ -234,14 +245,14 @@ export default function A380PrahaArticle() {
           spolehlivější než oficiální rezervace dopravce.
         </p>
 
-        <h2 style={S.h2}>Proč se typ letadla mění</h2>
+        <h2 id="proc-se-typ-letadla-meni" style={S.h2}>Proč se typ letadla mění</h2>
         <p style={S.p}>
           Aerolinka nasazuje kapacitu podle poptávky, sezony, dostupnosti letadel a provozních potřeb. A380 má dvě
           plné paluby a na vhodné trase přepraví výrazně více lidí než běžný širokotrupý stroj. Boeing 777 je menší
           a pro některá období může dávat dopravci větší smysl. Změna typu sama o sobě neznamená zrušení linky.
         </p>
 
-        <h2 style={S.h2}>Jak sledovat A380 nad Prahou</h2>
+        <h2 id="jak-sledovat-a380-nad-prahou" style={S.h2}>Jak sledovat A380 nad Prahou</h2>
         <p style={S.p}>
           Chcete přílet vidět na vlastní oči? V průvodci <Link href="/letiste/praha/planespotting" style={{ color: 'var(--gold)' }}>planespottingem v Praze</Link> najdete vyhlídkové valy v Kněževsi a u Hostivice, přístup a vlastní fotografie.
         </p>
@@ -290,7 +301,7 @@ export default function A380PrahaArticle() {
           </div>
         </div>
 
-        <h2 style={S.h2}>Časté otázky</h2>
+        <h2 id="caste-otazky" style={S.h2}>Časté otázky</h2>
         <h3 style={S.h3}>Kdy se A380 vrátí do Prahy?</h3>
         <p style={S.p}>
           Aktuální letový řád počítá s každodenním nasazením od 1. října 2026. Do 30. září je veden Boeing 777-300ER.

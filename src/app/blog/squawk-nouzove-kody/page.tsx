@@ -7,6 +7,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('squawk-nouzove-kody')!
 
@@ -126,7 +127,18 @@ export default function SquawkArticle() {
           </table>
         </div>
 
-        <h2 style={S.h2}>Co je squawk a odpovídač</h2>
+        <ArticleContents items={[
+          { id: 'co-je-squawk-a-odpovidac', label: "Co je squawk a odpovídač" },
+          { id: '7700-obecna-nouze', label: "7700: obecná nouze" },
+          { id: '7600-vypadek-radia', label: "7600: výpadek rádia" },
+          { id: '7500-unos-nebo-protipravni-cin', label: "7500: únos nebo protiprávní čin" },
+          { id: 'a-co-bezne-kody', label: "A co běžné kódy?" },
+          { id: 'jak-nouzovy-let-poznate-na-mape', label: "Jak nouzový let poznáte na mapě" },
+          { id: 'znamena-squawk-7700-ze-letadlo-havaruje', label: "Znamená squawk 7700, že letadlo havaruje?" },
+          { id: 'proc-se-upozorneni-muze-rychle-ztratit', label: "Proč se upozornění může rychle ztratit?" },
+        ]} />
+
+        <h2 id="co-je-squawk-a-odpovidac" style={S.h2}>Co je squawk a odpovídač</h2>
         <p style={S.p}>
           Každé dopravní letadlo má na palubě odpovídač, anglicky transponder. Je to krabička, která na dotaz
           radaru odpoví číslem a výškou. To číslo je právě squawk, čtyři cifry od 0000 do 7777. Běžně ho letadlu
@@ -134,47 +146,47 @@ export default function SquawkArticle() {
           význam.
         </p>
 
-        <h2 style={S.h2}>7700: obecná nouze</h2>
+        <h2 id="7700-obecna-nouze" style={S.h2}>7700: obecná nouze</h2>
         <p style={S.p}>
           Kód 7700 je vyhrazen pro obecnou nouzi. Konkrétní příčina z něj není poznat a další postup závisí
           na situaci, komunikaci posádky a pokynech řízení letového provozu. FlyQueens proto zobrazuje kód,
           ale nesnaží se z veřejných dat hádat příčinu.
         </p>
 
-        <h2 style={S.h2}>7600: výpadek rádia</h2>
+        <h2 id="7600-vypadek-radia" style={S.h2}>7600: výpadek rádia</h2>
         <p style={S.p}>
           Kód 7600 je vyhrazen pro poruchu rádiového spojení. Neříká, zda je problém ve vysílání, příjmu
           nebo obojím. Posádka a řízení pak postupují podle publikovaných postupů pro ztrátu spojení.
         </p>
 
-        <h2 style={S.h2}>7500: únos nebo protiprávní čin</h2>
+        <h2 id="7500-unos-nebo-protipravni-cin" style={S.h2}>7500: únos nebo protiprávní čin</h2>
         <p style={S.p}>
           Kód 7500 je vyhrazen pro protiprávní zásah. Detaily reakce bezpečnostních a letových složek nejsou
           z veřejného ADS-B záznamu patrné, takže mapa ukazuje pouze ověřitelný kód.
         </p>
 
-        <h2 style={S.h2}>A co běžné kódy?</h2>
+        <h2 id="a-co-bezne-kody" style={S.h2}>A co běžné kódy?</h2>
         <p style={S.p}>
           V Evropě se 7000 používá v oblastech a situacích určených jednotlivými státy pro let bez služby ATC,
           pokud posádka nedostane jiný pokyn. Kód 2000 se podle evropských pravidel používá při absenci pokynu
           ATC nebo regionální dohody. Ani jeden z nich sám o sobě neznamená nouzi.
         </p>
 
-        <h2 style={S.h2}>Jak nouzový let poznáte na mapě</h2>
+        <h2 id="jak-nouzovy-let-poznate-na-mape" style={S.h2}>Jak nouzový let poznáte na mapě</h2>
         <p style={S.p}>
           FlyQueens sleduje squawk kódy živě. Když se nad sledovanou oblastí objeví letadlo se 7700, 7600 nebo
           7500, zvýrazní se a naskočí upozornění. Veřejná data mohou být zpožděná nebo neúplná a z kódu nelze
           určit příčinu, proto je upozornění informační, ne oficiální bezpečnostní hlášení.
         </p>
 
-        <h2 style={S.h2}>Znamená squawk 7700, že letadlo havaruje?</h2>
+        <h2 id="znamena-squawk-7700-ze-letadlo-havaruje" style={S.h2}>Znamená squawk 7700, že letadlo havaruje?</h2>
         <p style={S.p}>
           Ne. Kód 7700 pouze říká, že posádka nebo systém signalizuje obecnou nouzovou situaci. Veřejná mapa
           neukazuje komunikaci s řízením ani důvod nastavení kódu. Let může pokračovat, změnit trasu, vrátit se
           nebo bezpečně přistát. Bez potvrzení aerolinky, letiště či úřadů proto není správné domýšlet příčinu.
         </p>
 
-        <h2 style={S.h2}>Proč se upozornění může rychle ztratit?</h2>
+        <h2 id="proc-se-upozorneni-muze-rychle-ztratit" style={S.h2}>Proč se upozornění může rychle ztratit?</h2>
         <p style={S.p}>
           Posádka může po pokynu řízení nastavit jiný kód, letadlo může opustit pokrytou oblast nebo může
           vypadnout veřejný datový zdroj. Krátké zobrazení tedy samo o sobě nepotvrzuje ani nevyvrací událost.

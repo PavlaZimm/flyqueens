@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Letiště Ostrava: doprava, parkování a odlety',
@@ -86,27 +87,35 @@ export default function OstravaHubPage() {
           </Link>
         </div>
 
-        <h2 style={S.h2}>Vlakem přímo k odletové hale</h2>
+        <ArticleContents items={[
+          { id: 'vlakem-primo-k-odletove-hale', label: "Vlakem přímo k odletové hale" },
+          { id: 'autobusem-z-ostravy-a-okoli', label: "Autobusem z Ostravy a okolí" },
+          { id: 'kdy-dorazit-na-odbaveni', label: "Kdy dorazit na odbavení" },
+          { id: 'parkovani-u-letiste-ostrava', label: "Parkování u letiště Ostrava" },
+          { id: 'co-ukaze-flyqueens-a-co-ne', label: "Co ukáže FlyQueens a co ne" },
+        ]} />
+
+        <h2 id="vlakem-primo-k-odletove-hale" style={S.h2}>Vlakem přímo k odletové hale</h2>
         <p style={S.p}>
           Železniční terminál Mošnov, Ostrava Airport je umístěný vedle odletové haly. Letiště uvádí linku S4 přes Bohumín, Ostravu a Studénku a linku S8 přes Ostravu, Studénku, Příbor a Kopřivnici. Konkrétní spoj si ověřte v aktuálním jízdním řádu ODIS.
         </p>
 
-        <h2 style={S.h2}>Autobusem z Ostravy a okolí</h2>
+        <h2 id="autobusem-z-ostravy-a-okoli" style={S.h2}>Autobusem z Ostravy a okolí</h2>
         <p style={S.p}>
           Přímé spojení z Ostravy nabízí Airport Express. Podle letiště je od 20. dubna 2026 pro odlétající cestující zdarma po předložení palubní vstupenky nebo potvrzení rezervace na daný den. Do Mošnova jezdí také regionální linky z Ostravy, Frýdku-Místku, Příbora, Kopřivnice a Nového Jičína. Podmínky i jízdní řády před cestou znovu ověřte.
         </p>
 
-        <h2 style={S.h2}>Kdy dorazit na odbavení</h2>
+        <h2 id="kdy-dorazit-na-odbaveni" style={S.h2}>Kdy dorazit na odbavení</h2>
         <p style={S.p}>
           Odbavovací přepážka podle letiště zpravidla otevírá dvě hodiny před plánovaným odletem a zavírá 40 minut před ním. Některé aerolinky vyžadují online odbavení nebo si za odbavení na letišti účtují poplatek, proto se řiďte podmínkami svého dopravce.
         </p>
 
-        <h2 style={S.h2}>Parkování u letiště Ostrava</h2>
+        <h2 id="parkovani-u-letiste-ostrava" style={S.h2}>Parkování u letiště Ostrava</h2>
         <p style={S.p}>
           P1 leží před odletovou halou, vzdálenější plochy jsou levnější. Protože letiště používá více parkovišť s rozdílnými tarify, připravili jsme samostatné <Link href="/letiste/ostrava/parkovani" style={{ color: 'var(--gold)' }}>srovnání parkování u letiště Ostrava</Link>. Ceny a dostupnost vždy potvrďte před příjezdem.
         </p>
 
-        <h2 style={S.h2}>Co ukáže FlyQueens a co ne</h2>
+        <h2 id="co-ukaze-flyqueens-a-co-ne" style={S.h2}>Co ukáže FlyQueens a co ne</h2>
         <p style={S.p}>
           Na mapě FlyQueens vidíte poslední dostupnou ADS-B polohu, výšku, rychlost a směr zachycených letadel. Skutečný odlet, přílet, zpoždění, přepážku a gate potvrzuje letiště nebo dopravce, nikoliv poloha na mapě.
         </p>

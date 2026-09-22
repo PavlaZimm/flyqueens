@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Letiště Brno-Tuřany: doprava, parkování a odlety',
@@ -86,7 +87,14 @@ export default function BrnoHubPage() {
           </Link>
         </div>
 
-        <h2 style={S.h2}>Jak se dostat na letiště Brno MHD</h2>
+        <ArticleContents items={[
+          { id: 'jak-se-dostat-na-letiste-brno-mhd', label: "Jak se dostat na letiště Brno MHD" },
+          { id: 'odbaveni-a-prijezd-pred-odletem', label: "Odbavení a příjezd před odletem" },
+          { id: 'parkovani-primo-u-terminalu', label: "Parkování přímo u terminálu" },
+          { id: 'co-ukaze-flyqueens-a-co-overit-jinde', label: "Co ukáže FlyQueens a co ověřit jinde" },
+        ]} />
+
+        <h2 id="jak-se-dostat-na-letiste-brno-mhd" style={S.h2}>Jak se dostat na letiště Brno MHD</h2>
         <p style={S.p}>
           Linka 21 jezdí mezi hlavním nádražím a letištěm přibližně 22 minut. Linka 77 spojuje zastávku Úzká u Galerie Vaňkovka s letištěm přibližně za 26 minut. V noci jezdí z hlavního nádraží linka N89 s uváděnou dobou jízdy kolem 20 minut.
         </p>
@@ -94,17 +102,17 @@ export default function BrnoHubPage() {
           Platí běžné jízdné IDS JMK. Jízdenku lze řešit v mobilu nebo přímo ve vozidle, papírové jízdenky prodává také automat v příletové hale. Před cestou zkontrolujte aktuální jízdní řád.
         </p>
 
-        <h2 style={S.h2}>Odbavení a příjezd před odletem</h2>
+        <h2 id="odbaveni-a-prijezd-pred-odletem" style={S.h2}>Odbavení a příjezd před odletem</h2>
         <p style={S.p}>
           Čas otevření odbavení se může lišit podle sezony a dopravce. Letiště pro období od 1. června do 30. září uvádí zahájení odbavení většiny letů tři hodiny před odletem, u Ryanairu standardně dvě hodiny. Rozhodující jsou vždy pokyny dopravce a aktuální informace letiště.
         </p>
 
-        <h2 style={S.h2}>Parkování přímo u terminálu</h2>
+        <h2 id="parkovani-primo-u-terminalu" style={S.h2}>Parkování přímo u terminálu</h2>
         <p style={S.p}>
           Oficiální parkoviště je v bezprostřední blízkosti terminálu. Prvních 20 minut je jednou za den zdarma a delší pobyt se řídí zveřejněným ceníkem. Aktuální sazby a rozdíl mezi krátkodobým a dlouhodobým stáním shrnujeme na stránce <Link href="/letiste/brno/parkovani" style={{ color: 'var(--gold)' }}>parkování u letiště Brno</Link>.
         </p>
 
-        <h2 style={S.h2}>Co ukáže FlyQueens a co ověřit jinde</h2>
+        <h2 id="co-ukaze-flyqueens-a-co-overit-jinde" style={S.h2}>Co ukáže FlyQueens a co ověřit jinde</h2>
         <p style={S.p}>
           FlyQueens ukazuje poslední dostupnou ADS-B polohu, výšku, rychlost a směr zachycených letadel. Mapa nenahrazuje letištní tabuli a nepotvrzuje čas odletu, zpoždění, přepážku ani gate. Tyto provozní informace ověřte přímo u letiště nebo dopravce.
         </p>

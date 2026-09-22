@@ -9,6 +9,7 @@ import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'boeing-747-praha-fly-meta')!
 const title = 'Boeing 747 v Praze: Fly Meta na fotkách z Kněževsi'
@@ -61,20 +62,27 @@ export default function Boeing747FlyMetaArticle() {
         <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
         <p className={styles.lead}>Na našich fotografiích přistává Boeing 747 v barvách Fly Meta na Letišti Václava Havla Praha. Záběry vznikly z Kněževsi 16. září 2026. Na trupu je kromě velkého nápisu Fly Meta vidět i registrace 9H-FLM, podle které lze určit konkrétní stroj: nákladní Boeing 747-400F.</p>
         <figure className={styles.photo}><Image src="/spotting/praha-boeing-747-fly-meta.webp" alt="Boeing 747 Fly Meta s registrací 9H-FLM při přistání v Praze" width={1600} height={780} sizes="(max-width: 800px) calc(100vw - 36px), 760px" preload /><figcaption>Boeing 747 v okamžiku dosednutí, za hlavním podvozkem je vidět kouř od pneumatik. Foto: vlastní archiv FlyQueens.</figcaption></figure>
-        <h2>Který Boeing 747 je na fotografiích?</h2>
+        <ArticleContents items={[
+          { id: 'ktery-boeing-747-je-na-fotografiich', label: "Který Boeing 747 je na fotografiích?" },
+          { id: 'fly-meta-na-trupu-a-air-atlanta-v', label: "Fly Meta na trupu a Air Atlanta v rejstříku" },
+          { id: 'odkud-se-da-podobne-pristani', label: "Odkud se dá podobné přistání fotografovat?" },
+          { id: 'jak-letadlo-sledovat-na-radaru', label: "Jak letadlo sledovat na radaru" },
+        ]} />
+
+        <h2 id="ktery-boeing-747-je-na-fotografiich">Který Boeing 747 je na fotografiích?</h2>
         <p>Letadlo nese registraci <strong>9H-FLM</strong>. Maltský letecký rejstřík z 19. srpna 2026 ho uvádí jako Boeing 747-400F s výrobním číslem 33731. Jako provozovatel je zapsána společnost Air Atlanta Europe Limited. <a href="https://www.transport.gov.mt/Query-Registration-19-08-2026.pdf-f11802#page=10">Transport Malta, letecký rejstřík, strana 10</a></p>
         <p>Na bočním záběru si všimněte zvýšené přední části trupu. Horní paluba vytváří typický profil Boeingu 747, kterému se přezdívá jumbo. Dalším poznávacím znakem jsou čtyři motory, po dvou pod každým křídlem. Z této strany nejsou všechny stejně dobře vidět; pro rozpoznání pomůže především tvar přídě.</p>
         <p>Na první fotografii už kola hlavního podvozku dosedají na dráhu. Druhý záběr ukazuje stejný stroj ještě těsně nad ní, s vysunutým podvozkem. Od fotografie dosednutí ho podle časů v původních souborech dělí pět sekund. Datum 16. září vychází z metadat fotografií.</p>
         <figure className={styles.photo}><Image src="/blog/boeing-747-fly-meta-priblizeni.webp" alt="Nákladní Boeing 747 v barvách Fly Meta těsně nad dráhou v Praze" width={1400} height={1050} sizes="(max-width: 800px) calc(100vw - 36px), 760px" /><figcaption>9H-FLM krátce před dosednutím na pražskou dráhu. Foto: vlastní archiv FlyQueens.</figcaption></figure>
-        <h2>Fly Meta na trupu a Air Atlanta v rejstříku</h2>
+        <h2 id="fly-meta-na-trupu-a-air-atlanta-v">Fly Meta na trupu a Air Atlanta v rejstříku</h2>
         <p>Fly Meta se věnuje správě nákladních letadel a službám letecké přepravy. Její činnost a využití Boeingů 747 a 777 popisuje také oznámení společnosti HAECO z května 2026. <a href="https://www.haeco.com/en/media-centre/press-releases/haeco-signs-mou-with-fly-meta-to-advance-widebody-freighter-mro-collaboration">HAECO o spolupráci s Fly Meta</a></p>
         <p>Nápis na trupu a jméno provozovatele v rejstříku tedy označují různé role. Na našich fotografiích vidíte barvy Fly Meta, zatímco u registrace 9H-FLM najdete v uvedeném maltském výpisu Air Atlanta Europe Limited. Pro hledání konkrétního letadla si proto poznamenejte registraci. Samotný název Fly Meta k jeho jednoznačnému určení nestačí.</p>
         <p>Z fotografií nelze poznat, odkud tento let přiletěl ani co převážel. Trasu, číslo letu a náklad nemáme doložené, stejně jako termín další návštěvy Prahy.</p>
-        <h2>Odkud se dá podobné přistání fotografovat?</h2>
+        <h2 id="odkud-se-da-podobne-pristani">Odkud se dá podobné přistání fotografovat?</h2>
         <p>Tyto snímky vznikly z Kněževsi. Letiště Praha tam uvádí veřejný vyhlídkový val určený k pozorování letadel. Vyvýšené stanoviště umožňuje dívat se přes oplocení, ale konkrétní výhled na přistání závisí také na tom, kterou dráhu a směr letiště právě používá. <a href="https://www.prg.aero/spoty-pro-sledovani-priletuodletu">Oficiální přehled spotů Letiště Praha</a></p>
         <p>Přístup a fotografie cesty najdete v našem <Link href="/letiste/praha/planespotting">průvodci planespottingem v Praze</Link>. Jsou v něm i informace o druhém valu u Hostivice. Před cestou si zkontrolujte aktuální provoz.</p>
         <figure className={styles.photo}><Image src="/spotting/praha-vyhlidkovy-val.webp" alt="Vyhlídkový val v Kněževsi s návštěvníky a přístupovou cestou" width={1600} height={1200} sizes="(max-width: 800px) calc(100vw - 36px), 760px" /><figcaption>Vyhlídkový val v Kněževsi, odkud pochází naše série fotografií. Foto: vlastní archiv FlyQueens.</figcaption></figure>
-        <h2>Jak letadlo sledovat na radaru</h2>
+        <h2 id="jak-letadlo-sledovat-na-radaru">Jak letadlo sledovat na radaru</h2>
         <p>Na <Link href="/radar">radaru FlyQueens</Link> otevřete oblast pražského letiště a detail vybraného letadla. Pokud zdroj dat poskytne jeho registraci, porovnejte ji s označením 9H-FLM. Dostupnost typu a dalších údajů se liší; prázdné pole ani chybějící bod na mapě nepotvrzují, že letadlo neletí.</p>
         <p>Registrace patří konkrétnímu stroji, číslo letu označuje spoj. Rozdíl vysvětlujeme v návodu <Link href="/blog/jak-sledovat-let-podle-cisla">jak sledovat let podle čísla</Link>. Živá mapa pomůže s aktuální polohou. Termín dalšího příletu tohoto Boeingu z ní předem nevyčtete.</p>
         <div className={styles.actions}><Link className={styles.primary} href="/radar">Otevřít radar letadel</Link></div>

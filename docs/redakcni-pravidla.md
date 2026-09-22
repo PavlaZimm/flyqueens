@@ -31,10 +31,12 @@ Převzato a přizpůsobeno z Webx 18. září 2026 na žádost Pavly. Původní 
 - Před zveřejněním ověřit přímo `/blog` na mobilu i desktopu: obrázek se načítá, ořez zachovává hlavní motiv, celá karta odkazuje na správný článek. Fotografie musí věcně odpovídat tématu; u ubytování lze použít vlastní fotku letiště, která se neoznačuje jako fotografie hotelu.
 - Ověřit i novinky na homepage a odkazy v patičce. Používají stejný registr `BLOG_CARDS`, řadí podle data a zahrnují články pod `/letiste/`. Homepage má u každé karty vlastní náhledovou fotografii; pro její užší sloupce používá formát 16 : 9. Adresu brát z `href`, neskládat automaticky `/blog/`.
 
+- **Obsah článku s kotvami u každého článku a průvodce se 4 a více nadpisy H2.** Výslovný požadavek Pavly, 22. 9. 2026. Každé H2 dostane `id` bez diakritiky (např. `id="kolik-stoji-parkovani"`), pod úvod se před první H2 vloží komponenta `ArticleContents` z `src/components/UI/ArticleContents.tsx`. Položky přebírají text nadpisů beze změny. Po přidání nebo přejmenování H2 upravit i obsah. Ověřit na mobilu, že skok zastaví nadpis pod hlavičkou.
+
 - Jedno H1, smysluplná H2/H3. Titulek přibližně 40–60 znaků, popisek 120–155; srozumitelnost má přednost před mechanickým limitem.
 - Úvod odpoví, komu stránka pomůže. Fotografie až pod úvodem, pouze oprávněně použité, správný kredit a popisný ALT do 100 znaků. Chybějící fotografie hotelu nenahrazovat falešnou vizualizací.
 - U srovnání přehledná tabulka, čitelná i na mobilu. Externí primární zdroje u tvrzení; interní odkazy mají pomoci s dalším krokem.
-- Canonical, sociální metadata, Article a BreadcrumbList. FAQ lze psát jako běžný obsah, FAQPage podle redakčního rozhodnutí nepřidáváme.
+- Canonical, sociální metadata, Article (vydavatel `PUBLISHER_JSON_LD` s logem z `src/lib/author.ts`) a BreadcrumbList odpovídající viditelné drobečkové navigaci. FAQ lze psát jako běžný obsah, FAQPage podle redakčního rozhodnutí nepřidáváme.
 - Přidat relevantní příchozí odkazy a sitemap. Datum měnit při věcné aktualizaci.
 
 ## Kontrola a předání

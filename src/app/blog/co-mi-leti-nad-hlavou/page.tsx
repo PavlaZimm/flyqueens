@@ -7,6 +7,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('co-mi-leti-nad-hlavou')!
 
@@ -99,7 +100,17 @@ export default function OverheadAircraftArticle() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Postup krok za krokem</h2>
+        <ArticleContents items={[
+          { id: 'postup-krok-za-krokem', label: "Postup krok za krokem" },
+          { id: 'proc-muze-byt-letadlo-na-mape-trochu', label: "Proč může být letadlo na mapě trochu jinde?" },
+          { id: 'co-o-letadle-skutecne-zjistite', label: "Co o letadle skutečně zjistíte" },
+          { id: 'proc-u-nektereho-letadla-chybi-trasa', label: "Proč u některého letadla chybí trasa nebo typ?" },
+          { id: 'uvidim-na-mape-kazde-letadlo', label: "Uvidím na mapě každé letadlo?" },
+          { id: 'jak-poznat-jestli-letadlo-stoupa-nebo', label: "Jak poznat, jestli letadlo stoupá nebo přistává" },
+          { id: 'kdyz-si-chcete-letani-take-vyzkouset', label: "Když si chcete létání také vyzkoušet" },
+        ]} />
+
+        <h2 id="postup-krok-za-krokem" style={S.h2}>Postup krok za krokem</h2>
         <ol style={{ ...S.p, paddingLeft: 22 }}>
           <li style={{ marginBottom: 8 }}>Otevřete radar a najděte oblast, ve které stojíte.</li>
           <li style={{ marginBottom: 8 }}>Podívejte se na směr pohybu letadla a porovnejte jej se směrem, odkud přichází zvuk.</li>
@@ -107,14 +118,14 @@ export default function OverheadAircraftArticle() {
           <li>Rozbalte detail, pokud chcete výšku, rychlost, registraci a dostupnou trasu.</li>
         </ol>
 
-        <h2 style={S.h2}>Proč může být letadlo na mapě trochu jinde?</h2>
+        <h2 id="proc-muze-byt-letadlo-na-mape-trochu" style={S.h2}>Proč může být letadlo na mapě trochu jinde?</h2>
         <p style={S.p}>
           Zvuk se šíří výrazně pomaleji než světlo. Než k vám hluk letadla z velké výšky dorazí, stroj už pokračoval
           dál. Svou roli hraje také vítr a krátké zpoždění mezi odvysíláním, přijetím a zobrazením dat. Proto se nedívejte
           jen přímo nad místo, odkud zvuk zdánlivě přichází, ale i kus před něj ve směru letu.
         </p>
 
-        <h2 style={S.h2}>Co o letadle skutečně zjistíte</h2>
+        <h2 id="co-o-letadle-skutecne-zjistite" style={S.h2}>Co o letadle skutečně zjistíte</h2>
         <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
@@ -142,21 +153,21 @@ export default function OverheadAircraftArticle() {
           </table>
         </div>
 
-        <h2 style={S.h2}>Proč u některého letadla chybí trasa nebo typ?</h2>
+        <h2 id="proc-u-nektereho-letadla-chybi-trasa" style={S.h2}>Proč u některého letadla chybí trasa nebo typ?</h2>
         <p style={S.p}>
           ADS-B zpráva může obsahovat polohu, výšku, rychlost a identifikaci letu, ale ne hotový popis cesty pro
           cestující. Trasa se obvykle páruje s dalším zdrojem podle volacího znaku. Když je znak prázdný, zadaný chybně,
           soukromý nebo se nepodaří najít odpovídající trasová metadata, je poctivější zobrazit „trasa není dostupná“ než hádat.
         </p>
 
-        <h2 style={S.h2}>Uvidím na mapě každé letadlo?</h2>
+        <h2 id="uvidim-na-mape-kazde-letadlo" style={S.h2}>Uvidím na mapě každé letadlo?</h2>
         <p style={S.p}>
           Ne. Zobrazení závisí na vybavení letadla, dostupnosti přijímačů, kvalitě signálu a pravidlech konkrétního zdroje.
           Hůře mohou být vidět některá malá, státní nebo vojenská letadla. Chybějící ikona proto neznamená, že je obloha
           prázdná. FlyQueens stav a zdroj dat ukazuje přímo v mapě.
         </p>
 
-        <h2 style={S.h2}>Jak poznat, jestli letadlo stoupá nebo přistává</h2>
+        <h2 id="jak-poznat-jestli-letadlo-stoupa-nebo" style={S.h2}>Jak poznat, jestli letadlo stoupá nebo přistává</h2>
         <p style={S.p}>
           Sledujte vertikální rychlost a vývoj výšky. Kladná hodnota obvykle znamená stoupání, záporná klesání. Samotné
           klesání ale nedokazuje, že letadlo míří na nejbližší letiště — může měnit letovou hladinu nebo pokračovat jinam.
@@ -171,7 +182,7 @@ export default function OverheadAircraftArticle() {
           </Link>
         </div>
 
-        <h2 style={S.h2}>Když si chcete létání také vyzkoušet</h2>
+        <h2 id="kdyz-si-chcete-letani-take-vyzkouset" style={S.h2}>Když si chcete létání také vyzkoušet</h2>
         <p style={S.p}>
           Sledování letadel může být začátek. Pokud vybíráte první vyhlídkový let, let balónem
           nebo zážitek v simulátoru, na našem dalším webu Flylady najdete{' '}

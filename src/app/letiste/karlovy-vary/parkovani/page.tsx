@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Parkování letiště Karlovy Vary: P1, P4, P5 a P7 (2026)',
@@ -77,7 +78,15 @@ export default function KarlovyVaryParkingPage() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Srovnání parkovišť</h2>
+        <ArticleContents items={[
+          { id: 'srovnani-parkovist', label: "Srovnání parkovišť" },
+          { id: 'p7-zdarma-ale-bez-jistoty-mista', label: "P7 zdarma, ale bez jistoty místa" },
+          { id: 'p4-bez-rezervace-nebo-s-rezervaci', label: "P4 bez rezervace nebo s rezervací" },
+          { id: 'p5-a-vip-p1', label: "P5 a VIP P1" },
+          { id: 'k-r-a-bezpecnost', label: "K+R a bezpečnost" },
+        ]} />
+
+        <h2 id="srovnani-parkovist" style={S.h2}>Srovnání parkovišť</h2>
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
@@ -99,22 +108,22 @@ export default function KarlovyVaryParkingPage() {
           </table>
         </div>
 
-        <h2 style={S.h2}>P7 zdarma, ale bez jistoty místa</h2>
+        <h2 id="p7-zdarma-ale-bez-jistoty-mista" style={S.h2}>P7 zdarma, ale bez jistoty místa</h2>
         <p style={S.p}>
           P7 je vyznačený pruh podél příjezdové komunikace od autobusové zastávky Letiště rozcestí k první křižovatce před terminálem. Krátkodobé i dlouhodobé stání je zdarma. Letiště upozorňuje, že zejména v letních měsících nemůže dostupnost garantovat.
         </p>
 
-        <h2 style={S.h2}>P4 bez rezervace nebo s rezervací</h2>
+        <h2 id="p4-bez-rezervace-nebo-s-rezervaci" style={S.h2}>P4 bez rezervace nebo s rezervací</h2>
         <p style={S.p}>
           P4 má podle letiště 131 míst a leží přibližně 80 metrů od terminálu. Prvních 15 minut je zdarma, první hodina stojí 20 Kč, první den 200 Kč a šest až osm dní 700 Kč. Každý další den stojí 100 Kč. Při online rezervaci se připočítává 500 Kč za každý započatý týden o délce osmi dní.
         </p>
 
-        <h2 style={S.h2}>P5 a VIP P1</h2>
+        <h2 id="p5-a-vip-p1" style={S.h2}>P5 a VIP P1</h2>
         <p style={S.p}>
           P5 má 86 míst, je přibližně 50 metrů od terminálu a vjezd je umožněn vozidlům se zaplacenou rezervací. Letiště uvádí rezervační poplatek 500 Kč za osm dní. VIP P1 leží přímo před terminálem a rezervace na osm dní stojí 968 Kč.
         </p>
 
-        <h2 style={S.h2}>K+R a bezpečnost</h2>
+        <h2 id="k-r-a-bezpecnost" style={S.h2}>K+R a bezpečnost</h2>
         <p style={S.p}>
           P2 má 15 stání před terminálem a slouží pouze pro rychlé nastoupení, vystoupení a manipulaci se zavazadly. P3 a P6 nejsou veřejnosti přístupné. Oficiální web zároveň uvádí, že parkoviště nejsou hlídaná, proto v autě nenechávejte viditelně cennosti.
         </p>

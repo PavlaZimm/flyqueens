@@ -8,6 +8,7 @@ import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'praha-santiago-de-compostela')!
 const title = 'Praha–Santiago de Compostela přímo: Fly2Galicia od prosince'
@@ -83,22 +84,31 @@ export default function PrahaSantiagoArticle() {
 
         <figure className={styles.photo}><Image src="/blog/santiago-de-compostela-katedrala.webp" alt="Věže katedrály v Santiagu de Compostela nad střechami starého města ve večerním světle" width={1600} height={1067} sizes={sizes} preload /><figcaption>Katedrála v Santiagu de Compostela z parku Alameda. Foto: <a href="https://commons.wikimedia.org/wiki/File:Santiago_Compostela_Cathedral_2023_-_View_from_Alameda_Park.jpg">Fernando Pascullo, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, zmenšeno.</figcaption></figure>
 
-        <h2>Kdy a v kolik se létá?</h2>
+        <ArticleContents items={[
+          { id: 'kdy-a-v-kolik-se-leta', label: "Kdy a v kolik se létá?" },
+          { id: 'kdo-let-skutecne-provadi', label: "Kdo let skutečně provádí?" },
+          { id: 'na-co-si-dat-pozor-u-noveho-dopravce', label: "Na co si dát pozor u nového dopravce?" },
+          { id: 'kolik-stoji-letenka-a-co-obsahuje', label: "Kolik stojí letenka a co obsahuje?" },
+          { id: 'jak-se-z-letiste-dostanete-do-santiaga', label: "Jak se z letiště dostanete do Santiaga?" },
+          { id: 'caste-otazky', label: "Časté otázky" },
+        ]} />
+
+        <h2 id="kdy-a-v-kolik-se-leta">Kdy a v kolik se létá?</h2>
         <p>Spoj je dvakrát týdně, ve středu a v neděli. Oba dny uvádí Fly2Galicia u Prahy na <a href="https://fly2galicia.com/destino/praga/">svém webu</a>, začátek 2. prosince potvrdilo i <a href="https://x.com/PragueAirport/status/2089736858250932398">Letiště Praha</a>. Celá síť Fly2Galicia má začít o den dřív, 1. prosince 2026.</p>
         <p>Z Prahy se podle údajů z rezervace odlétá v 18:40 a v Santiagu se přistává ve 21:50. Zpět letadlo odlétá ve 14:35 a do Prahy přiletí v 17:50. Španělsko má stejný čas jako Česko, cesta tam tedy trvá 3 hodiny 10 minut a zpátky o pět minut déle. Konečné časy si zkontrolujte přímo v rezervaci, u nového spoje se ještě mohou změnit.</p>
         <p>Ze středy do neděle vychází výlet na čtyři noci, z neděle do středy na tři. Na delší pobyt si zpáteční let posuňte o jeden nebo více týdnů.</p>
 
-        <h2>Kdo let skutečně provádí?</h2>
+        <h2 id="kdo-let-skutecne-provadi">Kdo let skutečně provádí?</h2>
         <p>Fly2Galicia není letecká společnost v obvyklém smyslu. Nemá vlastní osvědčení leteckého provozovatele (AOC), bez kterého nelze vozit cestující. Značku používá španělská firma Aviation &amp; Mobility Services Group, S.L. se sídlem v Santiagu. Ta letenky prodává a plánuje linky. Právní upozornění na <a href="https://fly2galicia.com/aviso-legal/">webu Fly2Galicia</a> to říká přímo: prodej letu pod touto značkou neznamená, že firma je držitelem AOC.</p>
         <p>Letadlo, posádku, údržbu a pojištění dodává rumunský dopravce FLYYO v režimu takzvaného wet lease. Podle španělského oborového webu <a href="https://www.hosteltur.com/178170_la-rumana-flyyo-operara-los-vuelos-de-fly2galicia-en-regimen-de-wet-lease.html">Hosteltur</a> FLYYO vznikl v roce 2021, létá od dubna 2024 a používá Airbusy A320 se 180 sedadly.</p>
         <figure className={styles.photo}><Image src="/blog/fly2galicia-flyyo-a320.webp" alt="Bílý Airbus A320 s registrací YR-ADC dopravce FLYYO při přistání" width={1600} height={1067} sizes={sizes} /><figcaption>Airbus A320 YR-ADC dopravce FLYYO, 8. května 2026 v Berlíně. Které letadlo bude létat do Prahy, zatím není známo. Foto: <a href="https://commons.wikimedia.org/wiki/File:Airbus_A320-214_(c-n_3256,_YR-ADC)_2026-05-08_Andre_Gerwing_Collection_ID_028659.jpg">André Gerwing, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, zmenšeno.</figcaption></figure>
         <p>Podle <a href={conditions}>přepravních podmínek</a> odpovídá za samotnou přepravu skutečný dopravce, tedy FLYYO, a platí i jeho přepravní podmínky. Reklamace týkající se rezervace řeší Fly2Galicia. Práva podle evropského nařízení 261/2004 při zpoždění nebo zrušení letu podmínky výslovně neomezují. Fly2Galicia si v nich ale vyhrazuje možnost změnit letadlo, a pokud je to nezbytné a právně možné, i skutečného dopravce.</p>
 
-        <h2>Na co si dát pozor u nového dopravce?</h2>
+        <h2 id="na-co-si-dat-pozor-u-noveho-dopravce">Na co si dát pozor u nového dopravce?</h2>
         <p>Firma za značkou Fly2Galicia vznikla v lednu 2026. Podle galicijského serveru <a href="https://www.galiciapress.es/articulo/empresas/2026-09-02/5999611-hay-realmente-detras-polemica-fly2galicia">Galiciapress</a> má základní kapitál 1 euro a je zapsaná hlavně jako cestovní agentura. To je legální, o finanční síle to ale moc neříká. Účetní závěrku firma zatím nemá, protože vznikla letos, a podle <a href="https://aviaciondigital.com/fly2galicia-no-es-aerolinea-aoc-propio/">Aviación Digital</a> má celý začátek stát na jediném letadle. Ve Španělsku se o projektu vede veřejná debata, předseda galicijské vlády se od něj podle <a href="https://www.elcorreogallego.es/santiago/2026/09/02/rueda-fly2galicia-raxoi-aeropuerto-santiago-133865812.html">El Correo Gallego</a> distancoval.</p>
         <p>Nic z toho neznamená, že lety nepoletí. Až do prvního odletu ale nikdo neví, jak spolehlivý provoz bude. Pokud hodně záleží na přesném termínu, například kvůli svatbě nebo navazujícímu spoji, počítejte s rezervou. Letenku zaplaťte platební kartou. Pokud by let neproběhl a peníze se nevrátily, můžete platbu reklamovat u své banky. A nekupujte zbytečně daleko dopředu.</p>
 
-        <h2>Kolik stojí letenka a co obsahuje?</h2>
+        <h2 id="kolik-stoji-letenka-a-co-obsahuje">Kolik stojí letenka a co obsahuje?</h2>
         <p>Server Cestujlevne.com v srpnu našel zpáteční letenku za 100,50 eur, přibližně 2 432 Kč, na lety od ledna do léta 2027. Honzovy letenky psaly o 2 489 Kč, bez upřesnění, jestli jde o zpáteční cenu. Zdopravy.cz uvádějí ceny od 49 eur za jednu cestu. Sami jsme ceny v rezervačním systému neověřili, protože se nám ho nepodařilo vyplnit. Takové ceny se týkají nejlevnějšího tarifu Economy Go a jen některých termínů.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -115,7 +125,7 @@ export default function PrahaSantiagoArticle() {
         <p>Tarify Economy Go, Plus ani Premium nejsou vratné. Let v nich změníte nejpozději 24 hodin před odletem a poplatek se platí za každého cestujícího a každý úsek zvlášť. Když je nový let levnější, rozdíl vám nevrátí. Změna jména stojí 70 eur plus případný rozdíl ceny a jde nejpozději 7 dní před odletem. Na palubě dostanete v ekonomické třídě kávu nebo čaj a malé občerstvení zdarma (<a href={faq}>Fly2Galicia</a>).</p>
         <p>Pokud jedete na Svatojakubskou cestu, batoh do kabiny smí mít nejvýš 55 × 40 × 20 cm a 8 kilogramů. Větší trekový batoh se do toho nevejde. Trekové hole nebo nůž si před cestou ověřte v pravidlech bezpečnostní kontroly. Pokud do kabiny nesmějí, budete potřebovat odbavené zavazadlo.</p>
 
-        <h2>Jak se z letiště dostanete do Santiaga?</h2>
+        <h2 id="jak-se-z-letiste-dostanete-do-santiaga">Jak se z letiště dostanete do Santiaga?</h2>
         <p>Letiště Santiago–Rosalía de Castro, místně Lavacolla, leží asi 12 kilometrů od historického centra. Po příletu ve 21:50 máte dvě možnosti (<a href="https://santiago.es/aeropuerto">město Santiago de Compostela</a>, <a href="https://www.aena.es/en/santiago-rosalia-de-castro/getting-there/bus.html">Aena</a>):</p>
         <ul>
           <li><strong>Autobus 6A</strong> jezdí zhruba do půl jedné v noci, v pracovní dny jednou za 20–30 minut, o víkendu jednou za 30–60 minut. Stojí 1 euro v hotovosti u řidiče, cesta trvá 25–50 minut a končí na náměstí Praza de Galicia na kraji starého města. Po cestě staví i u vlakového a autobusového nádraží (Estación Intermodal).</li>
@@ -123,7 +133,7 @@ export default function PrahaSantiagoArticle() {
         </ul>
         <p>Když večerní let nabere velké zpoždění, poslední autobus už stihnout nemusíte. Město zvažuje zvláštní letištní jízdné 6 eur, zatím ale platí 1 euro. Z letiště jezdí také meziměstské autobusy Monbus do A Coruñi a do Luga. Ty do Luga staví mimo jiné v obcích Arzúa a Palas de Rei na Svatojakubské cestě.</p>
 
-        <h2>Časté otázky</h2>
+        <h2 id="caste-otazky">Časté otázky</h2>
         <div className={styles.faq}>
           <h3>Je Fly2Galicia nízkonákladová letecká společnost?</h3>
           <p>Prodává letenky podobně jako nízkonákladoví dopravci, se základním tarifem jen s příručním zavazadlem a připlácením za služby. Sama ale neletí. Lety provádí rumunský FLYYO na základě pronájmu letadla s posádkou.</p>

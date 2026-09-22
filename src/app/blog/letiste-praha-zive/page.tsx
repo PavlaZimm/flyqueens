@@ -7,6 +7,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = getPost('letiste-praha-zive')!
 
@@ -103,7 +104,19 @@ export default function ZiveArticle() {
           </p>
         </div>
 
-        <h2 style={S.h2}>Webkamera versus živá mapa</h2>
+        <ArticleContents items={[
+          { id: 'webkamera-versus-ziva-mapa', label: "Webkamera versus živá mapa" },
+          { id: 'kde-najdete-webkameru-z-prazskeho', label: "Kde najdete webkameru z pražského letiště" },
+          { id: 'prg-lkpr-nebo-ruzyne-jaky-je-mezi-nimi', label: "PRG, LKPR nebo Ruzyně: jaký je mezi nimi rozdíl?" },
+          { id: 'jak-vlastne-mapa-vi-kde-letadlo-je', label: "Jak vlastně mapa ví, kde letadlo je?" },
+          { id: 'co-se-da-z-letu-vycist', label: "Co se dá z letu vyčíst" },
+          { id: 'jak-najit-konkretni-let', label: "Jak najít konkrétní let" },
+          { id: 'kdy-je-nad-prahou-nejvic-rusno', label: "Kdy je nad Prahou nejvíc rušno" },
+          { id: 'vyplati-se-sledovat-konkretni-let', label: "Vyplatí se sledovat konkrétní let?" },
+          { id: 'co-resit-pred-cestou-na-letiste', label: "Co řešit před cestou na letiště" },
+        ]} />
+
+        <h2 id="webkamera-versus-ziva-mapa" style={S.h2}>Webkamera versus živá mapa</h2>
         <p style={S.p}>
           Webkamera je fajn na atmosféru. Vidíte počasí, provoz na stojánce, občas přistání. Má ale dvě slabiny:
           záběr je pevný a v noci nebo v mlze neuvidíte skoro nic. Živá mapa není závislá na denním světle ani
@@ -136,7 +149,7 @@ export default function ZiveArticle() {
           </table>
         </div>
 
-        <h2 style={S.h2}>Kde najdete webkameru z pražského letiště</h2>
+        <h2 id="kde-najdete-webkameru-z-prazskeho" style={S.h2}>Kde najdete webkameru z pražského letiště</h2>
         <p style={S.p}>
           Letiště Praha provozuje vlastní živý přenos a má pro něj samostatnou stránku{' '}
           <a href="https://www.prg.aero/planespotting" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--gold)' }}>
@@ -166,21 +179,21 @@ export default function ZiveArticle() {
           Pokud vás baví spíš focení než sledování z gauče, je to lepší start než bloudění kolem plotu.
         </p>
 
-        <h2 style={S.h2}>PRG, LKPR nebo Ruzyně: jaký je mezi nimi rozdíl?</h2>
+        <h2 id="prg-lkpr-nebo-ruzyne-jaky-je-mezi-nimi" style={S.h2}>PRG, LKPR nebo Ruzyně: jaký je mezi nimi rozdíl?</h2>
         <p style={S.p}>
           PRG je třípísmenný IATA kód používaný cestujícími, aerolinkami a rezervačními systémy. LKPR je
           čtyřpísmenný ICAO kód používaný v leteckém provozu. Ruzyně je původní a stále běžně používané
           místní označení. Všechny tři názvy odkazují na Letiště Václava Havla Praha.
         </p>
 
-        <h2 style={S.h2}>Jak vlastně mapa ví, kde letadlo je?</h2>
+        <h2 id="jak-vlastne-mapa-vi-kde-letadlo-je" style={S.h2}>Jak vlastně mapa ví, kde letadlo je?</h2>
         <p style={S.p}>
           Vybavené letadlo vysílá přes ADS-B identitu, polohu a další údaje odvozené z palubních systémů.
           Signál zachytávají pozemní nebo satelitní přijímače a dostupné zdroje je mohou agregovat. Pokrytí
           FlyQueens je omezené zvolenou oblastí a dostupností zdroje, nejde o úplný obraz provozu.
         </p>
 
-        <h2 style={S.h2}>Co se dá z letu vyčíst</h2>
+        <h2 id="co-se-da-z-letu-vycist" style={S.h2}>Co se dá z letu vyčíst</h2>
         <p style={S.p}>
           Když na letadlo kliknete, dostanete víc než jen tečku na mapě. Uvidíte volací znak, typ stroje,
           barometrickou výšku převedenou do metrů, rychlost a kurz. Pokud se podaří přiřadit trasová metadata,
@@ -188,7 +201,7 @@ export default function ZiveArticle() {
           trasu. Vertikální rychlost napoví, zda stroj stoupá nebo klesá; sama ale nepotvrzuje, na které letiště míří.
         </p>
 
-        <h2 style={S.h2}>Jak najít konkrétní let</h2>
+        <h2 id="jak-najit-konkretni-let" style={S.h2}>Jak najít konkrétní let</h2>
         <p style={S.p}>
           Nejrychlejší je zadat číslo letu z letenky nebo zprávy aerolinky, například ve tvaru QS123 nebo
           FR1234. Vyhledávání umí pracovat také s registrací letadla a ICAO adresou. Pokud číslo nic nenajde,
@@ -196,20 +209,20 @@ export default function ZiveArticle() {
           volací znak. V takovém případě ověřte stav na oficiální tabuli letiště.
         </p>
 
-        <h2 style={S.h2}>Kdy je nad Prahou nejvíc rušno</h2>
+        <h2 id="kdy-je-nad-prahou-nejvic-rusno" style={S.h2}>Kdy je nad Prahou nejvíc rušno</h2>
         <p style={S.p}>
           Intenzita se mění podle aktuálního letového řádu, dne a sezóny. Nejspolehlivější je otevřít živou
           mapu spolu s oficiální tabulí příletů a odletů letiště; bez těchto dat nechceme tvrdit pevné hodiny špičky.
         </p>
 
-        <h2 style={S.h2}>Vyplatí se sledovat konkrétní let?</h2>
+        <h2 id="vyplati-se-sledovat-konkretni-let" style={S.h2}>Vyplatí se sledovat konkrétní let?</h2>
         <p style={S.p}>
           Mapa je dobrá pro orientaci, kde se zachycené letadlo nachází. Pro vyzvednutí cestujícího ale berte
           jako autoritativní oficiální tabuli letiště: veřejná ADS-B data mohou mít zpoždění, výpadek pokrytí
           nebo chybné přiřazení trasy.
         </p>
 
-        <h2 style={S.h2}>Co řešit před cestou na letiště</h2>
+        <h2 id="co-resit-pred-cestou-na-letiste" style={S.h2}>Co řešit před cestou na letiště</h2>
         <p style={S.p}>
           Živá mapa pomůže zjistit, zda se letadlo blíží, nenahrazuje ale potvrzený čas příletu ani číslo
           terminálu. Před odjezdem zkontrolujte oficiální stav letu. Pokud jedete autem, podívejte se také na

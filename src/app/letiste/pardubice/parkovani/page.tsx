@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ParkingCrossLinks } from '@/components/UI/ParkingCrossLinks'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
 export const metadata: Metadata = {
   title: 'Parkování letiště Pardubice: zdarma u terminálu (2026)',
@@ -46,7 +47,14 @@ export default function PardubiceParkingPage() {
           </p>
         </div>
 
-        <h2 style={S.h2}>P1 a P2 pro delší stání</h2>
+        <ArticleContents items={[
+          { id: 'p1-a-p2-pro-delsi-stani', label: "P1 a P2 pro delší stání" },
+          { id: 'k-r-pro-vysazeni-a-vyzvednuti', label: "K+R pro vysazení a vyzvednutí" },
+          { id: 'kolik-casu-si-nechat', label: "Kolik času si nechat" },
+          { id: 'alternativa-bez-auta', label: "Alternativa bez auta" },
+        ]} />
+
+        <h2 id="p1-a-p2-pro-delsi-stani" style={S.h2}>P1 a P2 pro delší stání</h2>
         <p style={S.p}>
           Obě odstavné plochy jsou určené pro dlouhodobé parkování. Letiště uvádí, že jsou zdarma a není potřeba rezervace. Proto zde nedoporučujeme placenou alternativu ani partnerský odkaz, který by pro cestujícího nedával smysl.
         </p>
@@ -54,17 +62,17 @@ export default function PardubiceParkingPage() {
           Bezplatné parkování neznamená hlídanou garáž. Před odchodem zkontrolujte uzamčení auta, nenechávejte cennosti na viditelném místě a řiďte se aktuálním značením v areálu.
         </p>
 
-        <h2 style={S.h2}>K+R pro vysazení a vyzvednutí</h2>
+        <h2 id="k-r-pro-vysazeni-a-vyzvednuti" style={S.h2}>K+R pro vysazení a vyzvednutí</h2>
         <p style={S.p}>
           Místa K+R jsou přímo před hlavní budovou a slouží k rychlému naložení nebo vyložení cestujících. Maximální doba stání je 20 minut. Pokud chcete doprovodit cestujícího do terminálu nebo čekáte na zpožděný přílet, použijte raději P1 či P2.
         </p>
 
-        <h2 style={S.h2}>Kolik času si nechat</h2>
+        <h2 id="kolik-casu-si-nechat" style={S.h2}>Kolik času si nechat</h2>
         <p style={S.p}>
           Letiště doporučuje příjezd dvě hodiny před plánovaným odletem. Přestože je parkoviště blízko, počítejte s časem na nalezení místa, vyložení zavazadel a bezpečnostní kontrolu. Stav letu ověřte na <a href="https://www.airport-pardubice.cz/letovy-rad/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-blue)' }}>oficiální tabuli odletů a příletů</a>.
         </p>
 
-        <h2 style={S.h2}>Alternativa bez auta</h2>
+        <h2 id="alternativa-bez-auta" style={S.h2}>Alternativa bez auta</h2>
         <p style={S.p}>
           Linka MHD 90 spojuje hlavní nádraží se zastávkou přímo u terminálu. Protože jízdní řád reaguje na sezonní provoz, zkontrolujte konkrétní spoj před cestou na webu dopravního podniku.
         </p>
