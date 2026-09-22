@@ -7,6 +7,7 @@ import { LiveRadarPreview } from '@/components/Landing/LiveRadarPreview'
 import { HomeThemeToggle } from '@/components/Landing/HomeThemeToggle'
 import { RadarLink, RadarSearch } from '@/components/Landing/RadarActions'
 import { BLOG_CARDS } from '@/lib/blog'
+import { PUBLISHER_JSON_LD } from '@/lib/author'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
@@ -43,10 +44,18 @@ export default function HomePage() {
 
   const organizationJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'FlyQueens',
-    url: 'https://www.flyqueens.cz',
-    description: 'Živá mapa dostupných ADS-B dat o letadlech ve vybraných oblastech Evropy.',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': 'https://www.flyqueens.cz/#website',
+        name: 'FlyQueens',
+        url: 'https://www.flyqueens.cz',
+        description: 'Živá mapa dostupných ADS-B dat o letadlech ve vybraných oblastech Evropy.',
+        inLanguage: 'cs-CZ',
+        publisher: { '@id': PUBLISHER_JSON_LD['@id'] },
+      },
+      PUBLISHER_JSON_LD,
+    ],
   }
 
   return (
@@ -79,7 +88,7 @@ export default function HomePage() {
               <div className={styles.heroCopy}>
                 <LiveFlightCount className={styles.liveFlightCount} dotClassName={styles.liveDot} />
                 <h1>
-                  Víš, co ti právě letí <span>nad hlavou.</span>
+                  Sledování letů online: víš, co ti letí <span>nad hlavou?</span>
                 </h1>
                 <p>
                   Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.

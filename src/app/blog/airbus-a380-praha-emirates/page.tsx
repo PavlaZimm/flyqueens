@@ -9,7 +9,7 @@ import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
-import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
+import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 
 const post = getPost('airbus-a380-praha-emirates')!
 
@@ -42,7 +42,7 @@ const jsonLd = {
   inLanguage: 'cs-CZ',
   timeRequired: 'PT6M',
   author: AUTHOR_JSON_LD,
-  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
+  publisher: PUBLISHER_JSON_LD,
   isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
   mainEntityOfPage: 'https://www.flyqueens.cz/blog/airbus-a380-praha-emirates',
   about: {
@@ -51,6 +51,16 @@ const jsonLd = {
     iataCode: 'EK',
     url: 'https://www.emirates.com/',
   },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'FlyQueens', item: 'https://www.flyqueens.cz' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.flyqueens.cz/blog' },
+    { '@type': 'ListItem', position: 3, name: post.title, item: 'https://www.flyqueens.cz/blog/airbus-a380-praha-emirates' },
+  ],
 }
 
 const S = {
@@ -62,7 +72,7 @@ const S = {
 export default function A380PrahaArticle() {
   return (
     <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
         <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
@@ -263,7 +273,7 @@ export default function A380PrahaArticle() {
             ověřte také přímo u Emirates nebo na tabuli Letiště Praha.
           </p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
+            <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
               Otevřít živou mapu
             </Link>
             <a

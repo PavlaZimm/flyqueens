@@ -20,7 +20,7 @@
   border: 1px solid rgba(245, 166, 35, 0.45);
   border-radius: 50%;
   background: linear-gradient(145deg, var(--gold), #dc8612);
-  color: var(--cta-text);
+  color: var(--on-gold);
   font-family: Archivo, sans-serif;
   font-size: 23px;
   font-weight: 900;

@@ -12,3 +12,17 @@ export const AUTHOR_JSON_LD = {
   jobTitle: AUTHOR.role,
   description: AUTHOR.bio,
 }
+
+/** Vydavatel pro strukturovaná data článků; logo podle pravidel Google (min. 112 × 112 px). */
+export const PUBLISHER_JSON_LD = {
+  '@type': 'Organization',
+  '@id': 'https://www.flyqueens.cz/#organization',
+  name: 'FlyQueens',
+  url: 'https://www.flyqueens.cz',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://www.flyqueens.cz/icons/icon-512.png',
+    width: 512,
+    height: 512,
+  },
+}

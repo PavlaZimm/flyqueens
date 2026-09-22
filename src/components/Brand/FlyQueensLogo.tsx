@@ -18,10 +18,10 @@ export function CrownMark({ size = 34 }: { size?: number }) {
       role="img"
     >
       <rect width="64" height="64" rx="16" fill="var(--gold)" />
-      <path d="M32 13l5.4 12.4H26.6L32 13z" fill="var(--cta-text)" />
-      <path d="M18.5 22.5l6.2 12.9-11.3-3.6 5.1-9.3z" fill="var(--cta-text)" />
-      <path d="M45.5 22.5l5.1 9.3-11.3 3.6 6.2-12.9z" fill="var(--cta-text)" />
-      <rect x="13" y="42" width="38" height="7" rx="3.5" fill="var(--cta-text)" />
+      <path d="M32 13l5.4 12.4H26.6L32 13z" fill="var(--on-gold)" />
+      <path d="M18.5 22.5l6.2 12.9-11.3-3.6 5.1-9.3z" fill="var(--on-gold)" />
+      <path d="M45.5 22.5l5.1 9.3-11.3 3.6 6.2-12.9z" fill="var(--on-gold)" />
+      <rect x="13" y="42" width="38" height="7" rx="3.5" fill="var(--on-gold)" />
     </svg>
   )
 }

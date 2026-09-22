@@ -91,7 +91,7 @@
 .radarLink:hover,
 .radarLink:focus-visible {
   background: var(--gold);
-  color: var(--cta-text);
+  color: var(--on-gold);
 }
 
 @media (max-width: 820px) {

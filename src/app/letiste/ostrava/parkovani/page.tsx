@@ -136,7 +136,7 @@ export default function ParkovaniOstravaPage() {
           <p style={{ ...S.p, marginBottom: 12 }}>
             Podívejte se, co zrovna letí nad Moravou. Živá mapa ukazuje poslední dostupné polohy letadel.
           </p>
-          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
+          <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
             Otevřít živou mapu
           </Link>
         </div>

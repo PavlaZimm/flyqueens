@@ -24,7 +24,7 @@
 .tip p:last-child { margin-bottom: 0; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
 .actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px; border: 1px solid var(--border-mid); border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; }
-.actions .primary { background: var(--gold); color: var(--cta-text); border-color: var(--gold); }
+.actions .primary { background: var(--gold); color: var(--on-gold); border-color: var(--gold); }
 .article ol, .article ul { padding-left: 24px; }
 .article li { margin-bottom: 10px; }
 @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .article { padding-inline: 18px; } .article h2 { font-size: 23px; } }
