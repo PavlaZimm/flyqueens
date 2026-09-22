@@ -37,11 +37,11 @@ export default function BlogIndexPage() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {posts.map((p) => (
+          {posts.map((p, i) => (
             <Link key={p.slug} href={p.href} style={{ textDecoration: 'none' }}>
               <article style={{ overflow: 'hidden', background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12 }}>
                 <div style={{ position: 'relative', aspectRatio: '16 / 6', background: 'var(--midnight-3)' }}>
-                  <Image src={p.image} alt={p.imageAlt} fill sizes="(max-width: 796px) calc(100vw - 36px), 760px" style={{ objectFit: 'cover', objectPosition: p.imagePosition ?? 'center' }} />
+                  <Image src={p.image} alt={p.imageAlt} fill preload={i === 0} sizes="(max-width: 796px) calc(100vw - 36px), 760px" style={{ objectFit: 'cover', objectPosition: p.imagePosition ?? 'center' }} />
                 </div>
                 <div style={{ padding: '16px 18px' }}>
                   <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>{p.tag}</div>

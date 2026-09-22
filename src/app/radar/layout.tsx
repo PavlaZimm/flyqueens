@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
+import ReactDOM from 'react-dom'
 import { socialMetadata } from '@/lib/socialMetadata'
+// Styly mapy jen pro radar, ostatní stránky je nepotřebují.
+import 'leaflet/dist/leaflet.css'
 
 export const metadata: Metadata = {
   title: 'Radar letadel: živá mapa letadel online | FlyQueens',
@@ -13,5 +16,6 @@ export const metadata: Metadata = {
 }
 
 export default function RadarLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  ReactDOM.preconnect('https://tile.openstreetmap.org', { crossOrigin: 'anonymous' })
   return children
 }
