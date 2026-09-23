@@ -86,3 +86,18 @@ Originály uložené v `Fotografie/Santiago de Compostela/`. WebP kopie 1600 px,
 |---|---|---|---|
 | `santiago-de-compostela-katedrala.webp` (1600 × 1067, 204 kB) | [Fernando Pascullo, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Santiago_Compostela_Cathedral_2023_-_View_from_Alameda_Park.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Katedrála z parku Alameda, 30. 4. 2023. Náhled článku. |
 | `fly2galicia-flyyo-a320.webp` (1600 × 1067, 33 kB) | [André Gerwing, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Airbus_A320-214_(c-n_3256,_YR-ADC)_2026-05-08_Andre_Gerwing_Collection_ID_028659.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | A320 YR-ADC dopravce FLYYO, Berlín, 8. 5. 2026. Ilustrační, není jisté, že bude létat do Prahy. |
+
+## Letiště Kodaň: článek (23. září 2026)
+
+Pavla vlastní fotky z letiště Kodaň nemá (potvrzeno 23. 9. 2026), použity jsou snímky
+z Wikimedia Commons. Originály v plném rozlišení jsou v `Fotografie/Letiště Kodaň/`,
+webové kopie jsou zmenšené na 1600 px a převedené do WebP, bez ořezu a jiných úprav.
+Letecký snímek `Copenhagen airport from air.jpg` záměrně nepoužíváme, má ho sesterský
+kastrup.cz. Podrobnosti výběru: `Vyzkum/letiste-kodan/fotografie.md`.
+
+| Soubor v `public/blog` | Autor a zdroj | Licence | Rozměry, velikost | Poznámka |
+|---|---|---|---|---|
+| `letiste-kodan-terminal-3-odbaveni.webp` | [JIP, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Landside_of_Copenhagen_Airport_on_an_afternoon_in_April_2025.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1200, 176 744 B | Odbavovací hala T3, 2. 4. 2025. Hlavní fotka a náhled. |
+| `letiste-kodan-za-bezpecnostni-kontrolou.webp` | [JIP, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Airside_at_Copenhagen_Airport_in_April_2025.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1200, 188 056 B | Prostor za bezpečnostní kontrolou, 2. 4. 2025. |
+| `letiste-kodan-sas-embraer.webp` | [Andrzej Otrębski, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:CPH_SE-RSO.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1067, 53 794 B | Embraer 195 SAS SE-RSO, 17. 1. 2025 (typ a registrace podle autora). |
+| `letiste-kodan-sas-pristani.webp` | [Flygklubben, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:SAS_landing_at_CPH.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1200, 68 590 B | Letadlo SAS před přistáním, 12. 4. 2025. Typ ani dráhu autor neuvádí. |

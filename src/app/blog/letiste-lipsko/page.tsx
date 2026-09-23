@@ -164,6 +164,7 @@ export default function LetisteLipskoArticle() {
         <RelatedReading items={[
           { href: '/blog/boeing-747-praha-fly-meta', eyebrow: 'Nákladní letadla', title: 'Boeing 747 v Praze', description: 'Nákladní jumbo Fly Meta při přistání, vyfocené z Kněževsi.' },
           { href: '/letiste/praha/parkovani', eyebrow: 'Srovnání', title: 'Parkování u letiště Praha', description: 'Ceny a možnosti parkování u Letiště Václava Havla.' },
+          { href: '/blog/letiste-kodan', eyebrow: 'Letiště · Dánsko', title: 'Letiště Kodaň', description: 'Přímé lety z Prahy, terminály T2 a T3 a ceny parkování.' },
         ]} />
         <SourcesBox sources={[
           { label: 'Letiště Lipsko/Halle: vlak a autobus', href: `${lej}/anreise-abreise/bus-bahn/` },
