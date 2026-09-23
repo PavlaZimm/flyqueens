@@ -3,7 +3,7 @@ import { FlyQueensLogo } from '@/components/Brand/FlyQueensLogo'
 import { HomeThemeToggle } from '@/components/Landing/HomeThemeToggle'
 import styles from './SiteHeader.module.css'
 
-export function SiteHeader({ activeSection }: { activeSection: 'blog' | 'letiste' | 'stats' }) {
+export function SiteHeader({ activeSection }: { activeSection?: 'blog' | 'letiste' | 'stats' }) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>

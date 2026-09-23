@@ -80,8 +80,12 @@ export function CookieConsent() {
         </>
       )}
 
-      {ready && (consent === null || editing) && (
+      {/* Lišta je už v serverovém HTML, aby se ukázala hned a nebrzdila LCP.
+          Kdo volbu uložil, tomu ji skript v <head> skryje ještě před vykreslením. */}
+      {(!ready || consent === null || editing) && (
         <div
+          className="fq-consent-banner"
+          data-editing={editing ? '' : undefined}
           role="dialog"
           aria-label="Souhlas s cookies"
           style={{

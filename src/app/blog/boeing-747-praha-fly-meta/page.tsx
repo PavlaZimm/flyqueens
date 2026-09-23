@@ -8,7 +8,8 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'boeing-747-praha-fly-meta')!
@@ -53,13 +54,14 @@ export default function Boeing747FlyMetaArticle() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/blog">Blog</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Boeing 747 v Praze</span>
-        </nav>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Boeing 747 v Praze"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>Na našich fotografiích přistává Boeing 747 v barvách Fly Meta na Letišti Václava Havla Praha. Záběry vznikly z Kněževsi 16. září 2026. Na trupu je kromě velkého nápisu Fly Meta vidět i registrace 9H-FLM, podle které lze určit konkrétní stroj: nákladní Boeing 747-400F.</p>
         <figure className={styles.photo}><Image src="/spotting/praha-boeing-747-fly-meta.webp" alt="Boeing 747 Fly Meta s registrací 9H-FLM při přistání v Praze" width={1600} height={780} sizes="(max-width: 800px) calc(100vw - 36px), 760px" preload /><figcaption>Boeing 747 v okamžiku dosednutí, za hlavním podvozkem je vidět kouř od pneumatik. Foto: vlastní archiv FlyQueens.</figcaption></figure>
         <ArticleContents items={[

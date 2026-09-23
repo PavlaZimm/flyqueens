@@ -5,7 +5,8 @@ import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const title = 'Ubytování u letiště Praha: hotely a cesta k terminálu'
 const description = 'Ubytování u letiště Praha podle cesty k terminálu. Srovnání hotelů, veřejné a tranzitní AeroRooms, transfery i rady k parkování před ranním odletem.'
@@ -52,15 +53,14 @@ export default function PrahaUbytovaniPage() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/letiste">Letiště</Link><span aria-hidden="true">/</span>
-          <Link href="/letiste/praha">Praha</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Ubytování</span>
-        </nav>
-        <div className={styles.eyebrow}>Praha · Noc před odletem</div>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={date} dateLabel="18. září 2026" readingTime="5 min čtení" />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/letiste', label: 'Letiště' }, { href: '/letiste/praha', label: 'Praha' }]}
+          current="Ubytování"
+          eyebrow="Praha · Noc před odletem"
+          byline=<AuthorByline dateIso={date} dateLabel="18. září 2026" readingTime="5 min čtení" />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>
           Ubytování u letiště Praha vybírejte podle toho, jak se ráno dostanete ke svému terminálu.
           Z některých hotelů dojdete pěšky, u jiných potřebujete předem objednaný odvoz.

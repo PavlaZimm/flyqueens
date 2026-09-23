@@ -94,7 +94,7 @@ export default function RootLayout({
         <meta name="impact-site-verification" content="a3b0fde4-f8f0-4760-a162-47cc1a925d93" {...{ value: "a3b0fde4-f8f0-4760-a162-47cc1a925d93" }} />
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{if(localStorage.getItem('flyqueens-theme')==='light')document.documentElement.classList.add('light')}catch{}",
+            __html: "try{var s=localStorage,c=document.documentElement.classList;if(s.getItem('flyqueens-theme')==='light')c.add('light');var v=s.getItem('fq-cookie-consent-v3');if(v==='granted'||v==='denied'||s.getItem('fq-cookie-consent-v2')==='denied')c.add('fq-consent-set')}catch{}",
           }}
         />
       </head>

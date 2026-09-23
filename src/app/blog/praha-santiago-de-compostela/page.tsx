@@ -7,7 +7,8 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'praha-santiago-de-compostela')!
@@ -56,13 +57,14 @@ export default function PrahaSantiagoArticle() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/blog">Blog</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Praha–Santiago de Compostela</span>
-        </nav>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Praha–Santiago de Compostela"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>Od středy 2. prosince 2026 se z Prahy dá letět přímo do Santiaga de Compostela, do cíle Svatojakubské cesty. Spoje jsou ve středu a v neděli a prodávají se pod značkou Fly2Galicia. Samotný let ale provádí rumunský dopravce FLYYO, a to má vliv na reklamace. Nejlevnější letenka zahrnuje jen příruční zavazadlo. Z letiště se po příletu ve 21:50 dostanete do města autobusem za 1 euro nebo taxíkem.</p>
 
         <div className={styles.tableWrap}>

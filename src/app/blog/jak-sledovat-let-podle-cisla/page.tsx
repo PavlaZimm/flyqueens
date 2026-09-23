@@ -8,6 +8,8 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { ArticleContents } from '@/components/UI/ArticleContents'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const post = getPost('jak-sledovat-let-podle-cisla')!
 
@@ -55,28 +57,21 @@ const breadcrumbJsonLd = {
   ],
 }
 
-const S = {
-  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
-  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
-} as const
 
 export default function TrackFlightNumberArticle() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+    <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
-        <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
-          {' · '}
-          <Link href="/blog" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>Blog</Link>
-        </nav>
-
-        <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
-        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
+      <article className={styles.article}>
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current={post.title}
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} updatedLabel="14. září 2026" />
+        >
           Sledování letů podle čísla: kde je letadlo online
-        </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} updatedLabel="14. září 2026" />
+        </ArticleHeader>
 
         <ArticleHero
           src={post.image}
@@ -86,7 +81,7 @@ export default function TrackFlightNumberArticle() {
           creditHref="https://unsplash.com/photos/airplane-from-above-Fk35BtkRO7g"
         />
 
-        <p style={S.p}>
+        <p className={styles.lead}>
           Čekáte na někoho na letišti, sledujete cestu rodiny nebo chcete zjistit, kudy letí konkrétní spoj? Obvykle
           stačí číslo letu z letenky, palubní vstupenky nebo zprávy aerolinky. Je ale důležité vědět, co přesně mapa hledá
           a proč může používat trochu jiný kód.
@@ -94,7 +89,7 @@ export default function TrackFlightNumberArticle() {
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlý postup</div>
-          <ol style={{ ...S.p, margin: 0, paddingLeft: 20 }}>
+          <ol style={{ margin: 0, paddingLeft: 20 }}>
             <li>Najděte číslo letu na letence nebo v aplikaci aerolinky, například QS123 nebo FR1234.</li>
             <li>Zadejte je do vyhledávání na <Link href="/radar" style={{ color: 'var(--gold)' }}>živé mapě FlyQueens</Link>.</li>
             <li>Čas, zpoždění, terminál a bránu potvrďte na oficiální tabuli letiště nebo u aerolinky.</li>
@@ -111,14 +106,14 @@ export default function TrackFlightNumberArticle() {
           { id: 'kteremu-udaji-verit-pri-ceste-na-letiste', label: "Kterému údaji věřit při cestě na letiště?" },
         ]} />
 
-        <h2 id="kde-najdu-cislo-letu" style={S.h2}>Kde najdu číslo letu?</h2>
-        <p style={S.p}>
+        <h2 id="kde-najdu-cislo-letu">Kde najdu číslo letu?</h2>
+        <p>
           Hledejte krátký kód aerolinky a číslo, ne číslo rezervace. Číslo letu bývá na letence, palubní vstupence,
           potvrzovacím e-mailu a v aplikaci dopravce. Rezervační kód bývá samostatná kombinace písmen a číslic a pro
           veřejné sledování letu obvykle nepomůže.
         </p>
 
-        <h2 id="cislo-letu-volaci-znak-a-registrace" style={S.h2}>Číslo letu, volací znak a registrace nejsou totéž</h2>
+        <h2 id="cislo-letu-volaci-znak-a-registrace">Číslo letu, volací znak a registrace nejsou totéž</h2>
         <div style={{ overflowX: 'auto', margin: '16px 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
@@ -144,19 +139,19 @@ export default function TrackFlightNumberArticle() {
             </tbody>
           </table>
         </div>
-        <p style={S.p}>
+        <p>
           IATA používá dvoupísmenné kódy aerolinek v rezervacích a letových řádech. V provozních datech se častěji
           objeví třípísmenný ICAO designátor. Vyhledávač proto musí umět mezi těmito tvary převádět; u neobvyklého nebo
           sdíleného letu se to nemusí vždy podařit automaticky.
         </p>
-        <p style={S.p}>
+        <p>
           Pozor na kód <strong>OK</strong>: České aerolinie pod ním přestaly létat na konci října 2024 a jejich
           spoje převzaly Smartwings s kódem QS a volacím znakem TVS. Starší návod nebo záložka s číslem ve tvaru
           OK123 proto dnes ve vyhledávání nic nenajde.
         </p>
 
-        <h2 id="proc-se-cislo-letu-na-mape-nezobrazuje" style={S.h2}>Proč se číslo letu na mapě nezobrazuje?</h2>
-        <ul style={{ ...S.p, paddingLeft: 22 }}>
+        <h2 id="proc-se-cislo-letu-na-mape-nezobrazuje">Proč se číslo letu na mapě nezobrazuje?</h2>
+        <ul style={{ paddingLeft: 22 }}>
           <li style={{ marginBottom: 8 }}>Let ještě neodstartoval nebo zatím není v oblasti načtené mapou.</li>
           <li style={{ marginBottom: 8 }}>Letadlo nevysílá použitelnou polohu nebo ji dostupný zdroj nezachytil.</li>
           <li style={{ marginBottom: 8 }}>Palubní systém vysílá jiné provozní označení než číslo uvedené cestujícím.</li>
@@ -164,29 +159,29 @@ export default function TrackFlightNumberArticle() {
           <li>Trasa nebo identifikace ve zdroji chybí; mapa proto spoj raději nepřiřadí.</li>
         </ul>
 
-        <h2 id="mapa-letu-a-letistni-tabule-resi-jinou" style={S.h2}>Mapa letu a letištní tabule řeší jinou otázku</h2>
-        <p style={S.p}>
+        <h2 id="mapa-letu-a-letistni-tabule-resi-jinou">Mapa letu a letištní tabule řeší jinou otázku</h2>
+        <p>
           Živá mapa odpovídá hlavně na „kde je letadlo a co právě dělá“. Letištní tabule odpovídá na „kdy přiletí,
           z jakého terminálu odlétá a zda je spoj zpožděný“. Pro vyzvednutí cestujícího je rozhodující oficiální stav
           letiště nebo dopravce; mapa je užitečný doplněk, ne náhrada provozního oznámení.
         </p>
 
-        <h2 id="jak-sledovat-prilet-do-prahy" style={S.h2}>Jak sledovat přílet do Prahy</h2>
-        <p style={S.p}>
+        <h2 id="jak-sledovat-prilet-do-prahy">Jak sledovat přílet do Prahy</h2>
+        <p>
           Nejprve ověřte číslo a stav letu na oficiální tabuli Letiště Praha. Když je let ve vzduchu, otevřete mapu a
           vyhledejte číslo. Uvidíte, zda se zachycené letadlo blíží k Praze, jakou má výšku a zda klesá. Podrobněji
           postup popisujeme v článku <Link href="/blog/letiste-praha-zive" style={{ color: 'var(--gold)' }}>Letiště Praha živě</Link>.
         </p>
 
-        <h2 id="lze-dohledat-vcerejsi-nebo-starsi-let" style={S.h2}>Lze dohledat včerejší nebo starší let?</h2>
-        <p style={S.p}>
+        <h2 id="lze-dohledat-vcerejsi-nebo-starsi-let">Lze dohledat včerejší nebo starší let?</h2>
+        <p>
           FlyQueens se soustředí na aktuální provoz a negarantuje veřejný archiv historie. Pokud let už přistál a není
           v živých datech, ověřte nejprve historii u dopravce nebo letiště. Plnohodnotná historie tras bývá u některých
           specializovaných služeb placená.
         </p>
 
-        <h2 id="kteremu-udaji-verit-pri-ceste-na-letiste" style={S.h2}>Kterému údaji věřit při cestě na letiště?</h2>
-        <p style={S.p}>
+        <h2 id="kteremu-udaji-verit-pri-ceste-na-letiste">Kterému údaji věřit při cestě na letiště?</h2>
+        <p>
           Praktické pravidlo je jednoduché: polohu sledujte na mapě, ale čas, terminál, bránu a pokyny cestujícím
           kontrolujte u aerolinky a letiště. Veřejná ADS-B data mohou mít zpoždění, výpadek nebo chybějící propojení s
           letovým plánem.
@@ -194,7 +189,7 @@ export default function TrackFlightNumberArticle() {
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Máte číslo letu?</div>
-          <p style={{ ...S.p, marginBottom: 12 }}>Zadejte je do mapy. Vyhledávat můžete také podle registrace nebo ICAO adresy.</p>
+          <p style={{ marginBottom: 12 }}>Zadejte je do mapy. Vyhledávat můžete také podle registrace nebo ICAO adresy.</p>
           <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
             Sledovat let online
           </Link>
@@ -228,7 +223,7 @@ export default function TrackFlightNumberArticle() {
           ]}
           note="Fakta a odkazy ověřeny 14. září 2026. Pro provozní stav letu vždy použijte oficiální zdroj letiště nebo aerolinky."
         />
-      </div>
+      </article>
     </main>
   )
 }

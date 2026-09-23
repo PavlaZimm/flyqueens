@@ -7,7 +7,8 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'letiste-lipsko')!
@@ -61,13 +62,14 @@ export default function LetisteLipskoArticle() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/blog">Blog</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Letiště Lipsko</span>
-        </nav>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Letiště Lipsko"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>Letiště Lipsko/Halle (LEJ) leží ve městě Schkeuditz mezi Lipskem a Halle a pod odbavovací halou má vlastní vlakové nádraží. Z Česka se na něj nejsnáz dostanete přes Drážďany, odkud jezdí přímý vlak IC. Osobní lety tu startují a přistávají jen mezi 5:30 a 23:30, nákladní provoz běží nepřetržitě. Vyhlídková terasa je k 21. 9. 2026 zavřená a prohlídky letiště jsou pozastavené.</p>
 
         <div className={styles.tableWrap}>

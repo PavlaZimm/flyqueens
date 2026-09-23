@@ -7,7 +7,8 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'letiste-tivat')!
@@ -57,13 +58,14 @@ export default function LetisteTivatArticle() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/blog">Blog</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Letiště Tivat</span>
-        </nav>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Letiště Tivat"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>Letiště Tivat (IATA TIV, ICAO LYTV) leží asi 4 kilometry od centra Tivatu na pobřeží Boky kotorské, pod horami. Z Prahy sem v sezoně 2026 létá Air Montenegro. Letiště má omezenou provozní dobu a mimo ni se smí přistávat a vzlétat jen za denního světla, takže noční lety tu neuvidíte.</p>
 
         <div className={styles.tableWrap}>
