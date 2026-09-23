@@ -8,6 +8,8 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { ArticleContents } from '@/components/UI/ArticleContents'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const post = getPost('jak-vysoko-letaji-letadla')!
 
@@ -55,10 +57,6 @@ const breadcrumbJsonLd = {
   ],
 }
 
-const S = {
-  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
-  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
-} as const
 
 const HEIGHTS = [
   ['Dopravní letadla (A320, B737)', '9 až 12 km', 'cestovní let'],
@@ -70,21 +68,18 @@ const HEIGHTS = [
 
 export default function VyskaArticle() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+    <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
-        <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
-          {' · '}
-          <Link href="/blog" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>Blog</Link>
-        </nav>
-
-        <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
-        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
+      <article className={styles.article}>
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current={post.title}
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
+        >
           Jak vysoko létají letadla? Výška v metrech a FL350
-        </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
+        </ArticleHeader>
 
         <ArticleHero
           src={post.image}
@@ -94,7 +89,7 @@ export default function VyskaArticle() {
           creditHref="https://unsplash.com/photos/flying-airplane-above-clouds-58MKf-UXjaA"
         />
 
-        <p style={S.p}>
+        <p className={styles.lead}>
           Koukáte v létě na oblohu a nad hlavou se táhne bílá čára. Letadlo je tak malé, že ho skoro nevidíte.
           Jak vysoko vlastně je? U běžného dopravního letu typicky mezi devíti a dvanácti kilometry. A že zrovna tam, to není náhoda,
           ale kompromis výkonu, spotřeby, počasí, hmotnosti a řízení provozu.
@@ -102,7 +97,7 @@ export default function VyskaArticle() {
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
-          <p style={{ ...S.p, margin: 0 }}>
+          <p style={{ margin: 0 }}>
             Dopravní letadla létají nejčastěji v devíti až dvanácti kilometrech, tedy kolem letové hladiny FL350.
             Řidší vzduch snižuje aerodynamický odpor, ale konkrétní hladina závisí na typu, hmotnosti,
             trati a počasí. Malé stroje obvykle létají níž, některé byznys tryskáče až kolem 15 kilometrů.
@@ -120,15 +115,15 @@ export default function VyskaArticle() {
           { id: 'jak-zjistim-vysku-letadla-nad-hlavou', label: "Jak zjistím výšku letadla nad hlavou?" },
         ]} />
 
-        <h2 id="proc-se-leta-tak-vysoko" style={S.h2}>Proč se létá tak vysoko?</h2>
-        <p style={S.p}>
+        <h2 id="proc-se-leta-tak-vysoko">Proč se létá tak vysoko?</h2>
+        <p>
           Ve standardní atmosféře má vzduch kolem deseti kilometrů přibližně třetinovou hustotu proti hladině
           moře, což snižuje odpor. Optimální hladinu ale ovlivňuje i výkon motorů, hmotnost a vítr. Letové
           hladiny zároveň pomáhají řízení oddělovat provoz; v prostoru RVSM je běžný vertikální rozstup
           1 000 stop (přibližně 305 metrů). Bouřky i turbulence mohou zasahovat také cestovní hladiny.
         </p>
 
-        <h2 id="kolik-ma-ktere-letadlo" style={S.h2}>Kolik má které letadlo</h2>
+        <h2 id="kolik-ma-ktere-letadlo">Kolik má které letadlo</h2>
         <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
@@ -150,15 +145,15 @@ export default function VyskaArticle() {
           </table>
         </div>
 
-        <h2 id="co-znamena-fl350" style={S.h2}>Co znamená FL350</h2>
-        <p style={S.p}>
+        <h2 id="co-znamena-fl350">Co znamená FL350</h2>
+        <p>
           Ve vyšších hladinách se používají letové hladiny vztažené ke standardnímu tlaku 1013,2 hPa.
           FL350 znamená tlakovou hladinu 35 000 stop, přibližně 10,7 kilometru ve standardní atmosféře.
           Není to totéž co přesná geometrická výška nad terénem, protože skutečný tlak a teplota se mění.
         </p>
 
-        <h2 id="kolik-metru-je-jedna-stopa-a-fl350" style={S.h2}>Kolik metrů je jedna stopa a FL350?</h2>
-        <p style={S.p}>
+        <h2 id="kolik-metru-je-jedna-stopa-a-fl350">Kolik metrů je jedna stopa a FL350?</h2>
+        <p>
           Jedna stopa má přesně 0,3048 metru. Výška 35 000 stop tedy odpovídá přibližně 10 668 metrům.
           Označení FL350 ale není prostý údaj z výškoměru nad zemí: jde o tlakovou hladinu při standardním
           nastavení tlaku. Proto se údaj může lišit od skutečné geometrické výšky.
@@ -177,31 +172,31 @@ export default function VyskaArticle() {
           ))}
         </div>
 
-        <h2 id="proc-ne-jeste-vys" style={S.h2}>Proč ne ještě výš?</h2>
-        <p style={S.p}>
+        <h2 id="proc-ne-jeste-vys">Proč ne ještě výš?</h2>
+        <p>
           Každý typ má certifikované limity. Pro rodinu A320 výrobce uvádí maximální provozní výšku kolem
           39 800 stop, tedy asi 12,1 kilometru. Limit souvisí s aerodynamikou, výkonem, přetlakováním i
           certifikací; není to jedna univerzální hranice pro všechna letadla.
         </p>
 
-        <h2 id="je-vyska-na-mape-nad-zemi" style={S.h2}>Je výška na mapě nad zemí?</h2>
-        <p style={S.p}>
+        <h2 id="je-vyska-na-mape-nad-zemi">Je výška na mapě nad zemí?</h2>
+        <p>
           Většinou ne. FlyQueens zobrazuje dostupnou barometrickou výšku vztaženou k tlakové hladině nebo
           hladině moře, nikoli přesnou vzdálenost od terénu přímo pod letadlem. Nad horami proto může být
           skutečná výška nad zemí výrazně menší než číslo zobrazené na mapě. U nízko letících strojů a při
           chybějících datech je potřeba údaj brát zvlášť opatrně.
         </p>
 
-        <h2 id="proc-letadlo-behem-cesty-jeste-stoupa" style={S.h2}>Proč letadlo během cesty ještě stoupá?</h2>
-        <p style={S.p}>
+        <h2 id="proc-letadlo-behem-cesty-jeste-stoupa">Proč letadlo během cesty ještě stoupá?</h2>
+        <p>
           Dopravní letadlo je po startu kvůli palivu těžší. Jak palivo spotřebovává, může být hospodárnější
           vystoupat do vyšší letové hladiny. Takzvané postupné stoupání proto nemusí znamenat problém ani
           změnu cíle. Na <Link href="/stats" style={{ color: 'var(--gold)' }}>živých statistikách</Link> můžete
           porovnat průměrnou výšku s nejvýše letícími stroji v právě sledované oblasti.
         </p>
 
-        <h2 id="jak-zjistim-vysku-letadla-nad-hlavou" style={S.h2}>Jak zjistím výšku letadla nad hlavou?</h2>
-        <p style={S.p}>
+        <h2 id="jak-zjistim-vysku-letadla-nad-hlavou">Jak zjistím výšku letadla nad hlavou?</h2>
+        <p>
           Otevřete živou mapu, najděte letadlo a klikněte na něj. U každého stroje vidíte výšku v metrech,
           tlakovou výšku, rychlost i to, jestli stoupá nebo klesá. Samotná výška ale nestačí k bezpečnému
           určení cílového letiště; trasa se zobrazí jen tehdy, když ji lze spolehlivě přiřadit.
@@ -209,7 +204,7 @@ export default function VyskaArticle() {
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Kolik letadel je teď nad Českem?</div>
-          <p style={{ ...S.p, marginBottom: 12 }}>
+          <p style={{ marginBottom: 12 }}>
             Živá mapa ukáže letadla zachycená dostupnými ADS-B přijímači včetně výšky. Ve statistikách najdete průměrnou výšku a rychlost
             všech letů právě teď.
           </p>
@@ -256,7 +251,7 @@ export default function VyskaArticle() {
           ]}
           note="Fakta a odkazy ověřeny 11. září 2026. Uvedené výšky jsou obvyklé rozsahy, ne provozní pokyn."
         />
-      </div>
+      </article>
     </main>
   )
 }

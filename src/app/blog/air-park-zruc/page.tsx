@@ -7,7 +7,8 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { POSTS } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import styles from './page.module.css'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 import { ArticleContents } from '@/components/UI/ArticleContents'
 
 const post = POSTS.find((entry) => entry.slug === 'air-park-zruc')!
@@ -65,13 +66,14 @@ export default function AirParkZrucArticle() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <article className={styles.article}>
-        <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
-          <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
-          <Link href="/blog">Blog</Link><span aria-hidden="true">/</span>
-          <span aria-current="page">Air Park Zruč</span>
-        </nav>
-        <h1>{title}</h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Air Park Zruč"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
         <p className={styles.lead}>Air Park Zruč u Plzně je soukromé muzeum letecké a vojenské techniky na louce v obci Zruč-Senec, asi 10 kilometrů severně od Plzně (<a href={visitPlzen}>Visit Plzeň</a>). Stojí tu dopravní i vojenská letadla, vrtulníky a obrněná technika a do několika velkých strojů se dá za příplatek vstoupit. Podle webu provozovatele bývá otevřeno denně od března do října, v listopadu o víkendech a v zimě jen po telefonické domluvě. Základní vstupné pro dospělého stojí 200 Kč.</p>
 
         <figure className={styles.photo}><Image src="/blog/air-park-zruc-expozice.webp" alt="Letadla na louce Air Parku Zruč, vpředu stíhačka v polských barvách a za ní An-30" width={1600} height={738} sizes={sizes} preload /><figcaption>Vpředu stíhačka v polských barvách s číslem 526, za ní An-30 č. 1107 s nápisem OPEN SKIES, podle inventáře muzea unikát (<a href={ap.inventory}>Air Park</a>). Foto: vlastní archiv FlyQueens, 8. března 2026.</figcaption></figure>

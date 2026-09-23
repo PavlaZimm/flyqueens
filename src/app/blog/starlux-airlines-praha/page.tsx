@@ -10,6 +10,8 @@ import { AirlineCard } from '@/components/UI/AirlineCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { ArticleContents } from '@/components/UI/ArticleContents'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const post = getPost('starlux-airlines-praha')!
 
@@ -63,29 +65,21 @@ const breadcrumbJsonLd = {
   ],
 }
 
-const S = {
-  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
-  h3: { fontFamily: 'Archivo, sans-serif', fontSize: 16, fontWeight: 800, margin: '22px 0 8px' },
-  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
-} as const
 
 export default function StarluxPrahaArticle() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+    <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
-        <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
-          {' · '}
-          <Link href="/blog" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>Blog</Link>
-        </nav>
-
-        <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
-        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
+      <article className={styles.article}>
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current={post.title}
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
+        >
           STARLUX Airlines v Praze: přímá linka do Tchaj-peje
-        </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="14. září 2026" readingTime={post.readingTime} />
+        </ArticleHeader>
 
         <ArticleHero
           src={post.image}
@@ -97,7 +91,7 @@ export default function StarluxPrahaArticle() {
           licenseHref="https://creativecommons.org/licenses/by-sa/4.0/"
         />
 
-        <p style={S.p}>
+        <p className={styles.lead}>
           Praha se stala první evropskou destinací STARLUX Airlines. Tchajwanská aerolinka zahájila přímé lety
           mezi Tchaj-pejí a Prahou 1. srpna 2026. Nová linka není charter ani jednorázová návštěva. Jde o pravidelné
           spojení provozované širokotrupým Airbusem A350.
@@ -105,7 +99,7 @@ export default function StarluxPrahaArticle() {
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
-          <p style={{ ...S.p, margin: 0 }}>
+          <p style={{ margin: 0 }}>
             STARLUX Airlines létá z Prahy do Tchaj-peje pod číslem JX102. Opačný let do Prahy nese číslo JX101.
             Do konce září 2026 jsou v oficiálním rozpisu tři lety týdně. Pro období od 1. do 24. října dopravce
             zveřejnil čtyři lety týdně. Pozdější datum vždy ověřte přímo u STARLUX.
@@ -141,8 +135,8 @@ export default function StarluxPrahaArticle() {
           { id: 'caste-otazky', label: "Časté otázky" },
         ]} />
 
-        <h2 id="letovy-rad-starlux-praha-a-tchaj-pej" style={S.h2}>Letový řád STARLUX Praha a Tchaj-pej</h2>
-        <p style={S.p}>
+        <h2 id="letovy-rad-starlux-praha-a-tchaj-pej">Letový řád STARLUX Praha a Tchaj-pej</h2>
+        <p>
           Pro období od 1. srpna do 30. září 2026 zveřejnil STARLUX následující rozpis. Časy jsou místní a přílet
           do Tchaj-peje je následující den.
         </p>
@@ -172,47 +166,47 @@ export default function StarluxPrahaArticle() {
             </tbody>
           </table>
         </div>
-        <p style={{ ...S.p, color: 'var(--text-muted)', fontSize: 13 }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
           Od 1. do 24. října 2026 uvádí dopravce lety v pondělí, úterý, čtvrtek a sobotu. JX101 má odlétat z
           Tchaj-peje v 00:10 a přilétat do Prahy v 08:25. JX102 má odlétat z Prahy v 10:45 a do Tchaj-peje
           přilétat v 05:10 následujícího dne. Pro pozdější termíny použijte aktuální rezervační systém STARLUX.
         </p>
 
-        <h2 id="jake-letadlo-starlux-do-prahy-nasazuje" style={S.h2}>Jaké letadlo STARLUX do Prahy nasazuje</h2>
-        <p style={S.p}>
+        <h2 id="jake-letadlo-starlux-do-prahy-nasazuje">Jaké letadlo STARLUX do Prahy nasazuje</h2>
+        <p>
           Linka začala s Airbusem A350-900. Od 1. září 2026 ji převzal větší Airbus A350-1000 s kapacitou
           350 cestujících ve čtyřech třídách: 4 místa v první třídě, 40 v business classu, 36 v premium economy
           a 270 v ekonomické třídě. Konkrétní letadlo se ale může z provozních důvodů změnit. Typ zobrazený
           při nákupu proto berte jako plán, ne jako záruku.
         </p>
 
-        <h2 id="zlaty-airbus-airsorayama-gold-pristal-v" style={S.h2}>Zlatý Airbus AIRSORAYAMA Gold přistál v Praze</h2>
-        <p style={S.p}>
+        <h2 id="zlaty-airbus-airsorayama-gold-pristal-v">Zlatý Airbus AIRSORAYAMA Gold přistál v Praze</h2>
+        <p>
           První A350-1000 na pražské lince nebyl obyčejný stroj. V úterý 1. září 2026 ráno přistál na Ruzyni
           Airbus registrace B-58554 ve zlatém laku AIRSORAYAMA Gold. Šlo o vůbec první přílet letadla
           AIRSORAYAMA do Evropy.
         </p>
-        <p style={S.p}>
+        <p>
           Zrcadlově kovový vzhled navrhl japonský umělec Hadžime Sorajama. STARLUX na něm spolupracoval
           s Airbusem a výrobcem laků Mankiewicz: výsledkem je vícevrstvý nátěr se slídovými částicemi, který
           drží kovový lesk a zároveň splňuje požadavky na bezpečnost provozu. Ve dvojici s ním létá stříbrná
           verze AIRSORAYAMA Silver.
         </p>
 
-        <h2 id="proc-je-linka-zajimava" style={S.h2}>Proč je linka zajímavá</h2>
-        <p style={S.p}>
+        <h2 id="proc-je-linka-zajimava">Proč je linka zajímavá</h2>
+        <p>
           Cestující získali přímé spojení mezi Českem a Tchaj-wanem bez přestupu. Pro letecké fanoušky je zajímavé
           pravidelné nasazení A350-1000. Praha je navíc jednou ze tří destinací, kam STARLUX plánuje speciálně
           zbarvené stroje AIRSORAYAMA vozit pravidelně; kromě Prahy jde o Tokio a Phoenix. Konkrétní den ale
           zaručený není, protože i tady může dopravce letadlo prohodit.
         </p>
-        <p style={S.p}>
+        <p>
           Ne každému se ale vyplatí vybírat spoj jen podle typu letadla. Při cestě do Asie porovnejte celkovou cenu,
           zavazadla, návazný let a podmínky změny rezervace. Nejlevnější nabídka v konkrétní den nemusí být nejpraktičtější.
         </p>
 
-        <h2 id="jak-sledovat-lety-jx101-a-jx102" style={S.h2}>Jak sledovat lety JX101 a JX102</h2>
-        <p style={S.p}>
+        <h2 id="jak-sledovat-lety-jx101-a-jx102">Jak sledovat lety JX101 a JX102</h2>
+        <p>
           Do vyhledávání na mapě zadejte číslo JX101 nebo JX102. Uvidíte polohu letadla, pokud je právě ve vzduchu,
           nachází se v pokryté oblasti a veřejný zdroj přijímá jeho data. Volací znak se může lišit od čísla uvedeného
           na letence, proto má smysl hledat také podle trasy nebo registrace.
@@ -220,7 +214,7 @@ export default function StarluxPrahaArticle() {
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Podívejte se, zda je STARLUX právě nad Evropou</div>
-          <p style={{ ...S.p, marginBottom: 12 }}>
+          <p style={{ marginBottom: 12 }}>
             Na FlyQueens můžete let vyhledat podle čísla a sledovat poslední dostupnou polohu. Skutečný čas odletu,
             příletu a případné změny ověřujte na oficiální tabuli letiště nebo u aerolinky.
           </p>
@@ -234,21 +228,21 @@ export default function StarluxPrahaArticle() {
           </div>
         </div>
 
-        <h2 id="caste-otazky" style={S.h2}>Časté otázky</h2>
-        <h3 style={S.h3}>Létá STARLUX z Prahy přímo?</h3>
-        <p style={S.p}>Ano. JX102 je přímý pravidelný let z Prahy do Tchaj-peje. JX101 létá opačným směrem.</p>
-        <h3 style={S.h3}>Ze kterého terminálu STARLUX odlétá?</h3>
-        <p style={S.p}>
+        <h2 id="caste-otazky">Časté otázky</h2>
+        <h3>Létá STARLUX z Prahy přímo?</h3>
+        <p>Ano. JX102 je přímý pravidelný let z Prahy do Tchaj-peje. JX101 létá opačným směrem.</p>
+        <h3>Ze kterého terminálu STARLUX odlétá?</h3>
+        <p>
           Tchaj-wan neleží v Schengenu, proto Letiště Praha uvádí Terminál 1. Číslo přepážky a brány kontrolujte
           v den odletu na letištní tabuli.
         </p>
-        <h3 style={S.h3}>Je typ A350-1000 zaručený?</h3>
-        <p style={S.p}>
+        <h3>Je typ A350-1000 zaručený?</h3>
+        <p>
           Ne. Od 1. září 2026 je na lince nasazený pravidelně, ale aerolinka může z provozních důvodů
           poslat jiný stroj.
         </p>
-        <h3 style={S.h3}>Přiletí zlatý Airbus AIRSORAYAMA i příště?</h3>
-        <p style={S.p}>
+        <h3>Přiletí zlatý Airbus AIRSORAYAMA i příště?</h3>
+        <p>
           Praha je jednou ze tří destinací, kam STARLUX AIRSORAYAMA vozí pravidelně. Který den poletí zlatý
           nebo stříbrný stroj, ale dopravce dopředu negarantuje — před cestou za focením si typ ověřte.
         </p>
@@ -298,7 +292,7 @@ export default function StarluxPrahaArticle() {
           ]}
           note="Letový řád ověřen 13. září 2026, nasazení A350-1000 a přílet AIRSORAYAMA Gold 14. září 2026. Pro konkrétní datum vždy zkontrolujte informace dopravce."
         />
-      </div>
+      </article>
     </main>
   )
 }

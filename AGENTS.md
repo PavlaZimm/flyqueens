@@ -16,6 +16,8 @@ Každý článek v přehledu `/blog` musí mít náhledovou fotografii. Použív
 
 Před každým článkem povinně projdi relevantní konkurenci. Do rešerše zaznamenej skutečně otevřené stránky, témata, mezery a rozpory. Konkurenční tvrzení ověřuj u primárních zdrojů; konkurence sama není důkaz pravdivosti. Nekopíruj text ani fotografie.
 
+Články a průvodce stavěj na jednotné šabloně: `ArticleHeader` a styly `src/components/Article/Article.module.css`. Nekopíruj vlastní `page.module.css` (podrobnosti v `docs/redakcni-pravidla.md`).
+
 Každý článek a průvodce se 4 a více H2 má obsah s kotvami: `id` u každého H2 a komponentu `ArticleContents` před prvním H2 (podrobnosti v `docs/redakcni-pravidla.md`).
 
 Nové články musí být dohledatelné i na hlavní stránce a v patičce. Obě sekce čerpají z `BLOG_CARDS` se skutečným `href`, nikoli jen z `POSTS`. Při publikaci kontroluj tři nejnovější články na homepage včetně fotografií a cílových adres.

@@ -8,6 +8,8 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { ArticleContents } from '@/components/UI/ArticleContents'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const post = getPost('squawk-nouzove-kody')!
 
@@ -55,28 +57,21 @@ const breadcrumbJsonLd = {
   ],
 }
 
-const S = {
-  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
-  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
-} as const
 
 export default function SquawkArticle() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
+    <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbJsonLd]).replace(/</g, '\\u003c') }} />
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
-        <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
-          {' · '}
-          <Link href="/blog" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>Blog</Link>
-        </nav>
-
-        <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
-        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
+      <article className={styles.article}>
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current={post.title}
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
+        >
           Squawk 7700, 7600 a 7500: význam nouzových kódů
-        </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="11. září 2026" readingTime={post.readingTime} />
+        </ArticleHeader>
 
         <ArticleHero
           src={post.image}
@@ -88,7 +83,7 @@ export default function SquawkArticle() {
           licenseHref="https://creativecommons.org/licenses/by-sa/3.0/"
         />
 
-        <p style={S.p}>
+        <p className={styles.lead}>
           Když se ztratí rádiové spojení, posádka může na odpovídači nastavit vyhrazený čtyřmístný kód.
           Tam, kde jej zachytí příslušný dohledový systém, tak řízení dostane důležitou informaci i bez rádia. Kód se
           jmenuje squawk a tři z nich znamenají problém. Pojďme si je projít.
@@ -96,7 +91,7 @@ export default function SquawkArticle() {
 
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
-          <p style={{ ...S.p, margin: 0 }}>
+          <p style={{ margin: 0 }}>
             <b>7700</b> označuje obecnou nouzi, <b>7600</b> poruchu rádiového spojení a <b>7500</b>
             protiprávní zásah. Jde o mezinárodně vyhrazené kódy; samotný kód ale neříká všechny okolnosti události.
           </p>
@@ -138,56 +133,56 @@ export default function SquawkArticle() {
           { id: 'proc-se-upozorneni-muze-rychle-ztratit', label: "Proč se upozornění může rychle ztratit?" },
         ]} />
 
-        <h2 id="co-je-squawk-a-odpovidac" style={S.h2}>Co je squawk a odpovídač</h2>
-        <p style={S.p}>
+        <h2 id="co-je-squawk-a-odpovidac">Co je squawk a odpovídač</h2>
+        <p>
           Každé dopravní letadlo má na palubě odpovídač, anglicky transponder. Je to krabička, která na dotaz
           radaru odpoví číslem a výškou. To číslo je právě squawk, čtyři cifry od 0000 do 7777. Běžně ho letadlu
           přidělí řízení, aby ho na obrazovce rozlišilo od ostatních. Pár kódů má ale pevný, celosvětově platný
           význam.
         </p>
 
-        <h2 id="7700-obecna-nouze" style={S.h2}>7700: obecná nouze</h2>
-        <p style={S.p}>
+        <h2 id="7700-obecna-nouze">7700: obecná nouze</h2>
+        <p>
           Kód 7700 je vyhrazen pro obecnou nouzi. Konkrétní příčina z něj není poznat a další postup závisí
           na situaci, komunikaci posádky a pokynech řízení letového provozu. FlyQueens proto zobrazuje kód,
           ale nesnaží se z veřejných dat hádat příčinu.
         </p>
 
-        <h2 id="7600-vypadek-radia" style={S.h2}>7600: výpadek rádia</h2>
-        <p style={S.p}>
+        <h2 id="7600-vypadek-radia">7600: výpadek rádia</h2>
+        <p>
           Kód 7600 je vyhrazen pro poruchu rádiového spojení. Neříká, zda je problém ve vysílání, příjmu
           nebo obojím. Posádka a řízení pak postupují podle publikovaných postupů pro ztrátu spojení.
         </p>
 
-        <h2 id="7500-unos-nebo-protipravni-cin" style={S.h2}>7500: únos nebo protiprávní čin</h2>
-        <p style={S.p}>
+        <h2 id="7500-unos-nebo-protipravni-cin">7500: únos nebo protiprávní čin</h2>
+        <p>
           Kód 7500 je vyhrazen pro protiprávní zásah. Detaily reakce bezpečnostních a letových složek nejsou
           z veřejného ADS-B záznamu patrné, takže mapa ukazuje pouze ověřitelný kód.
         </p>
 
-        <h2 id="a-co-bezne-kody" style={S.h2}>A co běžné kódy?</h2>
-        <p style={S.p}>
+        <h2 id="a-co-bezne-kody">A co běžné kódy?</h2>
+        <p>
           V Evropě se 7000 používá v oblastech a situacích určených jednotlivými státy pro let bez služby ATC,
           pokud posádka nedostane jiný pokyn. Kód 2000 se podle evropských pravidel používá při absenci pokynu
           ATC nebo regionální dohody. Ani jeden z nich sám o sobě neznamená nouzi.
         </p>
 
-        <h2 id="jak-nouzovy-let-poznate-na-mape" style={S.h2}>Jak nouzový let poznáte na mapě</h2>
-        <p style={S.p}>
+        <h2 id="jak-nouzovy-let-poznate-na-mape">Jak nouzový let poznáte na mapě</h2>
+        <p>
           FlyQueens sleduje squawk kódy živě. Když se nad sledovanou oblastí objeví letadlo se 7700, 7600 nebo
           7500, zvýrazní se a naskočí upozornění. Veřejná data mohou být zpožděná nebo neúplná a z kódu nelze
           určit příčinu, proto je upozornění informační, ne oficiální bezpečnostní hlášení.
         </p>
 
-        <h2 id="znamena-squawk-7700-ze-letadlo-havaruje" style={S.h2}>Znamená squawk 7700, že letadlo havaruje?</h2>
-        <p style={S.p}>
+        <h2 id="znamena-squawk-7700-ze-letadlo-havaruje">Znamená squawk 7700, že letadlo havaruje?</h2>
+        <p>
           Ne. Kód 7700 pouze říká, že posádka nebo systém signalizuje obecnou nouzovou situaci. Veřejná mapa
           neukazuje komunikaci s řízením ani důvod nastavení kódu. Let může pokračovat, změnit trasu, vrátit se
           nebo bezpečně přistát. Bez potvrzení aerolinky, letiště či úřadů proto není správné domýšlet příčinu.
         </p>
 
-        <h2 id="proc-se-upozorneni-muze-rychle-ztratit" style={S.h2}>Proč se upozornění může rychle ztratit?</h2>
-        <p style={S.p}>
+        <h2 id="proc-se-upozorneni-muze-rychle-ztratit">Proč se upozornění může rychle ztratit?</h2>
+        <p>
           Posádka může po pokynu řízení nastavit jiný kód, letadlo může opustit pokrytou oblast nebo může
           vypadnout veřejný datový zdroj. Krátké zobrazení tedy samo o sobě nepotvrzuje ani nevyvrací událost.
           FlyQueens ukazuje poslední dostupný signál a jeho stav, nikoli oficiální závěr vyšetřování.
@@ -195,7 +190,7 @@ export default function SquawkArticle() {
 
         <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
           <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Podívejte se, co letí právě teď</div>
-          <p style={{ ...S.p, marginBottom: 12 }}>
+          <p style={{ marginBottom: 12 }}>
             Živá mapa ukáže poslední dostupné polohy letadel nad Českem. Zachycené nouzové squawky se zvýrazní automaticky.
           </p>
           <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--on-gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
@@ -235,7 +230,7 @@ export default function SquawkArticle() {
           ]}
           note="Význam kódů ověřen 11. září 2026. Upozornění FlyQueens není oficiální hlášení řízení letového provozu."
         />
-      </div>
+      </article>
     </main>
   )
 }
