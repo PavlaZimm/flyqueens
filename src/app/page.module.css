@@ -786,8 +786,23 @@
   .container,
   .headerInner,
   .footerInner { width: min(100% - 28px, 1180px); }
-  .headerInner { height: 66px; gap: 14px; }
-  .nav { display: none; }
+  /* Na mobilu navigace ve druhém řádku, stejně jako SiteHeader na ostatních stránkách. */
+  .headerInner {
+    height: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px 14px;
+    padding-top: 12px;
+  }
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    margin-right: 0;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .nav a { display: inline-flex; align-items: center; min-height: 44px; }
   .themeToggle { min-width: 38px; width: 38px; padding: 0; }
   .themeToggle > span:last-child { display: none; }
   .headerCta { margin-left: auto; padding: 9px 11px; font-size: 11px; }

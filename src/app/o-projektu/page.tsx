@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { SiteHeader } from '@/components/UI/SiteHeader'
 import { SiteFooter } from '@/components/UI/SiteFooter'
 import { PrivacySettingsButton } from '@/components/UI/CookieConsent'
 import { socialMetadata } from '@/lib/socialMetadata'
@@ -22,6 +23,7 @@ const paragraph = { color: 'var(--text-muted)', fontSize: 15, lineHeight: 1.75, 
 export default function AboutProjectPage() {
   return (
     <>
+      <SiteHeader />
       <main style={{ minHeight: '70dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
         <article style={{ maxWidth: 760, margin: '0 auto', padding: '42px 18px 56px' }}>
           <Link href="/radar" style={{ color: 'var(--gold)', textDecoration: 'none', fontSize: 13 }}>← Zpět na mapu</Link>
