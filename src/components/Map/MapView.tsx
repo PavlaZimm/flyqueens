@@ -391,7 +391,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
                     : null
                   metarHtml = `
                     <div class="fq-metar-divider"></div>
-                    ${m.category ? `<div class="fq-metar-cat" style="color:${catColor}">● ${m.category}${obsTime ? ` · pozorování ${obsTime} UTC` : ''}</div>` : ''}
+                    ${m.category || obsTime ? `<div class="fq-metar-cat" style="color:${catColor}">${m.category ? `● ${m.category}` : ''}${m.category && obsTime ? ' · ' : ''}${obsTime ? `pozorování ${obsTime} UTC` : ''}</div>` : ''}
                     <div class="fq-metar-grid">
                       ${m.temp != null ? `<div class="fq-metar-tile"><div class="fq-mt-label">TEPLOTA</div><div class="fq-mt-val">${m.temp}°C</div></div>` : ''}
                       ${qnh ? `<div class="fq-metar-tile"><div class="fq-mt-label">QNH</div><div class="fq-mt-val">${qnh} hPa</div></div>` : ''}

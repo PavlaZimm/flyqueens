@@ -211,8 +211,8 @@ function routeFit(
 }
 
 // Placený dotaz na AeroDataBox jen pro letadlo, které ADS-B právě vidí.
-// Chrání kredit před zkoušením náhodných kódů. Při výpadku ADSB.lol dotaz
-// pustíme, aby běžní návštěvníci o data nepřišli.
+// Chrání kredit před zkoušením náhodných kódů. Při výpadku ADSB.lol placený
+// dotaz nepouštíme: mapa stejně stojí na stejném zdroji a trasu doplní adsbdb.
 async function isTrackedNow(icao24: string): Promise<boolean> {
   try {
     const response = await fetch(`https://api.adsb.lol/v2/hex/${icao24}`, {
@@ -223,11 +223,11 @@ async function isTrackedNow(icao24: string): Promise<boolean> {
       next: { revalidate: 60 },
       signal: AbortSignal.timeout(2500),
     })
-    if (!response.ok) return true
+    if (!response.ok) return false
     const data = await response.json() as { ac?: unknown[] }
-    return !Array.isArray(data.ac) || data.ac.length > 0
+    return Array.isArray(data.ac) && data.ac.length > 0
   } catch {
-    return true
+    return false
   }
 }
 

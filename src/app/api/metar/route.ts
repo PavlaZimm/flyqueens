@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/rateLimit'
 
-export const revalidate = 1800 // cache 30 minut — METAR se mění každou hodinu
+export const revalidate = 600 // cache 10 minut — evropské METARy vycházejí po 30 minutách
 
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
         'Accept': 'application/json',
         'User-Agent': 'FlyQueens/1.0 (+https://www.flyqueens.cz/o-projektu)',
       },
-      next: { revalidate: 1800 },
+      next: { revalidate: 600 },
       signal: AbortSignal.timeout(6000),
     })
 
@@ -51,7 +51,8 @@ export async function GET(req: NextRequest) {
 
     // Normalizace visibility — "6+" → 10, číslo nechej být
     const rawVis = metar.visib
-    const visibility = rawVis === '6+' || rawVis === 'P6' ? 10 : (rawVis != null ? Number(rawVis) : null)
+    const visNumber = rawVis != null ? Number.parseFloat(String(rawVis).replace(/^P/, '')) : NaN
+    const visibility = Number.isFinite(visNumber) ? (/\+|^P/.test(String(rawVis)) ? Math.max(visNumber, 10) : visNumber) : null
 
     const observationTime = typeof metar.obsTime === 'number'
       ? new Date(metar.obsTime * 1000).toISOString()
@@ -74,7 +75,7 @@ export async function GET(req: NextRequest) {
       obsTime:   observationTime,
       source:    'aviationweather.gov',
     }, {
-      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=1800' },
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' },
     })
   } catch {
     return NextResponse.json({ error: 'Fetch failed' }, { status: 502 })

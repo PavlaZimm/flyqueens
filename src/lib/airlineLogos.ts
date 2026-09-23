@@ -34,8 +34,6 @@ const ICAO_TO_IATA: Record<string, string> = {
   'AAL': 'AA', 'DAL': 'DL', 'UAL': 'UA',
   // Blízký východ
   'UAE': 'EK', 'QTR': 'QR', 'ETH': 'ET', 'SVA': 'SV',
-  // Maďarsko
-  'MAH': 'W6',
   // Slovensko
   'SLK': 'OM',
   // Belgie
