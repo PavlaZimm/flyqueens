@@ -99,6 +99,11 @@ body {
   border: 0;
 }
 
+/* Uložená volba souhlasu: lištu ze serverového HTML skrýt ještě před vykreslením. */
+html.fq-consent-set .fq-consent-banner:not([data-editing]) {
+  display: none !important;
+}
+
 /* Kotvy z obsahu článku: nadpis nesmí zmizet pod lepivou hlavičkou. */
 h2[id], h3[id] {
   scroll-margin-top: 120px;
