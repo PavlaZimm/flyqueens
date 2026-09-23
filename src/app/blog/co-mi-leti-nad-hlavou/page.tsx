@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getPost } from '@/lib/blog'
+import { getPost, relatedCard } from '@/lib/blog'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { ArticleHero } from '@/components/UI/ArticleHero'
@@ -202,6 +202,7 @@ export default function OverheadAircraftArticle() {
               title: 'Jak vysoko létají letadla a co znamená FL350',
               description: 'Výška v metrech, stopách a letových hladinách bez zbytečných zkratek.',
             },
+            relatedCard('/blog/squawk-nouzove-kody'),
           ]}
         />
 

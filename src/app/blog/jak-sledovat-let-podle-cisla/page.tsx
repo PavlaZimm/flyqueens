@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getPost } from '@/lib/blog'
+import { getPost, relatedCard } from '@/lib/blog'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { ArticleHero } from '@/components/UI/ArticleHero'
@@ -211,6 +211,7 @@ export default function TrackFlightNumberArticle() {
               title: 'Jak sledovat letadla nad Ruzyní online',
               description: 'Rozdíl mezi živou mapou, webkamerou a oficiální tabulí letiště.',
             },
+            relatedCard('/blog/squawk-nouzove-kody'),
           ]}
         />
 
