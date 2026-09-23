@@ -164,6 +164,7 @@ export default function PrahaPlanespottingPage() {
           { href: '/blog/letiste-praha-zive', eyebrow: 'Živé zdroje', title: 'Letiště Praha živě', description: 'Jak kombinovat oficiální tabuli s mapou letadel.' },
           { href: '/blog/airbus-a380-praha-emirates', eyebrow: 'Zajímavé letadlo', title: 'Airbus A380 v Praze', description: 'Plánované nasazení a ověření konkrétního letu.' },
           { href: '/blog/air-park-zruc', eyebrow: 'Letadla na zemi', title: 'Air Park Zruč u Plzně', description: 'Letecké muzeum na louce: otevírací doba, vstupné a cesta MHD.' },
+          { href: '/blog/letiste-kodan', eyebrow: 'Spotting v zahraničí', title: 'Letiště Kodaň', description: 'Grill Flyvergrillen u plotu k drahám a přímé lety z Prahy.' },
         ]} />
         <SourcesBox sources={[
           { label: 'Letiště Praha: vyhlídkové valy a přístupové cesty', href: officialSpots },

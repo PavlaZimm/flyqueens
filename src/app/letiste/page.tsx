@@ -66,6 +66,13 @@ export default function LetisteIndexPage() {
               : <div key={a.slug}>{inner}</div>
           })}
         </div>
+
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--text-muted)', margin: '26px 0 0' }}>
+          Průvodce zahraničními letišti, kam se z Česka létá nebo jezdí, píšeme na blogu:{' '}
+          <Link href="/blog/letiste-kodan" style={{ color: 'var(--gold)' }}>letiště Kodaň</Link>,{' '}
+          <Link href="/blog/letiste-lipsko" style={{ color: 'var(--gold)' }}>Lipsko/Halle</Link> a{' '}
+          <Link href="/blog/letiste-tivat" style={{ color: 'var(--gold)' }}>Tivat v Černé Hoře</Link>.
+        </p>
       </div>
     </main>
   )

@@ -46,3 +46,9 @@ Stav k 23. 9. 2026. Nic z tohoto seznamu nepoužívat v článku jako fakt, doku
 - **Fyzická karta Rejsekort a aplikace DOT Billetter** (stará rešerše kastrup.cz): karta skončila 29. 6. 2026, aplikace 16. 12. 2025. Týká se jen případné zmínky o jízdenkách.
 - **Parkování „Direct 375 DKK/den“ a „Budget týden od 499“** ze 4. 9. sedí i dnes. **Direct týden online** ale stojí „od 1 759 DKK“, ne méně.
 - **„Bezpečnostní kontrola: vyndejte elektroniku“:** na nových 3D drahách podle letiště elektronika zůstává v zavazadle (TZ 13. 3. 2026). Tekutiny 100 ml ale platí dál.
+
+## Vyřešeno po zveřejnění (23. 9. 2026)
+
+- **Bod 7, 3D skenery:** ověřeno v tiskové zprávě letiště z 19. 5. 2026 (https://www.cph.dk/om-cph/presse/nyheder/2026/05/ny%20sikkerhedskontrol%20%C3%A5bner%20i%20k%C3%B8benhavns%20lufthavn). Nová kontrola s 20 linkami CT/3D skenerů běží od 19. 5. 2026, elektronika zůstává v zavazadle, 100 ml platí dál do schválení EU (letiště ho čeká do konce roku). Článek opraven.
+- **SAS Lounge:** vstup se dá koupit jen se SAS Economy nebo jinou aerolinkou SkyTeam (https://www.cph.dk/en/practical/workspaces-and-lounges/sas-lounge). Pro Norwegian a Ryanair ne. Článek opraven.
+- **Norwegian v lednu 2027:** 2 lety týdně po celý leden (4.–31. 1.), ne jen v polovině měsíce. Článek opraven.
