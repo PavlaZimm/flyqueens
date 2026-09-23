@@ -18,6 +18,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'letiste-kodan',
+    title: 'Letiště Kodaň 2026: lety z Prahy, terminály a parkování',
+    excerpt: 'Kdo z Prahy do Kodaně přímo létá, kdy Ryanair přes zimu nelétá, ve kterém terminálu odbavují SAS, Norwegian a Ryanair a kolik stojí týden na parkovišti.',
+    date: '2026-09-23', updatedAt: '2026-09-23', dateLabel: '23. září 2026',
+    tag: 'Letiště · Dánsko', readingTime: '8 min čtení',
+    image: '/blog/letiste-kodan-terminal-3-odbaveni.webp',
+    imageAlt: 'Odbavovací hala Terminálu 3 na letišti Kodaň s tabulí odbavení',
+    imageWidth: 1600, imageHeight: 1200, imagePosition: 'center 45%',
+  },
+  {
     slug: 'praha-santiago-de-compostela',
     title: 'Praha–Santiago de Compostela přímo: Fly2Galicia od prosince',
     excerpt: 'Od 2. prosince 2026 se z Prahy létá přímo do Santiaga de Compostela, ve středu a v neděli. Kdo lety skutečně provádí, co zahrnuje nejlevnější letenka a jak z letiště do města.',
