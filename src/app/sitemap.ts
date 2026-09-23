@@ -32,6 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   return [...core, ...airports, ...posts, {
+    url: `${BASE}/letiste/ceske-budejovice`,
+    lastModified: '2026-09-23',
+  }, {
     url: `${BASE}/letiste/praha/ubytovani`,
     lastModified: '2026-09-18',
   }, {

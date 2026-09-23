@@ -330,6 +330,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
             LKMT: '/letiste/ostrava',
             LKPD: '/letiste/pardubice',
             LKKV: '/letiste/karlovy-vary',
+            LKCS: '/letiste/ceske-budejovice',
           }
           const guidePath = GUIDE_PAGES[a.icao]
           const guideHtml = guidePath

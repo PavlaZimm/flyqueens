@@ -28,6 +28,7 @@ const AIRPORTS = [
   { code: 'OSR', city: 'Ostrava', note: 'Mošnov a parkoviště', href: '/letiste/ostrava' },
   { code: 'PED', city: 'Pardubice', note: 'parkování zdarma a doprava', href: '/letiste/pardubice' },
   { code: 'KLV', city: 'Karlovy Vary', note: 'doprava a možnosti parkování', href: '/letiste/karlovy-vary' },
+  { code: 'JCL', city: 'České Budějovice', note: 'parkování zdarma a odbavení', href: '/letiste/ceske-budejovice' },
 ]
 
 function FeatureIcon({ type }: { type: 'nearby' | 'detail' | 'status' }) {
