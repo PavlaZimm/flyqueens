@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { AirportFlightBoard } from '@/components/Airport/AirportFlightBoard'
+import { getAirportBoard } from '@/lib/airportBoardServer'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AIRPORT_FLIGHT_BOARDS, airportFlightBoardBySlug } from '@/lib/airportFlightBoards'
 import { socialMetadata } from '@/lib/socialMetadata'
@@ -9,6 +10,10 @@ import { socialMetadata } from '@/lib/socialMetadata'
 interface AirportFlightsPageProps {
   params: Promise<{ airport: string }>
 }
+
+// Tabule je v HTML pro vyhledávače; stránka se obnovuje každých 10 minut
+// z mezipaměti AeroDataBox, placené dotazy tím nepřibývají.
+export const revalidate = 600
 
 export function generateStaticParams() {
   return AIRPORT_FLIGHT_BOARDS.map((airport) => ({ airport: airport.slug }))
@@ -34,6 +39,8 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
   const { airport: slug } = await params
   const airport = airportFlightBoardBySlug(slug)
   if (!airport) notFound()
+  const board = await getAirportBoard(airport.iata)
+  const initialData = board?.status === 'ready' ? board : null
 
   const pageUrl = `https://www.flyqueens.cz/letiste/${airport.slug}/odlety`
   const breadcrumbJsonLd = {
@@ -75,7 +82,7 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
           </p>
         </div>
 
-        <AirportFlightBoard airport={airport} />
+        <AirportFlightBoard airport={airport} initialData={initialData} />
 
         <div style={{ maxWidth: 760, margin: '0 auto' }}>
           <h2 style={heading}>Co v přehledu najdete</h2>

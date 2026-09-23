@@ -67,7 +67,7 @@ export default function HomePage() {
 
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <FlyQueensLogo compact />
+          <FlyQueensLogo compact showTagline />
           <nav className={styles.nav} aria-label="Hlavní navigace">
             <Link href="/radar">Živá mapa</Link>
             <Link href="/letiste">Letiště</Link>

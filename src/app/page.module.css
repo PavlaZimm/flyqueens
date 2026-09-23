@@ -43,6 +43,8 @@
   transition: color 160ms ease;
 }
 
+.nav a { font-weight: 650; }
+
 .nav a:hover,
 .footer a:hover {
   color: #e9eef6;
