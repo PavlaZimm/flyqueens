@@ -16,10 +16,23 @@ export const metadata: Metadata = {
   }),
 }
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'FlyQueens', item: 'https://www.flyqueens.cz' },
+    { '@type': 'ListItem', position: 2, name: 'Statistiky', item: 'https://www.flyqueens.cz/stats' },
+  ],
+}
+
 export default function StatsLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SiteHeader activeSection="stats" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {children}
       <SiteFooter />
     </>

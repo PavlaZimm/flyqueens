@@ -254,6 +254,10 @@ export default function StatsPage() {
 
   return (
     <main className={styles.page}>
+      <nav className={styles.breadcrumb} aria-label="Drobečková navigace">
+        <Link href="/">FlyQueens</Link><span aria-hidden="true">/</span>
+        <span aria-current="page">Statistiky</span>
+      </nav>
       <header className={styles.header}>
         <div className={styles.titleBlock}>
           <span>ŽIVÝ PŘEHLED</span>

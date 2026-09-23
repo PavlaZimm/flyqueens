@@ -12,6 +12,8 @@ import styles from './AirportFlightBoard.module.css'
 
 interface AirportFlightBoardProps {
   airport: AirportFlightBoardConfig
+  /** Tabule vykreslená na serveru, aby lety byly v HTML i bez JavaScriptu. */
+  initialData?: AirportBoardResponse | null
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -116,15 +118,18 @@ function operationalDetails(flight: AirportBoardFlight): string[] {
   ].filter((value): value is string => Boolean(value))
 }
 
-export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
+export function AirportFlightBoard({ airport, initialData = null }: AirportFlightBoardProps) {
   const [direction, setDirection] = useState<AirportFlightDirection>('departure')
-  const [data, setData] = useState<AirportBoardResponse | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState<AirportBoardResponse | null>(initialData)
+  const [loading, setLoading] = useState(!initialData)
   const [failed, setFailed] = useState(false)
   const [visibleCount, setVisibleCount] = useState(INITIAL_FLIGHT_COUNT)
-  const [now, setNow] = useState(() => Date.now())
+  // Čas známe až v prohlížeči; odkazy na mapu se proto ukážou po načtení,
+  // aby se serverové HTML nelišilo od prvního vykreslení v prohlížeči.
+  const [now, setNow] = useState<number | null>(null)
 
   useEffect(() => {
+    setNow(Date.now())
     const timer = window.setInterval(() => setNow(Date.now()), MINUTE)
     return () => window.clearInterval(timer)
   }, [])
@@ -151,13 +156,13 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
 
   useEffect(() => {
     const controller = new AbortController()
-    void load(controller.signal)
+    if (!initialData) void load(controller.signal)
     const timer = window.setInterval(() => void load(), 5 * 60_000)
     return () => {
       controller.abort()
       window.clearInterval(timer)
     }
-  }, [load])
+  }, [load, initialData])
 
   const flights = useMemo(() => {
     if (!data) return []
@@ -255,7 +260,7 @@ export function AirportFlightBoard({ airport }: AirportFlightBoardProps) {
                     const delay = delayMinutes(flight)
                     const opposite = airportLabel(flight)
                     const details = operationalDetails(flight)
-                    const radar = canBeOnMap(flight, now) ? radarValue(flight) : null
+                    const radar = now !== null && canBeOnMap(flight, now) ? radarValue(flight) : null
                     return (
                       <li className={styles.flight} key={flight.id}>
                         <div className={styles.timeCell}>

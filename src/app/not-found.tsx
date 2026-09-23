@@ -1,8 +1,12 @@
 import Link from 'next/link'
+import { SiteHeader } from '@/components/UI/SiteHeader'
+import { SiteFooter } from '@/components/UI/SiteFooter'
 
 export default function NotFound() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 18 }}>
+    <>
+    <SiteHeader />
+    <main style={{ minHeight: '60dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 18 }}>
       <div style={{ textAlign: 'center', maxWidth: 440 }}>
         <div style={{ fontSize: 40, marginBottom: 10 }}>🛫</div>
         <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 26, fontWeight: 800, margin: '0 0 8px' }}>
@@ -24,5 +28,7 @@ export default function NotFound() {
         </div>
       </div>
     </main>
+    <SiteFooter />
+    </>
   )
 }
