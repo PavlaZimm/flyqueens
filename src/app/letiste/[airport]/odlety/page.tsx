@@ -114,7 +114,7 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
           </div>
 
           <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 24, lineHeight: 1.6 }}>
-            Stránka a odkazy ověřeny 13. září 2026. Provozní data se po aktivaci zdroje obnovují automaticky; jejich dostupnost se může u jednotlivých letů lišit.
+            Stránka a odkazy ověřeny 13. září 2026. Provozní data se obnovují automaticky; jejich dostupnost se může u jednotlivých letů lišit.
           </p>
           <SourcesBox
             sources={[

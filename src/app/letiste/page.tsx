@@ -21,6 +21,7 @@ const AIRPORTS = [
   { slug: 'ostrava', name: 'Letiště Leoše Janáčka', city: 'Ostrava', iata: 'OSR', hasPage: true },
   { slug: 'karlovy-vary', name: 'Letiště Karlovy Vary', city: 'Karlovy Vary', iata: 'KLV', hasPage: true },
   { slug: 'pardubice', name: 'Letiště Pardubice', city: 'Pardubice', iata: 'PED', hasPage: true },
+  { slug: 'ceske-budejovice', name: 'Letiště České Budějovice', city: 'České Budějovice', iata: 'JCL', hasPage: true },
 ]
 
 export default function LetisteIndexPage() {

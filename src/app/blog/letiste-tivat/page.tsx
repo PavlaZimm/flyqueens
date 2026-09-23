@@ -5,7 +5,7 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
-import { POSTS } from '@/lib/blog'
+import { POSTS, relatedCard } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from '@/components/Article/Article.module.css'
 import { ArticleHeader } from '@/components/Article/ArticleHeader'
@@ -171,6 +171,8 @@ export default function LetisteTivatArticle() {
           { href: '/letiste/praha', eyebrow: 'Odlet z Česka', title: 'Letiště Praha', description: 'Přílety, odlety, doprava na letiště a parkování.' },
           { href: '/blog/jak-sledovat-let-podle-cisla', eyebrow: 'Návod', title: 'Jak sledovat let podle čísla', description: 'Číslo letu, volací znak a registrace: co zadat do mapy.' },
           { href: '/blog/letiste-kodan', eyebrow: 'Letiště · Dánsko', title: 'Letiště Kodaň', description: 'Přímé lety z Prahy, terminály T2 a T3 a ceny parkování.' },
+          relatedCard('/blog/letiste-lipsko'),
+          relatedCard('/blog/praha-santiago-de-compostela'),
         ]} />
         <SourcesBox sources={[
           { label: 'AIP Černé Hory (SMATSA), AD 2 LYTV, vydání platné od 3. 9. 2026', href: aip },

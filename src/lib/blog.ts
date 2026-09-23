@@ -208,3 +208,10 @@ export const BLOG_CARDS: (BlogPost & { href: string })[] = [
   },
   ...POSTS.map(post => ({ ...post, href: `/blog/${post.slug}` })),
 ]
+
+/** Karta pro blok „Pokračujte ve čtení“ převzatá z registru: rubrika, název a perex článku. */
+export function relatedCard(href: string) {
+  const card = BLOG_CARDS.find((entry) => entry.href === href)
+  if (!card) throw new Error(`Článek ${href} není v BLOG_CARDS`)
+  return { href: card.href, eyebrow: card.tag, title: card.title, description: card.excerpt }
+}

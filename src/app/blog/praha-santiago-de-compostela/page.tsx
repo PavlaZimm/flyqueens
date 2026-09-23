@@ -5,7 +5,7 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
-import { POSTS } from '@/lib/blog'
+import { POSTS, relatedCard } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from '@/components/Article/Article.module.css'
 import { ArticleHeader } from '@/components/Article/ArticleHeader'
@@ -154,6 +154,8 @@ export default function PrahaSantiagoArticle() {
         <RelatedReading items={[
           { href: '/letiste/praha', eyebrow: 'Odlet z Česka', title: 'Letiště Praha', description: 'Přílety, odlety, doprava na letiště a parkování.' },
           { href: '/letiste/praha/ubytovani', eyebrow: 'Před odletem', title: 'Ubytování u letiště Praha', description: 'Kde přespat u terminálů a jak se dostat na odlet.' },
+          relatedCard('/blog/letiste-tivat'),
+          relatedCard('/blog/starlux-airlines-praha'),
         ]} />
         <SourcesBox sources={[
           { label: 'Fly2Galicia: destinace Praha', href: 'https://fly2galicia.com/destino/praga/' },

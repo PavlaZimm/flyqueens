@@ -5,7 +5,7 @@ import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
 import { RelatedReading } from '@/components/UI/RelatedReading'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
-import { POSTS } from '@/lib/blog'
+import { POSTS, relatedCard } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from '@/components/Article/Article.module.css'
 import { ArticleHeader } from '@/components/Article/ArticleHeader'
@@ -165,6 +165,7 @@ export default function LetisteLipskoArticle() {
           { href: '/blog/boeing-747-praha-fly-meta', eyebrow: 'Nákladní letadla', title: 'Boeing 747 v Praze', description: 'Nákladní jumbo Fly Meta při přistání, vyfocené z Kněževsi.' },
           { href: '/letiste/praha/parkovani', eyebrow: 'Srovnání', title: 'Parkování u letiště Praha', description: 'Ceny a možnosti parkování u Letiště Václava Havla.' },
           { href: '/blog/letiste-kodan', eyebrow: 'Letiště · Dánsko', title: 'Letiště Kodaň', description: 'Přímé lety z Prahy, terminály T2 a T3 a ceny parkování.' },
+          relatedCard('/blog/letiste-tivat'),
         ]} />
         <SourcesBox sources={[
           { label: 'Letiště Lipsko/Halle: vlak a autobus', href: `${lej}/anreise-abreise/bus-bahn/` },
