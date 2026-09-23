@@ -113,7 +113,7 @@ export function AirportDiagram({ icao, iata, name }: AirportDiagramProps) {
           role="img"
           aria-labelledby={`${titleId} ${descId}`}
         >
-          <title id={titleId}>Orientace a délka drah letiště {name} ({iata})</title>
+          <title id={titleId}>{`Orientace a délka drah letiště ${name} (${iata})`}</title>
           <desc id={descId}>{description}</desc>
 
           {/* Kompasový kruh — drží čtenáři v hlavě, že jde o orientaci, ne o plán letiště. */}
