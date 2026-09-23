@@ -109,7 +109,7 @@ export default function CeskeBudejoviceAirportPage() {
 
         <h2 id="jak-se-na-letiste-dostat" style={S.h2}>Jak se na letiště dostat</h2>
         <p style={S.p}>
-          Autem je cesta nejjednodušší, parkování nic nestojí. Spojení městskou dopravou provozuje Dopravní podnik města České Budějovice a mění se podle sezony. Číslo linky a zastávku si proto ověřte v aktuálním jízdním řádu DPMČB. Počítejte s tím, že zastávka nemusí být přímo u terminálu.
+          Autem je cesta nejjednodušší, parkování nic nestojí. Přímý autobus k terminálu v létě 2026 nejezdí: sezonní linka 40 z nádraží podle letiště letos v provozu není. Celoročně jezdí městská linka 19 na zastávku Planá, Letiště, která je od terminálu asi 1,5 kilometru. S kufrem je to znatelný kus cesty pěšky, proto si spoj ověřte v aktuálním jízdním řádu DPMČB.
         </p>
 
         <h2 id="kdy-dorazit-na-odbaveni" style={S.h2}>Kdy dorazit na odbavení</h2>

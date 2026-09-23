@@ -17,6 +17,7 @@ Sběr 23. 9. 2026. **Žádný zdroj nešlo otevřít přímo** (EGRESS_BLOCKED).
 | Odbavení | začíná obvykle 2 h před odletem, končí 45 min před odletem nebo podle dopravce; doporučeno dorazit nejméně 2 h předem | airport-cb.cz/odbaveni-cestujicich | střední |
 | Charakter provozu | sezonní charterové lety cestovních kanceláří (Čedok, EXIM Tours, Fischer aj.) | airport-cb.cz, weby CK | střední |
 | Sezona 2025 | téměř 67 000 cestujících, +22 % meziročně | Zdopravy.cz, Českobudějovický deník (shoda) | střední |
+| MHD | linka 40 v sezoně léto 2026 v provozu není; celoroční linka 19, zastávka Planá, Letiště asi 1,5 km od terminálu | airport-cb.cz/doprava-a-parkovani (2 shodná hledání 23. 9.), DPMČB | střední |
 | Časy letů | rozhodující je letenka / pokyny CK; změny i krátkodobě | airport-cb.cz | střední |
 
 Oficiální stránky k odkazům:
