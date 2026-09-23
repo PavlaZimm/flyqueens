@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AirportDiagram } from '@/components/Airport/AirportDiagram'
+import { RunwayInUse } from '@/components/Airport/RunwayInUse'
 import { SourcesBox } from '@/components/UI/SourcesBox'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { ArticleContents } from '@/components/UI/ArticleContents'
@@ -91,6 +92,7 @@ export default function PrahaHubPage() {
         </section>
 
         <AirportDiagram icao="LKPR" iata="PRG" name="Letiště Václava Havla Praha" />
+        <RunwayInUse icao="LKPR" city="Praha" />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {LINKS.map((l) => {

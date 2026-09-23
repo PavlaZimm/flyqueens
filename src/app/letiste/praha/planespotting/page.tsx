@@ -1,4 +1,5 @@
 import { ArticleFlightStatus } from '@/components/Airport/ArticleFlightStatus'
+import { RunwayInUse } from '@/components/Airport/RunwayInUse'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -83,6 +84,7 @@ export default function PrahaPlanespottingPage() {
           <a href="#radar">Jak využít radar</a><a href="#foceni">Fotografování</a><a href="#otazky">Časté otázky</a>
         </nav>
         <h2>Kterou vyhlídku zvolit?</h2>
+        <RunwayInUse icao="LKPR" city="Praha" />
         <div className={styles.choices}>
           <section className={styles.choice}><h3><a href="#knezeves">Kněževes</a></h3><p>Od silnice půjdete po štěrkové cestě.</p></section>
           <section className={styles.choice}><h3><a href="#hostivice">Hostivice</a></h3><p>K valu se dostanete pěšky nebo na kole. Počítejte s delší cestou.</p></section>
