@@ -125,7 +125,7 @@ export default function PrahaPlanespottingPage() {
         </div>
         <h2 id="radar">Jak při pozorování využít radar</h2>
         <ol>
-          <li><strong>Před cestou ověřte let.</strong> Pro očekávaný přílet použijte <a href="https://www.prg.aero/prehled-letu?hour=all">oficiální přehled letů</a>. Pokud chcete vidět určitý typ, ověřte ho i u dopravce.</li>
+          <li><strong>Před cestou ověřte let.</strong> Pro očekávaný přílet použijte <a href="https://www.prg.aero/prehled-letu?hour=all">oficiální přehled letů</a> nebo naši <Link href="/letiste/praha/odlety#prilety">tabuli příletů do Prahy</Link>. Pokud chcete vidět určitý typ, ověřte ho i u dopravce.</li>
           <li><strong>Na místě otevřete <Link href="/radar">živou mapu letadel</Link>.</strong> Přibližte Prahu, vyberte letadlo a porovnejte jeho polohu s tím, co vidíte před sebou.</li>
           <li><strong>Podívejte se na několik příletů.</strong> Z aktuálních stop získáte představu, odkud letadla přilétají. Směr provozu se může změnit.</li>
           <li><strong>Chybějící letadlo nemusí znamenat zrušený let.</strong> Mapa závisí na dostupných ADS-B datech. Poloha může mít zpoždění a některá letadla nebo údaje o trase mohou chybět.</li>

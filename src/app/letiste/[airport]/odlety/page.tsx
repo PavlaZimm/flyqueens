@@ -82,7 +82,9 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
           </p>
         </div>
 
-        <AirportFlightBoard airport={airport} initialData={initialData} />
+        <div id="prilety" style={{ scrollMarginTop: 120 }}>
+          <AirportFlightBoard airport={airport} initialData={initialData} />
+        </div>
 
         <div style={{ maxWidth: 760, margin: '0 auto' }}>
           <h2 style={heading}>Co v přehledu najdete</h2>
@@ -91,6 +93,11 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
           </p>
           <p style={paragraph}>
             Odkaz „Na mapě“ se objeví jen u letu, ke kterému máme použitelný volací znak, registraci nebo identifikátor letadla. Ani tehdy nemusí být stroj na mapě vidět: ADS-B přijímače jej nemusí právě zachytit, letadlo může být ještě na zemi nebo mimo pokrytí.
+          </p>
+
+          <h2 style={heading}>Přílety {airport.city}</h2>
+          <p style={paragraph}>
+            Přílety najdete na druhé záložce tabule, nebo je otevřete přímo odkazem <a href="#prilety" style={{ color: 'var(--gold)' }}>přílety na letiště {airport.city}</a>. Když jedete někoho vyzvednout, sledujte revidovaný čas přistání a výdejní pás, pokud ho zdroj uvádí. Od přistání do příchodu do haly obvykle nějakou dobu trvá výdej zavazadel a u letů mimo schengenský prostor i pasová kontrola.
           </p>
 
           <h2 style={heading}>Která informace je rozhodující</h2>

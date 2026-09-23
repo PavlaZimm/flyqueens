@@ -164,6 +164,19 @@ export function AirportFlightBoard({ airport, initialData = null }: AirportFligh
     }
   }, [load, initialData])
 
+  // Odkaz s #prilety otevře rovnou záložku příletů (i při kliknutí na stejné stránce).
+  useEffect(() => {
+    const syncHash = () => {
+      if (window.location.hash === '#prilety') {
+        setDirection('arrival')
+        setVisibleCount(INITIAL_FLIGHT_COUNT)
+      }
+    }
+    syncHash()
+    window.addEventListener('hashchange', syncHash)
+    return () => window.removeEventListener('hashchange', syncHash)
+  }, [])
+
   const flights = useMemo(() => {
     if (!data) return []
     return direction === 'departure' ? data.departures : data.arrivals
