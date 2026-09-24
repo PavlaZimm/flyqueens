@@ -3,10 +3,11 @@ import { ensureSchema, getDb } from '@/lib/db'
 import type { RunwayInUseResponse } from '@/lib/runwayInUse'
 
 // Historie odhadu dráhy. Zapisuje se při dotazu na /api/runway-in-use,
-// nejvýš jednou za 4 minuty na letiště, takže ji nezahltí ani víc
-// otevřených stránek naráz.
+// nejvýš jednou za 15 minut na letiště, takže ji nezahltí ani víc
+// otevřených stránek naráz. Delší rozestup zároveň nechá databázi Neon
+// mezi zápisy usnout, takže se nevyčerpá bezplatný limit výpočetního času.
 
-const MIN_GAP_MINUTES = 4
+const MIN_GAP_MINUTES = 15
 export const HISTORY_DAYS = 7
 /** Pod tímto počtem měření souhrn nezobrazujeme, byl by náhodný. */
 export const MIN_SAMPLES_FOR_SUMMARY = 30
