@@ -18,6 +18,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'nejdelsi-let-na-svete',
+    title: 'Nejdelší let na světě: trasa, délka letu a rekordy',
+    excerpt: 'Singapur–New York: 15 348 km a přes 18 hodin letu, bez ekonomické třídy na palubě. Deset nejdelších linek, ohlášené rekordy Qantasu a nejdelší let z Prahy.',
+    date: '2026-09-24', updatedAt: '2026-09-24', dateLabel: '24. září 2026',
+    tag: 'Rekordy · Dálkové lety', readingTime: '8 min čtení',
+    image: '/blog/nejdelsi-let-etihad-787-praha.webp',
+    imageAlt: 'Boeing 787 Etihad u stání na Letišti Praha, v pozadí Airbus A350 China Airlines',
+    imageWidth: 1600, imageHeight: 738, imagePosition: 'center 60%',
+  },
+  {
     slug: 'letiste-kodan',
     title: 'Letiště Kodaň 2026: lety z Prahy, terminály a parkování',
     excerpt: 'Kdo z Prahy do Kodaně přímo létá, kdy Ryanair přes zimu nelétá, ve kterém terminálu odbavují SAS, Norwegian a Ryanair a kolik stojí týden na parkovišti.',
