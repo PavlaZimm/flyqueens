@@ -2,9 +2,35 @@
 
 import { useEffect, useState } from 'react'
 import type { RunwayInUseResponse } from '@/lib/runwayInUse'
+import type { RunwayHistoryResponse } from '@/lib/runwayHistory'
 import { MIN_AIRCRAFT_FOR_ESTIMATE } from '@/lib/runwayInUseShared'
 
 const REFRESH_MS = 2 * 60_000
+/** Souhrn historie ukážeme až od tohoto počtu měření (shodné s MIN_SAMPLES_FOR_SUMMARY na serveru). */
+const MIN_HISTORY_SAMPLES = 30
+const MIN_PART_SAMPLES = 8
+const PART_LABELS: Record<RunwayHistoryResponse['byPartOfDay'][number]['part'], string> = {
+  rano: 'ráno',
+  odpoledne: 'odpoledne',
+  vecer: 'večer',
+  noc: 'v noci',
+}
+const DATE_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', timeZone: 'Europe/Prague' })
+
+function historyLines(history: RunwayHistoryResponse | null): string[] {
+  if (!history?.available) return []
+  if (history.samples < MIN_HISTORY_SAMPLES) {
+    const since = history.since ? ` od ${DATE_FORMATTER.format(new Date(history.since))}` : ''
+    return [`Historii směru provozu sbíráme${since}, souhrn se ukáže po několika dnech.`]
+  }
+  const shares = history.ends.map(end => `${end.end} (${end.share} %)`).join(', ')
+  const lines = [`Za posledních ${history.days} dní dráha ${shares}, z ${history.samples} měření.`]
+  const parts = history.byPartOfDay
+    .filter(part => part.samples >= MIN_PART_SAMPLES)
+    .map(part => `${PART_LABELS[part.part]} ${part.share >= 60 ? `většinou ${part.end}` : 'střídavě'}`)
+  if (parts.length) lines.push(`${parts.join(' · ')}.`.replace(/^./, c => c.toUpperCase()))
+  return lines
+}
 const TIME_FORMATTER = new Intl.DateTimeFormat('cs-CZ', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Prague' })
 
 function aircraftLabel(count: number): string {
@@ -24,6 +50,16 @@ function windText(wind: RunwayInUseResponse['wind']): string | null {
 export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; city?: string }) {
   const [data, setData] = useState<RunwayInUseResponse | null>(null)
   const [failed, setFailed] = useState(false)
+  const [history, setHistory] = useState<RunwayHistoryResponse | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch(`/api/runway-history?airport=${icao}`, { signal: controller.signal })
+      .then(response => (response.ok ? response.json() as Promise<RunwayHistoryResponse> : null))
+      .then(setHistory)
+      .catch(() => undefined)
+    return () => controller.abort()
+  }, [icao])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -82,6 +118,9 @@ export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; 
           {[wind, updated ? `aktualizováno ${updated}` : null].filter(Boolean).join(' · ')}
         </p>
       )}
+      {historyLines(history).map(line => (
+        <p key={line} style={{ margin: '6px 0 0', fontSize: 13, lineHeight: 1.6, color: 'var(--text-muted)' }}>{line}</p>
+      ))}
       <p style={{ margin: '8px 0 0', fontSize: 11, lineHeight: 1.6, color: 'var(--text-dim)' }}>
         Odhad z dat ADS-B podle směru letadel nízko nad letištěm, nejde o oficiální informaci řízení letového provozu. Směr se může během dne změnit, obvykle podle větru.
       </p>

@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { after, NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/rateLimit'
 import { getRunwayInUse, RUNWAY_AIRPORTS } from '@/lib/runwayInUse'
+import { recordRunwayObservation } from '@/lib/runwayHistory'
 
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -18,6 +19,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const result = await getRunwayInUse(icao)
+    if (result) {
+      // Zápis do historie až po odeslání odpovědi; výpadek databáze návštěvníka nezdrží.
+      after(() => recordRunwayObservation(result).catch(() => undefined))
+    }
     return NextResponse.json(result, {
       headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },
     })

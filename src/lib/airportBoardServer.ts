@@ -1,4 +1,6 @@
 import 'server-only'
+import { after } from 'next/server'
+import { recordBoardSnapshot } from '@/lib/boardHistory'
 import { getAeroSnapshot, airportFlightsPath } from '@/lib/aerodataboxCache'
 import { getAeroDataBoxConnection } from '@/lib/aerodatabox'
 import {
@@ -177,14 +179,18 @@ export async function getAirportBoard(iata: string): Promise<AirportBoardRespons
     }
 
     const data = snapshot.data
+    const departures = normalizeFlights(data.departures, 'departure')
+    const arrivals = normalizeFlights(data.arrivals, 'arrival')
+    // Snímek, který už máme zaplacený, si uložíme pro statistiku dochvilnosti.
+    after(() => recordBoardSnapshot(iata, snapshot.fetchedAt, [...departures, ...arrivals]).catch(() => undefined))
     return {
       ...response,
       status: 'ready',
       source: 'aerodatabox',
       refreshMinutes: airportBoardRefreshSeconds(iata) / 60,
       fetchedAt: snapshot.fetchedAt,
-      departures: normalizeFlights(data.departures, 'departure'),
-      arrivals: normalizeFlights(data.arrivals, 'arrival'),
+      departures,
+      arrivals,
     }
   } catch {
     return {
