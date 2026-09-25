@@ -31,7 +31,7 @@ export default function StatsLayout({ children }: { children: React.ReactNode })
       <SiteHeader activeSection="stats" />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c') }}
       />
       {children}
       <SiteFooter />
