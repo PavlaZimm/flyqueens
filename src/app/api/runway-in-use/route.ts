@@ -21,7 +21,9 @@ export async function GET(req: NextRequest) {
     const result = await getRunwayInUse(icao)
     if (result) {
       // Zápis do historie až po odeslání odpovědi; výpadek databáze návštěvníka nezdrží.
-      after(() => recordRunwayObservation(result).catch(() => undefined))
+      after(() => recordRunwayObservation(result).catch((error) => {
+        console.error('[runway-in-use] zápis do historie selhal:', error)
+      }))
     }
     return NextResponse.json(result, {
       headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },

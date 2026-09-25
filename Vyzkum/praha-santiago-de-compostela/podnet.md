@@ -12,4 +12,11 @@ Tvrzení v příspěvku a výsledek ověření:
 
 Co příspěvek zamlčuje: Fly2Galicia nemá vlastní licenci dopravce (AOC). Je to obchodní značka španělské společnosti registrované jako cestovní agentura a lety provádí rumunský dopravce FLYYO v režimu wet lease. Firma vznikla v lednu 2026 a ve Španělsku kolem ní probíhá veřejná debata (viz `zdroje.md`).
 
-Poptávka: Marketing Miner měl 22. 9. vyčerpaný denní limit, Ahrefs Keywords Explorer vrátil „Insufficient plan“. Hledanost tedy **není ověřena**. Téma je zpravodajské a Pavla o článek výslovně požádala. Hledanost doplnit, jakmile bude MM dostupný (seed: „santiago de compostela“, „letenky santiago de compostela“, „fly2galicia“, „praha santiago de compostela“).
+Poptávka: Marketing Miner měl 22. 9. vyčerpaný denní limit, Ahrefs Keywords Explorer vrátil „Insufficient plan“. **Doplněno 25. 9. 2026** z Marketing Mineru, podrobnosti v `docs/keyword-plan-santiago-2026-09-25.md` a surová data v `docs/marketing-miner-santiago-2026-09-25.json`.
+
+- „santiago de compostela“ 5 100 hledání měsíčně, obtížnost 67, vrchol v dubnu.
+- „svatojakubská cesta“ 2 800, „santiago de compostela trasy“ 820, „pouť“ 440.
+- „letiště santiago de compostela“ 40.
+- Bez měřitelné hledanosti: „fly2galicia“, „letenky santiago de compostela“, „praha santiago de compostela“, „let do santiaga de compostela“.
+
+Závěr: samotná linka poptávku zatím nemá, značka je nová. Článek obstojí jako zpravodajský, titulek ani adresu neměníme. Příležitost s ověřenou poptávkou je samostatný praktický článek o cestě na Svatojakubskou cestu z Česka, ideálně v únoru až březnu 2027 před jarním vrcholem.

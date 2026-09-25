@@ -1,0 +1,22 @@
+{
+  "zdroj": "Marketing Miner MCP, keyword_search_volume + keyword_suggestions",
+  "trh": "cs",
+  "staženo": "2026-09-25",
+  "poznamka": "Prázdné pole data = bez měřitelné hledanosti, nikoli nula.",
+  "keywords": [
+    {"keyword": "santiago de compostela", "search_volume": 5100, "difficulty": 67, "cpc_czk": 0.56, "yoy_change": -24.0, "peak_month": "2026-04-01", "serp_features": ["knowledge_graph"]},
+    {"keyword": "svatojakubská cesta", "search_volume": 2800, "cpc_czk": 0.39, "yoy_change": -26.0, "peak_month": "2026-04-01"},
+    {"keyword": "santiago de compostela trasy", "search_volume": 820, "difficulty": 36, "cpc_czk": 0.34, "yoy_change": -24.0},
+    {"keyword": "santiago de compostela pouť", "search_volume": 440, "difficulty": 56, "cpc_czk": 0.40, "yoy_change": -7.0},
+    {"keyword": "cesta do santiaga de compostela", "search_volume": 240, "difficulty": 49, "yoy_change": -30.0},
+    {"keyword": "porto santiago de compostela", "search_volume": 150, "difficulty": 38, "yoy_change": -54.0},
+    {"keyword": "camino santiago de compostela", "search_volume": 140, "difficulty": 36},
+    {"keyword": "letiště santiago de compostela", "search_volume": 40, "cpc_czk": 1.83, "yoy_change": -29.0},
+    {"keyword": "fly2galicia", "search_volume": null},
+    {"keyword": "letenky santiago de compostela", "search_volume": null},
+    {"keyword": "santiago de compostela letenky", "search_volume": null},
+    {"keyword": "let do santiaga de compostela", "search_volume": null},
+    {"keyword": "jak se dostat na svatojakubskou cestu", "search_volume": null}
+  ],
+  "rows_count_suggestions": 1009
+}

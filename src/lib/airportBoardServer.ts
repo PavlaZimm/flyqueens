@@ -182,7 +182,9 @@ export async function getAirportBoard(iata: string): Promise<AirportBoardRespons
     const departures = normalizeFlights(data.departures, 'departure')
     const arrivals = normalizeFlights(data.arrivals, 'arrival')
     // Snímek, který už máme zaplacený, si uložíme pro statistiku dochvilnosti.
-    after(() => recordBoardSnapshot(iata, snapshot.fetchedAt, [...departures, ...arrivals]).catch(() => undefined))
+    after(() => recordBoardSnapshot(iata, snapshot.fetchedAt, [...departures, ...arrivals]).catch((error) => {
+      console.error('[airport-board] zápis snímku tabule selhal:', error)
+    }))
     return {
       ...response,
       status: 'ready',

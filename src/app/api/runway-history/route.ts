@@ -22,7 +22,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(history, {
       headers: { 'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600' },
     })
-  } catch {
+  } catch (error) {
+    console.error('[runway-history] čtení historie selhalo:', error)
     return NextResponse.json({ error: 'History unavailable' }, { status: 502 })
   }
 }

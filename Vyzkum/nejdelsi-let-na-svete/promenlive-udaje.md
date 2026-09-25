@@ -35,3 +35,16 @@ Stav k **24. 9. 2026**. Před publikací a pak pravidelně (doporučeně každé
 | 29 | Book the Cook (JFK, EWR; J i PY) | platí, objednávka 6 týdnů až 24 h předem | kdykoli | https://www.singaporeair.com/en_UK/us/flying-withus/dining/book-the-cook/ |
 | 30 | NHS stránka o jet lagu | revize 31. 5. 2023, další revize byla plánována na 31. 5. 2026 | revize obsahu | https://www.nhs.uk/conditions/jet-lag/ |
 | 31 | Omezení vzdušného prostoru na Blízkém východě (2026; Qatar přerušil Auckland 28. 2. 2026, Qantas převedl QF9 přes Singapur od 4. 3. 2026) | ovlivňují Qantas a Qatar. Vliv na PRG–TPE je jen domněnka, NEOVĚŘENO. | kdykoli | tiskové zprávy aerolinek |
+
+## Přeověření 25. 9. 2026
+
+Prošly položky s nejbližším termínem změny. **V článku nebylo nutné nic měnit.**
+
+| # | Co ověřeno | Výsledek |
+|---|---|---|
+| 13 | Qatar Dauhá–Auckland | Nonstop stále neobnoven. Od **9. 12. 2026** se přesouvá z Adelaide na Melbourne jako QR904/905 (Executive Traveller, Flighthacks; sekundární zdroje, u Qatar Airways neověřeno). Článek popisuje stav ze září 2026 a zůstává platný. Po 9. 12. větu o Adelaide upravit. |
+| 14 | United Houston–Sydney | Obnovení **24. 10. 2026** potvrzují oborové zdroje (Executive Traveller, FlightAware). Článek linku neuvádí jako aktivní, takže beze změny. |
+| 24 | STARLUX Praha | Stránka dopravce k 25. 9. uvádí říjnový řád do 24. 10.: 4× týdně (po, út, čt, so), JX101 00:10–08:25, JX102 10:45–05:10+1. Přesně tak to článek popisuje. Zimní řád od 25. 10. dopravce zatím nezveřejnil. |
+| 2–6 | Block times SIA | Beze změny, zimní časy od 25. 10. už jsou v článku uvedené i s datem. |
+
+**Další kontrola: po 25. 10. 2026** (přechod na zimní řád) a znovu po 9. 12. 2026 kvůli Qatar Airways.

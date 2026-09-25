@@ -23,6 +23,13 @@ function escapeHtml(value: unknown): string {
     .replaceAll("'", '&#039;')
 }
 
+declare global {
+  interface Window {
+    /** Volá se z tlačítek v Leaflet popupech. */
+    __playAtc?: (url: string, btnId: string) => void
+  }
+}
+
 function playAtcStream(url: string, btnId: string) {
   // Zastav předchozí stream
   if (globalAudio) {
@@ -69,8 +76,7 @@ interface MapRefs {
   lightTiles: Layer | null
   airportLayer: LayerGroup
   ensureAirports?: () => void
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  L: any  // Leaflet dynamically imported — no static type available at module level
+  L: typeof import('leaflet')  // Leaflet se načítá dynamicky, typ bereme z modulu
 }
 
 interface MapViewProps {
@@ -215,10 +221,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
   // Registruj window.__playAtc — volá se z Leaflet popup tlačítek
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(window as any).__playAtc = playAtcStream
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return () => { delete (window as any).__playAtc }
+    window.__playAtc = playAtcStream
+    return () => { delete window.__playAtc }
   }, [])
 
   // Init mapy
@@ -228,8 +232,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     import('leaflet').then((L) => {
       if (!containerRef.current || mapRef.current) return
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      delete (L.Icon.Default.prototype as any)._getIconUrl
+      delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl
       L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' })
 
       const initialRegion = REGION_CONFIGS[region] ?? REGION_CONFIGS.europe

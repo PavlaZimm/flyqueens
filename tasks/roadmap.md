@@ -1,7 +1,40 @@
 # FlyQueens — Roadmap
 
 > Tento soubor je živý dokument. Aktualizuj ho po každé session.
-> Poslední update: 2026-09-18 (obsah: spotting a Fly Meta). Historické technické body níže ještě vyžadují srovnání s aktuálním kódem.
+> Poslední update: 2026-09-25 (článek o Santiagu, klíčová slova, logování chyb databáze, úklid typů). Historické technické body níže ještě vyžadují srovnání s aktuálním kódem.
+
+## Rozpracováno, 24. září 2026
+
+Databáze Neon „neon-citron-paddle“ (Free, Washington iad1) je od 24. 9. připojená k flyqueens-app, `DATABASE_URL` i `POSTGRES_URL` jsou nastavené a zápis historie dráhy funguje (ověřeno 14:12 a 20:06 UTC).
+
+### Databáze a provoz
+- [ ] **Automatické měření dráhy každých 15 min** (GitHub Action volající `/api/runway-in-use?airport=LKPR`). Bez něj se historie plní jen při návštěvách, za 6 hodin přibylo jediné měření. Souhrn na `/letiste/praha` potřebuje 30 měření. Vercel Cron na Hobby umí jen 1× denně, proto GitHub Action. Připravit jako PR.
+- [ ] **Rozhodnout o přesunu do Frankfurtu** (volitelné, přínos malý: živá data o 0,1–0,2 s rychlejší). Pokud ano, udělat dřív než automatické měření, dokud je databáze skoro prázdná. Postup: Storage → neon-citron-paddle → Disconnect; Create Database → Neon, Frankfurt eu-central-1, Auth vypnutý, Free, všechna 3 prostředí, prázdný prefix; Settings → Functions → Function Region fra1; Redeploy; ověřit; teprve pak smazat starou databázi.
+- [x] **Zápis do databáze nezahazovat potichu** (25. 9.): `console.error` v `/api/runway-in-use`, `airportBoardServer` i v `/api/runway-history`.
+- [ ] `/api/runway-history` doplnit o čas posledního měření (i nepovedeného), aby šel stav ověřit jednoznačně.
+- [ ] Krátký návod v `docs/`: jak je databáze připojená, které proměnné web čte, jak ověřit funkčnost.
+
+### Bezpečnost (review 24. 9.: nic kritického)
+- [ ] Zapnout 2FA na Vercelu, GitHubu a Neonu (pokud ještě není).
+- [ ] Ve Vercelu označit databázové proměnné jako Sensitive (svítí „Needs Attention“).
+- [ ] Rate limiting je jen v paměti instance a cache jde obejít přidaným parametrem. API by mělo ignorovat neznámé parametry, případně pravidlo ve Vercel Firewallu. Riziko: vyčerpání 100 CU-hodin Neonu, historie by do konce měsíce zmizela.
+- [x] Projekt ceskysvaznovosedlice zkontrolován 25. 9.: poslední produkční nasazení je READY z main (PR #1, 24. 9.), csznovosedlice.cz i www vrací 200. Zkratky nic nerozbily.
+- [x] Drobnost (25. 9.): typy `any` v `src/components/Map/MapView.tsx` odstraněny. Leaflet má `typeof import('leaflet')`, `window.__playAtc` má deklaraci v `declare global`.
+
+### Obsah: článek „Praha–Santiago de Compostela“ (publikováno 22. 9.)
+- [x] Hledanost doplněna 25. 9.: `docs/keyword-plan-santiago-2026-09-25.md`. Linka sama poptávku nemá („fly2galicia“ i „letenky santiago de compostela“ bez měřitelné hledanosti), poptávka je u destinace (5 100) a Svatojakubské cesty (2 800). Titulek ani adresu neměníme.
+- [ ] Zvážit v únoru až březnu 2027 samostatný článek o cestě na Svatojakubskou cestu z Česka (ověřená poptávka, jarní vrchol).
+- [ ] Přeměřit hledanost „fly2galicia“ v lednu 2027, po prvních letech.
+- [ ] Po 2. 12. 2026 ověřit, že linka skutečně létá, a článek aktualizovat.
+
+### Obsah: článek „Nejdelší let na světě“
+- [ ] Přeověřit proměnlivé údaje (`Vyzkum/nejdelsi-let-na-svete/promenlive-udaje.md`): po 25. 10. 2026 zimní časy SIA a STARLUX, Qatar Dauhá–Auckland, Qantas Perth, Project Sunrise.
+- [x] **Zveřejněno 24. 9. 2026** jako `/blog/nejdelsi-let-na-svete` (PR #16). Podle zadání `~/Desktop/FlyQueens_SEO_zadani_nejdelsi_let_na_svete(1).pdf`, sjednoceného s `docs/redakcni-pravidla.md`: délka podle potřeby (ne 1 500–2 200 slov povinně), FAQ jako text bez FAQPage, ceny jen ověřené pro konkrétní termín, žádné vymyšlené zážitky z paluby, obsah s kotvami, karta v `BLOG_CARDS` s fotkou.
+- [x] Postup: MM data → `serp.md` → fakta u aerolinek/letišť/výrobce (včetně nejdelšího přímého letu z Prahy a Project Sunrise) → draft → kontrola faktů a češtiny → náhled mobil/desktop. Podklady do `Vyzkum/nejdelsi-let-na-svete/`, adresa `/blog/nejdelsi-let-na-svete`.
+- [x] Najít náhledovou fotku (vlastní ze `Fotografie/`, nebo s volnou licencí a kreditem).
+
+### Údržba
+- [x] Lokální `main` stažen 25. 9. 2026, je aktuální.
 
 ## Obsah, 18. září 2026
 
