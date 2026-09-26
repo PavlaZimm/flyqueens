@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { checkRateLimit } from '@/lib/rateLimit'
+import { checkRateLimit, clientKey } from '@/lib/rateLimit'
 
 export const runtime = 'nodejs'
 
@@ -9,9 +9,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse('ATC proxy is disabled', { status: 503 })
   }
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    ?? req.headers.get('x-real-ip')
-    ?? '127.0.0.1'
+  const ip = clientKey(req)
   const { allowed, retryAfter } = checkRateLimit(ip, 'atc-stream')
   if (!allowed) {
     return new NextResponse('Too many requests', { status: 429, headers: { 'Retry-After': String(retryAfter) } })

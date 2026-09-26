@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAirportBoard } from '@/lib/airportBoardServer'
-import { checkRateLimit } from '@/lib/rateLimit'
+import { checkRateLimit, clientKey } from '@/lib/rateLimit'
 
 export async function GET(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    ?? request.headers.get('x-real-ip')
-    ?? '127.0.0.1'
+  const ip = clientKey(request)
   const { allowed, retryAfter } = checkRateLimit(ip, 'airport-flights')
   if (!allowed) {
     return NextResponse.json({ error: 'Too many requests', retryAfter }, {

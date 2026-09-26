@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { checkRateLimit } from '@/lib/rateLimit'
+import { checkRateLimit, clientKey } from '@/lib/rateLimit'
 import { REGION_CONFIGS } from '@/lib/constants'
 import { getOpenSkyToken } from '@/lib/openskyAuth'
 import type { AircraftType, FlightDataSource } from '@/types/flight'
@@ -423,9 +423,7 @@ async function getLiveSnapshot(regionKey: string, region: (typeof REGION_CONFIGS
 }
 
 export async function GET(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    ?? req.headers.get('x-real-ip')
-    ?? '127.0.0.1'
+  const ip = clientKey(req)
   const summaryOnly = req.nextUrl.searchParams.get('summary') === '1'
   const format: FlightWireFormat = req.nextUrl.searchParams.get('format') === 'compact'
     ? 'compact-v1'

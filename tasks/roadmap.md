@@ -17,7 +17,8 @@ Databáze Neon „neon-citron-paddle“ (Free, Washington iad1) je od 24. 9. př
 ### Bezpečnost (review 24. 9.: nic kritického)
 - [ ] Zapnout 2FA na Vercelu, GitHubu a Neonu (pokud ještě není).
 - [ ] Ve Vercelu označit databázové proměnné jako Sensitive (svítí „Needs Attention“).
-- [ ] Rate limiting je jen v paměti instance a cache jde obejít přidaným parametrem. API by mělo ignorovat neznámé parametry, případně pravidlo ve Vercel Firewallu. Riziko: vyčerpání 100 CU-hodin Neonu, historie by do konce měsíce zmizela.
+- [x] Rate limiting zpevněn 26. 9. (nález F1 ze skenu): identita volajícího se bere z hlaviček od proxy (`clientKey` v `src/lib/rateLimit.ts`), ne z první položky `x-forwarded-for`, a přibyl strop na endpoint bez ohledu na volajícího (flight-route 300/min, runway-in-use 200/min).
+- [ ] Zbývá z téhož nálezu: strop je jen v paměti instance, takže při více instancích se násobí. Cache jde pořád obejít přidaným parametrem (`?cb=1`). Dotáhnout sdíleným počítadlem (Neon nebo Upstash), odmítáním neznámých parametrů, nebo pravidlem ve Vercel Firewallu.
 - [x] Projekt ceskysvaznovosedlice zkontrolován 25. 9.: poslední produkční nasazení je READY z main (PR #1, 24. 9.), csznovosedlice.cz i www vrací 200. Zkratky nic nerozbily.
 - [x] Drobnost (25. 9.): typy `any` v `src/components/Map/MapView.tsx` odstraněny. Leaflet má `typeof import('leaflet')`, `window.__playAtc` má deklaraci v `declare global`.
 

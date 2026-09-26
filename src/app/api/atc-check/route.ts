@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { checkRateLimit } from '@/lib/rateLimit'
+import { checkRateLimit, clientKey } from '@/lib/rateLimit'
 
 export const runtime = 'nodejs'
 export const revalidate = 0
@@ -29,9 +29,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ online: false, disabled: true }, { status: 503 })
   }
 
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    ?? req.headers.get('x-real-ip')
-    ?? '127.0.0.1'
+  const ip = clientKey(req)
   const { allowed, retryAfter } = checkRateLimit(ip, 'atc-check')
   if (!allowed) {
     return NextResponse.json({ error: 'Too many requests', retryAfter }, { status: 429 })
