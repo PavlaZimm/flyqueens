@@ -66,7 +66,7 @@ export default function PowerbankaDoLetadlaArticle() {
         >
           {title}
         </ArticleHeader>
-        <p className={styles.lead}>Powerbanka smí jen do příručního zavazadla a její kapacita nesmí přesáhnout 100 Wh. Do odbaveného kufru nepatří vůbec a u řady dopravců nesmí ani do schránky nad sedadly: musíte ji mít u sebe nebo v tašce pod sedadlem. Na obalu ale bývají miliampérhodiny, ne watthodiny, takže si to musíte přepočítat.</p>
+        <p className={styles.lead}>Powerbanka smí jen do příručního zavazadla a její kapacita nesmí přesáhnout 100 Wh. Do odbaveného kufru nepatří vůbec a u Ryanairu ani u Smartwings nesmí ani do schránky nad sedadly: musíte ji mít u sebe nebo v tašce pod sedadlem. Na obalu ale bývají miliampérhodiny, ne watthodiny, takže si to musíte přepočítat.</p>
 
         <figure className={styles.photo}><Image src="/blog/powerbanka-do-letadla.webp" alt="Černá powerbanka s porty USB a USB-C a čtyřmi kontrolkami nabití" width={1600} height={1191} sizes={sizes} preload /><figcaption>Kapacita bývá natištěná na spodní straně. Rozhoduje údaj ve watthodinách. Foto: <a href={fotoPowerbanka}>Jacek Halicki, Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, zmenšeno.</figcaption></figure>
 
@@ -82,7 +82,7 @@ export default function PowerbankaDoLetadlaArticle() {
 
         <h2 id="limit">Kolik watthodin smí powerbanka mít</h2>
         <p>Hranice je <strong>100 Wh</strong>. Letiště Václava Havla to píše jasně: lithiové baterie a powerbanky jsou povolené pouze v příručním zavazadle a výkon baterie nesmí přesáhnout 100 Wh. U silnějších baterií doporučuje obrátit se na leteckou společnost (<a href={prg}>Letiště Praha</a>).</p>
-        <p>Pod sto watthodin se vejde drtivá většina běžných powerbank, takže se cestujících limit obvykle vůbec nedotkne. Pozor si dejte u velkých kusů určených k nabíjení notebooků.</p>
+        <p>Pod sto watthodin se vejde drtivá většina běžných powerbank, takže většiny cestujících se limit vůbec netýká. Pozor si dejte u velkých kusů určených k nabíjení notebooků.</p>
 
         <h2 id="mah-na-wh">Jak převést mAh na Wh</h2>
         <p>Na krabici bývají miliampérhodiny, předpisy mluví o watthodinách. Přepočet je jednoduchý:</p>
@@ -95,15 +95,15 @@ export default function PowerbankaDoLetadlaArticle() {
               <tr><td>10 000 mAh</td><td>37 Wh</td><td>ano</td></tr>
               <tr><td>20 000 mAh</td><td>74 Wh</td><td>ano</td></tr>
               <tr><td>27 000 mAh</td><td>99,9 Wh</td><td>na hraně</td></tr>
-              <tr><td>30 000 mAh</td><td>111 Wh</td><td>ne, bez souhlasu dopravce</td></tr>
+              <tr><td>30 000 mAh</td><td>111 Wh</td><td>ne</td></tr>
             </tbody>
           </table>
         </div>
-        <p className={styles.tableNote}>Vlastní výpočet podle vzorce výše, napětí 3,7 V. U článků se 3,6 V vyjdou čísla o něco nižší. Rozhoduje vždy hodnota natištěná na samotné powerbance; když tam watthodiny jsou, neřešte přepočet.</p>
+        <p className={styles.tableNote}>Vlastní výpočet podle vzorce výše, napětí 3,7 V. U článků se 3,6 V vyjdou čísla o něco nižší. Rozhoduje vždy hodnota natištěná na samotné powerbance; když tam watthodiny jsou, neřešte přepočet. Powerbanku nad 100 Wh Ryanair ani Smartwings nepustí na palubu ani se souhlasem.</p>
 
         <h2 id="kam-ulozit">Kam powerbanku uložit</h2>
-        <p>Do odbaveného zavazadla nesmí, a to u žádného dopravce. Důvod je prostý: v zavazadlovém prostoru by si hořící baterie nikdo nevšiml.</p>
-        <p>Méně známé je druhé pravidlo. Ryanair i Smartwings shodně zakazují dávat powerbanku <strong>do schránky nad sedadly</strong>. Máte ji mít u sebe, nebo v tašce pod sedadlem před vámi, aby posádka poznala, že se něco děje (<a href={ryanair}>Ryanair, článek 8.4.3</a>; <a href={smartwings}>Smartwings</a>).</p>
+        <p>Do odbaveného zavazadla nesmí. Shodně to uvádí Ryanair, Smartwings i Letiště Praha, které tohle pravidlo píše obecně pro všechny lety. V kabině může posádka na hořící baterii hned zareagovat, v zavazadlovém prostoru by si jí nikdo nevšiml.</p>
+        <p>Méně známé je druhé pravidlo. Ryanair i Smartwings shodně zakazují dávat powerbanku <strong>do schránky nad sedadly</strong>. Máte ji mít u sebe nebo v tašce pod sedadlem před vámi, aby posádka poznala, že se něco děje (<a href={ryanair}>Ryanair, článek 8.4.3</a>; <a href={smartwings}>Smartwings</a>).</p>
         <p>Každá baterie musí být chráněná proti zkratu. Stačí původní obal, přelepené svorky nebo samostatný sáček.</p>
 
         <h2 id="nabijeni">Nabíjení na palubě</h2>
@@ -111,7 +111,7 @@ export default function PowerbankaDoLetadlaArticle() {
         <p>Opačným směrem to jde, ale s výhradou: nabíjet z powerbanky telefon nebo notebook smíte, <strong>kromě pojíždění, vzletu a přistání</strong> a kromě situace, kdy posádka řekne jinak. Smartwings je přísnější a nabíjení za letu nepovoluje.</p>
 
         <h2 id="pocet">Kolik kusů si můžete vzít</h2>
-        <p>Tady se dopravci liší nejvíc. Ryanair pouští do kabiny až 15 osobních elektronických zařízení a až 20 náhradních lithiových baterií do 100 Wh, ale <strong>powerbanky z toho smí být nejvýš dvě</strong>. Smartwings povoluje rovněž <strong>dvě náhradní baterie na cestujícího</strong>.</p>
+        <p>Ryanair to má rozepsané nejpodrobněji. Pouští do kabiny až 15 osobních elektronických zařízení a až 20 náhradních lithiových baterií do 100 Wh, ale <strong>powerbanky z toho smí být nejvýš dvě</strong>. Smartwings povoluje rovněž <strong>dvě náhradní baterie na cestujícího</strong>.</p>
         <p>U obou dopravců tedy dvě powerbanky projdou. Kdo vozí víc baterií, například kvůli fotoaparátu nebo dronu, ať si podmínky přečte předem u svého dopravce.</p>
 
         <h2 id="dopravci">Ryanair a Smartwings: v čem se liší</h2>
@@ -129,7 +129,7 @@ export default function PowerbankaDoLetadlaArticle() {
           </table>
         </div>
         <p className={styles.tableNote}>Zdroje: <a href={ryanair}>Všeobecné podmínky přepravy Ryanair, článek 8.4</a>, znění z 25. 6. 2026, a <a href={smartwings}>Smartwings, Letecký převoz baterií</a>, obojí ke 28. 9. 2026. U jiných dopravců se pravidla liší, ověřte si je před cestou.</p>
-        <p>Všimněte si třetího řádku. U Smartwings platí u pásma 100 až 160 Wh jiné pravidlo pro powerbanku a jiné pro náhradní baterii do přístroje: powerbanka je zakázaná, náhradní baterie projde se souhlasem dopravce.</p>
+        <p>Pozor na pásmo 100 až 160 Wh. Smartwings tam má jiné pravidlo pro powerbanku a jiné pro náhradní baterii do přístroje: powerbanka je zakázaná, náhradní baterie projde se souhlasem dopravce.</p>
 
         <figure className={styles.photo}><Image src="/blog/ryanair-737-nastup.webp" alt="Cestující nastupují po schodech do Boeingu 737 společnosti Ryanair" width={1600} height={738} sizes={sizes} /><figcaption>Když vám zavazadlo berou u schodů do zavazadlového prostoru, vytáhněte z něj powerbanku ještě tady. Foto: vlastní archiv FlyQueens, květen 2026.</figcaption></figure>
 
