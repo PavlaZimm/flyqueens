@@ -114,3 +114,11 @@ Originály: `Fotografie/Ryanair/` a `Fotografie/Prirucni zavazadlo/`. Webové ko
 | `merak-prirucniho-zavazadla.webp` (1200 × 1600, 186 kB) | [Stephen Johnes, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ryanair_vs_Wizz_Air_baggage_sizer.jpg) | volné dílo | Měřáky Ryanairu a Wizz Airu vedle sebe, 2. 7. 2023. Pozor, cedule uvádí starší rozměr 40 × 20 × 25 cm; v popisku je to vysvětlené. |
 
 Datum leteckých snímků vychází z názvů souborů, místo pořízení není doložené.
+
+## Powerbanka do letadla (28. září 2026)
+
+| Webový soubor v `public/blog` | Autor a zdroj | Licence | Obsah |
+|---|---|---|---|
+| `powerbanka-do-letadla.webp` (1600 × 1191, 16 kB) | [Jacek Halicki, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:2023_Powerbank_Green_Cell_PowerPlay_20_(2).jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Powerbanka s porty USB a USB-C. Náhled článku, originál v `Fotografie/Powerbanka/`. |
+
+Druhý snímek v článku je již evidovaný `ryanair-737-nastup.webp` z vlastního archivu.

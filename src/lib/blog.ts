@@ -18,6 +18,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'powerbanka-do-letadla',
+    title: 'Powerbanka do letadla: limit 100 Wh a kam ji dát',
+    excerpt: 'Do odbaveného kufru nesmí a u sedadla nad hlavou taky ne. Limit je 100 Wh, tedy zhruba 27 000 mAh. Přepočet z miliampérhodin a rozdíly mezi dopravci.',
+    date: '2026-09-28', updatedAt: '2026-09-28', dateLabel: '28. září 2026',
+    tag: 'Zavazadla · Elektronika', readingTime: '5 min čtení',
+    image: '/blog/powerbanka-do-letadla.webp',
+    imageAlt: 'Černá powerbanka s porty USB a USB-C a čtyřmi kontrolkami nabití',
+    imageWidth: 1600, imageHeight: 1191, imagePosition: 'center 45%',
+  },
+  {
     slug: 'prirucni-zavazadlo-ryanair',
     title: 'Příruční zavazadlo Ryanair: rozměry a co je zdarma',
     excerpt: 'Zdarma máte jen tašku 40 × 30 × 20 cm pod sedadlo. Kufr 55 × 40 × 20 cm a 10 kg patří k přednostnímu nástupu. Přehled rozměrů, vah a pravidel pro děti.',
