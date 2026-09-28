@@ -101,3 +101,16 @@ kastrup.cz. Podrobnosti výběru: `Vyzkum/letiste-kodan/fotografie.md`.
 | `letiste-kodan-za-bezpecnostni-kontrolou.webp` | [JIP, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Airside_at_Copenhagen_Airport_in_April_2025.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1200, 188 056 B | Prostor za bezpečnostní kontrolou, 2. 4. 2025. |
 | `letiste-kodan-sas-embraer.webp` | [Andrzej Otrębski, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:CPH_SE-RSO.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1067, 53 794 B | Embraer 195 SAS SE-RSO, 17. 1. 2025 (typ a registrace podle autora). |
 | `letiste-kodan-sas-pristani.webp` | [Flygklubben, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:SAS_landing_at_CPH.jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 1600 × 1200, 68 590 B | Letadlo SAS před přistáním, 12. 4. 2025. Typ ani dráhu autor neuvádí. |
+
+## Příruční zavazadlo Ryanair (lokální draft, 28. září 2026)
+
+Originály: `Fotografie/Ryanair/` a `Fotografie/Prirucni zavazadlo/`. Webové kopie WebP, nejdelší strana 1600 px (měřák 1200 × 1600 px), 66–186 kB.
+
+| Webový soubor v `public/blog` | Autor a zdroj | Licence | Obsah |
+|---|---|---|---|
+| `ryanair-737-bok.webp` (1600 × 738, 73 kB) | vlastní archiv FlyQueens, originál `20260522_090357.jpg` | vlastní fotografie | Boeing 737 Ryanair z boku s nástupními schody, 22. 5. 2026. Náhled článku. |
+| `ryanair-737-nastup.webp` (1600 × 738, 67 kB) | vlastní archiv FlyQueens, originál `20260522_102957.jpg` | vlastní fotografie | Totéž letadlo zepředu při nástupu. Zatím nepoužito v článku, drženo v zásobě. |
+| `ryanair-737-zavazadlove-voziky.webp` (1600 × 1200, 185 kB) | vlastní archiv FlyQueens, originál `IMG-20221120-WA0001.jpg` | vlastní fotografie | Letadlo na ploše se zavazadlovými vozíky, 20. 11. 2022. |
+| `merak-prirucniho-zavazadla.webp` (1200 × 1600, 186 kB) | [Stephen Johnes, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Ryanair_vs_Wizz_Air_baggage_sizer.jpg) | volné dílo | Měřáky Ryanairu a Wizz Airu vedle sebe, 2. 7. 2023. Pozor, cedule uvádí starší rozměr 40 × 20 × 25 cm; v popisku je to vysvětlené. |
+
+Datum leteckých snímků vychází z názvů souborů, místo pořízení není doložené.

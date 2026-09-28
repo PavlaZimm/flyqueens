@@ -18,6 +18,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'prirucni-zavazadlo-ryanair',
+    title: 'Příruční zavazadlo Ryanair: rozměry a co je zdarma',
+    excerpt: 'Zdarma máte jen tašku 40 × 30 × 20 cm pod sedadlo. Kufr 55 × 40 × 20 cm a 10 kg patří k přednostnímu nástupu. Přehled rozměrů, vah a pravidel pro děti.',
+    date: '2026-09-28', updatedAt: '2026-09-28', dateLabel: '28. září 2026',
+    tag: 'Zavazadla · Ryanair', readingTime: '5 min čtení',
+    image: '/blog/ryanair-737-bok.webp',
+    imageAlt: 'Boeing 737 společnosti Ryanair na odbavovací ploše, u zadních dveří stojí nástupní schody',
+    imageWidth: 1600, imageHeight: 738,
+  },
+  {
     slug: 'nejdelsi-let-na-svete',
     title: 'Nejdelší let na světě: trasa, délka letu a rekordy',
     excerpt: 'Singapur–New York: 15 348 km a přes 18 hodin letu, bez ekonomické třídy na palubě. Deset nejdelších linek, ohlášené rekordy Qantasu a nejdelší let z Prahy.',

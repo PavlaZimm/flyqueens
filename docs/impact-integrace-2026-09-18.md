@@ -11,3 +11,5 @@ Uživatelka dodala Impact tag P-A7803755-1409-47d0-891e-92d7562279a31 a požáda
 - Impact při kontrole účtu hlásil neúspěšné ověření webu skriptem. Pro ověření vlastnictví je proto ve statickém head samostatný meta tag impact-site-verification s hodnotou a3b0fde4-f8f0-4760-a162-47cc1a925d93. Zachovává atribut value z kódu dodaného Impactem a doplňuje standardní content. Neprovádí sledování a není podmíněn souhlasem.
 
 Kontroly: npm run check (ESLint, TypeScript, produkční build). Přímé stažení veřejného vendor skriptu přes curl v tomto prostředí vrátilo HTTP 403; samo o sobě nepotvrzuje chybu v prohlížeči.
+
+Výsledek v Impact účtu: po nasazení 9855b9c a ověření meta tagem ukazuje sekce Moje kanály „Webové stránky flyqueens.cz — Připojeno“. Tím je potvrzené připojení webu, nikoli schválení žádosti Airalo. Žádost zůstala na kroku Connect your channels s tlačítkem Next.

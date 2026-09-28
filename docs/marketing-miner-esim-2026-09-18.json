@@ -1,0 +1,4349 @@
+{
+  "source": "Marketing Miner keyword_suggestions",
+  "market": "cs",
+  "retrievedAt": "2026-09-18",
+  "notes": "Odhady měsíční hledanosti českého trhu, nikoli návštěvy FlyQueens. Obtížnost null znamená nedostupnou hodnotu. Blízké varianty nesčítat.",
+  "queries": [
+    {
+      "seed": "airalo",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "airalo",
+              "search_volume": 6400,
+              "cpc": {
+                "value": 11.57,
+                "text": "11.57 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 15,
+              "serp_features": [],
+              "yoy_change": 8,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 6300,
+                "11": 6300,
+                "12": 5200,
+                "04": 5200,
+                "05": 6300,
+                "06": 7800,
+                "07": 7800,
+                "08": 7800,
+                "09": 6300,
+                "01": 6300,
+                "02": 6300,
+                "03": 5200
+              }
+            },
+            {
+              "keyword": "airalo esim",
+              "search_volume": 860,
+              "cpc": {
+                "value": 14.64,
+                "text": "14.64 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 20,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": 84,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 860,
+                "11": 700,
+                "12": 860,
+                "04": 380,
+                "05": 980,
+                "06": 860,
+                "07": 980,
+                "08": 580,
+                "09": 580,
+                "01": 1300,
+                "02": 1300,
+                "03": 980
+              }
+            },
+            {
+              "keyword": "airalo recenze",
+              "search_volume": 270,
+              "cpc": {
+                "value": 7.16,
+                "text": "7.16 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -28,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 260,
+                "11": 260,
+                "12": 140,
+                "04": 320,
+                "05": 210,
+                "06": 260,
+                "07": 210,
+                "08": 480,
+                "09": 390,
+                "01": 260,
+                "02": 260,
+                "03": 170
+              }
+            },
+            {
+              "keyword": "esim airalo",
+              "search_volume": 130,
+              "cpc": {
+                "value": 14.08,
+                "text": "14.08 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 35,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 90,
+                "12": 90,
+                "04": 70,
+                "05": 170,
+                "06": 140,
+                "07": 170,
+                "08": 140,
+                "09": 110,
+                "01": 140,
+                "02": 140,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "airalo discount codes",
+              "search_volume": 80,
+              "cpc": {
+                "value": 6.9,
+                "text": "6.90 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 13,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 90,
+                "04": 70,
+                "05": 70,
+                "06": 110,
+                "07": 90,
+                "08": 90,
+                "09": 90,
+                "01": 90,
+                "02": 90,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "airalo promo codes",
+              "search_volume": 80,
+              "cpc": {
+                "value": 6.52,
+                "text": "6.52 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -5,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 90,
+                "11": 90,
+                "12": 90,
+                "04": 110,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 110,
+                "09": 170,
+                "01": 70,
+                "02": 90,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "airalo promo code",
+              "search_volume": 80,
+              "cpc": {
+                "value": 6.52,
+                "text": "6.52 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -5,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 90,
+                "11": 90,
+                "12": 90,
+                "04": 110,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 110,
+                "09": 170,
+                "01": 70,
+                "02": 90,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "airalo jak funguje",
+              "search_volume": 60,
+              "cpc": {
+                "value": 1.39,
+                "text": "1.39 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -80,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 20,
+                "12": 10,
+                "04": 150,
+                "05": 30,
+                "06": 150,
+                "07": 150,
+                "08": 50,
+                "09": 30,
+                "01": 10,
+                "02": 20,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "jak funguje airalo",
+              "search_volume": 50,
+              "cpc": {
+                "value": 3.83,
+                "text": "3.83 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -32,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 50,
+                "12": 40,
+                "04": 50,
+                "05": 30,
+                "06": 50,
+                "07": 70,
+                "08": 70,
+                "09": 70,
+                "01": 50,
+                "02": 40,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "airalo app",
+              "search_volume": 40,
+              "cpc": {
+                "value": 9.57,
+                "text": "9.57 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 2,
+              "peak_month": "2025-10-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 20,
+                "12": 20,
+                "04": 40,
+                "05": 30,
+                "06": 30,
+                "07": 40,
+                "08": 40,
+                "09": 40,
+                "01": 50,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "airalo sim",
+              "search_volume": 30,
+              "cpc": {
+                "value": 7.76,
+                "text": "7.76 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 13,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 30,
+                "12": 20,
+                "04": 30,
+                "05": 30,
+                "06": 50,
+                "07": 40,
+                "08": 20,
+                "09": 20,
+                "01": 30,
+                "02": 30,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "airalo codes",
+              "search_volume": 30,
+              "cpc": {
+                "value": 3.84,
+                "text": "3.84 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -5,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 30,
+                "12": 30,
+                "04": 30,
+                "05": 20,
+                "06": 30,
+                "07": 40,
+                "08": 70,
+                "09": 30,
+                "01": 30,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "airalo reviews",
+              "search_volume": 30,
+              "cpc": {
+                "value": 10.08,
+                "text": "10.08 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -39,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 30,
+                "08": 40,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "airalo review",
+              "search_volume": 30,
+              "cpc": {
+                "value": 10.11,
+                "text": "10.11 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -39,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 30,
+                "08": 40,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "e sim airalo",
+              "search_volume": 20,
+              "cpc": {
+                "value": 8.2,
+                "text": "8.20 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 142,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 30,
+                "07": 20,
+                "08": 30,
+                "09": 30,
+                "01": 40,
+                "02": 40,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "airalo e sim",
+              "search_volume": 20,
+              "cpc": {
+                "value": 13.99,
+                "text": "13.99 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 86,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 20,
+                "06": 20,
+                "07": 20,
+                "08": 20,
+                "09": 20,
+                "01": 40,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "airalo coupon",
+              "search_volume": 20,
+              "cpc": {
+                "value": 7.48,
+                "text": "7.48 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 12,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 20,
+                "07": 20,
+                "08": 20,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "coupon airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "apps like airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 100,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "www airalo com",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 38,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "reviews of airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2022-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0
+              }
+            },
+            {
+              "keyword": "reddit airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -44,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "reviews airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2023-10-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "02": 10,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0
+              }
+            },
+            {
+              "keyword": "review airalo",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2023-10-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "02": 10,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0
+              }
+            },
+            {
+              "keyword": "airalo when does it start",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 253
+        }
+      }
+    },
+    {
+      "seed": "saily",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "saily",
+              "search_volume": 2800,
+              "cpc": {
+                "value": 3.83,
+                "text": "3.83 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 86,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 2400,
+                "11": 1600,
+                "12": 1900,
+                "04": 2400,
+                "05": 2400,
+                "06": 4300,
+                "07": 4300,
+                "08": 3500,
+                "09": 2800,
+                "01": 2800,
+                "02": 2800,
+                "03": 1900
+              }
+            },
+            {
+              "keyword": "saily esim",
+              "search_volume": 1000,
+              "cpc": {
+                "value": 5.92,
+                "text": "5.92 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 87,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 870,
+                "11": 710,
+                "12": 710,
+                "04": 870,
+                "05": 870,
+                "06": 1300,
+                "07": 1600,
+                "08": 1300,
+                "09": 990,
+                "01": 1300,
+                "02": 990,
+                "03": 870
+              }
+            },
+            {
+              "keyword": "saily burger",
+              "search_volume": 990,
+              "cpc": {
+                "value": 8.8,
+                "text": "8.80 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 69,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": 24,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1200,
+                "12": 940,
+                "04": 940,
+                "05": 940,
+                "06": 820,
+                "07": 940,
+                "08": 1200,
+                "09": 940,
+                "01": 940,
+                "02": 940,
+                "03": 820
+              }
+            },
+            {
+              "keyword": "saily burger nabídka",
+              "search_volume": 80,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 89,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 140,
+                "12": 90,
+                "04": 40,
+                "05": 70,
+                "06": 50,
+                "07": 170,
+                "08": 50,
+                "09": 70,
+                "01": 90,
+                "02": 90,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "saily burger kopřivnice",
+              "search_volume": 80,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 59,
+              "serp_features": [
+                "knowledge_graph",
+                "images"
+              ],
+              "yoy_change": -6,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 90,
+                "12": 90,
+                "04": 90,
+                "05": 70,
+                "06": 90,
+                "07": 90,
+                "08": 70,
+                "09": 70,
+                "01": 120,
+                "02": 70,
+                "03": 70
+              }
+            },
+            {
+              "keyword": "saily burger menu",
+              "search_volume": 60,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 47,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 90,
+                "04": 50,
+                "05": 50,
+                "06": 50,
+                "07": 50,
+                "08": 50,
+                "09": 70,
+                "01": 110,
+                "02": 70,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "saily burger kopřivnice menu",
+              "search_volume": 50,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -4,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 40,
+                "12": 50,
+                "04": 30,
+                "05": 30,
+                "06": 90,
+                "07": 120,
+                "08": 50,
+                "09": 40,
+                "01": 50,
+                "02": 30,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "jak funguje saily",
+              "search_volume": 40,
+              "cpc": {
+                "value": 1.38,
+                "text": "1.38 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 70,
+                "08": 50,
+                "09": 40,
+                "01": 40,
+                "02": 30,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "saily beach hotel pelion",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -17,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "saily bola",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -38,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "bola saily",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 11
+        }
+      }
+    },
+    {
+      "seed": "holafly",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "holafly",
+              "search_volume": 1600,
+              "cpc": {
+                "value": 22.19,
+                "text": "22.19 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 13,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 1600,
+                "11": 1300,
+                "12": 1600,
+                "04": 1600,
+                "05": 1600,
+                "06": 1600,
+                "07": 1600,
+                "08": 2400,
+                "09": 1900,
+                "01": 1600,
+                "02": 1300,
+                "03": 1600
+              }
+            },
+            {
+              "keyword": "holafly esim",
+              "search_volume": 280,
+              "cpc": {
+                "value": 23.52,
+                "text": "23.52 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 70,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 250,
+                "11": 160,
+                "12": 250,
+                "04": 200,
+                "05": 310,
+                "06": 310,
+                "07": 370,
+                "08": 310,
+                "09": 250,
+                "01": 310,
+                "02": 370,
+                "03": 310
+              }
+            },
+            {
+              "keyword": "holafly discount code",
+              "search_volume": 70,
+              "cpc": {
+                "value": 22.71,
+                "text": "22.71 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 33,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 90,
+                "11": 70,
+                "12": 70,
+                "04": 50,
+                "05": 50,
+                "06": 70,
+                "07": 50,
+                "08": 90,
+                "09": 90,
+                "01": 70,
+                "02": 50,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "esim holafly",
+              "search_volume": 30,
+              "cpc": {
+                "value": 18.8,
+                "text": "18.80 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 27,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 30,
+                "12": 30,
+                "04": 30,
+                "05": 40,
+                "06": 30,
+                "07": 40,
+                "08": 40,
+                "09": 20,
+                "01": 20,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "holafly reviews",
+              "search_volume": 20,
+              "cpc": {
+                "value": 11.38,
+                "text": "11.38 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -39,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 20,
+                "04": 30,
+                "05": 20,
+                "06": 20,
+                "07": 20,
+                "08": 20,
+                "09": 20,
+                "01": 10,
+                "02": 20,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "discount code for holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 60,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "coupon holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 25,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "discount code holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 22,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "reviews holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "review holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "sp holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "reddit holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -67,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "esim holafly iphone",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2023-09-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "08": 0,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0
+              }
+            },
+            {
+              "keyword": "activate holafly esim",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-11-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "holafly qr code",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2024-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0
+              }
+            },
+            {
+              "keyword": "holafly live chat",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "holafly iphone 11",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2023-10-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0
+              }
+            },
+            {
+              "keyword": "holafly imessage",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2022-09-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0
+              }
+            },
+            {
+              "keyword": "holafly drei",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2026-02-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "drei holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "help holafly",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "holafly no funciona",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 700,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 10,
+                "01": 0,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "holafly chat",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 400,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "holafly no service",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 300,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "holafly esim asia",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 300,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            }
+          ],
+          "rows_count": 111
+        }
+      }
+    },
+    {
+      "seed": "esim",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "esim",
+              "search_volume": 8900,
+              "cpc": {
+                "value": 20.33,
+                "text": "20.33 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 67,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": 11,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 8400,
+                "11": 8400,
+                "12": 8400,
+                "04": 6800,
+                "05": 8400,
+                "06": 6800,
+                "07": 6800,
+                "08": 19000,
+                "09": 10000,
+                "01": 8400,
+                "02": 8400,
+                "03": 6800
+              }
+            },
+            {
+              "keyword": "esim karta",
+              "search_volume": 1800,
+              "cpc": {
+                "value": 15.22,
+                "text": "15.22 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 3,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 1900,
+                "11": 1900,
+                "12": 1900,
+                "04": 1600,
+                "05": 1600,
+                "06": 1900,
+                "07": 1900,
+                "08": 1900,
+                "09": 1900,
+                "01": 1900,
+                "02": 1900,
+                "03": 1600
+              }
+            },
+            {
+              "keyword": "o2 esim",
+              "search_volume": 1300,
+              "cpc": {
+                "value": 12.99,
+                "text": "12.99 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 80,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": 15,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1200,
+                "12": 1500,
+                "04": 940,
+                "05": 1200,
+                "06": 1200,
+                "07": 1500,
+                "08": 1200,
+                "09": 1500,
+                "01": 1200,
+                "02": 1200,
+                "03": 1200
+              }
+            },
+            {
+              "keyword": "vodafone esim",
+              "search_volume": 1300,
+              "cpc": {
+                "value": 9.51,
+                "text": "9.51 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 64,
+              "serp_features": [],
+              "yoy_change": -6,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 1600,
+                "11": 1300,
+                "12": 1300,
+                "04": 1300,
+                "05": 990,
+                "06": 990,
+                "07": 1300,
+                "08": 1600,
+                "09": 1900,
+                "01": 1300,
+                "02": 990,
+                "03": 990
+              }
+            },
+            {
+              "keyword": "tmobile esim",
+              "search_volume": 1200,
+              "cpc": {
+                "value": 8.17,
+                "text": "8.17 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 49,
+              "serp_features": [
+                "videos"
+              ],
+              "yoy_change": -4,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1500,
+                "12": 1500,
+                "04": 1200,
+                "05": 930,
+                "06": 930,
+                "07": 930,
+                "08": 1200,
+                "09": 1800,
+                "01": 1200,
+                "02": 930,
+                "03": 1200
+              }
+            },
+            {
+              "keyword": "t-mobile esim",
+              "search_volume": 1200,
+              "cpc": {
+                "value": 8.17,
+                "text": "8.17 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -4,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1500,
+                "12": 1500,
+                "04": 1200,
+                "05": 930,
+                "06": 930,
+                "07": 930,
+                "08": 1200,
+                "09": 1800,
+                "01": 1200,
+                "02": 930,
+                "03": 1200
+              }
+            },
+            {
+              "keyword": "t mobile esim",
+              "search_volume": 1200,
+              "cpc": {
+                "value": 8.17,
+                "text": "8.17 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 49,
+              "serp_features": [
+                "paid",
+                "images",
+                "videos"
+              ],
+              "yoy_change": -4,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 1200,
+                "11": 1500,
+                "12": 1500,
+                "04": 1200,
+                "05": 930,
+                "06": 930,
+                "07": 930,
+                "08": 1200,
+                "09": 1800,
+                "01": 1200,
+                "02": 930,
+                "03": 1200
+              }
+            },
+            {
+              "keyword": "esim o2",
+              "search_volume": 1100,
+              "cpc": {
+                "value": 12.51,
+                "text": "12.51 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 80,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": -5,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 830,
+                "11": 830,
+                "12": 1200,
+                "04": 940,
+                "05": 1200,
+                "06": 1500,
+                "07": 1500,
+                "08": 940,
+                "09": 940,
+                "01": 940,
+                "02": 940,
+                "03": 940
+              }
+            },
+            {
+              "keyword": "esim t-mobile",
+              "search_volume": 1100,
+              "cpc": {
+                "value": 8.26,
+                "text": "8.26 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 30,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": -15,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 940,
+                "11": 1200,
+                "12": 1500,
+                "04": 940,
+                "05": 940,
+                "06": 940,
+                "07": 1200,
+                "08": 1200,
+                "09": 1200,
+                "01": 1200,
+                "02": 940,
+                "03": 940
+              }
+            },
+            {
+              "keyword": "esim t mobile",
+              "search_volume": 1100,
+              "cpc": {
+                "value": 8.26,
+                "text": "8.26 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 30,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": -15,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 940,
+                "11": 1200,
+                "12": 1500,
+                "04": 940,
+                "05": 940,
+                "06": 940,
+                "07": 1200,
+                "08": 1200,
+                "09": 1200,
+                "01": 1200,
+                "02": 940,
+                "03": 940
+              }
+            },
+            {
+              "keyword": "saily esim",
+              "search_volume": 1000,
+              "cpc": {
+                "value": 5.92,
+                "text": "5.92 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 87,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 870,
+                "11": 710,
+                "12": 710,
+                "04": 870,
+                "05": 870,
+                "06": 1300,
+                "07": 1600,
+                "08": 1300,
+                "09": 990,
+                "01": 1300,
+                "02": 990,
+                "03": 870
+              }
+            },
+            {
+              "keyword": "esim vodafone",
+              "search_volume": 940,
+              "cpc": {
+                "value": 7.84,
+                "text": "7.84 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 73,
+              "serp_features": [
+                "images",
+                "paid"
+              ],
+              "yoy_change": -15,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 1000,
+                "11": 900,
+                "12": 1000,
+                "04": 1000,
+                "05": 730,
+                "06": 900,
+                "07": 730,
+                "08": 1000,
+                "09": 1300,
+                "01": 1000,
+                "02": 900,
+                "03": 730
+              }
+            },
+            {
+              "keyword": "airalo esim",
+              "search_volume": 860,
+              "cpc": {
+                "value": 14.64,
+                "text": "14.64 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 20,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": 84,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 860,
+                "11": 700,
+                "12": 860,
+                "04": 380,
+                "05": 980,
+                "06": 860,
+                "07": 980,
+                "08": 580,
+                "09": 580,
+                "01": 1300,
+                "02": 1300,
+                "03": 980
+              }
+            },
+            {
+              "keyword": "revolut esim",
+              "search_volume": 840,
+              "cpc": {
+                "value": 9.7,
+                "text": "9.70 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -7,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 890,
+                "11": 730,
+                "12": 890,
+                "04": 1000,
+                "05": 600,
+                "06": 890,
+                "07": 730,
+                "08": 1300,
+                "09": 890,
+                "01": 890,
+                "02": 730,
+                "03": 490
+              }
+            },
+            {
+              "keyword": "jak funguje esim",
+              "search_volume": 620,
+              "cpc": {
+                "value": 0.33,
+                "text": "0.33 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 590,
+                "11": 590,
+                "12": 720,
+                "04": 590,
+                "05": 590,
+                "06": 590,
+                "07": 590,
+                "08": 590,
+                "09": 720,
+                "01": 720,
+                "02": 590,
+                "03": 590
+              }
+            },
+            {
+              "keyword": "co je esim",
+              "search_volume": 580,
+              "cpc": {
+                "value": 0.33,
+                "text": "0.33 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -13,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 590,
+                "11": 720,
+                "12": 870,
+                "04": 480,
+                "05": 480,
+                "06": 390,
+                "07": 390,
+                "08": 720,
+                "09": 720,
+                "01": 720,
+                "02": 480,
+                "03": 480
+              }
+            },
+            {
+              "keyword": "esim tmobile",
+              "search_volume": 580,
+              "cpc": {
+                "value": 8.26,
+                "text": "8.26 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -15,
+              "peak_month": "2025-12-01",
+              "monthly_sv": {
+                "10": 490,
+                "11": 640,
+                "12": 780,
+                "04": 490,
+                "05": 490,
+                "06": 490,
+                "07": 640,
+                "08": 640,
+                "09": 640,
+                "01": 640,
+                "02": 490,
+                "03": 490
+              }
+            },
+            {
+              "keyword": "esim egypt",
+              "search_volume": 510,
+              "cpc": {
+                "value": 14.46,
+                "text": "14.46 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 6,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 580,
+                "11": 380,
+                "12": 260,
+                "04": 470,
+                "05": 470,
+                "06": 580,
+                "07": 580,
+                "08": 710,
+                "09": 710,
+                "01": 380,
+                "02": 470,
+                "03": 470
+              }
+            },
+            {
+              "keyword": "nomad esim",
+              "search_volume": 500,
+              "cpc": {
+                "value": 8.54,
+                "text": "8.54 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 54,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 470,
+                "11": 380,
+                "12": 380,
+                "04": 320,
+                "05": 470,
+                "06": 710,
+                "07": 710,
+                "08": 580,
+                "09": 470,
+                "01": 470,
+                "02": 470,
+                "03": 470
+              }
+            },
+            {
+              "keyword": "kaktus esim",
+              "search_volume": 490,
+              "cpc": {
+                "value": 13.03,
+                "text": "13.03 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -2,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 570,
+                "11": 460,
+                "12": 460,
+                "04": 460,
+                "05": 460,
+                "06": 570,
+                "07": 460,
+                "08": 460,
+                "09": 570,
+                "01": 460,
+                "02": 460,
+                "03": 460
+              }
+            },
+            {
+              "keyword": "esim zdarma",
+              "search_volume": 450,
+              "cpc": {
+                "value": 15.36,
+                "text": "15.36 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 17,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 470,
+                "11": 380,
+                "12": 470,
+                "04": 380,
+                "05": 470,
+                "06": 470,
+                "07": 580,
+                "08": 380,
+                "09": 470,
+                "01": 470,
+                "02": 470,
+                "03": 380
+              }
+            },
+            {
+              "keyword": "esim turecko",
+              "search_volume": 300,
+              "cpc": {
+                "value": 15.24,
+                "text": "15.24 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 5,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 260,
+                "11": 110,
+                "12": 90,
+                "04": 170,
+                "05": 320,
+                "06": 590,
+                "07": 590,
+                "08": 590,
+                "09": 480,
+                "01": 110,
+                "02": 140,
+                "03": 110
+              }
+            },
+            {
+              "keyword": "holafly esim",
+              "search_volume": 280,
+              "cpc": {
+                "value": 23.52,
+                "text": "23.52 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 70,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 250,
+                "11": 160,
+                "12": 250,
+                "04": 200,
+                "05": 310,
+                "06": 310,
+                "07": 370,
+                "08": 310,
+                "09": 250,
+                "01": 310,
+                "02": 370,
+                "03": 310
+              }
+            },
+            {
+              "keyword": "esim data",
+              "search_volume": 270,
+              "cpc": {
+                "value": 17.6,
+                "text": "17.60 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 16,
+              "peak_month": "2026-05-01",
+              "monthly_sv": {
+                "10": 320,
+                "11": 260,
+                "12": 210,
+                "04": 260,
+                "05": 320,
+                "06": 320,
+                "07": 260,
+                "08": 320,
+                "09": 320,
+                "01": 210,
+                "02": 260,
+                "03": 260
+              }
+            },
+            {
+              "keyword": "datová esim",
+              "search_volume": 260,
+              "cpc": {
+                "value": 13.28,
+                "text": "13.28 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 5,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 310,
+                "11": 250,
+                "12": 250,
+                "04": 200,
+                "05": 200,
+                "06": 310,
+                "07": 250,
+                "08": 310,
+                "09": 250,
+                "01": 310,
+                "02": 200,
+                "03": 200
+              }
+            }
+          ],
+          "rows_count": 5792
+        }
+      }
+    },
+    {
+      "seed": "internet v zahraničí",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "internet v zahraničí",
+              "search_volume": 190,
+              "cpc": {
+                "value": 8.59,
+                "text": "8.59 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 68,
+              "serp_features": [
+                "paid",
+                "images"
+              ],
+              "yoy_change": -2,
+              "peak_month": "2025-09-01",
+              "monthly_sv": {
+                "10": 190,
+                "11": 90,
+                "12": 50,
+                "04": 190,
+                "05": 290,
+                "06": 240,
+                "07": 120,
+                "08": 240,
+                "09": 330,
+                "01": 140,
+                "02": 140,
+                "03": 240
+              }
+            },
+            {
+              "keyword": "internet do zahraničí",
+              "search_volume": 30,
+              "cpc": {
+                "value": 9.65,
+                "text": "9.65 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 21,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 20,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 30,
+                "07": 30,
+                "08": 30,
+                "09": 50,
+                "01": 10,
+                "02": 30,
+                "03": 70
+              }
+            },
+            {
+              "keyword": "o2 internet v zahraničí",
+              "search_volume": 30,
+              "cpc": {
+                "value": 4.98,
+                "text": "4.98 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -28,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 30,
+                "05": 30,
+                "06": 40,
+                "07": 70,
+                "08": 40,
+                "09": 30,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "t mobile internet v zahraničí",
+              "search_volume": 20,
+              "cpc": {
+                "value": 5.02,
+                "text": "5.02 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -30,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 40,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "t mobile internet v zahranici",
+              "search_volume": 20,
+              "cpc": {
+                "value": 5.02,
+                "text": "5.02 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -30,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 40,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "vodafone internet v zahraničí",
+              "search_volume": 20,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -24,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 20,
+                "06": 40,
+                "07": 40,
+                "08": 30,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "o2 internet v zahranici",
+              "search_volume": 20,
+              "cpc": {
+                "value": 4.99,
+                "text": "4.99 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -28,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 20,
+                "06": 30,
+                "07": 50,
+                "08": 30,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "internet v zahraničí t mobile",
+              "search_volume": 20,
+              "cpc": {
+                "value": 5.02,
+                "text": "5.02 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -30,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 30,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 40,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "zahraniční internetová rádia",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 56,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": 0,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "mobil cz internet v zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "jak platit kartou přes internet do zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "zahraniční internetové obchody",
+              "search_volume": 10,
+              "cpc": {
+                "value": 2.62,
+                "text": "2.62 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -8,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "mobilní internet v zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -15,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "tmobile internet v zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -22,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "mobilny internet v zahranici",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -25,
+              "peak_month": "2017-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "05": 0,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 0,
+                "03": 0,
+                "04": 10
+              }
+            },
+            {
+              "keyword": "práce přes internet ze zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 350,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "zahraniční internetové obchody s oblečením",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 300,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "česká spořitelna platba kartou přes internet do zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 250,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "tesco mobile internet v zahraničí",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 33,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "4ka internet v zahranici",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -27,
+              "peak_month": "2025-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 0,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "o2 internet v zahranici cena",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -42.9,
+              "peak_month": "2016-12-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "01": 10,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 10,
+                "08": 0,
+                "09": 0
+              }
+            },
+            {
+              "keyword": "slovenska televizia cez internet v zahranici",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2021-11-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "08": 0,
+                "09": 10,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0
+              }
+            },
+            {
+              "keyword": "4ka nefunguje internet v zahranici",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -57.1,
+              "peak_month": "2018-11-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "05": 0,
+                "06": 10,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0
+              }
+            },
+            {
+              "keyword": "o2 internet na den v zahranici",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -60,
+              "peak_month": "2017-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0
+              }
+            },
+            {
+              "keyword": "platba kartou cez internet do zahraničia",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -66.7,
+              "peak_month": "2017-11-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0
+              }
+            }
+          ],
+          "rows_count": 50
+        }
+      }
+    },
+    {
+      "seed": "esim egypt",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "esim egypt",
+              "search_volume": 510,
+              "cpc": {
+                "value": 14.46,
+                "text": "14.46 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 6,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 580,
+                "11": 380,
+                "12": 260,
+                "04": 470,
+                "05": 470,
+                "06": 580,
+                "07": 580,
+                "08": 710,
+                "09": 710,
+                "01": 380,
+                "02": 470,
+                "03": 470
+              }
+            },
+            {
+              "keyword": "vodafone egypt esim",
+              "search_volume": 30,
+              "cpc": {
+                "value": 11.58,
+                "text": "11.58 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -27,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 30,
+                "12": 20,
+                "04": 40,
+                "05": 30,
+                "06": 30,
+                "07": 40,
+                "08": 20,
+                "09": 20,
+                "01": 10,
+                "02": 20,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "esim vodafone egypt",
+              "search_volume": 20,
+              "cpc": {
+                "value": 9.22,
+                "text": "9.22 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 25,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 20,
+                "11": 20,
+                "12": 10,
+                "04": 10,
+                "05": 30,
+                "06": 40,
+                "07": 20,
+                "08": 30,
+                "09": 20,
+                "01": 20,
+                "02": 10,
+                "03": 20
+              }
+            }
+          ],
+          "rows_count": 3
+        }
+      }
+    },
+    {
+      "seed": "esim turecko",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "esim turecko",
+              "search_volume": 300,
+              "cpc": {
+                "value": 15.24,
+                "text": "15.24 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 5,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 260,
+                "11": 110,
+                "12": 90,
+                "04": 170,
+                "05": 320,
+                "06": 590,
+                "07": 590,
+                "08": 590,
+                "09": 480,
+                "01": 110,
+                "02": 140,
+                "03": 110
+              }
+            }
+          ],
+          "rows_count": 1
+        }
+      }
+    },
+    {
+      "seed": "esim dubaj",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [],
+          "rows_count": 0
+        }
+      }
+    },
+    {
+      "seed": "internet v egyptě",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "internet v egyptě",
+              "search_volume": 50,
+              "cpc": {
+                "value": 6.63,
+                "text": "6.63 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -47,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 30,
+                "12": 20,
+                "04": 70,
+                "05": 30,
+                "06": 70,
+                "07": 90,
+                "08": 50,
+                "09": 50,
+                "01": 30,
+                "02": 30,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "egypt internet",
+              "search_volume": 40,
+              "cpc": {
+                "value": 10.49,
+                "text": "10.49 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -58,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 40,
+                "11": 20,
+                "12": 10,
+                "04": 70,
+                "05": 40,
+                "06": 70,
+                "07": 70,
+                "08": 50,
+                "09": 40,
+                "01": 30,
+                "02": 40,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "cib egypt internet banking",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -37,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "mobile internet egypt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -38,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "qnb internet banking egypt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "best internet in egypt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 999900,
+              "peak_month": "2018-07-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0,
+                "04": 0
+              }
+            },
+            {
+              "keyword": "egypt internet code",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -33,
+              "peak_month": "2025-08-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 10,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "vodafone egypt internet packages",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -33.3,
+              "peak_month": "2017-11-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 10,
+                "04": 10
+              }
+            },
+            {
+              "keyword": "internet v egypte",
+              "search_volume": 10,
+              "cpc": {
+                "value": 11.54,
+                "text": "11.54 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -35,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 20,
+                "05": 10,
+                "06": 20,
+                "07": 30,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 10,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "hsbc egypt internet banking",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -36,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 10,
+                "01": 10,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "egypt internet shutdown",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -67,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "egypt internet sim",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -75,
+              "peak_month": "2026-01-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "internet connection in egypt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -80,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "internet access in egypt",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -80,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "vodafone egypt internet roaming",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "vodafone egypt internet",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 10,
+                "04": 10,
+                "05": 10,
+                "06": 10,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            },
+            {
+              "keyword": "etisalat egypt internet",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 0,
+                "12": 0,
+                "04": 0,
+                "05": 0,
+                "06": 0,
+                "07": 10,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 10,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "orange egypt internet",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2017-05-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "05": 0,
+                "06": 0,
+                "07": 0,
+                "08": 0,
+                "09": 0,
+                "01": 0,
+                "02": 10,
+                "03": 0,
+                "04": 0
+              }
+            },
+            {
+              "keyword": "egypt internet censorship",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": 0,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 10,
+                "12": 0,
+                "04": 10,
+                "05": 10,
+                "06": 0,
+                "07": 10,
+                "08": 10,
+                "09": 0,
+                "01": 0,
+                "02": 0,
+                "03": 0
+              }
+            },
+            {
+              "keyword": "egypt internet speed",
+              "search_volume": 10,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -17,
+              "peak_month": "2025-04-01",
+              "monthly_sv": {
+                "10": 0,
+                "11": 0,
+                "12": 0,
+                "04": 10,
+                "05": 0,
+                "06": 10,
+                "07": 0,
+                "08": 10,
+                "09": 10,
+                "01": 0,
+                "02": 10,
+                "03": 0
+              }
+            }
+          ],
+          "rows_count": 29
+        }
+      }
+    },
+    {
+      "seed": "data v zahraničí",
+      "result": {
+        "status": "success",
+        "data": {
+          "keywords": [
+            {
+              "keyword": "vodafone data v zahraničí",
+              "search_volume": 220,
+              "cpc": {
+                "value": 7.95,
+                "text": "7.95 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 87,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": -30,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 170,
+                "11": 140,
+                "12": 110,
+                "04": 210,
+                "05": 170,
+                "06": 320,
+                "07": 480,
+                "08": 480,
+                "09": 260,
+                "01": 110,
+                "02": 140,
+                "03": 110
+              }
+            },
+            {
+              "keyword": "data v zahraničí",
+              "search_volume": 150,
+              "cpc": {
+                "value": 11.06,
+                "text": "11.06 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 73,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": -31,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 90,
+                "12": 70,
+                "04": 170,
+                "05": 170,
+                "06": 210,
+                "07": 260,
+                "08": 260,
+                "09": 170,
+                "01": 110,
+                "02": 110,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "data v zahranici",
+              "search_volume": 150,
+              "cpc": {
+                "value": 11.01,
+                "text": "11.01 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -31,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 90,
+                "12": 70,
+                "04": 170,
+                "05": 170,
+                "06": 210,
+                "07": 260,
+                "08": 260,
+                "09": 170,
+                "01": 110,
+                "02": 110,
+                "03": 140
+              }
+            },
+            {
+              "keyword": "t-mobile data v zahraničí",
+              "search_volume": 120,
+              "cpc": {
+                "value": 6.66,
+                "text": "6.66 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 70,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": -42,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 50,
+                "04": 130,
+                "05": 160,
+                "06": 200,
+                "07": 200,
+                "08": 200,
+                "09": 80,
+                "01": 70,
+                "02": 80,
+                "03": 80
+              }
+            },
+            {
+              "keyword": "t mobile data v zahraničí",
+              "search_volume": 120,
+              "cpc": {
+                "value": 6.66,
+                "text": "6.66 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -42,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 50,
+                "04": 140,
+                "05": 170,
+                "06": 210,
+                "07": 210,
+                "08": 210,
+                "09": 90,
+                "01": 70,
+                "02": 90,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "t mobile data v zahranici",
+              "search_volume": 120,
+              "cpc": {
+                "value": 6.66,
+                "text": "6.66 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -42,
+              "peak_month": "2026-06-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 70,
+                "12": 50,
+                "04": 140,
+                "05": 170,
+                "06": 210,
+                "07": 210,
+                "08": 210,
+                "09": 90,
+                "01": 70,
+                "02": 90,
+                "03": 90
+              }
+            },
+            {
+              "keyword": "neomezená data v zahraničí",
+              "search_volume": 120,
+              "cpc": {
+                "value": 9.18,
+                "text": "9.18 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -50,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 110,
+                "11": 80,
+                "12": 50,
+                "04": 170,
+                "05": 110,
+                "06": 170,
+                "07": 220,
+                "08": 220,
+                "09": 140,
+                "01": 80,
+                "02": 80,
+                "03": 80
+              }
+            },
+            {
+              "keyword": "neomezená data v zahraničí o2",
+              "search_volume": 110,
+              "cpc": {
+                "value": 9.68,
+                "text": "9.68 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -56,
+              "peak_month": "2026-04-01",
+              "monthly_sv": {
+                "10": 80,
+                "11": 80,
+                "12": 80,
+                "04": 200,
+                "05": 110,
+                "06": 130,
+                "07": 130,
+                "08": 200,
+                "09": 110,
+                "01": 80,
+                "02": 80,
+                "03": 60
+              }
+            },
+            {
+              "keyword": "vodafone neomezená data v zahraničí",
+              "search_volume": 110,
+              "cpc": {
+                "value": 4.94,
+                "text": "4.94 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -51,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 90,
+                "11": 70,
+                "12": 40,
+                "04": 210,
+                "05": 70,
+                "06": 90,
+                "07": 140,
+                "08": 260,
+                "09": 170,
+                "01": 70,
+                "02": 70,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "mobilní data v zahraničí",
+              "search_volume": 80,
+              "cpc": {
+                "value": 6.65,
+                "text": "6.65 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 88,
+              "serp_features": [
+                "images",
+                "paid"
+              ],
+              "yoy_change": 934.2,
+              "peak_month": "2026-03-01",
+              "monthly_sv": {
+                "10": 60,
+                "11": 60,
+                "12": 30,
+                "04": 90,
+                "05": 90,
+                "06": 90,
+                "07": 90,
+                "08": 90,
+                "09": 90,
+                "01": 60,
+                "02": 60,
+                "03": 120
+              }
+            },
+            {
+              "keyword": "o2 data v zahraničí",
+              "search_volume": 80,
+              "cpc": {
+                "value": 13.44,
+                "text": "13.44 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -24,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 60,
+                "11": 40,
+                "12": 40,
+                "04": 100,
+                "05": 40,
+                "06": 80,
+                "07": 180,
+                "08": 180,
+                "09": 100,
+                "01": 40,
+                "02": 50,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "data v zahraničí tmobile",
+              "search_volume": 70,
+              "cpc": {
+                "value": 6.3,
+                "text": "6.30 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -55,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 40,
+                "12": 30,
+                "04": 110,
+                "05": 70,
+                "06": 90,
+                "07": 110,
+                "08": 140,
+                "09": 90,
+                "01": 40,
+                "02": 50,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "data v zahraničí t-mobile",
+              "search_volume": 70,
+              "cpc": {
+                "value": 6.33,
+                "text": "6.33 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -55,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 40,
+                "12": 30,
+                "04": 100,
+                "05": 70,
+                "06": 80,
+                "07": 100,
+                "08": 130,
+                "09": 80,
+                "01": 40,
+                "02": 50,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "data v zahraničí t mobile",
+              "search_volume": 70,
+              "cpc": {
+                "value": 6.33,
+                "text": "6.33 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -55,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 50,
+                "11": 40,
+                "12": 30,
+                "04": 110,
+                "05": 70,
+                "06": 90,
+                "07": 110,
+                "08": 140,
+                "09": 90,
+                "01": 40,
+                "02": 50,
+                "03": 50
+              }
+            },
+            {
+              "keyword": "t mobile neomezená data v zahraničí",
+              "search_volume": 70,
+              "cpc": {
+                "value": 4.17,
+                "text": "4.17 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -60,
+              "peak_month": "2026-08-01",
+              "monthly_sv": {
+                "10": 70,
+                "11": 50,
+                "12": 30,
+                "04": 110,
+                "05": 40,
+                "06": 40,
+                "07": 50,
+                "08": 210,
+                "09": 110,
+                "01": 50,
+                "02": 50,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "data v zahraničí o2",
+              "search_volume": 60,
+              "cpc": {
+                "value": 13.18,
+                "text": "13.18 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 90,
+              "serp_features": [
+                "images"
+              ],
+              "yoy_change": -42,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 60,
+                "11": 30,
+                "12": 30,
+                "04": 70,
+                "05": 100,
+                "06": 100,
+                "07": 120,
+                "08": 100,
+                "09": 70,
+                "01": 40,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "data v zahraničí vodafone",
+              "search_volume": 50,
+              "cpc": {
+                "value": 4.12,
+                "text": "4.12 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": 91,
+              "serp_features": [
+                "paid"
+              ],
+              "yoy_change": -12,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 20,
+                "12": 30,
+                "04": 60,
+                "05": 40,
+                "06": 80,
+                "07": 110,
+                "08": 80,
+                "09": 40,
+                "01": 30,
+                "02": 30,
+                "03": 30
+              }
+            },
+            {
+              "keyword": "data do zahraničí",
+              "search_volume": 50,
+              "cpc": {
+                "value": 9.99,
+                "text": "9.99 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -22,
+              "peak_month": "2026-07-01",
+              "monthly_sv": {
+                "10": 30,
+                "11": 40,
+                "12": 20,
+                "04": 70,
+                "05": 50,
+                "06": 70,
+                "07": 110,
+                "08": 70,
+                "09": 70,
+                "01": 40,
+                "02": 40,
+                "03": 40
+              }
+            },
+            {
+              "keyword": "kaktus data v zahraničí",
+              "search_volume": 40,
+              "cpc": {
+                "value": 0,
+                "text": "0.00 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -42,
+              "peak_month": "2025-06-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 10,
+                "04": 40,
+                "05": 50,
+                "06": 70,
+                "07": 70,
+                "08": 70,
+                "09": 30,
+                "01": 20,
+                "02": 20,
+                "03": 20
+              }
+            },
+            {
+              "keyword": "jak zapnout data v zahraničí",
+              "search_volume": 30,
+              "cpc": {
+                "value": 11.29,
+                "text": "11.29 Kč",
+                "currency_code": "CZK"
+              },
+              "difficulty": null,
+              "serp_features": [],
+              "yoy_change": -20,
+              "peak_month": "2025-07-01",
+              "monthly_sv": {
+                "10": 10,
+                "11": 10,
+                "12": 20,
+                "04": 30,
+                "05": 30,
+                "06": 60,
+                "07": 80,
+                "08": 60,
+                "09": 20,
+                "01": 10,
+                "02": 10,
+                "03": 10
+              }
+            }
+          ],
+          "rows_count": 49
+        }
+      }
+    }
+  ]
+}
