@@ -34,6 +34,11 @@ Databáze Neon „neon-citron-paddle“ (Free, Washington iad1) je od 24. 9. př
 - [x] Postup: MM data → `serp.md` → fakta u aerolinek/letišť/výrobce (včetně nejdelšího přímého letu z Prahy a Project Sunrise) → draft → kontrola faktů a češtiny → náhled mobil/desktop. Podklady do `Vyzkum/nejdelsi-let-na-svete/`, adresa `/blog/nejdelsi-let-na-svete`.
 - [x] Najít náhledovou fotku (vlastní ze `Fotografie/`, nebo s volnou licencí a kreditem).
 
+### Měření appky (1. 10. 2026)
+- [x] Do GA4 přibyly události `app_launch` (otevření z ikony na ploše, Android i iPhone, jednou za relaci) a `app_installed` (jen Chrome na Androidu a na počítači). Běží jen po souhlasu s cookies, kód je v `src/components/UI/CookieConsent.tsx`.
+- [ ] **Vyzkoušet na skutečném telefonu**: přidat FlyQueens na plochu, odsouhlasit cookies, otevřít z ikony a v GA4 Realtime ověřit `app_launch`. Zároveň zjistit, jestli Chrome na Androidu nabízí instalaci i bez service workeru (v kódu žádný není).
+- [ ] Filtr vlastního provozu v GA4, aby vlastní testy nezkreslovaly počty.
+
 ### Údržba
 - [x] Lokální `main` stažen 25. 9. 2026, je aktuální.
 

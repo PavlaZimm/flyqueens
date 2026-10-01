@@ -76,6 +76,22 @@ export function CookieConsent() {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-SMFS92YP8L');
+            (function () {
+              // Měření appky: otevření z ikony na ploše (Android i iPhone)
+              // a okamžik instalace (jen Chrome na Androidu a na počítači).
+              var standalone = false;
+              try {
+                standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+                  window.navigator.standalone === true;
+              } catch (e) {}
+              var seen = false;
+              try {
+                seen = !!sessionStorage.getItem('fq-app-launch');
+                if (!seen) sessionStorage.setItem('fq-app-launch', '1');
+              } catch (e) {}
+              if (standalone && !seen) gtag('event', 'app_launch', { display_mode: 'standalone' });
+              window.addEventListener('appinstalled', function () { gtag('event', 'app_installed'); });
+            })();
           `}</Script>
         </>
       )}
