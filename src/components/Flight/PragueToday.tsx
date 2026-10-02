@@ -10,6 +10,7 @@ import type { SolarTimes } from '@/lib/aeroInsights'
 import { weatherVisual } from '@/lib/weatherVisual'
 import { upcomingArrivals } from '@/lib/pragueToday'
 import { spottingHighlight } from '@/lib/spottingHighlights'
+import { SpottingPlanner } from './SpottingPlanner'
 import { SunsetCard } from './SunsetCard'
 import { AirportInsights } from './InsightPanel'
 import { flightStatus } from '@/lib/flightSearch'
@@ -71,6 +72,7 @@ export function PragueToday({ initialData, initialNow }: { initialData: AirportB
       </section>
     </div>
     <SunsetCard now={now} onSolar={setSolar} />
+    <SpottingPlanner board={board} ready={board?.status === 'ready' && !stale && !failed} flights={flights} solar={solar} now={now} weather={weather} weatherReady={!weatherOld && !weatherFailed} />
     <AirportInsights />
     <section aria-labelledby="upcoming-title">
       <h2 id="upcoming-title">Co přiletí v příštích 6 hodinách</h2>

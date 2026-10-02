@@ -6,7 +6,7 @@ import styles from '@/components/Flight/FlightTools.module.css'
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Dnes na letišti Praha: přílety, letadla a počasí | FlyQueens',
-  description: 'Nejbližší přílety do Prahy s dostupnými fotografiemi konkrétních letadel, letištní počasí a orientační odhad používané dráhy.',
+  description: 'Naplánuj si planespotting v Praze: zajímavá letadla, přílety kolem západu slunce, fotografie konkrétních strojů a aktuální letištní počasí.',
   alternates: { canonical: 'https://www.flyqueens.cz/letiste/praha/dnes' },
 }
 export default async function PragueTodayPage() {
