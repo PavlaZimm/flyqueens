@@ -6,6 +6,7 @@ import type { SolarTimes } from '@/lib/aeroInsights'
 import type { MetarData } from '@/lib/metar'
 import { spottingHighlight } from '@/lib/spottingHighlights'
 import { arrivalCountdown, arrivalTime, sunsetArrivals } from '@/lib/spottingPlanner'
+import { pragueDate } from '@/lib/flightSearch'
 import { weatherVisual } from '@/lib/weatherVisual'
 import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import styles from './SpottingPlanner.module.css'
@@ -14,7 +15,7 @@ interface Props { board: AirportBoardResponse | null; ready: boolean; flights: A
 export function SpottingPlanner({ board, ready, flights, solar, now, weather, weatherReady }: Props) {
   const [expanded, setExpanded] = useState<string | null>(null)
   const [limit, setLimit] = useState(4)
-  const interesting = flights.filter(flight => spottingHighlight(flight))
+  const interesting = flights.filter(flight => spottingHighlight(flight) && pragueDate(new Date(arrivalTime(flight))) === pragueDate(new Date(now)))
   const feature = [...interesting].sort((a, b) => (spottingHighlight(b)?.rank ?? 0) - (spottingHighlight(a)?.rank ?? 0) || arrivalTime(a) - arrivalTime(b))[0]
   const evening = sunsetArrivals(ready ? board?.arrivals ?? [] : [], solar?.sunset ?? null, now)
   const weatherNow = weatherReady && weather ? weatherVisual(weather, solar, now) : null
@@ -26,7 +27,7 @@ export function SpottingPlanner({ board, ready, flights, solar, now, weather, we
       <h2 id="trip-title">Dnes stojí za výlet?</h2>
       {ready ? feature ? <>
         <p className={styles.feature}><span aria-hidden="true">✦ </span>{feature.aircraft?.model ?? 'Nákladní let'}<span>{time(arrivalTime(feature))} · {arrivalCountdown(feature, now)}</span></p>
-        <p>{feature.number} z {feature.oppositeAirport.city ?? feature.oppositeAirport.name ?? 'neuvedeného letiště'}. V příštích šesti hodinách máme {interesting.length} tipů na zajímavé stroje.</p>
+        <p>{feature.number} z {feature.oppositeAirport.city ?? feature.oppositeAirport.name ?? 'neuvedeného letiště'}. Z dnešních příletů v příštích šesti hodinách vybíráme {interesting.length} {interesting.length === 1 ? 'tip' : interesting.length < 5 ? 'tipy' : 'tipů'} na zajímavé stroje.</p>
       </> : <p>V příštích šesti hodinách zatím nemáme tip na zvláštní typ letadla. Běžné přílety najdeš níže.</p> : <p>Nejbližší přílety teď nemůžeme potvrdit. S plánem výletu počkej na čerstvá data.</p>}
       <div className={styles.context}><p><span aria-hidden="true">{weatherNow?.icon ?? '🌡️'}</span> {weatherNow ? `Teď: ${weatherNow.label.toLowerCase()}${weather?.temp != null ? `, ${weather.temp} °C` : ''}.` : 'Aktuální počasí se zatím nepodařilo potvrdit.'}</p><p>Počasí je poslední měření, ne předpověď na čas příletu. Přidělený typ i čas se mohou změnit.</p></div>
       <div className={styles.links}><a href="#upcoming-title">Prohlédnout přílety ↓</a><Link href="/letiste/praha/planespotting">Vybrat vyhlídku ↗</Link><a href="#sunset-flights">Letadla kolem západu ↓</a></div>
