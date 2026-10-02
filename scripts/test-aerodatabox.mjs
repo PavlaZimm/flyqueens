@@ -67,17 +67,5 @@ const airport = load('src/app/api/airport-flights/route.ts', { ...deps, '@/lib/a
   assert.equal(board.departures[0].oppositeAirport.iata, 'PRG')
   assert.equal((await airport.GET(request('/?airport=UNSUPPORTED'))).status, 400)
 
-  let fetches = 0
-  const values = new Map()
-  const cacheModule = load('src/lib/aerodataboxCache.ts', {
-    'server-only': {},
-    'next/cache': { unstable_cache: (fn, keys) => async () => { const key = keys.join('|'); if (!values.has(key)) values.set(key, await fn()); return values.get(key) } },
-    './aeroBudget': { reserveAeroUnits: async () => {} },
-    './aerodatabox': { getAeroDataBoxConnection: () => ({ baseUrl: 'https://test.invalid', headers: {} }) },
-  }, async () => { fetches++; return Response.json({ arrivals: [flight] }) })
-  const snapshots = await Promise.all(Array.from({ length: 6 }, () => cacheModule.getAeroSnapshot('/flights/test', 1800)))
-  const later = await cacheModule.getAeroSnapshot('/flights/test', 1800)
-  assert.equal(fetches, 1, 'Concurrent readers and later readers share one paid call')
-  assert.equal(later.fetchedAt, snapshots[0].fetchedAt, 'Cache reads retain original retrieval time')
-  console.log('AeroDataBox: validation, shared cache, timestamps, rotation matching, fallback and board normalization passed.')
+  console.log('AeroDataBox: validation, timestamps, rotation matching, fallback and board normalization passed.')
 })().catch(error => { console.error(error); process.exitCode = 1 })

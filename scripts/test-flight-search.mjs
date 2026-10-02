@@ -34,14 +34,10 @@ assert.equal((await route.GET(req('../', search.pragueDate()))).status, 400)
 assert.equal(calls, 0, 'Invalid input must never spend units')
 assert.equal((await route.GET(req('QS1000', search.pragueDate()))).status, 200)
 assert.equal(calls, 1)
-// Exercise the reservation boundary and the SQL contract used for atomic limits.
+// Exercise endpoint validation/refusal. Real SQL concurrency is tested in test-aero-cache.mjs.
 let queryCalls = 0, allowed = true
-const sql = async (strings, ...values) => {
+const sql = async (_strings, ...values) => {
   queryCalls++
-  const query = strings.join('?')
-  assert.match(query, /ON CONFLICT \(day\) DO UPDATE/)
-  assert.match(query, /board_units \+ EXCLUDED.board_units <= 128/)
-  assert.match(query, /lookup_units \+ EXCLUDED.lookup_units <= 60/)
   assert.equal(values.reduce((a, b) => a + b, 0), 2)
   return allowed ? [{ board_units: 0, lookup_units: 2 }] : []
 }

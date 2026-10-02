@@ -4,20 +4,16 @@ import { notFound } from 'next/navigation'
 import { AirportFlightBoard } from '@/components/Airport/AirportFlightBoard'
 import { getAirportBoard } from '@/lib/airportBoardServer'
 import { SourcesBox } from '@/components/UI/SourcesBox'
-import { AIRPORT_FLIGHT_BOARDS, airportFlightBoardBySlug } from '@/lib/airportFlightBoards'
+import { airportFlightBoardBySlug } from '@/lib/airportFlightBoards'
 import { socialMetadata } from '@/lib/socialMetadata'
 
 interface AirportFlightsPageProps {
   params: Promise<{ airport: string }>
 }
 
-// Tabule je v HTML pro vyhledávače; stránka se obnovuje každých 10 minut
-// z mezipaměti AeroDataBox, placené dotazy tím nepřibývají.
-export const revalidate = 600
-
-export function generateStaticParams() {
-  return AIRPORT_FLIGHT_BOARDS.map((airport) => ({ airport: airport.slug }))
-}
+// Render on a real request; provider responses live in the shared database cache.
+// Building or deploying must not purchase snapshots for every airport.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: AirportFlightsPageProps): Promise<Metadata> {
   const { airport: slug } = await params
