@@ -31,3 +31,13 @@
   .card { padding: 16px; }
   .route { gap: 12px; }
 }
+.insight { margin: 12px 0; min-width: 0; }
+.insightButton { background: transparent; color: var(--gold); border: 1px solid var(--border-mid); border-radius: 8px; padding: 10px 12px; min-height: 44px; text-align: left; font: inherit; font-size: 13px; cursor: pointer; max-width: 100%; }
+.insightButton:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.insightButton:disabled { opacity: .6; cursor: wait; }
+.insightRows { margin: 12px 0; font-size: 13px; }
+.insightRows > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border-mid); }
+.insightRows dt, .insightRows dd { margin: 0; overflow-wrap: anywhere; }
+.insightRows dt { color: var(--text-muted); }
+.insight h4 { font-size: 15px; margin: 20px 0 8px; }
+@media (max-width: 500px) { .insightRows > div { grid-template-columns: minmax(0, 1fr); gap: 5px; } }

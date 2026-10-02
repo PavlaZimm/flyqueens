@@ -18,6 +18,7 @@ const WINDOW_MS = 60_000
 const LIMITS: Record<string, number> = {
   flights:       30,
   'flight-summary': 60,
+  'aero-insights': 6,
   'flight-search': 6,
   'flight-route': 30, // kliknutí na letadlo — max 30/min
   'airport-flights': 30,
@@ -34,6 +35,7 @@ const LIMITS: Record<string, number> = {
 // Strop na endpoint bez ohledu na volajícího (req/min, na instanci).
 // Chrání placené API a databázi i tehdy, když někdo střídá identitu.
 const GLOBAL_LIMITS: Record<string, number> = {
+  'aero-insights': 20,
   'flight-search': 30,
   'flight-route':  300, // placené volání AeroDataBox za každý nový icao24
   'runway-in-use': 200, // zápis do Neonu

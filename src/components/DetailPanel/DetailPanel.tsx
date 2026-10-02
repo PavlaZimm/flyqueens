@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { AircraftInsights } from '@/components/Flight/InsightPanel'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
 import { getFlightPhase } from '@/lib/flightPhase'
@@ -254,6 +255,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
             <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{registration}</span>
           )}
         </div>
+        <AircraftInsights registration={registration} />
         {freshness && (
           <div style={{ fontSize: 9, color: freshness.color, marginTop: 4, letterSpacing: 0.3 }}>
             ● {freshness.label} · ADS-B

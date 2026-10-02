@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { InsightPanel } from './InsightPanel'
 import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import { flightStatus, type FlightSearchResponse, type SearchedFlight } from '@/lib/flightSearch'
 import styles from './FlightTools.module.css'
@@ -43,6 +44,12 @@ export function FlightSearchResults({ number, date }: { number: string; date: st
         {(flight.board.callSign || flight.board.aircraft?.modeS) && <p><Link href={`/radar?flight=${encodeURIComponent(flight.board.callSign ?? flight.board.aircraft?.modeS ?? '')}`}>Zkusit najít letadlo na mapě →</Link><br /><span className={styles.muted}>Mapa ukazuje jen zachycené lety v zobrazované oblasti; plánovaný let na ní ještě být nemusí.</span></p>}
       </article>)}
     </>}
+    <div className={styles.card}>
+      <h3>Let {number} v dalších dnech</h3>
+      <InsightPanel kind="history" id={number} label="historie za předchozích 7 dní" />
+      <InsightPanel kind="schedule" id={number} label="letový řád na 7 dní" />
+      <InsightPanel kind="flight-delays" id={number} label="historická zpoždění letu" />
+    </div>
     <p className={styles.muted}>Před cestou potvrďte čas a gate u letiště nebo dopravce. Časy odletu a příletu jsou místní pro dané letiště, případné UTC je výslovně označené.</p>
   </section>
 }

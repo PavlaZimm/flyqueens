@@ -21,4 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      - run: node scripts/test-aerodatabox.mjs
+      - run: node scripts/test-flight-search.mjs
+      - run: node scripts/test-aero-insights.mjs
       - run: npm run build:webpack

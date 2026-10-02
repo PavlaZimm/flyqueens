@@ -1,5 +1,6 @@
 'use client'
 
+import { AircraftInsights } from '@/components/Flight/InsightPanel'
 import { useState } from 'react'
 import Image from 'next/image'
 import type { AirportBoardFlight } from '@/lib/airportFlightBoards'
@@ -37,6 +38,7 @@ export function BoardAircraftCard({ flight }: { flight: AirportBoardFlight }) {
         <p>{aircraft?.registration || aircraft?.modeS
           ? 'Fotografie je archivní, nejde o živý záběr. Dopravce může přidělené letadlo změnit.'
           : 'Konkrétní letadlo zatím není známé. Jakmile ho zdroj uvede, můžeme dohledat jeho fotografii.'}</p>
+        <AircraftInsights registration={aircraft?.registration} />
       </div>
     </div>
   )
