@@ -56,4 +56,20 @@ assert.equal(weatherVisual(sky('FZRA'),sun,now.getTime()).label,'Mrznoucí srá�
 assert.equal(weatherVisual(sky(null,'OVC'),sun,now.getTime()).label,'Zataženo')
 assert.equal(weatherVisual(sky('FG'),sun,now.getTime()).label,'Mlha')
 assert.equal(weatherVisual({weather:null,clouds:[],rawMetar:null},null,now.getTime()).label,'Stav oblohy neuveden')
+const { sunsetArrivals, arrivalCountdown } = load('src/lib/spottingPlanner.ts', { './flightSearch': search })
+const testFlight = (id, at, status = 'Expected', revisedTime = null) => ({id,scheduledTime:at,revisedTime,status})
+const eveningNow = Date.parse('2026-10-02T14:00:00Z')
+const sunset = '2026-10-02T16:41:00Z'
+const candidates = [
+ testFlight('before','2026-10-02T15:40:00Z'), testFlight('start','2026-10-02T15:41:00Z'),
+ testFlight('end','2026-10-02T17:11:00Z'), testFlight('late','2026-10-02T17:12:00Z'),
+ testFlight('cancelled','2026-10-02T16:00:00Z','Cancelled'), testFlight('arrived','2026-10-02T16:00:00Z','Arrived'),
+ testFlight('revised','2026-10-02T15:00:00Z','Expected','2026-10-02T16:00:00Z'), testFlight('invalid','bad'),
+]
+assert.deepEqual(sunsetArrivals(candidates,sunset,eveningNow).flights.map(f=>f.id),['start','revised','end'])
+assert.equal(sunsetArrivals(candidates,null,eveningNow),null)
+assert.equal(sunsetArrivals(candidates,'2026-10-01T16:41:00Z',eveningNow),null)
+assert.equal(sunsetArrivals(candidates,sunset,Date.parse('2026-10-02T18:00:00Z')).ended,true)
+assert.equal(sunsetArrivals(candidates,sunset,Date.parse('2026-10-02T16:30:00Z')).flights.length,1)
+assert.equal(arrivalCountdown(candidates[1],eveningNow),'za 1 h 41 min')
 console.log('Aero insights: cost tiers, endpoint allow-list, bounded date ranges, missing data, medians and route-statistic semantics passed.')
