@@ -1,7 +1,8 @@
 import { pragueDate, validateFlightSearch, flightStatus } from './flightSearch'
 export type InsightKind = 'aircraft' | 'registrations' | 'flight-delays' | 'history' | 'schedule' | 'airport-delays' | 'destinations' | 'sun'
 export interface InsightSection { title: string; rows: { label: string; value: string; href?: string }[] }
-export interface InsightData { sections: InsightSection[]; note: string; fetchedAt: string }
+export interface SolarTimes { sunrise: string | null; sunset: string | null; dawnCivil: string | null; duskCivil: string | null }
+export interface InsightData { solar?: SolarTimes; sections: InsightSection[]; note: string; fetchedAt: string }
 type Obj = Record<string, unknown>
 const obj = (v: unknown): Obj => v && typeof v === 'object' && !Array.isArray(v) ? v as Obj : {}
 const arr = (v: unknown): unknown[] => Array.isArray(v) ? v : []
@@ -50,6 +51,7 @@ function airport(value: unknown): string {
 export function normalizeInsight(kind: InsightKind, raw: unknown): Omit<InsightData, 'fetchedAt'> {
   const data = obj(raw)
   const sections: InsightSection[] = []
+  let solar: SolarTimes | undefined
   let note = 'Ne všechny údaje jsou dostupné. Zdroj: AeroDataBox.'
   const row = (label: string, value: unknown) => ({ label, value: text(value) })
   if (raw == null) return { sections, note: 'Zdroj pro tento dotaz neposkytl data. Nejde o potvrzení, že let nebo letadlo neexistuje.' }
@@ -65,8 +67,15 @@ export function normalizeInsight(kind: InsightKind, raw: unknown): Omit<InsightD
     if (rows.length) sections.push({ title: 'Známé registrace a provozovatelé', rows })
     note = 'Historie může být neúplná. Datum označuje přidělení registrace; chybějící datum nedoplňujeme odhadem.'
   } else if (kind === 'sun') {
+    const instant = (value: unknown): string | null => {
+      const v = obj(value), raw = str(v.utc) || str(v.local)
+      const parsed = Date.parse(raw.replace(' ', 'T'))
+      return Number.isFinite(parsed) ? new Date(parsed).toISOString() : null
+    }
+    solar = { sunrise: instant(data.sunrise), sunset: instant(data.sunset), dawnCivil: instant(data.dawnCivil), duskCivil: instant(data.duskCivil) }
+
     if (data.sunrise || data.sunset) sections.push({ title: 'Slunce na letišti Praha', rows: [
-      row('Začátek občanského svítání', movementTime(data.dawnCivil)), row('Východ slunce', movementTime(data.sunrise)), row('Západ slunce', movementTime(data.sunset)), row('Konec občanského soumraku', movementTime(data.duskCivil)),
+      row('Rozednívá se', movementTime(data.dawnCivil)), row('Východ slunce', movementTime(data.sunrise)), row('Západ slunce', movementTime(data.sunset)), row('Stmívá se', movementTime(data.duskCivil)),
     ] })
     note = 'Časy pro letiště Praha. Oblačnost, překážky a poloha vyhlídky ovlivňují skutečné světlo pro focení.'
   } else if (kind === 'destinations') {
@@ -96,5 +105,5 @@ export function normalizeInsight(kind: InsightKind, raw: unknown): Omit<InsightD
     if (rows.length) sections.push({ title: kind === 'history' ? 'Předchozích 7 dní' : 'Dnes a příštích 6 dní', rows })
     note = 'Záznamy jsou podle místního data odletu. Uvádíme plánované časy, skutečný stav otevřete v detailu. Chybějící den neznamená zrušený let.'
   }
-  return { sections, note }
+  return { sections, note, ...(solar ? { solar } : {}) }
 }

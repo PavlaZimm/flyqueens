@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAirportBoard } from '@/lib/airportBoardServer'
-import { AirportInsights } from '@/components/Flight/InsightPanel'
 import { PragueToday } from '@/components/Flight/PragueToday'
 import styles from '@/components/Flight/FlightTools.module.css'
 export const dynamic = 'force-dynamic'
@@ -19,7 +18,6 @@ export default async function PragueTodayPage() {
     <nav aria-label="Drobečková navigace"><Link href="/">FlyQueens</Link> · <Link href="/letiste/praha">Letiště Praha</Link> · Dnes</nav>
     <h1>Dnes na letišti Praha</h1>
     <p className={styles.intro}>Co má přiletět, jaké letadlo čekat a jak to vypadá s počasím. Před cestou k letišti si zkontroluj nejbližší přílety a odhad směru provozu.</p>
-    <AirportInsights />
     <PragueToday initialData={board} initialNow={initialNow} />
     <section className={styles.card}>
       <h2>Kam vyrazit na letadla</h2>

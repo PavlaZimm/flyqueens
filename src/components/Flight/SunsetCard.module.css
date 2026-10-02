@@ -1,0 +1,21 @@
+.card { position: relative; isolation: isolate; overflow: hidden; margin: 6px 0 24px; border: 1px solid #6c485c; border-radius: 22px; color: #fff4e8; background: linear-gradient(115deg, #161727 5%, #34213a 58%, #814737 100%); }
+.content { position: relative; z-index: 2; padding: 30px 34px 22px; }
+.card .eyebrow { color: #f2bb89; font-size: 10px; font-weight: 700; letter-spacing: 2px; margin: 0 0 15px; }
+.card h2 { font-size: clamp(25px, 4vw, 38px); line-height: 1.18; margin: 0 0 10px; letter-spacing: -.6px; max-width: 65%; color: #fff4e8; }
+.card .date { font-size: 13px; color: #dec6cc; margin: 0 0 20px; }
+.mainTime { display: grid; gap: 3px; }
+.mainTime span { color: #f4bf91; font-size: 12px; }
+.mainTime time { font: 800 clamp(54px, 8vw, 78px)/1 var(--font-archivo), sans-serif; letter-spacing: -3px; color: #ffd696; font-variant-numeric: tabular-nums; }
+.card .countdown { font-size: 13px; color: #f5d8b9; margin: 10px 0 24px; }
+.times { display: flex; flex-wrap: wrap; gap: 18px 35px; margin: 0; padding: 18px 0; border-top: 1px solid #ffffff26; }
+.times dt { color: #dec6cc; font-size: 12px; }
+.times dd { margin: 6px 0 0; color: #fff4e8; font-size: 23px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.footer { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.card .footer p { max-width: 580px; font-size: 11px; line-height: 1.6; color: #d7bdc3; margin: 8px 0 0; }
+.card .footer a { flex-shrink: 0; font-size: 13px; font-weight: 600; color: #ffdcaa; padding: 10px 0; }
+.scene { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 85% 48%, #ee915354, transparent 45%); }
+.sun { position: absolute; right: 9%; top: 27%; width: clamp(110px, 19vw, 200px); aspect-ratio: 1; border-radius: 50%; background: linear-gradient(#ffe6a0, #ffc175 65%, #e48462); box-shadow: 0 0 70px 20px #ffb55f35; }
+.horizon { position: absolute; top: 58%; width: 100%; bottom: 0; border-top: 1px solid #efbc9838; background: linear-gradient(175deg, #2b2036e6, #161727); }
+.plane { position: absolute; right: 21%; top: 31%; font-size: 58px; color: #292136; transform: rotate(-16deg); }
+.retry { background: #ffffff12; color: #fff4e8; border: 1px solid #ffffff45; border-radius: 8px; min-height: 44px; padding: 8px 14px; cursor: pointer; }
+@media(max-width: 650px) { .content { padding: 25px 22px 18px; } .card h2 { max-width: 85%; font-size: 28px; } .sun { top: 29%; right: -10px; width: 130px; opacity: .65; } .plane { top: 31%; right: 11%; font-size: 34px; } .horizon { top: 55%; } .footer { display: block; } .card .footer a { display: inline-block; } .mainTime { position: relative; z-index: 1; } }

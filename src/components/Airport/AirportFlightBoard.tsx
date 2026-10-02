@@ -8,6 +8,7 @@ import type {
   AirportFlightBoardConfig,
   AirportFlightDirection,
 } from '@/lib/airportFlightBoards'
+import { spottingHighlight } from '@/lib/spottingHighlights'
 import { BoardAircraftCard } from './BoardAircraftCard'
 import styles from './AirportFlightBoard.module.css'
 
@@ -291,6 +292,7 @@ export function AirportFlightBoard({ airport, initialData = null }: AirportFligh
                         </div>
                         <div className={styles.flightCell}>
                           <span className={styles.number}>{flight.number}</span>
+                          {spottingHighlight(flight) && <span className={styles.spottingBadge} title={spottingHighlight(flight)?.reason}>✦ {spottingHighlight(flight)?.title}</span>}
                           <span className={styles.subtle}>{flight.airline ?? (flight.isCargo ? 'Nákladní let' : 'Dopravce neuveden')}</span>
                         </div>
                         <div className={styles.statusCell}>

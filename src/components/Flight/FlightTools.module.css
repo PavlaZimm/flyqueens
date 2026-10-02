@@ -41,3 +41,20 @@
 .insightRows dt { color: var(--text-muted); }
 .insight h4 { font-size: 15px; margin: 20px 0 8px; }
 @media (max-width: 500px) { .insightRows > div { grid-template-columns: minmax(0, 1fr); gap: 5px; } }
+.filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+.filters button { color: var(--text-primary); background: var(--midnight-2); border: 1px solid var(--border-mid); border-radius: 24px; font: inherit; font-size: 14px; min-height: 44px; padding: 10px 17px; cursor: pointer; }
+.filters button[aria-pressed='true'] { background: #f5b83d; color: #15151a; border-color: #f5b83d; font-weight: 700; }
+.filters button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.topFlight { border-left: 3px solid #74b5ed; }
+.topFlight[data-tone='gold'] { border-color: #a98036; border-left-color: #f5b83d; background: linear-gradient(120deg, #f5b83d0d, transparent 65%), var(--midnight-2); }
+.topFlight[data-tone='purple'] { border-left-color: #be91f3; }
+.page .spottingBadge { display: inline-flex; margin: 0 0 14px; padding: 5px 9px; border-radius: 6px; background: #73b5ed18; color: #74b5ed; font-size: 12px; font-weight: 700; }
+.topFlight[data-tone='gold'] .spottingBadge { background: #f5b83d18; color: var(--gold); }
+.topFlight[data-tone='purple'] .spottingBadge { background: #be91f318; color: #be91f3; }
+:global(html.light) .spottingBadge { color: #245d94; }
+:global(html.light) .topFlight[data-tone='purple'] .spottingBadge { color: #6c429e; }
+
+.weatherSummary { display: flex; align-items: center; gap: 22px; margin: 24px 0; }
+.weatherIcon { flex-shrink: 0; font-size: 56px; line-height: 1.3; filter: drop-shadow(0 5px 18px #f5b83d22); }
+.temperature { font-size: 38px; font-weight: 700; letter-spacing: -1px; }
+.weatherSummary p { margin: 3px 0 0; color: var(--text-muted); font-size: 14px; }
