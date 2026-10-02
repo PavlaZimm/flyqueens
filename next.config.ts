@@ -29,7 +29,7 @@ const securityHeaders = [
       // Ostatní zdroje (airplanes.live, adsbdb, OpenSky, METAR, LiveATC) volá server, ne prohlížeč.
       "connect-src 'self' https://api.planespotters.net https://va.vercel-scripts.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://*.googletagmanager.com https://*.impactcdn.com https://*.impactradius-event.com https://*.stay22.com",
       // Widgety Stay22 (mapa, nabídky) se vkládají jako iframe.
-      "frame-src 'self' https://*.stay22.com",
+      "frame-src 'self' https://*.stay22.com https://www.google.com",
       // Audio proxy běží přes /api/atc-stream (self)
       "media-src 'self'",
       "object-src 'none'",

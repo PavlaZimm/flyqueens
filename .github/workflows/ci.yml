@@ -38,6 +38,7 @@ jobs:
       - run: node scripts/test-aerodatabox.mjs
       - run: node scripts/test-flight-search.mjs
       - run: node scripts/test-aero-insights.mjs
+      - run: node scripts/test-spotting-extras.mjs
       - run: node scripts/test-aero-cache.mjs
         env:
           AERO_TEST_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/flyqueens_cache_test

@@ -11,7 +11,7 @@ const search = load('src/lib/flightSearch.ts', { './aeroFlight': load('src/lib/a
 const { insightRequest, normalizeInsight, durationMinutes } = load('src/lib/aeroInsights.ts', { './flightSearch': search })
 const { aeroEndpointCost } = load('src/lib/aeroEndpointCost.ts')
 const now = new Date('2026-10-02T08:00:00Z')
-for (const [kind,id,units] of [['aircraft','D-AIBF',1],['registrations','D-AIBF',1],['sun','',1],['destinations','',6],['airport-delays','',6],['flight-delays','LH1393',6],['history','LH1393',6],['schedule','LH1393',6]]) {
+for (const [kind,id,units] of [['aircraft','D-AIBF',1],['registrations','D-AIBF',1],['destinations','',6],['airport-delays','',6],['flight-delays','LH1393',6],['history','LH1393',6],['schedule','LH1393',6]]) {
  const spec = insightRequest(kind,id,now)
  assert.ok(spec)
  assert.equal(aeroEndpointCost(spec.path).units,units,kind)
@@ -19,6 +19,8 @@ for (const [kind,id,units] of [['aircraft','D-AIBF',1],['registrations','D-AIBF'
 assert.equal(insightRequest('aircraft','../../secret',now),null)
 assert.equal(insightRequest('history','bad-id',now),null)
 assert.equal(insightRequest('unknown','LH1393',now),null)
+assert.equal(insightRequest('sun','',now),null, 'Solar data must never construct a paid request')
+assert.equal(aeroEndpointCost('/airports/iata/PRG/time/solar/2026-10-02'),null)
 assert.equal(aeroEndpointCost('/flights/number/LH1393/2026-10-02').units,2)
 assert.equal(aeroEndpointCost('/flights/number/LH1393/2026-10-02/2026-10-08').units,6)
 assert.equal(aeroEndpointCost('/airports/iata/ABC/delays'),null)

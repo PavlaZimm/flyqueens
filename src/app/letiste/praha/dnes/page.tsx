@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getPragueSolar } from '@/lib/pragueSolarServer'
 import { socialMetadata } from '@/lib/socialMetadata'
 import { getAirportBoard } from '@/lib/airportBoardServer'
 import { PragueToday } from '@/components/Flight/PragueToday'
@@ -26,7 +25,7 @@ const structuredData = {
   ],
 }
 export default async function PragueTodayPage() {
-  const [board, initialSun] = await Promise.all([getAirportBoard('PRG'), getPragueSolar()])
+  const board = await getAirportBoard('PRG')
   // Dynamic server request: pass one timestamp to preserve hydration consistency.
   // eslint-disable-next-line react-hooks/purity
   const initialNow = Date.now()
@@ -35,12 +34,7 @@ export default async function PragueTodayPage() {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
     <h1>Planespotting Praha: co přiletí dnes</h1>
     <p className={styles.intro}>Chystáte se pozorovat letadla na letišti Praha? Vyberte si zajímavý přílet podle typu stroje, prohlédněte si dostupnou fotografii a porovnejte čas příletu se západem slunce. Před odjezdem zkontrolujte počasí a odhad používané dráhy.</p>
-    <PragueToday initialData={board} initialNow={initialNow} initialSun={initialSun} />
-    <section className={styles.card}>
-      <h2>Kam vyrazit na letadla</h2>
-      <p>V našem průvodci najdeš vyhlídky v Kněževsi a u Hostivice, přístup a vlastní fotografie. Odhad dráhy výše pomůže s orientací, směr provozu se ale může změnit.</p>
-      <Link href="/letiste/praha/planespotting">Vyhlídky Kněževes a Hostivice →</Link>
-    </section>
+    <PragueToday initialData={board} initialNow={initialNow} />
     <section className={styles.card} aria-labelledby="planovani-spottingu">
       <h2 id="planovani-spottingu">Jak si naplánovat pozorování letadel</h2>
       <h3>Kdy vyrazit na letiště?</h3>
