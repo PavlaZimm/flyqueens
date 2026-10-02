@@ -98,7 +98,7 @@ export default function HomePage() {
                 <RadarSearch />
                 <div className={styles.popular}>
                   <span>RYCHLÉ ODKAZY:</span>
-                  <Link href="/letiste/praha/dnes">Dnes v Praze</Link>
+                  <Link href="/letiste/praha/dnes">Dnes na letadla v Praze</Link>
                   <Link href="/letiste/brno">LKTB Brno</Link>
                   <Link href="/stats">Statistiky</Link>
                 </div>

@@ -6,13 +6,15 @@ import { pragueDate } from '@/lib/flightSearch'
 import { sunsetCountdown } from '@/lib/spottingHighlights'
 import styles from './SunsetCard.module.css'
 const time = (value: string | null | undefined) => value ? new Date(value).toLocaleTimeString('cs-CZ', { timeZone: 'Europe/Prague', hour: '2-digit', minute: '2-digit' }) : '—'
-export function SunsetCard({ now, onSolar }: { now: number; onSolar: (solar: SolarTimes | null) => void }) {
+export function SunsetCard({ now, onSolar, initialData = null }: { now: number; onSolar: (solar: SolarTimes | null) => void; initialData?: InsightData | null }) {
   const titleId = useId()
   const day = pragueDate(new Date(now))
-  const [result, setResult] = useState<{ day: string; data: InsightData } | null>(null)
+  const initialDay = initialData?.solar?.sunset ? pragueDate(new Date(initialData.solar.sunset)) : null
+  const [result, setResult] = useState<{ day: string; data: InsightData } | null>(initialData && initialDay ? { day: initialDay, data: initialData } : null)
   const [failedDay, setFailedDay] = useState('')
   const [retry, setRetry] = useState(0)
   useEffect(() => {
+    if (initialDay === day && retry === 0) return
     const controller = new AbortController()
     fetch('/api/aero-insights?kind=sun', { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) })
       .then(async response => {
@@ -21,7 +23,7 @@ export function SunsetCard({ now, onSolar }: { now: number; onSolar: (solar: Sol
         if (!controller.signal.aborted) { setResult({ day, data }); setFailedDay(''); onSolar(data.solar ?? null) }
       }).catch(() => { if (!controller.signal.aborted) setFailedDay(day) })
     return () => controller.abort()
-  }, [day, retry, onSolar])
+  }, [day, retry, onSolar, initialDay])
   const data = result?.day === day ? result.data : null
   const solar = data?.solar
   const sunset = solar?.sunset && pragueDate(new Date(solar.sunset)) === day ? solar.sunset : null
