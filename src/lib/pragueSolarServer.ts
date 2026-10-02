@@ -9,7 +9,8 @@ export async function getPragueSolar(): Promise<InsightData | null> {
   try {
     const snapshot = await getAeroSnapshot<unknown>(spec.path, spec.ttl)
     return { ...normalizeInsight('sun', snapshot.data), fetchedAt: snapshot.fetchedAt }
-  } catch {
+  } catch (error) {
+    console.warn('[prague-solar]', error instanceof Error ? error.message : 'Unavailable')
     return null
   }
 }

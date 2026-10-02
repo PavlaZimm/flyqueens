@@ -93,7 +93,8 @@ export async function getAirportBoard(iata: string): Promise<AirportBoardRespons
       departures,
       arrivals,
     }
-  } catch {
+  } catch (error) {
+    console.warn('[airport-board-read]', error instanceof Error ? error.message : 'Unavailable')
     return {
       ...response,
       status: 'unavailable',
