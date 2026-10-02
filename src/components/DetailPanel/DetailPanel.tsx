@@ -183,9 +183,33 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
       {/* Scrollovatelný obsah */}
       <div style={{ overflowY: 'auto', flex: 1, padding: '8px 14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
 
+      {/* Emergency badge */}
+      {isEmergencyFlight(flight) && (
+        <div style={{
+          background: 'rgba(239,68,68,0.15)',
+          border: '1px solid rgba(239,68,68,0.6)',
+          borderRadius: 8,
+          padding: '8px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          animation: 'fq-pulse 1.2s ease-in-out infinite',
+        }}>
+          <span style={{ fontSize: 18 }}>🚨</span>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', letterSpacing: 1 }}>
+              {flight.squawk === '7700' ? 'SQUAWK 7700 — NOUZOVÁ SITUACE' :
+               flight.squawk === '7500' ? 'SQUAWK 7500 — ÚNOS' :
+               flight.squawk === '7600' ? 'SQUAWK 7600 — VÝPADEK RÁDIA' :
+               `EMERGENCY: ${normalizeEmergency(flight.emergency)?.toUpperCase()}`}
+            </div>
+            <div style={{ fontSize: 9, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
+          </div>
+        </div>
+      )}
+
       {/* Fotka letadla */}
       <div style={{
-        order: 9,
         width: '100%', height: 110, borderRadius: 8, overflow: 'hidden',
         background: 'var(--glass-bg)', border: '1px solid var(--border-mid)',
         position: 'relative', flexShrink: 0,
@@ -232,7 +256,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
       </div>
 
       {/* Callsign + registrace */}
-      <div style={{ order: 1 }}>
+      <div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
           <div className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>
             {flight.callsign}
@@ -255,67 +279,23 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
             <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{registration}</span>
           )}
         </div>
-        <AircraftInsights registration={registration} />
+        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8 }}>
+          Poloha: {Math.abs(flight.lat).toFixed(3)}° {flight.lat >= 0 ? 'N' : 'S'}, {Math.abs(flight.lng).toFixed(3)}° {flight.lng >= 0 ? 'E' : 'W'}
+        </div>
         {freshness && (
           <div style={{ fontSize: 9, color: freshness.color, marginTop: 4, letterSpacing: 0.3 }}>
             ● {freshness.label} · ADS-B
-          </div>
-        )}
-      </div>
-
-      {/* Typ + model */}
-      <div style={{ order: 4, fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
-        {label}
-        {(exactType || flight.typeDesignator) && (
-          <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.8 }}>
-            · {exactType ?? `ICAO typ ${flight.typeDesignator}`}
-          </span>
-        )}
-      </div>
-
-      {/* Odznak zajímavého letadla */}
-      {badge && (
-        <div style={{ order: 5, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-            padding: '4px 10px', borderRadius: 20,
-            background: 'linear-gradient(90deg, rgba(245,184,61,0.14), rgba(192,132,252,0.14))',
-            border: '1px solid rgba(245,184,61,0.35)',
-            fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
-          }}>
-            <span style={{ fontSize: 12 }}>{badge.icon}</span>
-            {badge.label}
-          </span>
-        </div>
-      )}
-
-      {/* Vibe */}
-      <div style={{
-        order: 6,
-        fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5,
-        paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)',
-      }}>
-        {vibe}
-      </div>
-
-      {/* Skutečný registrovaný provozovatel, bez ručně hádaného hubu. */}
-      {operator && (
-        <div style={{ order: 8, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', marginBottom: 4, letterSpacing: 1 }}>REGISTROVANÝ PROVOZOVATEL</div>
-          <div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)' }}>
-            {operator}
-          </div>
-          {aircraft?.registeredOwnerOperatorCode && (
-            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2 }}>
-              ICAO kód {aircraft.registeredOwnerOperatorCode}
+            <div style={{ marginTop: 3, color: 'var(--text-dim)' }}>
+              Aktualizováno {new Date(flight.positionUpdatedAt! * 1000).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Prague' })} · pražský čas
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+        {!freshness && <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 4 }}>Čas aktualizace polohy není dostupný.</div>}
+      </div>
 
       {/* Trasa — odkud / kam */}
       {(routeLoading || route) && (
-        <div style={{ order: 2, paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>
             SPOJNICE LETIŠŤ · {route?.confidence === 'position-checked'
               ? 'OVĚŘENA VŮČI POLOZE'
@@ -467,34 +447,8 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         </div>
       )}
 
-      {/* Emergency badge */}
-      {isEmergencyFlight(flight) && (
-        <div style={{
-          order: 0,
-          background: 'rgba(239,68,68,0.15)',
-          border: '1px solid rgba(239,68,68,0.6)',
-          borderRadius: 8,
-          padding: '8px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          animation: 'fq-pulse 1.2s ease-in-out infinite',
-        }}>
-          <span style={{ fontSize: 18 }}>🚨</span>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', letterSpacing: 1 }}>
-              {flight.squawk === '7700' ? 'SQUAWK 7700 — NOUZOVÁ SITUACE' :
-               flight.squawk === '7500' ? 'SQUAWK 7500 — ÚNOS' :
-               flight.squawk === '7600' ? 'SQUAWK 7600 — VÝPADEK RÁDIA' :
-               `EMERGENCY: ${normalizeEmergency(flight.emergency)?.toUpperCase()}`}
-            </div>
-            <div style={{ fontSize: 9, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
-          </div>
-        </div>
-      )}
-
       {/* 4 metric tiles */}
-      <div style={{ order: 3, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
         <div className="metric-tile">
           <div className="label">Baro výška</div>
           <div className="value">{flight.altitude.toLocaleString('cs')}</div>
@@ -538,8 +492,57 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         )}
       </div>
 
+      {/* Typ + model */}
+      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
+        {label}
+        {(exactType || flight.typeDesignator) && (
+          <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.8 }}>
+            · {exactType ?? `ICAO typ ${flight.typeDesignator}`}
+          </span>
+        )}
+      </div>
+
+      {/* Odznak zajímavého letadla */}
+      {badge && (
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '4px 10px', borderRadius: 20,
+            background: 'linear-gradient(90deg, rgba(245,184,61,0.14), rgba(192,132,252,0.14))',
+            border: '1px solid rgba(245,184,61,0.35)',
+            fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
+          }}>
+            <span style={{ fontSize: 12 }}>{badge.icon}</span>
+            {badge.label}
+          </span>
+        </div>
+      )}
+
+      {/* Vibe */}
+      <div style={{
+        fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5,
+        paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)',
+      }}>
+        {vibe}
+      </div>
+
+      {/* Skutečný registrovaný provozovatel, bez ručně hádaného hubu. */}
+      {operator && (
+        <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', marginBottom: 4, letterSpacing: 1 }}>REGISTROVANÝ PROVOZOVATEL</div>
+          <div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)' }}>
+            {operator}
+          </div>
+          {aircraft?.registeredOwnerOperatorCode && (
+            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2 }}>
+              ICAO kód {aircraft.registeredOwnerOperatorCode}
+            </div>
+          )}
+        </div>
+      )}
+
       {technicalRows.length > 0 && (
-        <details style={{ order: 7, padding: '8px 0', borderBottom: '1px solid var(--border-subtle)' }}>
+        <details style={{ padding: '8px 0', borderBottom: '1px solid var(--border-subtle)' }}>
           <summary style={{ cursor: 'pointer', fontSize: 9, letterSpacing: 1, color: 'var(--text-muted)', fontWeight: 700 }}>
             TECHNICKÉ ÚDAJE ADS-B
           </summary>
@@ -554,8 +557,10 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         </details>
       )}
 
+      <AircraftInsights registration={registration} />
+
       {/* Share */}
-      <div style={{ order: 10, display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <button
           onClick={() => {
             trackEvent('Flight Shared', { nativeShare: Boolean(navigator.share) })
