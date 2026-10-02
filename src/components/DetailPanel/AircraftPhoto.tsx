@@ -1,13 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
+import { trackEvent } from '@/lib/analytics'
 import type { PlanePhoto } from '@/hooks/useAircraftPhoto'
 import styles from './DetailPanel.module.css'
 
 export function AircraftPhoto({ photo, label }: { photo: PlanePhoto; label: string }) {
   const dialog = useRef<HTMLDialogElement>(null)
   return <>
-    <button type="button" className={styles.photoButton} onClick={() => dialog.current?.showModal()} aria-label={`Zvětšit fotografii ${label}`}>
+    <button type="button" className={styles.photoButton} onClick={() => { dialog.current?.showModal(); trackEvent('Aircraft Photo Opened') }} aria-label={`Zvětšit fotografii ${label}`}>
       {/* External provider supplies an already resized thumbnail. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={photo.thumbnail_large.src} alt={label} />
