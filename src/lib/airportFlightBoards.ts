@@ -101,5 +101,5 @@ export interface AirportBoardResponse {
 
 // Paid requests happen only on demand. Fixed keys share results across readers.
 export function airportBoardRefreshSeconds(iata: string): number {
-  return iata === 'PRG' ? 3600 : 21600
+  return iata === 'PRG' ? 1800 : 21600
 }

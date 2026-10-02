@@ -1,0 +1,33 @@
+.page { max-width: 1080px; margin: auto; padding: 28px 20px 64px; color: var(--text-primary); }
+.page h1 { font-family: var(--font-archivo), sans-serif; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; margin: 20px 0 14px; }
+.page h2 { font-family: var(--font-archivo), sans-serif; font-size: 25px; margin: 26px 0 14px; }
+.page p { line-height: 1.65; }
+.page a { color: var(--gold); }
+.intro { color: var(--text-muted); max-width: 720px; }
+.form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; gap: 14px; margin: 22px 0; }
+.field { display: grid; gap: 7px; min-width: 0; font-size: 14px; }
+.field input { width: 100%; box-sizing: border-box; min-width: 0; height: 48px; padding: 10px 12px; border: 1px solid var(--border-mid); border-radius: 8px; background: var(--midnight-2); color: var(--text-primary); font: inherit; font-size: 16px; color-scheme: dark; }
+.field input:focus-visible, .button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.button { min-height: 48px; border: 0; border-radius: 8px; padding: 10px 20px; background: var(--gold); color: #101319; font: inherit; font-weight: 700; cursor: pointer; }
+.button:disabled { opacity: .6; cursor: wait; }
+.card { border: 1px solid var(--border-mid); border-radius: 14px; background: var(--midnight-2); padding: 20px; margin: 16px 0; overflow-wrap: anywhere; }
+.card h3 { margin: 0 0 12px; }
+.route { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 18px 0; }
+.route strong { font-size: 20px; }
+.route p { margin: 5px 0; }
+.muted { color: var(--text-muted); font-size: 13px; }
+.links { display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 18px 0; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.columns > * { min-width: 0; }
+.weather { margin-top: 0; }
+.arrivalHeader { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.arrivalHeader h3 { margin: 0; }
+.list { list-style: none; padding: 0; }
+.photo { margin-top: 16px; }
+:global(html.light) .field input { color-scheme: light; }
+@media (max-width: 650px) {
+  .form { grid-template-columns: minmax(0, 1fr); }
+  .columns { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .card { padding: 16px; }
+  .route { gap: 12px; }
+}

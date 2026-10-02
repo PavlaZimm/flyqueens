@@ -9,6 +9,7 @@ const AIRPORTS = ['praha', 'brno', 'ostrava', 'pardubice', 'karlovy-vary']
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const core: MetadataRoute.Sitemap = [
+    { url: `${BASE}/letiste/praha/dnes`, lastModified: '2026-10-02' },
     { url: BASE, lastModified: '2026-09-18' },
     { url: `${BASE}/radar`, lastModified: LAST_SIGNIFICANT_UPDATE },
     { url: `${BASE}/stats`, lastModified: LAST_SIGNIFICANT_UPDATE },

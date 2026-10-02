@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { useFlights } from '@/hooks/useFlights'
 import { useTheme } from '@/hooks/useTheme'
 import { useFlightRoute, type FlightRoute } from '@/hooks/useFlightRoute'
@@ -471,12 +472,13 @@ export default function RadarPage() {
                   ? 'Živá data jsou teď nedostupná'
                   : searchMatches.length
                   ? `${searchMatches.length} ${czechPlural(searchMatches.length, 'nalezený let', 'nalezené lety', 'nalezených letů')}`
-                  : 'Let teď není ve vzduchu v této oblasti'}
+                  : 'Let jsme v aktuálních datech této oblasti nenašli'}
               </div>
               <div style={{ color: 'var(--text-dim)', fontSize: 10, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                Hledání „{searchQuery}“{searchMatches.length === 0 ? ' · zkus číslo letu nebo registraci' : ''}
+                Hledání „{searchQuery}“{searchMatches.length === 0 ? ' · zkus volací znak nebo registraci' : ''}
               </div>
             </div>
+            {searchMatches.length === 0 && <Link href="/let" style={{ color: 'var(--gold)', fontSize: 11 }}>Číslo z letenky + datum →</Link>}
             <button onClick={clearSearch} aria-label="Zrušit hledání">Zrušit</button>
           </div>
         )}

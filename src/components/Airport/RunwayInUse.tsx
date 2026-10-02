@@ -49,6 +49,12 @@ function windText(wind: RunwayInUseResponse['wind']): string | null {
 /** Odhad dráhy v provozu z poloh letadel u letiště (zatím jen Praha). */
 export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; city?: string }) {
   const [data, setData] = useState<RunwayInUseResponse | null>(null)
+  const [now, setNow] = useState<number | null>(null)
+  useEffect(() => {
+    setNow(Date.now())
+    const timer = setInterval(() => setNow(Date.now()), 60000)
+    return () => clearInterval(timer)
+  }, [])
   const [failed, setFailed] = useState(false)
   const [history, setHistory] = useState<RunwayHistoryResponse | null>(null)
 
@@ -82,13 +88,14 @@ export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; 
     }
   }, [icao])
 
-  const active = data?.status === 'ok'
+  const stale = data && now !== null && now - Date.parse(data.fetchedAt) > 5 * 60000
+  const active = !failed && !stale && data?.status === 'ok'
     ? data.ends.filter(end => end.count >= MIN_AIRCRAFT_FOR_ESTIMATE)
     : []
 
   let headline: string
   let detail: string | null = null
-  if (failed && !data) {
+  if (failed || stale) {
     headline = 'Živá data teď nejsou dostupná'
   } else if (!data) {
     headline = 'Zjišťuji, kterým směrem se létá…'

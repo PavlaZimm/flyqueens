@@ -188,7 +188,10 @@ export function AirportFlightBoard({ airport, initialData = null }: AirportFligh
     ? TIME_FORMATTER.format(new Date(data.fetchedAt))
     : null
 
-  const unavailable = failed || data?.status === 'unavailable'
+  const expired = now !== null && data?.fetchedAt
+    ? now - Date.parse(data.fetchedAt) > (data.refreshMinutes ?? 60) * 120_000
+    : false
+  const unavailable = failed || expired || data?.status === 'unavailable'
   const unconfigured = data?.status === 'unconfigured'
 
   return (

@@ -18,6 +18,12 @@ export function getDb(): NeonQueryFunction<false, false> | null {
 /** Tabulky se zakládají samy při prvním zápisu; každá instance to ověří jen jednou. */
 export function ensureSchema(sql: NeonQueryFunction<false, false>): Promise<void> {
   schemaReady ??= (async () => {
+    await sql`CREATE TABLE IF NOT EXISTS aero_daily_usage (
+      day DATE PRIMARY KEY,
+      board_units INT NOT NULL DEFAULT 0,
+      lookup_units INT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )`
     await sql`CREATE TABLE IF NOT EXISTS runway_observations (
       id BIGSERIAL PRIMARY KEY,
       airport TEXT NOT NULL,
