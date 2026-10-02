@@ -8,6 +8,7 @@ import type {
   AirportFlightBoardConfig,
   AirportFlightDirection,
 } from '@/lib/airportFlightBoards'
+import { BoardAircraftCard } from './BoardAircraftCard'
 import styles from './AirportFlightBoard.module.css'
 
 interface AirportFlightBoardProps {
@@ -119,6 +120,7 @@ function operationalDetails(flight: AirportBoardFlight): string[] {
 }
 
 export function AirportFlightBoard({ airport, initialData = null }: AirportFlightBoardProps) {
+  const [expandedFlight, setExpandedFlight] = useState<string | null>(null)
   const [direction, setDirection] = useState<AirportFlightDirection>('departure')
   const [data, setData] = useState<AirportBoardResponse | null>(initialData)
   const [loading, setLoading] = useState(!initialData)
@@ -263,7 +265,7 @@ export function AirportFlightBoard({ airport, initialData = null }: AirportFligh
             {flights.length > 0 ? (
               <>
                 <div className={styles.tableHeader} aria-hidden="true">
-                  <span>Čas</span><span>{direction === 'departure' ? 'Kam' : 'Odkud'}</span><span>Let</span><span>Stav</span><span>Provoz</span><span>Mapa</span>
+                  <span>Čas</span><span>{direction === 'departure' ? 'Kam' : 'Odkud'}</span><span>Let</span><span>Stav</span><span>Provoz</span><span>Detail</span>
                 </div>
                 <ol className={styles.list}>
                   {flights.slice(0, visibleCount).map((flight) => {
@@ -296,7 +298,13 @@ export function AirportFlightBoard({ airport, initialData = null }: AirportFligh
                           {flight.hasLiveData && <span className={styles.subtle}>Provozní údaj zdroje</span>}
                         </div>
                         <div className={styles.radarCell}>
-                          {radar ? <Link className={styles.radarLink} href={`/radar?flight=${encodeURIComponent(radar)}`}>Na mapě →</Link> : null}
+                          <button type="button" className={styles.aircraftButton} aria-expanded={expandedFlight === flight.id} aria-controls={`aircraft-${flight.id}`} onClick={() => setExpandedFlight(expandedFlight === flight.id ? null : flight.id)}>
+                            {expandedFlight === flight.id ? 'Zavřít' : 'Letadlo a foto'}
+                          </button>
+                          {radar ? <Link className={styles.radarLink} href={`/radar?flight=${encodeURIComponent(radar)}`}>Hledat na mapě →</Link> : null}
+                        </div>
+                        <div id={`aircraft-${flight.id}`} className={styles.aircraftExpansion} hidden={expandedFlight !== flight.id}>
+                          {expandedFlight === flight.id && <BoardAircraftCard key={`${flight.id}:${flight.aircraft?.registration}:${flight.aircraft?.modeS}`} flight={flight} />}
                         </div>
                       </li>
                     )

@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
@@ -8,6 +7,7 @@ import { getFlightPhase } from '@/lib/flightPhase'
 import { getAircraftBadge } from '@/lib/aircraftBadge'
 import type { AircraftDetails, FlightRoute } from '@/hooks/useFlightRoute'
 import { isEmergencyFlight, normalizeEmergency } from '@/lib/emergency'
+import { useAircraftPhoto } from '@/hooks/useAircraftPhoto'
 import { trackEvent } from '@/lib/analytics'
 
 interface DetailPanelProps {
@@ -17,12 +17,6 @@ interface DetailPanelProps {
   route: FlightRoute | null
   aircraft: AircraftDetails | null
   routeLoading: boolean
-}
-
-interface PlanePhoto {
-  thumbnail_large: { src: string }
-  photographer: string
-  link: string
 }
 
 const AIRPORT_GUIDES: Record<string, string> = {
@@ -37,37 +31,6 @@ const AIRPORT_GUIDES: Record<string, string> = {
 function airportGuide(airport: FlightRoute['departure']): string | null {
   if (!airport) return null
   return AIRPORT_GUIDES[airport.icao] ?? AIRPORT_GUIDES[airport.iata] ?? null
-}
-
-function useAircraftPhoto(icao24: string | null) {
-  const [photo, setPhoto] = useState<PlanePhoto | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    // Reset stavu při změně letadla — synchronizace s externím fetchem (planespotters).
-    /* eslint-disable react-hooks/set-state-in-effect */
-    if (!icao24) { setPhoto(null); return }
-    setLoading(true)
-    setPhoto(null)
-    /* eslint-enable react-hooks/set-state-in-effect */
-    const controller = new AbortController()
-    let timeoutId: ReturnType<typeof setTimeout> | undefined
-    // Nejdřív vykresli živé údaje; externí fotka není pro použití detailu nutná.
-    const startId = setTimeout(() => {
-      timeoutId = setTimeout(() => controller.abort(), 8000)
-      fetch(`https://api.planespotters.net/pub/photos/hex/${icao24}`, { signal: controller.signal })
-        .then(r => r.json())
-        .then((data: { photos?: PlanePhoto[] }) => {
-          setPhoto(data.photos?.[0] ?? null)
-        })
-        .catch(() => setPhoto(null))
-        .finally(() => { if (timeoutId) clearTimeout(timeoutId); setLoading(false) })
-    }, 500)
-
-    return () => { clearTimeout(startId); if (timeoutId) clearTimeout(timeoutId); controller.abort() }
-  }, [icao24])
-
-  return { photo, loading }
 }
 
 function getVibeText(altitude: number, velocity: number): string {
