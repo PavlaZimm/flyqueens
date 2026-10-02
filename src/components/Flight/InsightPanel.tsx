@@ -57,8 +57,7 @@ export function AircraftInsights({ registration }: { registration: string | null
 export function AirportInsights() {
   return <section className={styles.card} aria-label="Další údaje pro Prahu">
     <h2>Více o dnešku v Praze</h2>
-    <p>Slunce pro focení, dostupné destinace a statistika zpoždění. Každý přehled otevřete zvlášť.</p>
-    <InsightPanel kind="sun" label="východ a západ slunce" />
+    <p>Dostupné destinace a statistika zpoždění. Každý přehled otevřete zvlášť.</p>
     <InsightPanel kind="destinations" label="destinace a četnost letů" />
     <InsightPanel kind="airport-delays" label="zpoždění na letišti" />
   </section>
