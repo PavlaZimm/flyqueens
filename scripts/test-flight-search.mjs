@@ -41,16 +41,16 @@ const sql = async (strings, ...values) => {
   const query = strings.join('?')
   assert.match(query, /ON CONFLICT \(day\) DO UPDATE/)
   assert.match(query, /board_units \+ EXCLUDED.board_units <= 128/)
-  assert.match(query, /lookup_units \+ EXCLUDED.lookup_units <= 22/)
+  assert.match(query, /lookup_units \+ EXCLUDED.lookup_units <= 60/)
   assert.equal(values.reduce((a, b) => a + b, 0), 2)
   return allowed ? [{ board_units: 0, lookup_units: 2 }] : []
 }
-const budget = load('src/lib/aeroBudget.ts', { 'server-only': {}, './db': { getDb: () => sql, ensureSchema: async () => {} } })
+const budget = load('src/lib/aeroBudget.ts', { 'server-only': {}, './aeroEndpointCost': load('src/lib/aeroEndpointCost.ts'), './db': { getDb: () => sql, ensureSchema: async () => {} } })
 await budget.reserveAeroUnits('/flights/number/QS1000/2026-10-02')
 allowed = false
 await assert.rejects(() => budget.reserveAeroUnits('/flights/icao24/abcdef'), /allowance/)
 await assert.rejects(() => budget.reserveAeroUnits('/expensive/unknown'), /Unbudgeted/)
 assert.equal(queryCalls, 2)
-const missing = load('src/lib/aeroBudget.ts', { 'server-only': {}, './db': { getDb: () => null } })
+const missing = load('src/lib/aeroBudget.ts', { 'server-only': {}, './aeroEndpointCost': load('src/lib/aeroEndpointCost.ts'), './db': { getDb: () => null } })
 await assert.rejects(() => missing.reserveAeroUnits('/flights/number/QS1000/2026-10-02'), /unavailable/)
 console.log('Flight search: input/date validation, overnight legs, normalization, upcoming arrivals, no-spend invalid requests, and quota refusal passed.')
