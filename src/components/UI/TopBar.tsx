@@ -18,6 +18,7 @@ interface TopBarProps {
   showAirports: boolean
   onToggleAirports: () => void
   region: string
+  loading?: boolean
   dataStatus: FlightDataStatus
   displayMode: 'overview' | 'all'
   onDisplayModeChange: (mode: 'overview' | 'all') => void
@@ -70,6 +71,7 @@ export function TopBar({
   onToggleAirports,
   region,
   dataStatus,
+  loading = false,
   displayMode,
   onDisplayModeChange,
   onRegionChange,
@@ -112,7 +114,7 @@ export function TopBar({
       </button>
 
       {/* Live badge + počet letadel */}
-      <LiveBadge status={dataStatus} />
+      <LiveBadge status={dataStatus} loading={loading} />
       <div className="fq-flight-count" style={{ ...CHIP_BASE, padding: '0 12px', gap: 5, cursor: 'default', flexShrink: 0 }}>
         <span className="fq-flight-count-icon" style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1 }}>✈</span>
         <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>

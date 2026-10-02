@@ -6,11 +6,12 @@ import { REGION_CONFIGS } from '@/lib/constants'
 
 interface StatusBarProps {
   flightCount: number
+  loading?: boolean
   dataMeta: FlightDataMeta
   region?: string
 }
 
-export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBarProps) {
+export function StatusBar({ flightCount, dataMeta, loading = false, region = 'europe' }: StatusBarProps) {
   const [time, setTime] = useState('')
   const [tick, setTick] = useState(true)
 
@@ -34,7 +35,7 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
   return (
     <>
       {/* Výpadek nikdy nemaskujeme jako živá data. */}
-      {dataMeta.status !== 'live' && (
+      {!loading && dataMeta.status !== 'live' && (
         <div style={{
           position: 'absolute', bottom: 32, left: 0, right: 0,
           background: dataMeta.status === 'stale' ? 'rgba(245,184,61,0.12)' : 'rgba(248,113,113,0.12)',
@@ -87,15 +88,15 @@ export function StatusBar({ flightCount, dataMeta, region = 'europe' }: StatusBa
           <div style={{
             width: 5, height: 5, borderRadius: '50%',
             background: dataMeta.status === 'live' && tick ? 'var(--green-live)' : 'transparent',
-            border: `1px solid ${dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63'}`,
+            border: `1px solid ${loading ? 'var(--text-muted)' : dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63'}`,
             transition: 'background 0.3s',
           }} />
           <span style={{
             fontSize: 9, letterSpacing: 1.5,
-            color: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
+            color: loading ? 'var(--text-muted)' : dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
             fontWeight: 700,
           }}>
-            {dataMeta.status === 'live' ? 'LIVE' : dataMeta.status === 'stale' ? 'STALE' : 'OFFLINE'}
+            {loading ? 'NAČÍTÁM' : dataMeta.status === 'live' ? 'LIVE' : dataMeta.status === 'stale' ? 'STALE' : 'OFFLINE'}
           </span>
         </div>
       </div>

@@ -432,6 +432,8 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         </div>
       )}
 
+      {!routeLoading && !route && <p style={{ margin: 0, padding: '10px 0', color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.5, borderBottom: '1px solid var(--border-subtle)' }}>Trasa není dostupná. Zdroj zatím nepotvrdil, odkud a kam letadlo letí.</p>}
+
       {/* 4 metric tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
         <div className="metric-tile">

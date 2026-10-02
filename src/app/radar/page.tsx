@@ -262,7 +262,7 @@ export default function RadarPage() {
   const mapLocateFnRef = useRef<((lat: number, lng: number) => void) | null>(null)
   const autoOpenedQueryRef = useRef('')
   const trackedQueryRef = useRef('')
-  const hasDataWarning = dataMeta.status !== 'live'
+  const hasDataWarning = !loading && dataMeta.status !== 'live'
 
   const normalizedSearch = searchQuery.trim().toUpperCase()
   const searchMatches = useMemo(() => {
@@ -402,6 +402,7 @@ export default function RadarPage() {
           onSearchChange={handleSearchChange}
           onClose={() => setSidebarOpen(false)}
           dataMeta={dataMeta}
+          loading={loading}
         />
       </div>
 
@@ -462,6 +463,7 @@ export default function RadarPage() {
             showAirports={showAirports}
             onToggleAirports={() => setShowAirports(v => !v)}
             region={region}
+            loading={loading}
             dataStatus={dataMeta.status}
             displayMode={displayMode}
             onDisplayModeChange={setDisplayMode}
@@ -517,10 +519,10 @@ export default function RadarPage() {
 
         {/* Letadla nad hlavou panel */}
         {showNearby && (
-          <div style={{
+          <div className="fq-nearby-panel" style={{
             position: 'absolute',
             bottom: `calc(${hasDataWarning ? 128 : 96}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
+            right: selectedFlight ? DETAIL_PANEL_WIDTH + 28 : 12, zIndex: 900,
             width: 220, background: 'rgba(10,15,30,0.94)', backdropFilter: 'blur(16px)',
             border: '1px solid var(--glass-border)', borderRadius: 12, padding: '10px 12px',
           }}>
@@ -571,7 +573,7 @@ export default function RadarPage() {
           style={{
             position: 'absolute',
             bottom: `calc(${hasDataWarning ? 88 : 52}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
+            right: selectedFlight ? DETAIL_PANEL_WIDTH + 28 : 12, zIndex: 900,
             minWidth: 36, height: 40, borderRadius: 10,
             background: 'rgba(245,184,61,0.94)', border: '1px solid rgba(245,184,61,0.75)',
             backdropFilter: 'blur(8px)', cursor: 'pointer',
@@ -594,7 +596,7 @@ export default function RadarPage() {
           style={{
             position: 'absolute',
             bottom: `calc(${hasDataWarning ? 132 : 96}px + env(safe-area-inset-bottom, 0px))`,
-            right: 12, zIndex: 1000,
+            right: selectedFlight ? DETAIL_PANEL_WIDTH + 28 : 12, zIndex: 900,
             width: 36, height: 36, borderRadius: 8,
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
             backdropFilter: 'blur(8px)', cursor: 'pointer',
@@ -618,7 +620,7 @@ export default function RadarPage() {
         </details>
 
         {/* StatusBar */}
-        <StatusBar flightCount={count} dataMeta={dataMeta} region={region} />
+        <StatusBar loading={loading} flightCount={count} dataMeta={dataMeta} region={region} />
       </div>
 
       {/* Emergency radar banner */}
@@ -690,6 +692,7 @@ export default function RadarPage() {
             width: auto !important;
             max-width: none !important;
           }
+          .fq-nearby-btn, .fq-fullscreen-btn, .fq-nearby-panel { right: 12px !important; }
           .fq-map-legend { left: 8px !important; bottom: calc(42px + env(safe-area-inset-bottom, 0px)) !important; }
         }
 
