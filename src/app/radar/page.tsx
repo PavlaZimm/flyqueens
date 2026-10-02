@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useFlights } from '@/hooks/useFlights'
@@ -241,6 +241,10 @@ export default function RadarPage() {
   const { flights, loading, count, dataMeta, region, setRegion } = useFlights()
   const { theme, toggleTheme } = useTheme()
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null)
+  const [followedId, setFollowedId] = useState<string | null>(null)
+  const following = Boolean(selectedFlight && followedId === selectedFlight.icao24 && flights.some(f => f.icao24 === followedId))
+  const stopFollowing = useCallback(() => setFollowedId(null), [])
+  const toggleFollowing = () => setFollowedId(following ? null : selectedFlight?.icao24 ?? null)
   const { route: selectedRoute, aircraft: selectedAircraft, loading: selectedRouteLoading } = useFlightRoute(
     selectedFlight?.icao24   ?? null,
     selectedFlight?.lat      ?? 0,
@@ -301,6 +305,7 @@ export default function RadarPage() {
     if (!match) return
     autoOpenedQueryRef.current = normalizedSearch
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFollowedId(null)
     setSelectedFlight(match)
   }, [flights, normalizedSearch, searchMatches])
 
@@ -332,7 +337,7 @@ export default function RadarPage() {
   }
 
   useKeyboardShortcuts({
-    onEscape: () => setSelectedFlight(null),
+    onEscape: () => { setFollowedId(null); setSelectedFlight(null) },
     onSlash: () => document.querySelector<HTMLInputElement>('input[type="text"]')?.focus(),
     onFullscreen: toggleFullscreen,
   })
@@ -347,6 +352,7 @@ export default function RadarPage() {
 
   const handleFlightSelect = (flight: Flight) => {
     trackEvent('Flight Detail Opened', { aircraftType: flight.aircraftType ?? 'unknown' })
+    setFollowedId(null)
     setSelectedFlight(flight)
     setSidebarOpen(false)   // na mobile zavřeme sidebar při výběru
     const url = new URL(window.location.href)
@@ -355,6 +361,7 @@ export default function RadarPage() {
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }
   const handleDetailClose = () => {
+    setFollowedId(null)
     setSelectedFlight(null)
     const url = new URL(window.location.href)
     url.searchParams.delete('flight')
@@ -369,6 +376,7 @@ export default function RadarPage() {
   }
   const clearSearch = () => {
     setSearchQuery('')
+    setFollowedId(null)
     setSelectedFlight(null)
     autoOpenedQueryRef.current = ''
     const url = new URL(window.location.href)
@@ -415,6 +423,8 @@ export default function RadarPage() {
               flights={flights}
               selectedFlight={selectedFlight}
               onFlightSelect={handleFlightSelect}
+              following={following}
+              onStopFollowing={stopFollowing}
               theme={theme}
               searchQuery={searchQuery}
               activeFilters={activeFilters}
@@ -487,7 +497,7 @@ export default function RadarPage() {
         {selectedFlight && (
           <div className="fq-detail-desktop" style={{ position: 'absolute', top: 0, right: 0, bottom: 0, zIndex: 1000, pointerEvents: 'none' }}>
             <div style={{ pointerEvents: 'all' }}>
-              <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
+              <DetailPanel key={selectedFlight.icao24} following={following} onToggleFollowing={toggleFollowing} flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
             </div>
           </div>
         )}
@@ -501,7 +511,7 @@ export default function RadarPage() {
             routeLoading={selectedRouteLoading}
             onClose={handleDetailClose}
           >
-            <DetailPanel flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
+            <DetailPanel key={selectedFlight.icao24} following={following} onToggleFollowing={toggleFollowing} flight={selectedFlight} theme={theme} onClose={handleDetailClose} route={selectedRoute} aircraft={selectedAircraft} routeLoading={selectedRouteLoading} />
           </MobileBottomSheet>
         )}
 

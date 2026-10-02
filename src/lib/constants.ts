@@ -1,6 +1,6 @@
 // Sdílené konstanty napříč aplikací
 
-export const DETAIL_PANEL_WIDTH = 252
+export const DETAIL_PANEL_WIDTH = 320
 export const NEARBY_RADIUS_KM   = 30
 export const EARTH_RADIUS_KM    = 6371
 

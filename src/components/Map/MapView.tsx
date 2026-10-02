@@ -83,6 +83,8 @@ interface MapViewProps {
   flights: Flight[]
   selectedFlight: Flight | null
   onFlightSelect: (flight: Flight) => void
+  following?: boolean
+  onStopFollowing?: () => void
   theme: 'dark' | 'light'
   searchQuery?: string
   activeFilters: Set<string>
@@ -201,7 +203,7 @@ function aircraftMarkerLabel(flight: Flight): string {
   return `${flight.callsign}, ${position}, rychlost ${Math.round(flight.velocity)} kilometrů za hodinu`
 }
 
-export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region, displayMode }: MapViewProps) {
+export function MapView({ flights, selectedFlight, onFlightSelect, theme, searchQuery, activeFilters, showAirports, onMapReady, selectedRoute, region, displayMode, following = false, onStopFollowing }: MapViewProps) {
   const containerRef    = useRef<HTMLDivElement>(null)
   const mapRef          = useRef<MapRefs | null>(null)
   const markersRef      = useRef<Map<string, Marker>>(new Map())
@@ -215,6 +217,7 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
   // Viewport culling — predikát viditelnosti (search+filter) sdílený s moveend handlerem
   const visiblePredRef  = useRef<(f: Flight) => boolean>(() => true)
   const flightsRef      = useRef<Flight[]>([])
+  const centeredIdRef = useRef<string | null>(null)
   const selectedIdRef   = useRef<string | null>(null)
   const displayModeRef  = useRef(displayMode)
   const hasSearchRef    = useRef(false)
@@ -621,9 +624,25 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     }
   }, [theme])
 
-  // FlyTo při výběru
+  // Only user-initiated panning cancels follow; programmatic panTo does not.
   useEffect(() => {
-    if (!mapRef.current || !selectedFlight) return
+    const map = mapRef.current?.map
+    if (!mapReady || !map) return
+    const stop = () => { map.stop(); onStopFollowing?.() }
+    const keyboardPan = (event: KeyboardEvent) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) stop()
+    }
+    map.on('dragstart', stop)
+    map.getContainer().addEventListener('keydown', keyboardPan)
+    return () => { map.off('dragstart', stop); map.getContainer().removeEventListener('keydown', keyboardPan) }
+  }, [mapReady, onStopFollowing])
+
+  // Center once on selection; subsequent snapshots move the map only in follow mode.
+  useEffect(() => {
+    if (!selectedFlight) { centeredIdRef.current = null; return }
+    if (!mapReady || !mapRef.current) return
+    const isNewSelection = centeredIdRef.current !== selectedFlight.icao24
+    if (!isNewSelection && !following) return
     const { map } = mapRef.current
     // Guard proti nevalidním souřadnicím — jinak Leaflet flyTo shodí celou mapu
     if (!Number.isFinite(selectedFlight.lat) || !Number.isFinite(selectedFlight.lng)) return
@@ -631,11 +650,11 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
     const curZoom = map.getZoom()
     const targetZoom = Number.isFinite(curZoom) ? Math.max(curZoom, 7) : 7
     try {
-      map.flyTo([selectedFlight.lat, selectedFlight.lng], targetZoom, {
-        animate: true, duration: 0.8,
-      })
+      centeredIdRef.current = selectedFlight.icao24
+      if (isNewSelection) map.flyTo([selectedFlight.lat, selectedFlight.lng], targetZoom, { animate: true, duration: 0.8 })
+      else map.panTo([selectedFlight.lat, selectedFlight.lng], { animate: true, duration: 0.5 })
     } catch { /* mapa ještě není připravená — ignoruj */ }
-  }, [selectedFlight])
+  }, [selectedFlight, following, mapReady])
 
   // Orientační route arc — souvislá spojnice DEP → aktuální ADS-B bod → ARR.
   // Díky tomu je vždy jasné, ke kterému letadlu trasa patří, ale současně

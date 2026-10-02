@@ -1,6 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { DETAIL_PANEL_WIDTH } from '@/lib/constants'
+import { AircraftPhoto } from './AircraftPhoto'
+import styles from './DetailPanel.module.css'
 import { AircraftInsights } from '@/components/Flight/InsightPanel'
 import type { Flight } from '@/types/flight'
 import { AircraftIcon, getAircraftColor } from '@/components/Map/AircraftIcon'
@@ -18,6 +21,8 @@ interface DetailPanelProps {
   route: FlightRoute | null
   aircraft: AircraftDetails | null
   routeLoading: boolean
+  following: boolean
+  onToggleFollowing: () => void
 }
 
 const AIRPORT_GUIDES: Record<string, string> = {
@@ -105,7 +110,7 @@ function statusLabel(status: string | null): string | null {
   return map[status] ?? status
 }
 
-export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoading }: DetailPanelProps) {
+export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoading, following, onToggleFollowing }: DetailPanelProps) {
   const { photo, loading: photoLoading } = useAircraftPhoto(flight?.icao24 ?? null)
 
   if (!flight) return null
@@ -146,7 +151,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
       style={{
         position: 'absolute',
         top: 60, right: 16,
-        width: 252,
+        width: DETAIL_PANEL_WIDTH,
         zIndex: 100,
         display: 'flex',
         flexDirection: 'column',
@@ -203,48 +208,26 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                flight.squawk === '7600' ? 'SQUAWK 7600 — VÝPADEK RÁDIA' :
                `EMERGENCY: ${normalizeEmergency(flight.emergency)?.toUpperCase()}`}
             </div>
-            <div style={{ fontSize: 9, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
+            <div style={{ fontSize: 11, color: 'rgba(239,68,68,0.7)', marginTop: 1 }}>Squawk {flight.squawk}</div>
           </div>
         </div>
       )}
 
       {/* Fotka letadla */}
       <div style={{
-        width: '100%', height: 110, borderRadius: 8, overflow: 'hidden',
+        width: '100%', height: 155, borderRadius: 8, overflow: 'hidden',
         background: 'var(--glass-bg)', border: '1px solid var(--border-mid)',
         position: 'relative', flexShrink: 0,
       }}>
         {photoLoading && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: 10, color: 'var(--text-dim)',
+            justifyContent: 'center', fontSize: 12, color: 'var(--text-dim)',
           }}>
             Hledám fotku…
           </div>
         )}
-        {photo && !photoLoading && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo.thumbnail_large.src}
-              alt={`${flight.callsign} – ${exactType ?? flight.typeDesignator ?? label}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-            <a
-              href={photo.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                position: 'absolute', bottom: 4, right: 6,
-                fontSize: 8, color: 'rgba(255,255,255,0.6)',
-                textDecoration: 'none', background: 'rgba(0,0,0,0.45)',
-                padding: '1px 4px', borderRadius: 3,
-              }}
-            >
-              © {photo.photographer}
-            </a>
-          </>
-        )}
+        {photo && !photoLoading && <AircraftPhoto photo={photo} label={`${flight.callsign} – ${exactType ?? flight.typeDesignator ?? label}`} />}
         {!photo && !photoLoading && (
           <div style={{
             position: 'absolute', inset: 0, display: 'flex', alignItems: 'center',
@@ -268,35 +251,37 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
             background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
           }}>
             <span style={{ fontSize: 11, lineHeight: 1 }}>{phase.icon}</span>
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase', color: phase.color }}>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase', color: phase.color }}>
               {phase.label}
             </span>
           </div>
         </div>
-        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           <span>{flag} {registrationCountry ?? 'Země registrace neznámá'}</span>
           {registration && (
             <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{registration}</span>
           )}
         </div>
-        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 8 }}>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
           Poloha: {Math.abs(flight.lat).toFixed(3)}° {flight.lat >= 0 ? 'N' : 'S'}, {Math.abs(flight.lng).toFixed(3)}° {flight.lng >= 0 ? 'E' : 'W'}
         </div>
         {freshness && (
-          <div style={{ fontSize: 9, color: freshness.color, marginTop: 4, letterSpacing: 0.3 }}>
+          <div style={{ fontSize: 11, color: freshness.color, marginTop: 4, letterSpacing: 0.3 }}>
             ● {freshness.label} · ADS-B
             <div style={{ marginTop: 3, color: 'var(--text-dim)' }}>
               Aktualizováno {new Date(flight.positionUpdatedAt! * 1000).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/Prague' })} · pražský čas
             </div>
           </div>
         )}
-        {!freshness && <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 4 }}>Čas aktualizace polohy není dostupný.</div>}
+        {!freshness && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>Čas aktualizace polohy není dostupný.</div>}
+        <button type="button" className={styles.follow} aria-pressed={following} onClick={onToggleFollowing}>{following ? 'Zastavit sledování' : 'Sledovat letadlo'}</button>
+        {following && <p className={styles.followHelp}>Mapa se posouvá za letadlem. Ručním posunutím sledování vypnete.</p>}
       </div>
 
       {/* Trasa — odkud / kam */}
       {(routeLoading || route) && (
         <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: 1, marginBottom: 8 }}>
             SPOJNICE LETIŠŤ · {route?.confidence === 'position-checked'
               ? 'OVĚŘENA VŮČI POLOZE'
               : route?.confidence === 'schedule'
@@ -305,7 +290,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
           </div>
 
           {routeLoading && (
-            <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>Hledám trasu…</div>
+            <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Hledám trasu…</div>
           )}
 
           {!routeLoading && route && (
@@ -319,7 +304,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                       {route.departure ? (route.departure.iata || route.departure.icao) : '???'}
                     </Link>
                   ) : <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: 1 }}>{route.departure ? (route.departure.iata || route.departure.icao) : '???'}</div>}
-                  <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 1 }}>
                     {route.departure ? (route.departure.city || route.departure.name) : 'Neznámé'}
                   </div>
                 </div>
@@ -338,7 +323,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                       }} />
                     )}
                   </div>
-                  <div style={{ fontSize: 8, color: 'var(--text-dim)' }}>{route.progress} %</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{route.progress} %</div>
                 </div>
 
                 {/* Přilet */}
@@ -348,7 +333,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                       {route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}
                     </Link>
                   ) : <div className="font-display" style={{ fontSize: 16, fontWeight: 800, color: 'var(--gold)', letterSpacing: 1 }}>{route.arrival ? (route.arrival.iata || route.arrival.icao) : '???'}</div>}
-                  <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 1 }}>
                     {route.arrival ? (route.arrival.city || route.arrival.name) : 'Neznámé'}
                   </div>
                 </div>
@@ -361,7 +346,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                     <div className="font-display" style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-blue)' }}>
                       {route.remaining.toLocaleString('cs')} km
                     </div>
-                    <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>ZBÝVÁ</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: 1 }}>ZBÝVÁ</div>
                   </div>
                   <div style={{ width: 1, background: 'var(--border-subtle)' }} />
                   <div style={{ textAlign: 'center' }}>
@@ -370,7 +355,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                         ? `${route.etaMin} min`
                         : `${Math.floor(route.etaMin / 60)}h ${route.etaMin % 60}m`}
                     </div>
-                    <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>ORIENTAČNÍ ETA</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: 1 }}>ORIENTAČNÍ ETA</div>
                   </div>
                 </div>
               )}
@@ -380,12 +365,12 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                 <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border-subtle)' }}>
                   {/* Číslo letu + status */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                    <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
+                    <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>
                       {route.schedule.number ?? route.schedule.airline ?? 'Letový řád'}
                     </span>
                     {statusLabel(route.schedule.status) && (
                       <span style={{
-                        fontSize: 8, letterSpacing: 0.5, textTransform: 'uppercase',
+                        fontSize: 11, letterSpacing: 0.5, textTransform: 'uppercase',
                         padding: '2px 6px', borderRadius: 4,
                         background: 'var(--glass-bg)', border: '1px solid var(--glass-border)',
                         color: (route.schedule.depDelayMin ?? 0) > 10 || (route.schedule.arrDelayMin ?? 0) > 10 ? 'var(--amber-delay)' : 'var(--green-live)',
@@ -399,15 +384,15 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                   <div style={{ display: 'flex', gap: 8 }}>
                     {(fmtTime(route.schedule.depActual) || fmtTime(route.schedule.depScheduled)) && (
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>ODLET</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: 1 }}>ODLET</div>
                         <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
                           {fmtTime(route.schedule.depActual) ?? fmtTime(route.schedule.depScheduled)}
                         </div>
                         {(route.schedule.depDelayMin ?? 0) > 0 && (
-                          <div style={{ fontSize: 8, color: 'var(--amber-delay)' }}>+{route.schedule.depDelayMin} min</div>
+                          <div style={{ fontSize: 11, color: 'var(--amber-delay)' }}>+{route.schedule.depDelayMin} min</div>
                         )}
                         {(route.schedule.depTerminal || route.schedule.depGate) && (
-                          <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 1 }}>
                             {route.schedule.depTerminal && `T${route.schedule.depTerminal}`}
                             {route.schedule.depGate && ` · ${route.schedule.depGate}`}
                           </div>
@@ -416,15 +401,15 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                     )}
                     {(fmtTime(route.schedule.arrActual) || fmtTime(route.schedule.arrScheduled)) && (
                       <div style={{ flex: 1, textAlign: 'right' }}>
-                        <div style={{ fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>PŘÍLET</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: 1 }}>PŘÍLET</div>
                         <div className="font-display" style={{ fontSize: 14, fontWeight: 700, color: 'var(--gold)' }}>
                           {fmtTime(route.schedule.arrActual) ?? fmtTime(route.schedule.arrScheduled)}
                         </div>
                         {(route.schedule.arrDelayMin ?? 0) > 0 && (
-                          <div style={{ fontSize: 8, color: 'var(--amber-delay)' }}>+{route.schedule.arrDelayMin} min</div>
+                          <div style={{ fontSize: 11, color: 'var(--amber-delay)' }}>+{route.schedule.arrDelayMin} min</div>
                         )}
                         {(route.schedule.arrTerminal || route.schedule.arrGate) && (
-                          <div style={{ fontSize: 8, color: 'var(--text-dim)', marginTop: 1 }}>
+                          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 1 }}>
                             {route.schedule.arrTerminal && `T${route.schedule.arrTerminal}`}
                             {route.schedule.arrGate && ` · ${route.schedule.arrGate}`}
                           </div>
@@ -434,7 +419,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
                   </div>
                 </div>
               )}
-              <div style={{ marginTop: 8, fontSize: 8, lineHeight: 1.4, color: 'var(--text-dim)' }}>
+              <div style={{ marginTop: 8, fontSize: 11, lineHeight: 1.4, color: 'var(--text-dim)' }}>
                 Přímá spojnice letišť přes aktuální polohu. Nejde o skutečně proletěnou trajektorii ani letový plán.
                 {route.source === 'aerodatabox' && <div>
                   AeroDataBox{route.fetchedAt ? ` · načteno ${new Intl.DateTimeFormat('cs-CZ', { hour: '2-digit', minute: '2-digit' }).format(new Date(route.fetchedAt))}` : ''}.
@@ -492,8 +477,11 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
         )}
       </div>
 
+      <details className={styles.more}>
+        <summary>Více údajů o letadle</summary>
+        <div className={styles.moreContent}>
       {/* Typ + model */}
-      <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
+      <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: -4, paddingBottom: badge ? 6 : 10, borderBottom: badge ? 'none' : '1px solid var(--border-subtle)' }}>
         {label}
         {(exactType || flight.typeDesignator) && (
           <span style={{ color: 'var(--text-dim)', marginLeft: 4, opacity: 0.8 }}>
@@ -510,7 +498,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
             padding: '4px 10px', borderRadius: 20,
             background: 'linear-gradient(90deg, rgba(245,184,61,0.14), rgba(192,132,252,0.14))',
             border: '1px solid rgba(245,184,61,0.35)',
-            fontSize: 10, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
+            fontSize: 12, fontWeight: 700, letterSpacing: 0.5, color: 'var(--gold)',
           }}>
             <span style={{ fontSize: 12 }}>{badge.icon}</span>
             {badge.label}
@@ -529,12 +517,12 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
       {/* Skutečný registrovaný provozovatel, bez ručně hádaného hubu. */}
       {operator && (
         <div style={{ paddingBottom: 10, borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', marginBottom: 4, letterSpacing: 1 }}>REGISTROVANÝ PROVOZOVATEL</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4, letterSpacing: 1 }}>REGISTROVANÝ PROVOZOVATEL</div>
           <div className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)' }}>
             {operator}
           </div>
           {aircraft?.registeredOwnerOperatorCode && (
-            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2 }}>
+            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>
               ICAO kód {aircraft.registeredOwnerOperatorCode}
             </div>
           )}
@@ -543,7 +531,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
 
       {technicalRows.length > 0 && (
         <details style={{ padding: '8px 0', borderBottom: '1px solid var(--border-subtle)' }}>
-          <summary style={{ cursor: 'pointer', fontSize: 9, letterSpacing: 1, color: 'var(--text-muted)', fontWeight: 700 }}>
+          <summary style={{ cursor: 'pointer', fontSize: 11, letterSpacing: 1, color: 'var(--text-muted)', fontWeight: 700 }}>
             TECHNICKÉ ÚDAJE ADS-B
           </summary>
           <div style={{ display: 'grid', gap: 5, marginTop: 8 }}>
@@ -558,6 +546,9 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
       )}
 
       <AircraftInsights registration={registration} />
+
+        </div>
+      </details>
 
       {/* Share */}
       <div style={{ display: 'flex' }}>
@@ -585,7 +576,7 @@ export function DetailPanel({ flight, theme, onClose, route, aircraft, routeLoad
             color: 'var(--text-muted)',
             fontFamily: "'Archivo', sans-serif",
             fontWeight: 700,
-            fontSize: 10,
+            fontSize: 12,
             letterSpacing: 2,
             textTransform: 'uppercase',
             borderRadius: 10,
