@@ -1,5 +1,25 @@
 # Další kroky FlyQueens
 
+## Aktuální priority a nápady — 2. října 2026
+
+### Nejdřív stabilizovat Prahu
+
+1. Prověřit spotřebu AeroDataBoxu a sdílení mezipaměti mezi stránkami, API a preview. Dne 2. 10. se vyčerpal interní denní limit; logy potvrzují i spotřebu preview. Audit a oprava jsou v `aerodatabox-cache-audit-2026-10-02.md`. Nezvyšovat limit ani tarif automaticky.
+2. Zpřístupnit měření konkrétní property FlyQueens v Search Console a ověřit indexaci a dotazy stránky `/letiste/praha/dnes`. SEO úpravy jsou nasazené; dostupnost měření dosud blokuje přístup. Podrobnosti: `seo-dohledatelnost-2026-10-02.md`.
+
+### Na později: spottingový plánovač pro další česká letiště
+
+**Stav: odloženo na přání Pavly, nyní neimplementovat.** Navázat na pražský přehled až po ověření spotřeby API a dostupnosti dat. Rozšíření nemá automaticky znamenat nový tarif.
+
+- Kandidáti: Brno, Ostrava, Pardubice, Karlovy Vary a České Budějovice. Jde o první skupinu, nikoli seznam všech českých letišť.
+- Zamýšlené funkce: dostupné přílety, typy letadel a fotografie podle registrace, zajímavé stroje, počasí, západ slunce a večerní přílety. Každou funkci zobrazit podle skutečného pokrytí; odhad dráhy přidávat jen po ověření pro konkrétní letiště.
+- Nejdřív porovnat hledanost a obtížnost v Marketing Mineru, ověřit pokrytí API a vybrat jeden pilot (kandidát Brno nebo Ostrava). Pořadí zatím není podložené daty.
+- Použít společnou šablonu, ale doplnit vlastní místní hodnotu: ověřené vyhlídky, přístup a zdroje. Před průvodcem projít konkurenci a primární zdroje podle redakčních pravidel; nevyrábět jen kopie Prahy s jiným názvem.
+- Spuštění podmínit rozpočtem API pro všechna zapojená letiště, sdílenou cache, zobrazením stáří dat, poctivým stavem bez dat a kontrolou mobilu. Malý provoz ani prázdná odpověď API nejsou důkazem, že nic nepřiletí.
+- Menší letiště a aerokluby případně řešit samostatnými průvodci a dostupným radarem; pravidelnou příletovou tabuli neslibovat.
+
+Níže zůstává historický plán ze září; jeho tehdejší stav a intervaly nelze považovat za aktuální technický audit.
+
 **Aktualizace 18. 9. večer:** Pro již předplaceno a živé dotazy úspěšně ověřeny. Aktuální implementaci, intervaly a omezení popisuje `aerodatabox-aktivace-2026-09-18.md`. Níže uvedený plán AeroDataBox je původní návrh před zaplacením. Stay22 skript získán z přihlášeného Hubu; stav implementace a ověření v `stay22-integrace-2026-09-18.md`.
 
 Stav k 18. září 2026. Dnešní články, fotografie a sekce novinek dokončujeme před zapojením placených dat.

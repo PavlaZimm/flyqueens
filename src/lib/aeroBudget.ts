@@ -3,8 +3,13 @@ import { ensureSchema, getDb } from './db'
 
 import { aeroEndpointCost } from './aeroEndpointCost'
 
+export class AeroBudgetExceeded extends Error {
+  constructor() { super('AeroDataBox daily allowance reached'); this.name = 'AeroBudgetExceeded' }
+}
+
 // All instances share a 150-unit UTC daily ceiling (4,650 units / 31 days).
-// Lookups can use up to 60 units, leaving at least 90 for airport boards.
+// Lookups can use up to 22 units, preserving 128 for PRG (48 x 2)
+// and four regional boards (4 x 4 x 2) at their current refresh intervals.
 // Count attempted calls conservatively; cache hits do not consume units.
 export async function reserveAeroUnits(path: string): Promise<void> {
   const cost = aeroEndpointCost(path)
@@ -21,10 +26,10 @@ export async function reserveAeroUnits(path: string): Promise<void> {
       lookup_units = aero_daily_usage.lookup_units + EXCLUDED.lookup_units,
       updated_at = now()
     WHERE aero_daily_usage.board_units + EXCLUDED.board_units <= 128
-      AND aero_daily_usage.lookup_units + EXCLUDED.lookup_units <= 60
+      AND aero_daily_usage.lookup_units + EXCLUDED.lookup_units <= 22
       AND aero_daily_usage.board_units + aero_daily_usage.lookup_units
         + EXCLUDED.board_units + EXCLUDED.lookup_units <= 150
     RETURNING board_units, lookup_units`
-  if (!rows.length) throw new Error('AeroDataBox daily allowance reached')
-  console.info('[aero-budget]', { boardUnits: rows[0].board_units, lookupUnits: rows[0].lookup_units, dailyLimit: 150 })
+  if (!rows.length) throw new AeroBudgetExceeded()
+  console.info('[aero-budget]', { path, environment: process.env.VERCEL_ENV ?? 'local', units, boardUnits: rows[0].board_units, lookupUnits: rows[0].lookup_units, dailyLimit: 150 })
 }

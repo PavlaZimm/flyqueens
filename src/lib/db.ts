@@ -24,6 +24,21 @@ export function ensureSchema(sql: NeonQueryFunction<false, false>): Promise<void
       lookup_units INT NOT NULL DEFAULT 0,
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`
+    await sql`CREATE TABLE IF NOT EXISTS aero_response_cache (
+      cache_key TEXT PRIMARY KEY,
+      payload JSONB,
+      fetched_at TIMESTAMPTZ,
+      expires_at TIMESTAMPTZ NOT NULL,
+      lease_token TEXT,
+      lease_until TIMESTAMPTZ,
+      retry_at TIMESTAMPTZ
+    )`
+    await sql`CREATE INDEX IF NOT EXISTS aero_response_cache_expiry ON aero_response_cache (expires_at)`
+    await sql`CREATE TABLE IF NOT EXISTS aero_provider_gate (
+      provider_key TEXT PRIMARY KEY,
+      lease_token TEXT,
+      available_at TIMESTAMPTZ NOT NULL
+    )`
     await sql`CREATE TABLE IF NOT EXISTS runway_observations (
       id BIGSERIAL PRIMARY KEY,
       airport TEXT NOT NULL,

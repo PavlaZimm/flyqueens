@@ -1,5 +1,7 @@
 # Zapojení AeroDataBox, 18. září 2026
 
+**Aktualizace 2. 10. 2026:** Aktuální opravu sdílení cache a rozpočtu popisuje `aerodatabox-cache-audit-2026-10-02.md`. Níže je historický stav prvního zapojení; intervaly, limity ani závěrečný stav Stay22 zde nejsou aktuálním auditem.
+
 Pavla předplatila Pro na API.Market a výslovně zadala použít přihlášený účet pro napojení FlyQueens. Chrome potvrdil SUBSCRIBED, cenu 7,50 USD, 5 000 jednotek a HARD limit. Obnova 18. října 2026. Klíč ani jeho hodnotu do dokumentace a repozitáře neukládat.
 
 ## Ověřeno na skutečné službě
