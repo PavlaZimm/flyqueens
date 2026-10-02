@@ -18,6 +18,7 @@ interface SidebarProps {
   searchQuery: string
   onSearchChange: (q: string) => void
   onClose: () => void
+  loading?: boolean
   dataMeta: FlightDataMeta
 }
 
@@ -34,7 +35,7 @@ type SortKey = 'altitude' | 'velocity'
 export function Sidebar({
   flights, selectedFlight, onFlightSelect, flightCount,
   theme, searchQuery, onSearchChange, onClose,
-  dataMeta,
+  dataMeta, loading = false,
 }: SidebarProps) {
   const pathname = usePathname()
   const [sortBy, setSortBy] = useState<SortKey>('altitude')
@@ -91,10 +92,10 @@ export function Sidebar({
         }}>
           <div className={dataMeta.status === 'live' ? 'live-dot' : undefined} style={{
             width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-            background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
+            background: loading ? 'var(--text-muted)' : dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
           }} />
           <span style={{ fontSize: 10, color: 'var(--text-muted)', flex: 1 }}>
-            {dataMeta.status === 'live' ? 'Živá data' : dataMeta.status === 'stale' ? 'Poslední známá data' : 'Data nedostupná'}
+            {loading ? 'Načítám lety…' : dataMeta.status === 'live' ? 'Živá data' : dataMeta.status === 'stale' ? 'Poslední známá data' : 'Data nedostupná'}
           </span>
           <span className="font-display" style={{ fontSize: 12, color: 'var(--gold)', fontWeight: 700 }}>{flightCount}</span>
         </div>
@@ -207,7 +208,7 @@ export function Sidebar({
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           {filteredFlights.length === 0 ? (
             <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '20px 0' }}>
-              {searchQuery ? `Žádný let odpovídá „${searchQuery}"` : 'Načítám lety...'}
+              {loading ? 'Načítám lety…' : dataMeta.status === 'unavailable' ? 'Lety jsou momentálně nedostupné.' : searchQuery ? `Žádný let neodpovídá „${searchQuery}“.` : 'V aktuálních datech nejsou žádná letadla.'}
             </div>
           ) : (
             visibleFlights.map((flight) => (
@@ -232,10 +233,10 @@ export function Sidebar({
       <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{
           width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-          background: dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
+          background: loading ? 'var(--text-muted)' : dataMeta.status === 'live' ? 'var(--green-live)' : dataMeta.status === 'stale' ? '#F5B83D' : '#FF5C63',
         }} />
         <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>
-          Zdroj: {dataMeta.source ?? 'nedostupný'}
+          Zdroj: {dataMeta.source ?? (loading ? 'načítám…' : 'nedostupný')}
         </span>
       </div>
 

@@ -8,8 +8,8 @@ const STATUS = {
   unavailable: { label: 'OFFLINE', color: '#FF5C63', background: 'rgba(248, 113, 113, 0.12)', border: 'rgba(248, 113, 113, 0.25)' },
 } as const
 
-export function LiveBadge({ status }: { status: FlightDataStatus }) {
-  const config = STATUS[status]
+export function LiveBadge({ status, loading = false }: { status: FlightDataStatus; loading?: boolean }) {
+  const config = loading ? { label: 'NAČÍTÁM', color: 'var(--text-muted)', background: 'var(--glass-bg)', border: 'var(--border-subtle)' } : STATUS[status]
   return (
     <div
       className="fq-live-badge"

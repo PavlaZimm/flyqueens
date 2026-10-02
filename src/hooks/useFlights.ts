@@ -41,7 +41,12 @@ export function useFlights(): UseFlightsResult {
 
   const load = useCallback(async () => {
     if (!mountedRef.current) return
-    if (document.hidden || !navigator.onLine) return
+    if (!navigator.onLine) {
+      setLoading(false)
+      setDataMeta(previous => ({ ...previous, status: previous.fetchedAt ? 'stale' : 'unavailable', message: 'Zařízení je offline. Čerstvá data nejsou dostupná.' }))
+      return
+    }
+    if (document.hidden) return
 
     const requestId = ++requestIdRef.current
     const requestedRegion = regionRef.current
@@ -116,6 +121,7 @@ export function useFlights(): UseFlightsResult {
       else resume()
     }
     const offline = () => {
+      setLoading(false)
       if (timerRef.current) clearTimeout(timerRef.current)
       controllerRef.current?.abort()
       controllerRef.current = null
