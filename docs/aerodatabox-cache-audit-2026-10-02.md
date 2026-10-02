@@ -27,4 +27,16 @@ Celkový limit **150 jednotek za UTC den se nemění**, dnešní čítač se ner
 
 ## Ověření
 
+### Následná kontrola 2. října kolem 12:30 CEST
+
+V produkčních Vercel logách s filtrem `aero-budget` za posledních 12 hodin zůstávala poslední rezervace v 09:00:09 na 98 + 52 = 150 jednotkách. Filtr `aero-cache-refresh` ukázal například ve 12:10:21 `/api/flight-route` s `attempted: false` a důvodem `AeroDataBox daily allowance reached`. Ochrana tedy odmítá další placené pokusy. To zatím nedokazuje úsporu za celý den ani úspěšné plnění nové cache: dnešní limit byl vyčerpán před nasazením. První celý UTC den nové verze končí 4. října ve 02:00 CEST.
+
+### Měření používání webu
+
+Vercel Web Analytics není zapnuté (dashboard nabízí Enable a zobrazuje Demo Data). Existující vlastní události proto připojujeme i ke stávajícímu GA4, bez aktivace další služby. V administraci byl ověřen stream `https://www.flyqueens.cz`, ID měření `G-SMFS92YP8L`, služba FlyQueens 533725184. Domovský přehled za posledních 7 dní při kontrole ukazoval 89 aktivních uživatelů, 429 zobrazení a 902 událostí; zahrnuje i případné vlastní testy, nejde o důkaz organického růstu.
+
+`trackEvent` nově odesílá také GA4 událost v podobě `lower_snake_case`, jen na produkčních doménách a s uloženým souhlasem v3. Bez souhlasu, při blokovaném úložišti či nenahraném Google tagu se GA4 událost vynechá. Události se zpětně nedoplňují. Mezi sledované akce patří `flight_detail_opened` (včetně automatického otevření výsledku hledání), `radar_search_result`, `flight_follow_changed`, `aircraft_photo_opened`, `spotting_arrivals_filter` a `spotting_aircraft_opened`. Změna sledování měří tlačítko, nikoli automatické ukončení při posunu mapy. Parametry neobsahují hledaný text ani souřadnice uživatele. Historické počty těchto nově zapojených akcí nelze obnovit.
+
+Implementace podle [oficiální dokumentace GA4 událostí](https://developers.google.com/analytics/devguides/collection/ga4/events). Příjem kontrolovat v Realtime; návštěvy stránky `/letiste/praha/dnes` hodnotit odděleně od kliknutí na její filtry. Automatický budoucí monitoring touto kontrolou nevzniká.
+
 `scripts/test-aero-cache.mjs` spouští skutečný SQL kód proti izolovanému místnímu PostgreSQL, poskytovatele nahrazuje testovací odpovědí. Ověřuje 12 nezávislých instancí při prázdné cache (jediný placený pokus), zachování časů, HTTP 204, preview/development/build bez nákupu, chyby, stáří, dosažený denní limit, souběžné rezervace posledních jednotek, převzetí expirovaného zámku a rozestupy různých endpointů. Stejný test je součástí CI s PostgreSQL 17. Test nikdy nepoužívá skutečný API klíč.

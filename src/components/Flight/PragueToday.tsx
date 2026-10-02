@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 import type { AirportBoardResponse } from '@/lib/airportFlightBoards'
 import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import { RunwayInUse } from '@/components/Airport/RunwayInUse'
@@ -89,8 +90,8 @@ export function PragueToday({ initialData, initialNow }: { initialData: AirportB
       {failed || stale || board?.status !== 'ready' ? <p>Aktuální přílety teď nemůžeme potvrdit. <a href="https://www.prg.aero/prehled-letu?hour=all" target="_blank" rel="noopener noreferrer">Otevřít oficiální tabuli ↗</a></p> : !flights.length ? <p>V tomto okně zdroj neposkytl další očekávané přílety. Nejde o potvrzení, že na letišti není provoz.</p> : <>
         <p>{flights.length} dostupných příletů. Fotografie ukazují konkrétní registraci, pokud ji už dopravce poskytl.</p>
         <div className={styles.filters} aria-label="Výběr příletů">
-          <button type="button" aria-pressed={!onlyTop} onClick={() => { setOnlyTop(false); setVisibleCount(12) }}>Všechny přílety ({flights.length})</button>
-          <button type="button" aria-pressed={onlyTop} onClick={() => { setOnlyTop(true); setVisibleCount(12) }}>✦ Tipy na letadla ({topCount})</button>
+          <button type="button" aria-pressed={!onlyTop} onClick={() => { setOnlyTop(false); setVisibleCount(12); trackEvent('Spotting Arrivals Filter', { filter: 'all' }) }}>Všechny přílety ({flights.length})</button>
+          <button type="button" aria-pressed={onlyTop} onClick={() => { setOnlyTop(true); setVisibleCount(12); trackEvent('Spotting Arrivals Filter', { filter: 'top' }) }}>✦ Tipy na letadla ({topCount})</button>
         </div>
         <p className={styles.muted}>Tipy vybíráme podle typu stroje a označení nákladního letu. Přidělené letadlo se může změnit.</p>
         {onlyTop && !shownFlights.length && <p>V tomto okně zatím nemáme potvrzený typ, který patří mezi naše tipy.</p>}
@@ -103,7 +104,7 @@ export function PragueToday({ initialData, initialNow }: { initialData: AirportB
           <p>Z {flight.oppositeAirport.city ?? flight.oppositeAirport.name ?? flight.oppositeAirport.iata ?? 'neuvedeného letiště'} · {flight.aircraft?.model ?? 'Typ letadla zatím není známý'}{flight.isCargo ? ' · nákladní let' : ''}</p>
           {flight.revisedTime && <p className={styles.muted}>Původní plán: {flight.scheduledTime ? formatTime(flight.scheduledTime) : 'neuveden'}</p>}
           <details><summary>Předpověď na čas příletu</summary><ForecastAt taf={taf} failed={tafFailed} at={arrivalTime(flight)} now={now} /></details>
-          {index < 2 || expanded === flight.id ? <div className={styles.photo}><BoardAircraftCard flight={flight} /></div> : <button type="button" className={styles.button} onClick={() => setExpanded(flight.id)}>Letadlo a foto pro {flight.number}</button>}
+          {index < 2 || expanded === flight.id ? <div className={styles.photo}><BoardAircraftCard flight={flight} /></div> : <button type="button" className={styles.button} onClick={() => { setExpanded(flight.id); trackEvent('Spotting Aircraft Opened') }}>Letadlo a foto pro {flight.number}</button>}
         </li>)}</ol>
         {shownFlights.length > visibleCount && <button type="button" className={styles.button} onClick={() => setVisibleCount(count => count + 12)}>Další přílety ({shownFlights.length - visibleCount})</button>}
       </>}

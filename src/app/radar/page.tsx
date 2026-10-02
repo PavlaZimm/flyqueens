@@ -244,7 +244,11 @@ export default function RadarPage() {
   const [followedId, setFollowedId] = useState<string | null>(null)
   const following = Boolean(selectedFlight && followedId === selectedFlight.icao24 && flights.some(f => f.icao24 === followedId))
   const stopFollowing = useCallback(() => setFollowedId(null), [])
-  const toggleFollowing = () => setFollowedId(following ? null : selectedFlight?.icao24 ?? null)
+  const toggleFollowing = () => {
+    if (!selectedFlight) return
+    setFollowedId(following ? null : selectedFlight.icao24)
+    trackEvent('Flight Follow Changed', { active: !following })
+  }
   const { route: selectedRoute, aircraft: selectedAircraft, loading: selectedRouteLoading } = useFlightRoute(
     selectedFlight?.icao24   ?? null,
     selectedFlight?.lat      ?? 0,
@@ -307,6 +311,7 @@ export default function RadarPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFollowedId(null)
     setSelectedFlight(match)
+    trackEvent('Flight Detail Opened', { aircraftType: match.aircraftType ?? 'unknown', source: 'search' })
   }, [flights, normalizedSearch, searchMatches])
 
   useEffect(() => {
