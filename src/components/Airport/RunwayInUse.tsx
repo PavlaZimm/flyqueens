@@ -47,7 +47,7 @@ function windText(wind: RunwayInUseResponse['wind']): string | null {
 }
 
 /** Odhad dráhy v provozu z poloh letadel u letiště (zatím jen Praha). */
-export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; city?: string }) {
+export function RunwayInUse({ icao = 'LKPR', city = 'Praha', onUpdate }: { icao?: string; city?: string; onUpdate?: (data: RunwayInUseResponse | null) => void }) {
   const [data, setData] = useState<RunwayInUseResponse | null>(null)
   const [now, setNow] = useState<number | null>(null)
   useEffect(() => {
@@ -73,11 +73,14 @@ export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; 
       try {
         const response = await fetch(`/api/runway-in-use?airport=${icao}`, { signal: controller.signal })
         if (!response.ok) throw new Error(String(response.status))
-        setData(await response.json() as RunwayInUseResponse)
+        const result = await response.json() as RunwayInUseResponse
+        setData(result)
+        onUpdate?.(result)
         setFailed(false)
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') return
         setFailed(true)
+        onUpdate?.(null)
       }
     }
     void load()
@@ -86,7 +89,7 @@ export function RunwayInUse({ icao = 'LKPR', city = 'Praha' }: { icao?: string; 
       controller.abort()
       window.clearInterval(timer)
     }
-  }, [icao])
+  }, [icao, onUpdate])
 
   const stale = data && now !== null && now - Date.parse(data.fetchedAt) > 5 * 60000
   const active = !failed && !stale && data?.status === 'ok'

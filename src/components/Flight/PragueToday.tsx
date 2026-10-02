@@ -6,23 +6,30 @@ import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import { RunwayInUse } from '@/components/Airport/RunwayInUse'
 import type { MetarData } from '@/lib/metar'
 import { ktsToKmh } from '@/lib/metar'
-import type { SolarTimes, InsightData } from '@/lib/aeroInsights'
+import { pragueLight } from '@/lib/pragueLight'
 import { weatherVisual } from '@/lib/weatherVisual'
 import { upcomingArrivals } from '@/lib/pragueToday'
 import { spottingHighlight } from '@/lib/spottingHighlights'
 import { SpottingPlanner } from './SpottingPlanner'
+import { SpottingForecast, ForecastAt, useSpottingTaf } from './SpottingForecast'
+import { SpottingPlaces } from './SpottingPlaces'
+import { SpottingHistory } from './SpottingHistory'
+import type { RunwayInUseResponse } from '@/lib/runwayInUse'
+import { arrivalTime } from '@/lib/spottingPlanner'
 import { SunsetCard } from './SunsetCard'
 import { AirportInsights } from './InsightPanel'
 import { flightStatus } from '@/lib/flightSearch'
 import styles from './FlightTools.module.css'
 const formatTime = (value: string | number) => new Date(value).toLocaleString('cs-CZ', { timeZone: 'Europe/Prague', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' })
 
-export function PragueToday({ initialData, initialNow, initialSun = null }: { initialData: AirportBoardResponse | null; initialNow: number; initialSun?: InsightData | null }) {
+export function PragueToday({ initialData, initialNow }: { initialData: AirportBoardResponse | null; initialNow: number }) {
+  const { taf, failed: tafFailed } = useSpottingTaf()
+  const [runway, setRunway] = useState<RunwayInUseResponse | null>(null)
   const [board, setBoard] = useState(initialData)
   const [now, setNow] = useState(initialNow)
   const [failed, setFailed] = useState(false)
   const [weather, setWeather] = useState<(MetarData & { windVrb?: boolean }) | null>(null)
-  const [solar, setSolar] = useState<SolarTimes | null>(initialSun?.solar ?? null)
+  const solar = pragueLight(now)
   const [weatherFailed, setWeatherFailed] = useState(false)
   const [onlyTop, setOnlyTop] = useState(false)
   const [visibleCount, setVisibleCount] = useState(12)
@@ -60,7 +67,7 @@ export function PragueToday({ initialData, initialNow, initialSun = null }: { in
   const conditions = weather ? weatherVisual(weather, solar, now) : null
   return <>
     <div className={styles.columns}>
-      <RunwayInUse />
+      <RunwayInUse onUpdate={setRunway} />
       <section className={`${styles.card} ${styles.weather}`} aria-label="Počasí na letišti">
         <h2 style={{ marginTop: 0 }}>Počasí na letišti</h2>
         {weather ? <>
@@ -71,8 +78,9 @@ export function PragueToday({ initialData, initialNow, initialSun = null }: { in
         </> : <p>{weatherFailed ? 'Počasí je dočasně nedostupné.' : 'Načítám poslední měření…'}</p>}
       </section>
     </div>
-    <SunsetCard now={now} onSolar={setSolar} initialData={initialSun} />
-    <SpottingPlanner board={board} ready={board?.status === 'ready' && !stale && !failed} flights={flights} solar={solar} now={now} weather={weather} weatherReady={!weatherOld && !weatherFailed} />
+    <SunsetCard now={now} />
+    <SpottingPlanner board={board} ready={board?.status === 'ready' && !stale && !failed} flights={flights} solar={solar} now={now} weather={weather} weatherReady={!weatherOld && !weatherFailed} taf={taf} tafFailed={tafFailed} />
+    <SpottingForecast taf={taf} failed={tafFailed} flights={flights} sunset={solar.sunset} now={now} />
     <AirportInsights />
     <section aria-labelledby="upcoming-title">
       <h2 id="upcoming-title">Co přiletí v příštích 6 hodinách</h2>
@@ -94,11 +102,14 @@ export function PragueToday({ initialData, initialNow, initialSun = null }: { in
           </div>
           <p>Z {flight.oppositeAirport.city ?? flight.oppositeAirport.name ?? flight.oppositeAirport.iata ?? 'neuvedeného letiště'} · {flight.aircraft?.model ?? 'Typ letadla zatím není známý'}{flight.isCargo ? ' · nákladní let' : ''}</p>
           {flight.revisedTime && <p className={styles.muted}>Původní plán: {flight.scheduledTime ? formatTime(flight.scheduledTime) : 'neuveden'}</p>}
+          <details><summary>Předpověď na čas příletu</summary><ForecastAt taf={taf} failed={tafFailed} at={arrivalTime(flight)} now={now} /></details>
           {index < 2 || expanded === flight.id ? <div className={styles.photo}><BoardAircraftCard flight={flight} /></div> : <button type="button" className={styles.button} onClick={() => setExpanded(flight.id)}>Letadlo a foto pro {flight.number}</button>}
         </li>)}</ol>
         {shownFlights.length > visibleCount && <button type="button" className={styles.button} onClick={() => setVisibleCount(count => count + 12)}>Další přílety ({shownFlights.length - visibleCount})</button>}
       </>}
       <nav className={styles.links} aria-label="Přehledy letů"><Link href="/letiste/praha/odlety#prilety">Všechny dostupné přílety →</Link><Link href="/let">Najít let podle letenky →</Link><Link href="/radar">Otevřít radar →</Link></nav>
     </section>
+    <SpottingPlaces now={now} runway={runway} />
+    <SpottingHistory />
   </>
 }

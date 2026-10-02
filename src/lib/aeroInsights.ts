@@ -12,7 +12,6 @@ const text = (v: unknown) => str(v) || (num(v) !== null ? String(v) : 'Neuvedeno
 function dayOffset(day: string, amount: number) { return new Date(Date.parse(`${day}T12:00:00Z`) + amount * 86400000).toISOString().slice(0, 10) }
 export function insightRequest(kind: string, id: string, now = new Date()): { kind: InsightKind; path: string; ttl: number } | null {
   const today = pragueDate(now)
-  if (kind === 'sun') return { kind, path: `/airports/iata/PRG/time/solar/${today}`, ttl: 86400 }
   if (kind === 'destinations') return { kind, path: `/airports/iata/PRG/stats/routes/daily/${today}`, ttl: 21600 }
   if (kind === 'airport-delays') return { kind, path: '/airports/iata/PRG/delays', ttl: 21600 }
   const normalized = id.trim().toUpperCase().replace(/\s/g, '')

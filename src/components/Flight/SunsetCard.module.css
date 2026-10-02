@@ -19,3 +19,4 @@
 .plane { position: absolute; right: 21%; top: 31%; font-size: 58px; color: #292136; transform: rotate(-16deg); }
 .retry { background: #ffffff12; color: #fff4e8; border: 1px solid #ffffff45; border-radius: 8px; min-height: 44px; padding: 8px 14px; cursor: pointer; }
 @media(max-width: 650px) { .content { padding: 25px 22px 18px; } .card h2 { max-width: 85%; font-size: 28px; } .sun { top: 29%; right: -10px; width: 130px; opacity: .65; } .plane { top: 31%; right: 11%; font-size: 34px; } .horizon { top: 55%; } .footer { display: block; } .card .footer a { display: inline-block; } .mainTime { position: relative; z-index: 1; } }
+.card .direction { font-size: 13px; line-height: 1.7; color: #ffe0b4; max-width: 680px; }

@@ -1,4 +1,6 @@
 'use client'
+import { ForecastAt } from './SpottingForecast'
+import type { SpottingTaf } from '@/lib/spottingForecast'
 import { useState } from 'react'
 import Link from 'next/link'
 import type { AirportBoardFlight, AirportBoardResponse } from '@/lib/airportFlightBoards'
@@ -11,8 +13,8 @@ import { weatherVisual } from '@/lib/weatherVisual'
 import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import styles from './SpottingPlanner.module.css'
 const time = (value: number) => new Date(value).toLocaleTimeString('cs-CZ', { timeZone:'Europe/Prague', hour:'2-digit', minute:'2-digit' })
-interface Props { board: AirportBoardResponse | null; ready: boolean; flights: AirportBoardFlight[]; solar: SolarTimes | null; now: number; weather: MetarData | null; weatherReady: boolean }
-export function SpottingPlanner({ board, ready, flights, solar, now, weather, weatherReady }: Props) {
+interface Props { board: AirportBoardResponse | null; ready: boolean; flights: AirportBoardFlight[]; solar: SolarTimes | null; now: number; weather: MetarData | null; weatherReady: boolean; taf: SpottingTaf | null; tafFailed: boolean }
+export function SpottingPlanner({ board, ready, flights, solar, now, weather, weatherReady, taf, tafFailed }: Props) {
   const [expanded, setExpanded] = useState<string | null>(null)
   const [limit, setLimit] = useState(4)
   const interesting = flights.filter(flight => spottingHighlight(flight) && pragueDate(new Date(arrivalTime(flight))) === pragueDate(new Date(now)))
@@ -30,12 +32,14 @@ export function SpottingPlanner({ board, ready, flights, solar, now, weather, we
         <p>{feature.number} z {feature.oppositeAirport.city ?? feature.oppositeAirport.name ?? 'neuvedeného letiště'}. Z dnešních příletů v příštích šesti hodinách vybíráme {interesting.length} {interesting.length === 1 ? 'tip' : interesting.length < 5 ? 'tipy' : 'tipů'} na zajímavé stroje.</p>
       </> : <p>V příštích šesti hodinách zatím nemáme tip na zvláštní typ letadla. Běžné přílety najdeš níže.</p> : <p>Nejbližší přílety teď nemůžeme potvrdit. S plánem výletu počkej na čerstvá data.</p>}
       <div className={styles.context}><p><span aria-hidden="true">{weatherNow?.icon ?? '🌡️'}</span> {weatherNow ? `Teď: ${weatherNow.label.toLowerCase()}${weather?.temp != null ? `, ${weather.temp} °C` : ''}.` : 'Aktuální počasí se zatím nepodařilo potvrdit.'}</p><p>Počasí je poslední měření, ne předpověď na čas příletu. Přidělený typ i čas se mohou změnit.</p></div>
+      {feature && <div><strong>Předpověď na čas tohoto příletu</strong><ForecastAt taf={taf} failed={tafFailed} at={arrivalTime(feature)} now={now} /></div>}
       <div className={styles.links}><a href="#upcoming-title">Prohlédnout přílety ↓</a><Link href="/letiste/praha/planespotting">Vybrat vyhlídku ↗</Link><a href="#sunset-flights">Letadla kolem západu ↓</a></div>
     </section>
     <section className={styles.evening} aria-labelledby="sunset-flights">
       <p className={styles.eyebrow}>VEČER S LETADLY</p>
       <h2 id="sunset-flights">Přílety kolem západu slunce</h2>
       <p>Hodinu před západem a půl hodiny po něm. Vyber si let a podívej se, které letadlo má přiletět.</p>
+      {evening && !evening.ended && <div><strong>Předpověď při západu slunce</strong><ForecastAt taf={taf} failed={tafFailed} at={evening.sunset} now={now} /></div>}
       {!evening ? <p>Nejdřív potřebujeme dnešní čas západu slunce. Jakmile se načte, vybereme přílety.</p> : <>
         <p className={styles.window}>{time(evening.start)} <span>— západ {time(evening.sunset)} —</span> {time(evening.finish)}</p>
         {evening.ended ? <p>Dnešní večerní okno už skončilo. Zítra tu najdeš nový výběr.</p> : !ready ? <p>Aktuální letový řád není dostupný. Přílety kolem západu teď nemůžeme potvrdit.</p> : <>
