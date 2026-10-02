@@ -11,6 +11,7 @@ interface ShortcutHandlers {
 export function useKeyboardShortcuts({ onEscape, onSlash, onFullscreen }: ShortcutHandlers) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (document.querySelector('dialog[open]')) return
       const inField = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement
       if (e.key === 'Escape') onEscape()
       if (e.key === '/' && !inField) {
