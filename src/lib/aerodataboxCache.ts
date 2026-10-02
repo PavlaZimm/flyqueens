@@ -1,6 +1,7 @@
 import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { getAeroDataBoxConnection } from './aerodatabox'
+import { reserveAeroUnits } from './aeroBudget'
 
 // Classic Data Cache: this project does not enable Cache Components yet.
 // The captured timestamp is cached with the data, not reset on each page view.
@@ -18,6 +19,7 @@ async function fetchSnapshot(path: string): Promise<AeroSnapshot<unknown>> {
   const request = queue.catch(() => undefined).then(async () => {
     const wait = nextRequestAt - Date.now()
     if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait))
+    await reserveAeroUnits(path)
     nextRequestAt = Date.now() + 1100
     const response = await fetch(`${connection.baseUrl}${path}`, {
       headers: connection.headers, cache: 'no-store', signal: AbortSignal.timeout(5000),

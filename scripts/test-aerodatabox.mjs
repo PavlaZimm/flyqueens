@@ -13,7 +13,7 @@ function load(file, dependencies, fetchImpl) {
   return compiledModule.exports
 }
 const request = url => ({ nextUrl: new URL(url, 'https://flyqueens.test'), headers: new Headers() })
-const next = { NextResponse: { json: (body, options) => Response.json(body, options) } }
+const next = { after: () => {}, NextResponse: { json: (body, options) => Response.json(body, options) } }
 const now = Date.now()
 const stamp = new Date(now - 60_000).toISOString()
 const movement = (airport, delta) => ({ airport, scheduledTime: { utc: new Date(now + delta * 60_000).toISOString() }, revisedTime: { utc: new Date(now + (delta + 5) * 60_000).toISOString() } })
@@ -26,13 +26,15 @@ const deps = {
   'next/server': next,
   '@/lib/airportData': { airports: JSON.parse(fs.readFileSync('src/data/airports.json', 'utf8')) },
   '@/lib/aerodatabox': { getAeroDataBoxConnection: () => ({}) },
-  '@/lib/rateLimit': { checkRateLimit: () => ({ allowed: true }) },
+  '@/lib/rateLimit': { checkRateLimit: () => ({ allowed: true }), clientKey: () => 'test' },
   '@/lib/airportFlightBoards': boards,
   '@/lib/aerodataboxCache': { airportFlightsPath: code => `/board/${code}`, getAeroSnapshot: async p => { paidPaths.push(p); return { data: p.startsWith('/board') ? data : singles, fetchedAt: stamp } } },
 }
 let freeMetadata = { response: {} }
 const route = load('src/app/api/flight-route/route.ts', deps, async () => Response.json(freeMetadata))
-const airport = load('src/app/api/airport-flights/route.ts', deps)
+const normalization = load('src/lib/aeroFlight.ts', {})
+const server = load('src/lib/airportBoardServer.ts', { ...deps, 'server-only': {}, './aeroFlight': normalization, '@/lib/boardHistory': { recordBoardSnapshot: async () => {} } })
+const airport = load('src/app/api/airport-flights/route.ts', { ...deps, '@/lib/airportBoardServer': server })
 ;(async () => {
   assert.equal((await route.GET(request('/?icao24=invalid'))).status, 400)
   assert.equal(paidPaths.length, 0)
@@ -61,7 +63,7 @@ const airport = load('src/app/api/airport-flights/route.ts', deps)
   const board = await (await airport.GET(request('/?airport=PRG'))).json()
   assert.equal(board.departures.length, 1)
   assert.equal(board.fetchedAt, stamp)
-  assert.equal(board.refreshMinutes, 60)
+  assert.equal(board.refreshMinutes, 30)
   assert.equal(board.departures[0].oppositeAirport.iata, 'PRG')
   assert.equal((await airport.GET(request('/?airport=UNSUPPORTED'))).status, 400)
 
@@ -70,6 +72,7 @@ const airport = load('src/app/api/airport-flights/route.ts', deps)
   const cacheModule = load('src/lib/aerodataboxCache.ts', {
     'server-only': {},
     'next/cache': { unstable_cache: (fn, keys) => async () => { const key = keys.join('|'); if (!values.has(key)) values.set(key, await fn()); return values.get(key) } },
+    './aeroBudget': { reserveAeroUnits: async () => {} },
     './aerodatabox': { getAeroDataBoxConnection: () => ({ baseUrl: 'https://test.invalid', headers: {} }) },
   }, async () => { fetches++; return Response.json({ arrivals: [flight] }) })
   const snapshots = await Promise.all(Array.from({ length: 6 }, () => cacheModule.getAeroSnapshot('/flights/test', 1800)))

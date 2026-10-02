@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 }
 
 const LINKS = [
+  { href: '/letiste/praha/dnes', title: 'Dnes na letišti Praha', desc: 'Nejbližší přílety s fotografiemi letadel, počasí a odhad používané dráhy.', ready: true },
+  { href: '/let', title: 'Najít konkrétní let', desc: 'Podle čísla z letenky a data odletu, i před vzletem.', ready: true },
   { href: '/blog/boeing-747-praha-fly-meta', title: 'Boeing 747 Fly Meta v Praze', desc: 'Vlastní fotografie nákladního jumba 9H-FLM při přistání, pořízené z Kněževsi.', ready: true },
   { href: '/letiste/praha/ubytovani', title: 'Ubytování u letiště', desc: 'Hotely u terminálů, pěší přístup a doprava před ranním odletem.', ready: true },
   { href: '/letiste/praha/planespotting', title: 'Planespotting: kam na letadla', desc: 'Vyhlídky Kněževes a Hostivice, vlastní fotografie a radar při pozorování.', ready: true },
