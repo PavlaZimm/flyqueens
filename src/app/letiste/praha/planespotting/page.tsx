@@ -9,6 +9,7 @@ import { SourcesBox } from '@/components/UI/SourcesBox'
 import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
 import { socialMetadata } from '@/lib/socialMetadata'
 import styles from '@/components/Article/Article.module.css'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 import { ArticleHeader } from '@/components/Article/ArticleHeader'
 
 const title = 'Planespotting Praha: vyhlídky, Kněževes a Hostivice'
@@ -79,11 +80,16 @@ export default function PrahaPlanespottingPage() {
           přístup k oběma valům doplňujeme podle informací letiště.
         </p>
         <Photo name="praha-vyhlidkovy-val" alt="Planespotting v Praze: vyhlídkový val v Kněževsi s přístupovou cestou" caption="Vyhlídkový val v Kněževsi s přístupovou cestou." preload />
-        <nav className={styles.contents} aria-label="Obsah průvodce">
-          <a href="#knezeves">Kněževes</a><a href="#hostivice">Hostivice</a>
-          <a href="#radar">Jak využít radar</a><a href="#foceni">Fotografování</a><a href="#otazky">Časté otázky</a>
-        </nav>
-        <h2>Kterou vyhlídku zvolit?</h2>
+        <ArticleContents items={[
+          { id: 'vyber-vyhlidky', label: 'Kterou vyhlídku zvolit?' },
+          { id: 'knezeves', label: 'Vyhlídka na letiště Kněževes' },
+          { id: 'hostivice', label: 'Vyhlídkový val Hostivice' },
+          { id: 'radar', label: 'Jak při pozorování využít radar' },
+          { id: 'foceni', label: 'Co si vzít a jak fotografovat' },
+          { id: 'otazky', label: 'Časté otázky před návštěvou' },
+        ]} />
+        <p>Než vyrazíte, otevřete <Link href="/letiste/praha/dnes">dnešní přílety pro planespotting v Praze</Link>. Najdete tam typy letadel, dostupné fotografie a <Link href="/letiste/praha/dnes#sunset-flights">přílety kolem západu slunce</Link>.</p>
+        <h2 id="vyber-vyhlidky">Kterou vyhlídku zvolit?</h2>
         <RunwayInUse icao="LKPR" city="Praha" />
         <div className={styles.choices}>
           <section className={styles.choice}><h3><a href="#knezeves">Kněževes</a></h3><p>Od silnice půjdete po štěrkové cestě.</p></section>

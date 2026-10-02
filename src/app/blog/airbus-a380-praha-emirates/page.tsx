@@ -227,6 +227,7 @@ export default function A380PrahaArticle() {
           kabiny. Flotila Emirates má několik konfigurací A380 a výměna letadla je možná i krátce před odletem.
         </p>
 
+        <p>Pro dnešní výlet použijte <Link href="/letiste/praha/dnes">aktuální přehled zajímavých příletů do Prahy</Link>. U letu uvidíte dostupný typ a fotografii konkrétní registrace. Pro focení večer je k dispozici také <Link href="/letiste/praha/dnes#sunset-flights">výběr příletů kolem západu slunce</Link>.</p>
         <h2 id="jak-overit-zda-do-prahy-poleti-a380">Jak ověřit, zda do Prahy poletí A380</h2>
         <ol style={{ paddingLeft: 22 }}>
           <li style={{ marginBottom: 7 }}>Otevřete oficiální vyhledávání letů Emirates.</li>

@@ -6,7 +6,7 @@ import { BoardAircraftCard } from '@/components/Airport/BoardAircraftCard'
 import { RunwayInUse } from '@/components/Airport/RunwayInUse'
 import type { MetarData } from '@/lib/metar'
 import { ktsToKmh } from '@/lib/metar'
-import type { SolarTimes } from '@/lib/aeroInsights'
+import type { SolarTimes, InsightData } from '@/lib/aeroInsights'
 import { weatherVisual } from '@/lib/weatherVisual'
 import { upcomingArrivals } from '@/lib/pragueToday'
 import { spottingHighlight } from '@/lib/spottingHighlights'
@@ -17,12 +17,12 @@ import { flightStatus } from '@/lib/flightSearch'
 import styles from './FlightTools.module.css'
 const formatTime = (value: string | number) => new Date(value).toLocaleString('cs-CZ', { timeZone: 'Europe/Prague', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' })
 
-export function PragueToday({ initialData, initialNow }: { initialData: AirportBoardResponse | null; initialNow: number }) {
+export function PragueToday({ initialData, initialNow, initialSun = null }: { initialData: AirportBoardResponse | null; initialNow: number; initialSun?: InsightData | null }) {
   const [board, setBoard] = useState(initialData)
   const [now, setNow] = useState(initialNow)
   const [failed, setFailed] = useState(false)
   const [weather, setWeather] = useState<(MetarData & { windVrb?: boolean }) | null>(null)
-  const [solar, setSolar] = useState<SolarTimes | null>(null)
+  const [solar, setSolar] = useState<SolarTimes | null>(initialSun?.solar ?? null)
   const [weatherFailed, setWeatherFailed] = useState(false)
   const [onlyTop, setOnlyTop] = useState(false)
   const [visibleCount, setVisibleCount] = useState(12)
@@ -71,7 +71,7 @@ export function PragueToday({ initialData, initialNow }: { initialData: AirportB
         </> : <p>{weatherFailed ? 'Počasí je dočasně nedostupné.' : 'Načítám poslední měření…'}</p>}
       </section>
     </div>
-    <SunsetCard now={now} onSolar={setSolar} />
+    <SunsetCard now={now} onSolar={setSolar} initialData={initialSun} />
     <SpottingPlanner board={board} ready={board?.status === 'ready' && !stale && !failed} flights={flights} solar={solar} now={now} weather={weather} weatherReady={!weatherOld && !weatherFailed} />
     <AirportInsights />
     <section aria-labelledby="upcoming-title">

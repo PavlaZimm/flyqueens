@@ -18,6 +18,7 @@ export function SiteFooter() {
           <div>
             <div style={col}>Prozkoumat</div>
             <Link href="/radar" style={link}>Živá mapa letadel</Link>
+            <Link href="/letiste/praha/dnes" style={link}>Dnes na letadla v Praze</Link>
             <Link href="/stats" style={link}>Statistiky provozu</Link>
             <Link href="/blog" style={link}>Blog</Link>
             <Link href="/o-projektu" style={link}>O projektu a zdrojích dat</Link>
