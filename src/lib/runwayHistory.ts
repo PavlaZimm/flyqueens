@@ -44,6 +44,8 @@ export interface RunwayHistoryResponse {
   /** Nejčastější práh podle části dne (čas Europe/Prague). */
   byPartOfDay: { part: 'rano' | 'odpoledne' | 'vecer' | 'noc'; end: string; share: number; samples: number }[]
   since: string | null
+  /** Čas posledního měření bez ohledu na výsledek (i „nedostatek letadel"), pro kontrolu, že sběr běží. */
+  lastObservedAt: string | null
 }
 
 function toShares(rows: { end: string; count: number }[]): RunwayShare[] {
@@ -54,7 +56,7 @@ function toShares(rows: { end: string; count: number }[]): RunwayShare[] {
 }
 
 export async function getRunwayHistory(airport: string): Promise<RunwayHistoryResponse> {
-  const empty: RunwayHistoryResponse = { available: false, airport, days: HISTORY_DAYS, samples: 0, ends: [], byPartOfDay: [], since: null }
+  const empty: RunwayHistoryResponse = { available: false, airport, days: HISTORY_DAYS, samples: 0, ends: [], byPartOfDay: [], since: null, lastObservedAt: null }
   const sql = getDb()
   if (!sql) return empty
   await ensureSchema(sql)
@@ -75,6 +77,12 @@ export async function getRunwayHistory(airport: string): Promise<RunwayHistoryRe
       AND primary_end IS NOT NULL
       AND observed_at > now() - make_interval(days => ${HISTORY_DAYS})
     GROUP BY 1, 2` as { end: string; part: RunwayHistoryResponse['byPartOfDay'][number]['part']; count: number; since: string }[]
+
+  const latest = await sql`
+    SELECT MAX(observed_at) AS last_observed_at
+    FROM runway_observations
+    WHERE airport = ${airport}` as { last_observed_at: string | null }[]
+  const lastObservedAt = latest[0]?.last_observed_at ? new Date(latest[0].last_observed_at).toISOString() : null
 
   const totals = new Map<string, number>()
   const parts = new Map<string, Map<string, number>>()
@@ -106,5 +114,6 @@ export async function getRunwayHistory(airport: string): Promise<RunwayHistoryRe
     ends,
     byPartOfDay,
     since,
+    lastObservedAt,
   }
 }
