@@ -14,14 +14,14 @@ import { ArticleHeader } from '@/components/Article/ArticleHeader'
 const post = getPost('jak-vysoko-letaji-letadla')!
 
 export const metadata: Metadata = {
-  title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
+  title: 'Jak vysoko létají letadla? Tabulka výšek podle typů a FL350',
   description:
-    'Dopravní letadla obvykle létají ve výšce 9–12 km. Zjistěte proč, co znamená FL350 a jak převést letovou hladinu na metry.',
+    'Od vrtulníku po byznys tryskáč: obvyklé výšky podle typu letadla, význam FL350 a proč číslo na mapě neříká, jak vysoko je letadlo nad zemí.',
   alternates: { canonical: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla' },
   authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
   creator: AUTHOR.name,
   ...socialMetadata({
-    title: 'Jak vysoko létají letadla? Výška v metrech a FL350',
+    title: 'Jak vysoko létají letadla? Tabulka výšek podle typů a FL350',
     description: 'Proč dopravní letadla létají v 10 km, co je letová hladina a jak to vidíte na mapě.',
     url: 'https://www.flyqueens.cz/blog/jak-vysoko-letaji-letadla',
     type: 'article',
