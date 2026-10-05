@@ -1,0 +1,37 @@
+name: Měření dráhy LKPR
+
+# Historie dráhy se zapisuje jen při dotazu na /api/runway-in-use, takže se bez
+# návštěv neplnila (za týden 5 měření, souhrn potřebuje 30). Tahle úloha volá
+# endpoint každých 15 minut. Zápis do databáze hlídá sám endpoint: nejvýš jedno
+# měření za 15 minut na letiště, takže častější volání nic nezahltí.
+#
+# GitHub plánované úlohy zpožďuje a občas přeskočí, to nevadí. Odhad dráhy je
+# statistika z mnoha měření, ne přesný časový řad. Selhání úlohy pošle GitHub
+# e-mailem vlastníkovi repozitáře.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: runway-sample
+  cancel-in-progress: false
+
+jobs:
+  sample:
+    if: github.repository == 'PavlaZimm/flyqueens'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Zavolat /api/runway-in-use
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --max-time 40 --retry 2 --retry-delay 5 \
+            --user-agent 'FlyQueens-runway-sampler (GitHub Actions; +https://www.flyqueens.cz/o-projektu)' \
+            'https://www.flyqueens.cz/api/runway-in-use?airport=LKPR' > response.json
+          # Odpověď musí mít očekávaný tvar. Chybová odpověď s kódem 200 by jinak prošla.
+          jq -e '.airport == "LKPR" and (.status == "ok" or .status == "insufficient") and (.fetchedAt | type == "string")' response.json > /dev/null
+          jq -r '"stav: \(.status), letadel v odhadu: \(.aircraftUsed), čas: \(.fetchedAt)"' response.json
