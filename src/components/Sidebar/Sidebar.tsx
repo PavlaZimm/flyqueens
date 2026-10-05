@@ -238,6 +238,13 @@ export function Sidebar({
         <span style={{ fontSize: 9, color: 'var(--text-dim)', letterSpacing: 0.5 }}>
           Zdroj: {dataMeta.source ?? (loading ? 'načítám…' : 'nedostupný')}
         </span>
+        <a
+          href="#jak-radar-funguje"
+          onClick={onClose}
+          style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--gold)', textDecoration: 'none', padding: '6px 0 6px 8px', whiteSpace: 'nowrap' }}
+        >
+          Jak radar funguje ↓
+        </a>
       </div>
 
       <style>{`
