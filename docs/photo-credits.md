@@ -122,3 +122,9 @@ Datum leteckých snímků vychází z názvů souborů, místo pořízení není
 | `powerbanka-do-letadla.webp` (1600 × 1191, 16 kB) | [Jacek Halicki, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:2023_Powerbank_Green_Cell_PowerPlay_20_(2).jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Powerbanka s porty USB a USB-C. Náhled článku, originál v `Fotografie/Powerbanka/`. |
 
 Druhý snímek v článku je již evidovaný `ryanair-737-nastup.webp` z vlastního archivu.
+
+## Čeká na doplnění
+
+| Soubor | Kde se používá | Co je potřeba |
+|---|---|---|
+| `hangar-7-salzburg.webp` | `/blog/hangar-7-salzburg` | Vlastní fotografie Hangaru-7 (Pavla Zimmermannová / FlyQueens). Vložit do `public/blog/`, spustit `npm run images:optimize` a zapsat skutečné rozměry do `src/lib/blog.ts` — dočasně jsou tam uvedené 1600 × 900. Do té doby článek nepublikovat, hero obrázek by se nenačetl. |

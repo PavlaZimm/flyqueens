@@ -18,6 +18,21 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'hangar-7-salzburg',
+    title: 'Hangar-7 v Salzburgu: letadla Flying Bulls zdarma',
+    excerpt:
+      'Prosklená hala u salzburského letiště, kde stojí historická letka Red Bullu. Vstup je zdarma, otevřeno do deseti večer — a proč tam některé letadlo nemusí být.',
+    date: '2026-10-05',
+    updatedAt: '2026-10-05',
+    dateLabel: '5. října 2026',
+    tag: 'Letiště a hangáry',
+    readingTime: '7 min čtení',
+    image: '/blog/hangar-7-salzburg.webp',
+    imageAlt: 'Prosklená hala Hangaru-7 u letiště Salzburg s historickými letadly Flying Bulls',
+    imageWidth: 1600,
+    imageHeight: 900,
+  },
+  {
     slug: 'powerbanka-do-letadla',
     title: 'Powerbanka do letadla: limit 100 Wh a kam ji dát',
     excerpt: 'Do odbaveného kufru nesmí a u sedadla nad hlavou taky ne. Limit je 100 Wh, tedy zhruba 27 000 mAh. Přepočet z miliampérhodin a rozdíly mezi dopravci.',

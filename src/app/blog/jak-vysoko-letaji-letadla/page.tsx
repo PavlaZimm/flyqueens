@@ -95,12 +95,14 @@ export default function VyskaArticle() {
           ale kompromis výkonu, spotřeby, počasí, hmotnosti a řízení provozu.
         </p>
 
+        <h2 id="jak-vysoko-letaji-letadla">Jak vysoko létají letadla?</h2>
         <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
           <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
           <p style={{ margin: 0 }}>
-            Dopravní letadla létají nejčastěji v devíti až dvanácti kilometrech, tedy kolem letové hladiny FL350.
-            Řidší vzduch snižuje aerodynamický odpor, ale konkrétní hladina závisí na typu, hmotnosti,
-            trati a počasí. Malé stroje obvykle létají níž, některé byznys tryskáče až kolem 15 kilometrů.
+            Dopravní letadla létají nejčastěji <strong>9 až 12 km</strong> nad zemí, tedy přibližně 29 000 až
+            39 000 stop. Nejběžnější cestovní hladina je kolem FL350, což odpovídá asi 10 700 metrům.
+            Turbovrtulové stroje letí obvykle 6 až 7 km, malá letadla 1 až 3 km a některé byznys tryskáče
+            vystoupají až k 15 km.
           </p>
         </div>
 
