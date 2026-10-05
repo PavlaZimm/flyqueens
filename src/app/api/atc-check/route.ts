@@ -26,7 +26,13 @@ async function checkFeed(feed: string): Promise<boolean> {
 // ?feed=eidw8  nebo  ?feeds=eidw8,kjfk_twr,epwa_app
 export async function GET(req: NextRequest) {
   if (process.env.ENABLE_ATC_PROXY !== 'true') {
-    return NextResponse.json({ online: false, disabled: true }, { status: 503 })
+    // Vypnutý poslech není chyba služby. Klient pozná stav z `disabled` a nabídne
+    // odkaz na LiveATC. Kód 200 s krátkou mezipamětí nezaplňuje provozní logy
+    // falešnými chybami 503 a opakované dotazy vyřídí CDN bez spuštění funkce.
+    return NextResponse.json(
+      { online: false, disabled: true },
+      { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300' } },
+    )
   }
 
   const ip = clientKey(req)
