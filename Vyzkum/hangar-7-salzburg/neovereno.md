@@ -19,7 +19,7 @@ později než my.
 
 1. **Otevírací doba.** Tvrdíme po–so 9:00–22:00, ne 9:00–17:00. Otevřít
    https://www.hangar-7.com/en/service-info/faqs a potvrdit. Pokud se liší,
-   opravit v článku na dvou místech: v boxu „Rychlá odpověď“ a v tabulce.
+   opravit v článku na dvou místech: v úvodním odstavci a v přehledové tabulce.
 2. **Vstup zdarma.** Tvrdíme, že vstup do výstavní části je bez vstupenky.
    Potvrdit na stejné stránce. Je to hlavní slib celého článku a v titulku.
 3. **Vlastní fotografie.** Článek odkazuje na `public/blog/hangar-7-salzburg.webp`,
@@ -34,14 +34,14 @@ později než my.
 
 ## Uvedeno s nízkou jistotou (zvážit vypuštění)
 
-4. **„Druhé největší letiště v Rakousku.“** Mají jen sekundární zdroje.
+5. **„Druhé největší letiště v Rakousku.“** Mají jen sekundární zdroje.
    Potvrdit u provozovatele letiště, nebo větu vypustit — pro článek není
    nosná.
-5. **Terminál 2 „amadeus“ a zimní sobotní chartery.** Z tohohle tvrzení
+6. **Terminál 2 „amadeus“ a zimní sobotní chartery.** Z tohohle tvrzení
    vychází spottingový tip „zimní sobota je nejrušnější den“. Je to logický
    závěr z důvodu, proč terminál vznikl, ne měřený provozní údaj. Buď doložit
    u provozovatele (statistika pohybů podle dnů), nebo formulovat opatrněji.
-6. **Doba jízdy vlakem Praha–Salzburg „okolo pěti hodin“.** Z agregátoru
+7. **Doba jízdy vlakem Praha–Salzburg „okolo pěti hodin“.** Z agregátoru
    jízdních řádů, ne z ÖBB. Ověřit v ÖBB Scotty, nebo nahradit odkazem bez
    čísla. Pozor: jeden agregátor uváděl u téže trasy 204 km autem, což je
    zřejmě chyba — proto v článku žádné kilometry nejsou a být nemají.
