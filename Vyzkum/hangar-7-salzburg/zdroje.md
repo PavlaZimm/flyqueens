@@ -82,3 +82,17 @@ je v `neovereno.md`.
 | red bull hangar 7 | 210 | červenec | Marketing Miner |
 | hangár 7 salzburg | 150 | červenec | Marketing Miner |
 | letiště salzburg | 50 | červenec | Marketing Miner |
+
+## Doplněno 5. 10. 2026 (z českých a anglických výsledků vyhledávání)
+
+| Údaj | Hodnota | Zdroj | Jistota |
+|---|---|---|---|
+| Neděle a svátky | 9:00–17:00 (dřív uvedeno jen „neděle“) | salzburg.info CS | střední |
+| Parkování venku | zdarma | salzburg.info CS | střední |
+| Bezbariérovost | všechny prostory přístupné | salzburg.info CS | střední |
+| Doporučená délka návštěvy | 60–90 minut, s fotografováním dvě hodiny a víc | jernejletica.com (sekundární, fotografický průvodce) | nízká |
+| Skupiny | jen po předchozím ohlášení | hangar-7.com FAQ | střední |
+| Kdy jsou stroje nejspíš doma | dopoledne v pracovní den, mimo sezonu leteckých dnů | jernejletica.com (sekundární) | nízká, v článku formulováno jako „větší šance“ |
+
+Pokus otevřít primární zdroje přímo byl 5. 10. 2026 zopakován a znovu selhal
+(`EGRESS_BLOCKED` pro hangar-7.com, salzburg.info i en.wikipedia.org).

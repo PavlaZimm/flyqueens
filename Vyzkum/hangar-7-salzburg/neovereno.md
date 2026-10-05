@@ -13,13 +13,24 @@ později než my.
 
 ## Kritické body (bez nich nepublikovat)
 
+0. **Konkurence na vlastním webu.** Attersee.cz už má článek „Zažijte Hangar-7
+   v plné kráse“. Před publikací rozhodnout rozdělení témat a prolinkování,
+   jinak si dva vlastní weby konkurují na stejný dotaz. Podrobnosti v `serp.md`.
+
 1. **Otevírací doba.** Tvrdíme po–so 9:00–22:00, ne 9:00–17:00. Otevřít
    https://www.hangar-7.com/en/service-info/faqs a potvrdit. Pokud se liší,
    opravit v článku na dvou místech: v boxu „Rychlá odpověď“ a v tabulce.
 2. **Vstup zdarma.** Tvrdíme, že vstup do výstavní části je bez vstupenky.
    Potvrdit na stejné stránce. Je to hlavní slib celého článku a v titulku.
-3. **Vlastní fotografie.** Článek odkazuje na `public/blog/hangar-7-salzburg.jpg`,
-   který v repozitáři není. Bez něj se hero obrázek nenačte. Viz `fotografie.md`.
+3. **Vlastní fotografie.** Článek odkazuje na `public/blog/hangar-7-salzburg.webp`,
+   který v repozitáři není. Bez něj se hero obrázek nenačte — a protože karty
+   článků se plní z `BLOG_CARDS` podle data, chyběl by obrázek i na `/blog`,
+   na homepage (článek je nejnovější, takže první karta) a v patičce.
+   Viz `fotografie.md`.
+
+4. **Úplná kontrola konkurence.** Pravidla vyžadují skutečně otevřené stránky.
+   Z našeho prostředí je egress proxy blokuje, takže `serp.md` stojí jen na
+   úryvcích. Otevřít v prohlížeči a doplnit.
 
 ## Uvedeno s nízkou jistotou (zvážit vypuštění)
 

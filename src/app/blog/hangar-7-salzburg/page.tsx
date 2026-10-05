@@ -1,278 +1,247 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
-import { getPost } from '@/lib/blog'
-import { SourcesBox } from '@/components/UI/SourcesBox'
-import { RelatedReading } from '@/components/UI/RelatedReading'
-import { ArticleHero } from '@/components/UI/ArticleHero'
 import { AuthorByline, AuthorCard } from '@/components/UI/AuthorCard'
+import { RelatedReading } from '@/components/UI/RelatedReading'
+import { SourcesBox } from '@/components/UI/SourcesBox'
+import { AUTHOR, AUTHOR_JSON_LD, PUBLISHER_JSON_LD } from '@/lib/author'
+import { POSTS, relatedCard } from '@/lib/blog'
 import { socialMetadata } from '@/lib/socialMetadata'
-import { AUTHOR, AUTHOR_JSON_LD } from '@/lib/author'
+import styles from '@/components/Article/Article.module.css'
+import { ArticleHeader } from '@/components/Article/ArticleHeader'
+import { ArticleContents } from '@/components/UI/ArticleContents'
 
-const post = getPost('hangar-7-salzburg')!
+const post = POSTS.find((entry) => entry.slug === 'hangar-7-salzburg')!
+const title = 'Hangar-7 Salzburg: vstup zdarma a co uvnitř uvidíte'
+const description = 'Hangar-7 u letiště Salzburg vystavuje letuschopnou letku The Flying Bulls. Vstup zdarma, otevírací doba, jak se tam dostanete a proč letadlo nemusí být v hale.'
+const url = 'https://www.flyqueens.cz/blog/hangar-7-salzburg'
+const faq = 'https://www.hangar-7.com/en/service-info/faqs'
+const doprava = 'https://www.hangar-7.com/en/service-info/contact-directions'
+const sizes = '(max-width: 800px) calc(100vw - 36px), 760px'
 
 export const metadata: Metadata = {
-  title: 'Hangar-7 Salzburg: vstup zdarma a co uvnitř uvidíte',
-  description:
-    'Prosklená hala u salzburského letiště s historickou letkou The Flying Bulls. Otevírací doba, vstup zdarma, jak se tam dostat a proč některé letadlo nemusí být na místě.',
-  alternates: { canonical: 'https://www.flyqueens.cz/blog/hangar-7-salzburg' },
+  title, description,
+  alternates: { canonical: url },
   authors: [{ name: AUTHOR.name, url: AUTHOR.profileUrl }],
-  creator: AUTHOR.name,
-  ...socialMetadata({
-    title: 'Hangar-7 v Salzburgu: letadla Flying Bulls se vstupem zdarma',
-    description: 'Co v Hangaru-7 uvidíte, kdy je otevřeno a jak se tam dostat od terminálu i z Prahy.',
-    url: 'https://www.flyqueens.cz/blog/hangar-7-salzburg',
-    type: 'article',
-    publishedTime: post.date,
-    modifiedTime: post.updatedAt,
+  ...socialMetadata({ title, description, url, type: 'article', publishedTime: post.date, modifiedTime: post.updatedAt,
     image: { url: post.image, width: post.imageWidth, height: post.imageHeight, alt: post.imageAlt },
   }),
 }
 
-const jsonLd = {
+const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.title,
-  datePublished: post.date,
-  dateModified: post.updatedAt,
-  description:
-    'Praktický průvodce Hangarem-7 u letiště Salzburg: otevírací doba, vstup zdarma, vystavené stroje letky The Flying Bulls a doprava na místo.',
-  image: `https://www.flyqueens.cz${post.image}`,
-  inLanguage: 'cs-CZ',
-  timeRequired: 'PT7M',
-  author: AUTHOR_JSON_LD,
-  publisher: { '@type': 'Organization', name: 'FlyQueens', url: 'https://www.flyqueens.cz' },
-  isPartOf: { '@type': 'Blog', name: 'FlyQueens', url: 'https://www.flyqueens.cz/blog' },
-  mainEntityOfPage: 'https://www.flyqueens.cz/blog/hangar-7-salzburg',
-  about: {
-    '@type': 'TouristAttraction',
-    name: 'Red Bull Hangar-7',
-    url: 'https://www.hangar-7.com/',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Wilhelm-Spazier-Straße 7A',
-      postalCode: '5020',
-      addressLocality: 'Salzburg',
-      addressCountry: 'AT',
+  '@graph': [
+    {
+      '@type': 'Article', headline: title, description, datePublished: post.date, dateModified: post.updatedAt,
+      author: AUTHOR_JSON_LD,
+      publisher: PUBLISHER_JSON_LD,
+      mainEntityOfPage: url, inLanguage: 'cs-CZ',
+      about: {
+        '@type': 'TouristAttraction', name: 'Red Bull Hangar-7', sameAs: 'https://www.hangar-7.com/',
+        address: { '@type': 'PostalAddress', streetAddress: 'Wilhelm-Spazier-Straße 7A', postalCode: '5020', addressLocality: 'Salzburg', addressCountry: 'AT' },
+      },
+      image: [`https://www.flyqueens.cz${post.image}`],
     },
-  },
+    {
+      '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'FlyQueens', item: 'https://www.flyqueens.cz' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.flyqueens.cz/blog' },
+        { '@type': 'ListItem', position: 3, name: 'Hangar-7 Salzburg', item: url },
+      ],
+    },
+  ],
 }
 
-const S = {
-  h2: { fontFamily: 'Archivo, sans-serif', fontSize: 20, fontWeight: 800, margin: '32px 0 10px' },
-  h3: { fontFamily: 'Archivo, sans-serif', fontSize: 16, fontWeight: 800, margin: '22px 0 8px' },
-  p: { fontSize: 15, lineHeight: 1.75, margin: '0 0 12px' },
-} as const
-
-const HOURS = [
-  ['Pondělí – sobota', '9:00 – 22:00'],
-  ['Neděle', '9:00 – 17:00'],
-  ['Vstupné do výstavní části', 'zdarma'],
-]
-
-const FLEET = [
-  ['Douglas DC-6B', 'Největší exponát a srdce sbírky. Stroj z roku 1958 kdysi sloužil jugoslávskému prezidentu Titovi.'],
-  ['Lockheed P-38 Lightning', 'Dvoutrupá americká legenda druhé světové války, dnes jeden z mála letuschopných kusů.'],
-  ['North American B-25J Mitchell', 'Dvoumotorový bombardér, který se v Evropě potká jen výjimečně.'],
-  ['Chance Vought F4U-4 Corsair', 'Palubní stíhačka s charakteristickým lomeným křídlem.'],
-  ['Alpha Jet', 'Odzbrojené cvičné proudové stroje, se kterými Flying Bulls létají ukázky.'],
-  ['Bell AH-1 Cobra a Pilatus PC-6', 'Bojový vrtulník a robustní jednomotorový stroj pro krátký vzlet.'],
-]
-
-export default function Hangar7Article() {
+export default function Hangar7SalzburgArticle() {
   return (
-    <main style={{ minHeight: '100dvh', background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'IBM Plex Sans, sans-serif' }}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+    <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
+      <article className={styles.article}>
+        <ArticleHeader
+          crumbs={[{ href: '/', label: 'FlyQueens' }, { href: '/blog', label: 'Blog' }]}
+          current="Hangar-7 Salzburg"
+          eyebrow={post.tag}
+          byline=<AuthorByline dateIso={post.date} dateLabel={post.dateLabel} readingTime={post.readingTime} />
+        >
+          {title}
+        </ArticleHeader>
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 18px 60px' }}>
-        <nav style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          <Link href="/" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>FlyQueens</Link>
-          {' · '}
-          <Link href="/blog" style={{ color: 'var(--text-dim)', textDecoration: 'none' }}>Blog</Link>
-        </nav>
-
-        <div style={{ fontSize: 10, letterSpacing: 1.2, textTransform: 'uppercase', color: 'var(--gold)', margin: '18px 0 8px' }}>{post.tag}</div>
-        <h1 style={{ fontFamily: 'Archivo, sans-serif', fontSize: 29, fontWeight: 800, lineHeight: 1.15, margin: '0 0 6px' }}>
-          Hangar-7 v Salzburgu: letadla Flying Bulls zdarma
-        </h1>
-        <AuthorByline dateIso={post.date} dateLabel={post.dateLabel} updatedLabel="5. října 2026" readingTime={post.readingTime} />
-
-        <ArticleHero
-          src={post.image}
-          alt={post.imageAlt}
-          caption="Prosklená hala Hangaru-7 stojí přímo u odbavovací plochy letiště Salzburg."
-          creditLabel="Pavla Zimmermannová / FlyQueens"
-          creditHref="https://www.linklady.cz/o-mne"
-          licenseLabel="vlastní fotografie"
-          licenseHref="https://www.flyqueens.cz/o-projektu"
-        />
-
-        <p style={S.p}>
-          Přiletíte do Salzburgu, vyjdete z terminálu — a přes silnici na vás kouká prosklená hala ve tvaru
-          křídla. To je Hangar-7. Uvnitř stojí historická letka The Flying Bulls, pár formulí a měnící se
-          výstavy, a nejlepší na tom je, že za vstup do výstavní části nic nezaplatíte.
+        <p className={styles.lead}>
+          Hangar-7 je prosklená hala u letiště Salzburg, ve které Red Bull vystavuje letku historických
+          letadel The Flying Bulls. Vstup do výstavní části je zdarma a otevřeno je dlouho do večera,
+          takže se dá stihnout i cestou odjinud. Jednu věc ale čekejte: stroje jsou letuschopné a část
+          roku prostě nejsou doma.
         </p>
 
-        <h2 style={S.h2}>Co je Hangar-7?</h2>
-        <div style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: 12, padding: '14px 16px', margin: '0 0 8px' }}>
-          <div style={{ fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 6 }}>Rychlá odpověď</div>
-          <p style={{ ...S.p, margin: 0 }}>
-            Hangar-7 je prosklená hala u letiště Salzburg, kde Red Bull vystavuje historickou letku
-            The Flying Bulls. <strong>Vstup do výstavní části je zdarma</strong> a otevřeno je
-            od pondělí do soboty 9:00–22:00, v neděli 9:00–17:00. Kromě letadel tu najdete formule,
-            měnící se výstavy a pět gastronomických podniků včetně michelinské restaurace Ikarus.
-          </p>
-        </div>
-
-        <p style={S.p}>
-          Halu dokončili v roce 2003 a postavili ji přímo pro potřeby letky, která vznikla v roce 1999.
-          Ocelová konstrukce s prosklenou kopulí drží volné rozpětí bez sloupů, aby se pod ni vešel
-          největší exponát — čtyřmotorový Douglas DC-6B.
-        </p>
-
-        <h2 style={S.h2}>Co uvnitř uvidíte</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, margin: '0 0 12px' }}>
-          {FLEET.map(([name, note]) => (
-            <div key={name} style={{ padding: '12px 14px', border: '1px solid var(--border-mid)', borderRadius: 10, background: 'var(--midnight-2)' }}>
-              <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 14, fontWeight: 800, marginBottom: 4 }}>{name}</div>
-              <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--text-muted)' }}>{note}</div>
-            </div>
-          ))}
-        </div>
-        <p style={S.p}>
-          Sbírka se doplňuje formulemi a rotujícími uměleckými výstavami, takže dvě návštěvy po sobě
-          nemusí vypadat stejně.
-        </p>
-
-        <h2 style={S.h2}>Počítejte s tím, že některé letadlo nebude doma</h2>
-        <p style={S.p}>
-          Tohle je jediná věc, kterou je dobré vědět dopředu. Stroje Flying Bulls <strong>nejsou muzejní
-          exponáty za provazem</strong> — všechny jsou letuschopné a v sezóně létají na letecké dny po celé
-          Evropě. Když je letka na airshow, konkrétní letadlo v hale prostě není.
-        </p>
-        <p style={S.p}>
-          Údržba navíc probíhá v sousedním Hangaru-8, který veřejnosti přístupný není. Nedá se tedy
-          slíbit, že uvidíte přesně ten stroj, kvůli kterému jedete. Když vám jde o jeden konkrétní,
-          napište jim předem.
-        </p>
-
-        <h2 style={S.h2}>Otevírací doba a vstup</h2>
-        <div style={{ overflowX: 'auto', margin: '0 0 8px' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead><tr><th scope="col">Údaj</th><th scope="col">Hodnota</th></tr></thead>
             <tbody>
-              {HOURS.map(([label, value]) => (
-                <tr key={label}>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', fontWeight: 600 }}>{label}</td>
-                  <td style={{ padding: '10px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--gold)', fontFamily: 'Archivo, sans-serif', fontWeight: 700 }}>{value}</td>
-                </tr>
-              ))}
+              <tr><td>Otevřeno</td><td>pondělí až sobota 9.00 až 22.00, neděle a svátky 9.00 až 17.00</td></tr>
+              <tr><td>Vstupné do výstavní části</td><td>zdarma</td></tr>
+              <tr><td>Parkování u objektu</td><td>zdarma</td></tr>
+              <tr><td>Adresa</td><td>Wilhelm-Spazier-Straße 7A, 5020 Salzburg</td></tr>
+              <tr><td>Doprava</td><td>autobus číslo 10 z letiště i z centra Salzburgu</td></tr>
+              <tr><td>Kolik času si nechat</td><td>zhruba hodinu, s fotografováním víc</td></tr>
             </tbody>
           </table>
         </div>
-        <p style={S.p}>
-          Skupiny od deseti lidí mají vstup také zdarma, ale mají se ohlásit dopředu. Otevírací dobu si
-          před cestou ověřte na oficiálním webu — hala se občas zavírá kvůli soukromým akcím.
+        <p className={styles.tableNote}>
+          Zdroje: <a href={faq}>časté dotazy provozovatele</a> a <a href={doprava}>stránka kontaktu a dopravy</a>.
+          Oficiální web se z našeho prostředí nedal otevřít přímo, údaje jsou proto z výsledků vyhledávání,
+          které tyto stránky citují. Před cestou si otevírací dobu potvrďte, hala se zavírá kvůli soukromým akcím.
         </p>
 
-        <h2 style={S.h2}>Jak se tam dostanete</h2>
-        <p style={S.p}>
-          Adresa je Wilhelm-Spazier-Straße 7A, 5020 Salzburg, tedy hned u letiště. Autobus číslo 10
-          staví prakticky přede dveřmi a je to ta samá linka, která veze cestující z letiště do centra
-          Salzburgu — jízda trvá kolem patnácti minut a jede v intervalu deseti až patnácti minut.
+        <figure className={styles.photo}>
+          <Image src={post.image} alt={post.imageAlt} width={post.imageWidth} height={post.imageHeight} sizes={sizes} preload />
+          <figcaption>Prosklená hala Hangaru-7 stojí přímo u letiště Salzburg. Foto: vlastní archiv FlyQueens.</figcaption>
+        </figure>
+
+        <ArticleContents items={[
+          { id: 'co-je-hangar-7', label: 'Co je Hangar-7?' },
+          { id: 'jaka-letadla-v-hangaru-7-uvidite', label: 'Jaká letadla v Hangaru-7 uvidíte?' },
+          { id: 'proc-tam-letadlo-nemusi-byt', label: 'Proč tam letadlo nemusí být?' },
+          { id: 'jak-se-do-hangaru-7-dostanete', label: 'Jak se do Hangaru-7 dostanete?' },
+          { id: 'da-se-tu-najist-a-koukat-na-letadla', label: 'Dá se tu najíst a koukat na letadla?' },
+          { id: 'co-se-da-videt-na-letisti-salzburg', label: 'Co se dá vidět na letišti Salzburg?' },
+          { id: 'kdy-jet-aby-tam-nebylo-narvano', label: 'Kdy jet, aby tam nebylo narváno?' },
+          { id: 'caste-otazky', label: 'Časté otázky' },
+        ]} />
+
+        <h2 id="co-je-hangar-7">Co je Hangar-7?</h2>
+        <p>
+          Výstavní hala z oceli a skla u odbavovací plochy letiště Salzburg. Postavili ji pro letku
+          The Flying Bulls, která vznikla v roce 1999, a kromě letadel se v ní objevují vrtulníky,
+          formule a měnící se výstavy. Dvě návštěvy po sobě proto nemusí vypadat stejně.
         </p>
-        <h3 style={S.h3}>Z Prahy</h3>
-        <p style={S.p}>
-          Přímé letadlo z Prahy do Salzburgu nehledejte, spojení vede po zemi. Vlakem jede přímý
-          EuroCity rakouských ÖBB a cesta zabere okolo pěti hodin; autem se jede přes Linec.
-          Pokud přilétáte odjinud, máte Hangar-7 přes silnici od terminálu a dá se stihnout
-          i během delšího přestupu.
+        <p>
+          Není to muzeum v obvyklém smyslu. Hala slouží i jako místo pro akce a provoz letky, takže
+          otevírací doba není nedotknutelná a část prostoru může být zavřená.
         </p>
 
-        <h2 style={S.h2}>Jídlo, pití a vyhlídka na letadla</h2>
-        <p style={S.p}>
-          V hale funguje pět podniků. <strong>Restaurant Ikarus</strong> drží michelinskou hvězdu a jede
-          v celosvětově nezvyklém režimu: každý měsíc tu vaří jiný hostující šéfkuchař.
-          <strong> Mayday Bar</strong> je ve druhém patře jedné z prosklených věží a okna vedou přímo
-          do výstavní haly, takže sedíte nad historickými stroji. <strong>Threesixty Bar</strong> se
-          dá dojít po úzké lávce a má skleněnou podlahu — pod nohama vám jsou letadla a formule.
-          Na kávu a zákusek je tu <strong>Carpe Diem Lounge-Café</strong>.
+        <h2 id="jaka-letadla-v-hangaru-7-uvidite">Jaká letadla v Hangaru-7 uvidíte?</h2>
+        <p>
+          Největší exponát je čtyřmotorový <strong>Douglas DC-6B</strong> z roku 1958, který kdysi
+          sloužil jugoslávskému prezidentu Titovi. Hala byla navržená tak, aby se pod ni vešel bez
+          podpůrných sloupů.
         </p>
-        <p style={S.p}>
-          Do Ikaru se sluší rezervovat. Do baru a na kávu se dá přijít i jen tak, což z Hangaru-7 dělá
-          překvapivě příjemné místo na čekání před odletem.
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead><tr><th scope="col">Stroj</th><th scope="col">Čím je zajímavý</th></tr></thead>
+            <tbody>
+              <tr><td>Douglas DC-6B</td><td>srdce sbírky, rok 1958, dříve letadlo J. B. Tita</td></tr>
+              <tr><td>Lockheed P-38 Lightning</td><td>dvoutrupá stíhačka druhé světové války, letuschopných kusů je po světě pár</td></tr>
+              <tr><td>North American B-25J Mitchell</td><td>dvoumotorový bombardér, v Evropě se potká jen výjimečně</td></tr>
+              <tr><td>Chance Vought F4U-4 Corsair</td><td>palubní stíhačka s lomeným křídlem</td></tr>
+              <tr><td>Alpha Jet</td><td>odzbrojené cvičné proudové stroje, se kterými letka létá ukázky</td></tr>
+              <tr><td>Bell AH-1 Cobra, Pilatus PC-6</td><td>bojový vrtulník a jednomotorový stroj pro krátký vzlet</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p className={styles.tableNote}>Složení sbírky podle provozovatele. Který stroj v hale zastihnete, se mění.</p>
+
+        <h2 id="proc-tam-letadlo-nemusi-byt">Proč tam letadlo nemusí být?</h2>
+        <p>
+          Protože letadla The Flying Bulls nejsou exponáty za provazem. Všechna jsou udržovaná jako
+          letuschopná a v sezoně létají na letecké dny po Evropě. Když je letka pryč, konkrétní stroj
+          v hale není.
+        </p>
+        <p>
+          Údržba se navíc dělá v sousedním Hangaru-8, kam se veřejnost nedostane. Nikdo vám tedy nemůže
+          slíbit, že uvidíte přesně to letadlo, kvůli kterému jedete. Když vám jde o jeden konkrétní,
+          napište provozovateli předem. Větší šanci máte v dopoledních hodinách v pracovní den a mimo
+          sezonu leteckých dnů.
         </p>
 
-        <h2 style={S.h2}>Letiště Salzburg prakticky</h2>
-        <p style={S.p}>
-          Letiště W. A. Mozarta je druhé největší v Rakousku a leží čtyři kilometry od centra města.
-          Má dva terminály a ten druhý, „amadeus“, vznikl kvůli nárazovému provozu — v zimě se tu
-          v sobotu odbavují charterové lety za sněhem.
+        <h2 id="jak-se-do-hangaru-7-dostanete">Jak se do Hangaru-7 dostanete?</h2>
+        <p>
+          Adresa je Wilhelm-Spazier-Straße 7A, 5020 Salzburg, tedy přímo u letiště. Autobus číslo 10
+          staví prakticky u objektu a je to ta samá linka, která jezdí mezi letištěm a centrem
+          Salzburgu. Parkování venku je podle provozovatele zdarma a prostory jsou bezbariérové.
         </p>
-        <p style={S.p}>
-          Pro pozorovatele letadel z toho vyplývá jednoduchá věc: <strong>zimní sobota je tady
-          nejrušnější den</strong>. Když chcete Hangar-7 spojit s koukáním na skutečný provoz,
-          je to ten správný termín.
-        </p>
-
-        <h2 style={S.h2}>Kdy jet, aby tam nebylo narváno</h2>
-        <p style={S.p}>
-          Podle dat Marketing Mineru pro český trh zájem o Hangar-7 vrcholí v červenci, kdy se dotaz
-          hledá přibližně 1 500× za měsíc, zatímco v listopadu je to kolem 450. Sezóna je tedy jasně
-          letní. Hala má přitom otevřeno celý rok a do deseti večer, takže nejklidnější návštěva je
-          mimo letní špičku a spíš k večeru.
+        <p>
+          Přímé letadlo z Prahy do Salzburgu nečekejte, spojení vede po zemi: vlakem jede přímý
+          EuroCity rakouských ÖBB, autem se jede přes Linec. Pokud do Salzburgu přilétáte odjinud,
+          máte Hangar-7 přes silnici od terminálu a vejde se i do delšího přestupu.
         </p>
 
-        <div style={{ background: 'var(--midnight-2)', border: '1px solid var(--border-mid)', borderRadius: 12, padding: '16px 18px', margin: '24px 0 10px' }}>
-          <div style={{ fontFamily: 'Archivo, sans-serif', fontSize: 15, fontWeight: 800, marginBottom: 6 }}>Co letí nad Salzburgem právě teď?</div>
-          <p style={{ ...S.p, marginBottom: 12 }}>
-            Otevřete živou mapu, přepněte oblast na Alpy a Itálii a uvidíte provoz nad Salzburgem
-            i nad celým alpským regionem — včetně výšky, rychlosti a fáze letu.
-          </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Link href="/radar" style={{ display: 'inline-block', background: 'var(--gold)', color: 'var(--cta-text)', fontFamily: 'Archivo, sans-serif', fontWeight: 800, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
-              Otevřít živou mapu
-            </Link>
-            <Link href="/letiste/praha" style={{ display: 'inline-block', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', fontFamily: 'Archivo, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', padding: '10px 18px', borderRadius: 10, textDecoration: 'none' }}>
-              Letiště Praha
-            </Link>
-          </div>
+        <h2 id="da-se-tu-najist-a-koukat-na-letadla">Dá se tu najíst a koukat na letadla?</h2>
+        <p>
+          V hale funguje pět podniků a dva z nich stojí za zmínku i kvůli výhledu.
+          <strong> Mayday Bar</strong> je ve druhém patře prosklené věže a okna vedou do výstavní haly,
+          takže sedíte nad historickými stroji. <strong>Threesixty Bar</strong> se dá dojít po úzké
+          lávce a má skleněnou podlahu, pod nohama tedy máte letadla a formule.
+        </p>
+        <p>
+          <strong>Restaurant Ikarus</strong> drží michelinskou hvězdu a vaří v neobvyklém režimu:
+          každý měsíc tu kuchyni přebírá jiný hostující šéfkuchař. Sem je potřeba rezervovat.
+          Na kávu a zákusek stačí přijít, k tomu je <strong>Carpe Diem Lounge-Café</strong>.
+        </p>
+
+        <h2 id="co-se-da-videt-na-letisti-salzburg">Co se dá vidět na letišti Salzburg?</h2>
+        <p>
+          Letiště W. A. Mozarta leží čtyři kilometry od centra a má dva terminály. Druhý z nich,
+          „amadeus“, vznikl kvůli nárazovému provozu: v zimě se tu v sobotu odbavují charterové lety
+          za sněhem. Pokud chcete Hangar-7 spojit s koukáním na skutečný provoz, zimní sobota je proto
+          nadějnější než všední den v květnu.
+        </p>
+        <p>
+          Co nad Salzburgem letí právě teď, uvidíte na <Link href="/radar">radaru letadel</Link>,
+          když přepnete oblast na Alpy a Itálii.
+        </p>
+
+        <h2 id="kdy-jet-aby-tam-nebylo-narvano">Kdy jet, aby tam nebylo narváno?</h2>
+        <p>
+          Zájem Čechů o Hangar-7 je podle dat Marketing Mineru jasně letní: v červenci se dotaz hledá
+          přibližně 1 500krát za měsíc, v listopadu kolem 450krát. Hala má přitom otevřeno celý rok a
+          v týdnu do deseti večer, takže nejklidnější je návštěva mimo letní špičku a spíš k večeru.
+        </p>
+        <p>
+          Jen pozor na protichůdné zájmy. Večer a mimo sezonu bývá klid, ale dopoledne v pracovní den
+          je větší šance, že letka bude doma. Vybrat si můžete jen jedno.
+        </p>
+
+        <h2 id="caste-otazky">Časté otázky</h2>
+        <div className={styles.faq}>
+          <h3>Platí se vstup?</h3>
+          <p>Do výstavní části ne. Restaurace a bary jsou běžně placené a do Ikaru se rezervuje.</p>
+
+          <h3>Jak dlouho tam být?</h3>
+          <p>Na projití sbírky stačí zhruba hodina. Kdo fotí, zůstane déle.</p>
+
+          <h3>Můžu přijít se skupinou?</h3>
+          <p>Ano, skupiny mají vstup také zdarma, ale musí se ohlásit dopředu.</p>
+
+          <h3>Uvidím konkrétní letadlo?</h3>
+          <p>Zaručit to nelze. Stroje létají a údržba je v nepřístupném Hangaru-8. Napište předem.</p>
+
+          <h3>Je to vhodné s dětmi?</h3>
+          <p>Prostory jsou bezbariérové a letadla jsou vidět zblízka. Hala je ale výstavní, ne herní.</p>
         </div>
 
         <AuthorCard />
 
         <RelatedReading
           items={[
-            {
-              href: '/blog/airbus-a380-praha-emirates',
-              eyebrow: 'Aktuální přehled',
-              title: 'Airbus A380 se má vrátit do Prahy',
-              description: 'Kdy má Emirates znovu nasadit největší dopravní letadlo na linku Praha–Dubaj.',
-            },
-            {
-              href: '/blog/jak-vysoko-letaji-letadla',
-              eyebrow: 'Jak to funguje',
-              title: 'Jak vysoko létají letadla?',
-              description: 'Obvyklé výšky, co znamená FL350 a jak převést letovou hladinu na metry.',
-            },
-            {
-              href: '/blog/jak-sledovat-let-podle-cisla',
-              eyebrow: 'Návod',
-              title: 'Sledování letů podle čísla',
-              description: 'Co zadat do mapy, když chcete najít konkrétní let, a proč se někdy nezobrazí.',
-            },
+            relatedCard('/blog/letiste-tivat'),
+            relatedCard('/blog/letiste-lipsko'),
+            relatedCard('/blog/jak-vysoko-letaji-letadla'),
           ]}
         />
 
         <SourcesBox
           sources={[
-            { label: 'Red Bull Hangar-7 — otevírací doba a časté dotazy', href: 'https://www.hangar-7.com/en/service-info/faqs' },
-            { label: 'Red Bull Hangar-7 — kontakt a doprava na místo', href: 'https://www.hangar-7.com/en/service-info/contact-directions' },
-            { label: 'Red Bull Hangar-7 — letka The Flying Bulls', href: 'https://www.hangar-7.com/en/museum/the-flying-bulls' },
-            { label: 'Salzburg.info — Hangar-7 mezi muzei ve Salzburgu', href: 'https://www.salzburg.info/en/sights/museums/hangar-7' },
-            { label: 'Letiště Salzburg — veřejná doprava na letiště', href: 'https://www.salzburg-airport.com/en/flights-arrival/arrival-to-the-airport/public-transportation' },
+            { label: 'Red Bull Hangar-7, časté dotazy: otevírací doba, vstup a skupiny', href: faq },
+            { label: 'Red Bull Hangar-7, kontakt a doprava na místo', href: doprava },
+            { label: 'Red Bull Hangar-7, letka The Flying Bulls', href: 'https://www.hangar-7.com/en/museum/the-flying-bulls' },
+            { label: 'Red Bull Hangar-7, Mayday Bar a Threesixty Bar', href: 'https://www.hangar-7.com/en/cocktailbar-salzburg' },
+            { label: 'Red Bull Hangar-7, Restaurant Ikarus', href: 'https://www.hangar-7.com/en/culinary/restaurant-ikarus' },
+            { label: 'Salzburg.info, Hangar-7 mezi muzei ve Salzburgu', href: 'https://www.salzburg.info/cs/informace/salzburg-a-z/hangar-7-aviation-museum_az_13103' },
+            { label: 'Letiště Salzburg, veřejná doprava na letiště', href: 'https://www.salzburg-airport.com/en/flights-arrival/arrival-to-the-airport/public-transportation' },
           ]}
-          note="Otevírací doba, vstup a doprava ověřeny 16. září 2026. Hala se zavírá kvůli soukromým akcím a letuschopné stroje bývají mimo halu, proto si termín před cestou potvrďte u pořadatele. Hledanost je údaj Marketing Mineru pro český trh, ne příslib návštěvnosti."
+          note="Údaje ověřeny 5. října 2026 z výsledků vyhledávání, které citují uvedené stránky; oficiální web se z našeho prostředí nedal otevřít přímo, proto mají otevírací doba a vstupné střední jistotu. Rešerše nenahrazuje osobní návštěvu. Hledanost je údaj Marketing Mineru pro český trh, ne příslib návštěvnosti."
         />
-      </div>
+      </article>
     </main>
   )
 }
