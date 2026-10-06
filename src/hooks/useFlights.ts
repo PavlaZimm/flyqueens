@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchFlights } from '@/lib/opensky'
 import type { Flight, FlightDataMeta } from '@/types/flight'
 import { POLL_INTERVAL_MS, MAX_BACKOFF_MS, REGION_CONFIGS } from '@/lib/constants'
+import { pollDelayAfterFailure } from '@/lib/pollBackoff'
 
 interface UseFlightsResult {
   flights: Flight[]
@@ -17,7 +18,6 @@ interface UseFlightsResult {
 
 const POLL_INTERVAL  = POLL_INTERVAL_MS
 const MAX_BACKOFF    = MAX_BACKOFF_MS
-const BACKOFF_FACTOR = 2
 
 export function useFlights(): UseFlightsResult {
   const [flights, setFlights] = useState<Flight[]>([])
@@ -28,6 +28,8 @@ export function useFlights(): UseFlightsResult {
   })
   const [region, setRegionState] = useState('europe')
   const backoffRef = useRef(POLL_INTERVAL)
+  const failuresRef = useRef(0)
+  const hasDataRef = useRef(false)
   const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
   const controllerRef = useRef<AbortController | null>(null)
   const regionRef  = useRef('europe')
@@ -60,6 +62,8 @@ export function useFlights(): UseFlightsResult {
       setDataMeta(meta)
       setError(null)
       backoffRef.current = POLL_INTERVAL
+      failuresRef.current = 0
+      hasDataRef.current = meta.fetchedAt != null
     } catch (err) {
       if (requestId !== requestIdRef.current) return
       if (err instanceof DOMException && err.name === 'AbortError') return
@@ -70,7 +74,13 @@ export function useFlights(): UseFlightsResult {
         status: previous.fetchedAt ? 'stale' : 'unavailable',
         message: msg,
       }))
-      backoffRef.current = Math.min(backoffRef.current * BACKOFF_FACTOR, MAX_BACKOFF)
+      failuresRef.current += 1
+      backoffRef.current = pollDelayAfterFailure({
+        failures: failuresRef.current,
+        hasData: hasDataRef.current,
+        base: POLL_INTERVAL,
+        max: MAX_BACKOFF,
+      })
     } finally {
       if (requestId !== requestIdRef.current || !mountedRef.current) return
       if (controllerRef.current === controller) controllerRef.current = null
@@ -92,6 +102,9 @@ export function useFlights(): UseFlightsResult {
     controllerRef.current = null
     setFlights([])
     setDataMeta({ status: 'unavailable', source: null, fetchedAt: null })
+    hasDataRef.current = false
+    failuresRef.current = 0
+    backoffRef.current = POLL_INTERVAL
     setLoading(true)
     if (timerRef.current) clearTimeout(timerRef.current)
     load()

@@ -4,6 +4,9 @@ import { REGION_CONFIGS } from '@/lib/constants'
 import { getOpenSkyToken } from '@/lib/openskyAuth'
 import type { AircraftType, FlightDataSource } from '@/types/flight'
 import { normalizeEmergency } from '@/lib/emergency'
+import {
+  UpstreamError, COOLDOWN_MESSAGE, cooldownMsFor, describeCauses, parseRetryAfterMs,
+} from '@/lib/upstreamCooldown'
 
 type SourceResult = {
   source: FlightDataSource
@@ -41,6 +44,8 @@ type FlightSummary = {
 
 const lastGoodSnapshots = new Map<string, CachedSnapshot>()
 const inFlightRequests = new Map<string, Promise<SourceResult>>()
+// Po selhání zdroje se na několik sekund nevolá znovu (viz upstreamCooldown.ts).
+const cooldowns = new Map<string, { until: number; causes: unknown[] }>()
 const LIVE_CACHE_MS = 10_000
 const MAX_STALE_MS = 5 * 60_000
 // ADS-B agregátory mohou ve výřezu krátce držet poslední známou pozici.
@@ -283,7 +288,9 @@ async function fetchAdsbLol(region: (typeof REGION_CONFIGS)[string]): Promise<So
       signal: AbortSignal.timeout(4500),
     },
   )
-  if (!response.ok) throw new Error(`adsb.lol HTTP ${response.status}`)
+  if (!response.ok) {
+    throw new UpstreamError(`adsb.lol HTTP ${response.status}`, response.status, parseRetryAfterMs(response.headers.get('retry-after')))
+  }
 
   const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
   const fetchedAt = unixSeconds(data.now)
@@ -319,7 +326,9 @@ async function fetchLicensedOpenSky(region: (typeof REGION_CONFIGS)[string]): Pr
       signal: AbortSignal.timeout(4500),
     },
   )
-  if (!response.ok) throw new Error(`OpenSky HTTP ${response.status}`)
+  if (!response.ok) {
+    throw new UpstreamError(`OpenSky HTTP ${response.status}`, response.status, parseRetryAfterMs(response.headers.get('retry-after')))
+  }
 
   const data = (await response.json()) as { states?: unknown[][]; time?: number }
   return {
@@ -348,7 +357,9 @@ async function fetchEnabledAirplanesLive(region: (typeof REGION_CONFIGS)[string]
       signal: AbortSignal.timeout(4500),
     },
   )
-  if (!response.ok) throw new Error(`airplanes.live HTTP ${response.status}`)
+  if (!response.ok) {
+    throw new UpstreamError(`airplanes.live HTTP ${response.status}`, response.status, parseRetryAfterMs(response.headers.get('retry-after')))
+  }
 
   const data = (await response.json()) as { ac?: Record<string, unknown>[]; now?: number }
   const fetchedAt = unixSeconds(data.now)
@@ -407,13 +418,24 @@ async function getLiveSnapshot(regionKey: string, region: (typeof REGION_CONFIGS
   const existing = inFlightRequests.get(regionKey)
   if (existing) return existing
 
+  // Zdroj právě selhal: nečekáme znovu na timeout a nezahlcujeme ho.
+  const cooling = cooldowns.get(regionKey)
+  if (cooling && Date.now() < cooling.until) {
+    throw new AggregateError(cooling.causes, COOLDOWN_MESSAGE)
+  }
+
   const request = Promise.any([
     fetchAdsbLol(region),
     fetchLicensedOpenSky(region),
     fetchEnabledAirplanesLive(region),
   ]).then((result) => {
     lastGoodSnapshots.set(regionKey, { ...result, cachedAt: Date.now() })
+    cooldowns.delete(regionKey)
     return result
+  }).catch((error: unknown) => {
+    const causes = error instanceof AggregateError ? error.errors : [error]
+    cooldowns.set(regionKey, { until: Date.now() + cooldownMsFor(causes), causes })
+    throw error
   }).finally(() => {
     inFlightRequests.delete(regionKey)
   })
@@ -444,7 +466,11 @@ export async function GET(req: NextRequest) {
     const result = await getLiveSnapshot(regionKey, region)
     return liveResponse(result, regionKey, region, summaryOnly, format)
   } catch (error) {
-    console.error(`[FlyQueens] All live flight sources failed for ${regionKey}`, error)
+    const causes = error instanceof AggregateError ? error.errors : [error]
+    // Při trvající přestávce stejnou chybu znovu nelogujeme, první selhání už v logu je.
+    if (!(error instanceof Error && error.message === COOLDOWN_MESSAGE)) {
+      console.error(`[FlyQueens] All live flight sources failed for ${regionKey}: ${describeCauses(causes)}`)
+    }
     const cached = lastGoodSnapshots.get(regionKey)
     if (cached && Date.now() - cached.cachedAt <= MAX_STALE_MS) {
       return NextResponse.json(
@@ -472,7 +498,7 @@ export async function GET(req: NextRequest) {
         code: 'LIVE_DATA_UNAVAILABLE',
         message: 'Živá data jsou momentálně nedostupná. Zkuste to prosím za chvíli.',
       },
-      { status: 503, headers: { 'Cache-Control': 'no-store', 'Retry-After': '15' } },
+      { status: 503, headers: { 'Cache-Control': 'no-store', 'Retry-After': '5' } },
     )
   }
 }

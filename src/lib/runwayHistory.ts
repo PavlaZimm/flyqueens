@@ -1,5 +1,6 @@
 import 'server-only'
 import { ensureSchema, getDb } from '@/lib/db'
+import { runwaySampleThrottle } from '@/lib/samplingThrottle'
 import type { RunwayInUseResponse } from '@/lib/runwayInUse'
 
 // Historie odhadu dráhy. Zapisuje se při dotazu na /api/runway-in-use,
@@ -15,17 +16,25 @@ export const MIN_SAMPLES_FOR_SUMMARY = 30
 export async function recordRunwayObservation(result: RunwayInUseResponse): Promise<void> {
   const sql = getDb()
   if (!sql) return
-  await ensureSchema(sql)
-  const primary = result.status === 'ok' ? result.ends[0]?.end ?? null : null
-  await sql`
-    INSERT INTO runway_observations (airport, status, primary_end, ends, aircraft_used, wind_dir, wind_kt)
-    SELECT ${result.airport}, ${result.status}, ${primary}, ${JSON.stringify(result.ends)}::jsonb,
-           ${result.aircraftUsed}, ${result.wind?.directionDeg ?? null}, ${result.wind?.speedKt ?? null}
-    WHERE NOT EXISTS (
-      SELECT 1 FROM runway_observations
-      WHERE airport = ${result.airport}
-        AND observed_at > now() - make_interval(mins => ${MIN_GAP_MINUTES})
-    )`
+  // Databázi se neptáme častěji než jednou za 14 minut na instanci (viz samplingThrottle.ts).
+  if (!runwaySampleThrottle.claim(result.airport)) return
+  try {
+    await ensureSchema(sql)
+    const primary = result.status === 'ok' ? result.ends[0]?.end ?? null : null
+    await sql`
+      INSERT INTO runway_observations (airport, status, primary_end, ends, aircraft_used, wind_dir, wind_kt)
+      SELECT ${result.airport}, ${result.status}, ${primary}, ${JSON.stringify(result.ends)}::jsonb,
+             ${result.aircraftUsed}, ${result.wind?.directionDeg ?? null}, ${result.wind?.speedKt ?? null}
+      WHERE NOT EXISTS (
+        SELECT 1 FROM runway_observations
+        WHERE airport = ${result.airport}
+          AND observed_at > now() - make_interval(mins => ${MIN_GAP_MINUTES})
+      )`
+  } catch (error) {
+    // Nepodařený zápis nesmí na čtrnáct minut zablokovat další pokus.
+    runwaySampleThrottle.release(result.airport)
+    throw error
+  }
 }
 
 export interface RunwayShare {

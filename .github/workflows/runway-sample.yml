@@ -5,13 +5,22 @@ name: Měření dráhy LKPR
 # endpoint každých 15 minut. Zápis do databáze hlídá sám endpoint: nejvýš jedno
 # měření za 15 minut na letiště, takže častější volání nic nezahltí.
 #
-# GitHub plánované úlohy zpožďuje a občas přeskočí, to nevadí. Odhad dráhy je
-# statistika z mnoha měření, ne přesný časový řad. Selhání úlohy pošle GitHub
-# e-mailem vlastníkovi repozitáře.
+# GitHub plánované úlohy při velké zátěži zpožďuje a může je zahodit. Dokumentace
+# proto doporučuje spouštět v jiných minutách hodiny, než jsou celé čtvrthodiny,
+# kdy se spouští nejvíc úloh. Původní plán `*/15` běžel 5.–6. 10. 2026 jen zhruba
+# každých šest hodin (3 spuštění za 12 hodin, jedno zrušené bez přidělení stroje),
+# proto jsou minuty zvolené mimo špičku. Spolehlivější spouštěč mimo GitHub
+# popisuje docs/mereni-drahy-spoustec.md.
+#
+# Odhad dráhy je statistika z mnoha měření, ne přesný časový řad, takže občasné
+# přeskočení nevadí. Častější volání databázi nezatíží: endpoint ji kontroluje
+# nejvýš jednou za 14 minut na instanci (src/lib/samplingThrottle.ts) a zápis
+# omezuje na jedno měření za 15 minut. Selhání úlohy pošle GitHub e-mailem
+# vlastníkovi repozitáře.
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions: {}

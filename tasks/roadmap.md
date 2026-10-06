@@ -8,11 +8,20 @@
 Databáze Neon „neon-citron-paddle“ (Free, Washington iad1) je od 24. 9. připojená k flyqueens-app, `DATABASE_URL` i `POSTGRES_URL` jsou nastavené a zápis historie dráhy funguje (ověřeno 14:12 a 20:06 UTC).
 
 ### Databáze a provoz
-- [ ] **Automatické měření dráhy každých 15 min** (GitHub Action volající `/api/runway-in-use?airport=LKPR`). Bez něj se historie plní jen při návštěvách, za 6 hodin přibylo jediné měření. Souhrn na `/letiste/praha` potřebuje 30 měření. Vercel Cron na Hobby umí jen 1× denně, proto GitHub Action. Připravit jako PR.
+- [x] GitHub Action pro měření dráhy je v main (PR #28), ale GitHub ji 5.–6. 10. spouštěl zhruba každých 6 hodin, ne každých 15 minut. 6. 10. přesunuta na minuty mimo špičku (7, 22, 37, 52) a endpoint dostal ochranu databáze před častým dotazováním (`src/lib/samplingThrottle.ts`). Podrobnosti a návod: `docs/mereni-drahy-spoustec.md`.
+- [ ] **Ověřit za 24–48 hodin**, jestli se úloha spouští aspoň co půl hodiny (`gh run list`), a jestli roste `samples` v `/api/runway-history?airport=LKPR`. Souhrn na `/letiste/praha` potřebuje 30 měření.
+- [ ] **Když GitHub dál nestačí:** externí hlídač (cron-job.org, UptimeRobot) volající `/api/runway-in-use?airport=LKPR` každých 15 minut. Registraci musí udělat Pavla. Vercel Cron na Hobby umí jen 1× denně.
 - [ ] **Rozhodnout o přesunu do Frankfurtu** (volitelné, přínos malý: živá data o 0,1–0,2 s rychlejší). Pokud ano, udělat dřív než automatické měření, dokud je databáze skoro prázdná. Postup: Storage → neon-citron-paddle → Disconnect; Create Database → Neon, Frankfurt eu-central-1, Auth vypnutý, Free, všechna 3 prostředí, prázdný prefix; Settings → Functions → Function Region fra1; Redeploy; ověřit; teprve pak smazat starou databázi.
 - [x] **Zápis do databáze nezahazovat potichu** (25. 9.): `console.error` v `/api/runway-in-use`, `airportBoardServer` i v `/api/runway-history`.
-- [ ] `/api/runway-history` doplnit o čas posledního měření (i nepovedeného), aby šel stav ověřit jednoznačně.
+- [x] `/api/runway-history` vrací `lastObservedAt` (PR #28).
 - [ ] Krátký návod v `docs/`: jak je databáze připojená, které proměnné web čte, jak ověřit funkčnost.
+
+### Radar: spolehlivost živých dat (6. 10. 2026)
+Zdroj adsb.lol občas odmítne dotaz (HTTP 429) nebo neodpoví včas, záložní zdroje jsou vypnuté. Od 12. 9. do 5. 10. 79 chybných odpovědí a 31 zasažených lidí, za posledních 24 hodin 10 odpovědí a 3 lidé. Klient si při chybě drží poslední obraz, nejhorší dopad má člověk, který radar otevře právě během výpadku.
+- [x] Server: po selhání zdroje krátká přestávka (2 s, při 429 nejméně 10 s a nejvíc 30 s podle `Retry-After`), aby se nečekalo znovu na timeout a zdroj se nezahlcoval (`src/lib/upstreamCooldown.ts`). Log má stručnou příčinu místo výpisu celé chyby.
+- [x] Klient: bez dat se po chybě zkouší po 3, 6, 12, 24 a pak každých 30 s. S daty beze změny (20, 40, 60 s) a poslední obraz zůstává (`src/lib/pollBackoff.ts`).
+- [ ] **Rozhodnutí: druhý zdroj dat.** Skutečné řešení 429 je záložní zdroj. `AIRPLANES_LIVE_ENABLED` a OpenSky jsou vypnuté kvůli licenci (komerční použití, partnerské odkazy na webu). Před zapnutím nutné písemně ověřit podmínky provozovatele. Kandidáty zjistit z jejich podmínek, nezapínat naslepo.
+- [ ] Zvážit kontakt na provozovatele adsb.lol, zda Vercel nesdílí IP s jinými službami, které limit vyčerpávají.
 
 ### Bezpečnost (review 24. 9.: nic kritického)
 - [ ] Zapnout 2FA na Vercelu, GitHubu a Neonu (pokud ještě není).
