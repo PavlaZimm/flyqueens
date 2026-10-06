@@ -5,6 +5,17 @@ import Script from 'next/script'
 
 // Version 3 adds Impact; earlier grants do not cover this additional provider.
 const KEY = 'fq-cookie-consent-v3'
+// Vlastní zařízení provozovatelky: adresa s ?interni=1 uloží značku, ?interni=0 ji smaže.
+// Analytics pak dostane traffic_type=internal a datový filtr „Internal Traffic" tyto události vyloučí.
+const INTERNAL_KEY = 'fq-internal'
+
+function syncInternalFlag() {
+  try {
+    const param = new URLSearchParams(window.location.search).get('interni')
+    if (param === '1') localStorage.setItem(INTERNAL_KEY, '1')
+    if (param === '0') localStorage.removeItem(INTERNAL_KEY)
+  } catch { /* Bez úložiště se značka jen neuloží. */ }
+}
 type Consent = 'granted' | 'denied' | null
 
 export function PrivacySettingsButton() {
@@ -21,6 +32,7 @@ export function CookieConsent() {
   const [editing, setEditing] = useState(false)
 
   useEffect(() => {
+    syncInternalFlag()
     let saved: string | null = null
     try {
       saved = localStorage.getItem(KEY)
@@ -75,7 +87,14 @@ export function CookieConsent() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-SMFS92YP8L');
+            var internal = false;
+            try {
+              var q = new URLSearchParams(location.search).get('interni');
+              if (q === '1') localStorage.setItem('fq-internal', '1');
+              if (q === '0') localStorage.removeItem('fq-internal');
+              internal = localStorage.getItem('fq-internal') === '1';
+            } catch (e) {}
+            gtag('config', 'G-SMFS92YP8L', internal ? { traffic_type: 'internal' } : {});
             (function () {
               // Měření appky: otevření z ikony na ploše (Android i iPhone)
               // a okamžik instalace (jen Chrome na Androidu a na počítači).
