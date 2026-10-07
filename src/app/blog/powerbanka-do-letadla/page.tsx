@@ -153,6 +153,7 @@ export default function PowerbankaDoLetadlaArticle() {
         <AuthorCard />
         <RelatedReading items={[
           { href: '/blog/prirucni-zavazadlo-ryanair', eyebrow: 'Zavazadla', title: 'Příruční zavazadlo Ryanair', description: 'Rozměry, váhy a co máte v ceně letenky.' },
+          { href: '/blog/prirucni-zavazadlo-do-letadla', eyebrow: 'Zavazadla', title: 'Příruční zavazadlo do letadla', description: 'Rozměry a váhy podle Ryanairu, Wizz Airu, easyJetu, Smartwings a Lufthansy.' },
           { href: '/letiste/praha', eyebrow: 'Před odletem', title: 'Letiště Praha', description: 'Odlety, přílety, doprava na letiště a parkování.' },
         ]} />
         <SourcesBox sources={[

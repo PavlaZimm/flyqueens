@@ -143,6 +143,7 @@ export default function PrirucniZavazadloRyanairArticle() {
 
         <AuthorCard />
         <RelatedReading items={[
+          { href: '/blog/prirucni-zavazadlo-do-letadla', eyebrow: 'Zavazadla', title: 'Příruční zavazadlo do letadla', description: 'Rozměry a váhy podle Ryanairu, Wizz Airu, easyJetu, Smartwings a Lufthansy.' },
           { href: '/letiste/praha', eyebrow: 'Před odletem', title: 'Letiště Praha', description: 'Odlety, přílety, doprava na letiště a parkování.' },
           { href: '/letiste/praha/ubytovani', eyebrow: 'Před odletem', title: 'Ubytování u letiště Praha', description: 'Kde přespat u terminálů a jak se dostat na ranní odlet.' },
         ]} />

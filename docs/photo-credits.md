@@ -122,3 +122,9 @@ Datum leteckých snímků vychází z názvů souborů, místo pořízení není
 | `powerbanka-do-letadla.webp` (1600 × 1191, 16 kB) | [Jacek Halicki, Wikimedia Commons](https://commons.wikimedia.org/wiki/File:2023_Powerbank_Green_Cell_PowerPlay_20_(2).jpg) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Powerbanka s porty USB a USB-C. Náhled článku, originál v `Fotografie/Powerbanka/`. |
 
 Druhý snímek v článku je již evidovaný `ryanair-737-nastup.webp` z vlastního archivu.
+| `letiste-treviso-wizz-air-odbavovaci-plocha.webp` (1600 × 640, 79 kB) | vlastní archiv FlyQueens, originál `20260525_144704.jpg` | vlastní fotografie | Wizz Air na odbavovací ploše letiště Treviso, 25. 5. 2026. Náhled článku. |
+| `letiste-treviso-ryanair-nastup.webp` (1600 × 1301, 135 kB) | vlastní archiv FlyQueens, originál `20260525_151038.jpg` | vlastní fotografie | Ryanair 737 při nástupu, schody AER TRE, 25. 5. 2026. |
+| `letiste-treviso-ryanair-pod-strechou.webp` (1600 × 900, 143 kB) | vlastní archiv FlyQueens, originál `20260525_144652.jpg` | vlastní fotografie | Ryanair 737 na stání zpod střechy terminálu, 25. 5. 2026. |
+| `letiste-zakynthos-terminal.webp` (1600 × 600, 60 kB) | vlastní archiv FlyQueens, originál `IMG_20180608_150433.jpg` | vlastní fotografie | Terminál letiště Zakynthos z odbavovací plochy, 8. 6. 2018 (před přestavbou). Náhled článku. |
+| `letiste-zakynthos-airbus-odbavovaci-plocha.webp` (1600 × 701, 58 kB) | vlastní archiv FlyQueens, originál `IMG_20180615_145424_1.jpg` | vlastní fotografie | Airbus v barvách Austrian Airlines na odbavovací ploše letiště Zakynthos, 15. 6. 2018. |
+| `wizz-air-airbus-treviso.webp` (1600 × 900, 78 kB) | vlastní archiv FlyQueens, originál `20260525_151005.jpg` | vlastní fotografie | Airbus Wizz Air na letišti Treviso, 25. 5. 2026, výřez. Použito u článku Wizz Air Praha–Poprad (ne z této linky, v popisku přiznáno). |
