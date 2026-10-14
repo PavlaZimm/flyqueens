@@ -18,6 +18,16 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'flightradar24-zdarma-cesky',
+    title: 'Flightradar24 zdarma a česky: co je v základu a kolik stojí',
+    excerpt: 'Co umí Flightradar24 zdarma a co jen v placených tarifech: historie letů, reklamy, ceny a čeština. A česká mapa letadel zdarma bez registrace.',
+    date: '2026-10-14', updatedAt: '2026-10-14', dateLabel: '14. října 2026',
+    tag: 'Radar · Návody', readingTime: '5 min čtení',
+    image: '/blog/radar-letadel-wizz-air-nos.webp',
+    imageAlt: 'Airbus Wizz Air zepředu na odbavovací ploše, vlevo za ním ocas letadla Ryanair',
+    imageWidth: 1600, imageHeight: 900, imagePosition: 'center 55%',
+  },
+  {
     slug: 'wizz-air-praha-poprad',
     title: 'Wizz Air z Prahy do Popradu: lety od 25. října 2026',
     excerpt: 'Wizz Air začne 25. října létat z Prahy do Popradu-Tatry třikrát týdně. Dny a časy letů, rozpor v cenách mezi zdroji, zavazadla a doprava z letiště.',
