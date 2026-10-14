@@ -12,11 +12,11 @@ import { socialMetadata } from '@/lib/socialMetadata'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Sledování letů online: živá mapa letadel | FlyQueens',
+  title: 'Sledování letů online zdarma: mapa letadel | FlyQueens',
   description: 'Sledování letů online zdarma na živé mapě letadel. Zjistěte dostupnou polohu, výšku, rychlost a trasu ve vybraných oblastech Evropy.',
   alternates: { canonical: 'https://www.flyqueens.cz' },
   ...socialMetadata({
-    title: 'Sledování letů online: živá mapa letadel | FlyQueens',
+    title: 'Sledování letů online zdarma: mapa letadel | FlyQueens',
     description: 'Zjistěte, co vám právě letí nad hlavou. Poloha, výška, rychlost a dostupná trasa na živé mapě letadel.',
     url: 'https://www.flyqueens.cz',
   }),
@@ -89,7 +89,7 @@ export default function HomePage() {
               <div className={styles.heroCopy}>
                 <LiveFlightCount className={styles.liveFlightCount} dotClassName={styles.liveDot} />
                 <h1>
-                  Sledování letů online: víš, co ti letí <span>nad hlavou?</span>
+                  Sledování letů online zdarma: víš, co ti letí <span>nad hlavou?</span>
                 </h1>
                 <p>
                   Najdi letadlo nad sebou a zjisti jeho výšku, rychlost, směr i dostupnou trasu.
