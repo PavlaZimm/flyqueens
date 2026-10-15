@@ -107,7 +107,9 @@ export function RadarInfo() {
           <h2 id="odkud-jsou-polohy">Odkud jsou polohy a proč nějaké letadlo chybí</h2>
           <p>
             Letadlo s ADS-B vysílá jednou za sekundu polohu (obvykle z GPS), výšku, rychlost vůči zemi a další údaje. Vysílání není šifrované,
-            takže ho zachytí každý, kdo má přijímač. FlyQueens čte data z projektu ADSB.lol, který skládá signály z přijímačů
+            takže ho zachytí každý, kdo má přijímač. FlyQueens čte data z projektu{' '}
+            <a href="https://www.adsb.lol/">ADSB.lol</a> (licence{' '}
+            <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>), který skládá signály z přijímačů
             dobrovolníků. Který zdroj zrovna běží, ukazuje řádek „Zdroj“ v postranním panelu.
           </p>
           <p>

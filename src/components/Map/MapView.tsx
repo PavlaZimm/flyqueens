@@ -250,6 +250,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
 
       L.control.zoom({ position: 'bottomright' }).addTo(map)
       map.attributionControl.setPrefix(false)
+      // Licence ODbL vyžaduje uvést zdroj poloh přímo u zobrazených dat.
+      map.attributionControl.addAttribution('Letadla: <a href="https://www.adsb.lol/" target="_blank" rel="noopener noreferrer">ADSB.lol</a> (<a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">ODbL</a>)')
 
       // Rasterový podklad se načítá přímo přes Leaflet. Oproti předchozí
       // MapLibre vrstvě nevyžaduje další velký JS bundle ani WebGL a názvy měst
@@ -980,6 +982,8 @@ export function MapView({ flights, selectedFlight, onFlightSelect, theme, search
           filter: invert(0.9) hue-rotate(180deg) brightness(1.02) saturate(0.68) contrast(0.94);
         }
         .leaflet-control-attribution {
+          /* Nad spodním stavovým řádkem (UTC, oblast, počet letů), jinak by uvedení zdrojů nebylo vidět. */
+          margin-bottom: 36px !important;
           max-width: min(82vw, 560px);
           font-size: 8px !important;
           line-height: 1.25 !important;
