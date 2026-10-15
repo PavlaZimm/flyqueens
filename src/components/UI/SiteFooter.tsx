@@ -32,6 +32,7 @@ export function SiteFooter() {
             <Link href="/letiste/pardubice" style={link}>Pardubice (PED)</Link>
             <Link href="/letiste/karlovy-vary" style={link}>Karlovy Vary (KLV)</Link>
             <Link href="/letiste/ceske-budejovice" style={link}>České Budějovice (JCL)</Link>
+            <Link href="/letiste/praha/odlety" style={link}>Odlety a přílety Praha</Link>
             <Link href="/letiste/praha/parkovani" style={link}>Parkování u letiště Praha</Link>
           </div>
 

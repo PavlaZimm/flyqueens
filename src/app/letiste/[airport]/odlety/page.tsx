@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: AirportFlightsPageProps): Pro
   if (!airport) return {}
 
   const title = `Odlety a přílety ${airport.city}: letová tabule`
-  const description = `Přehled odletů a příletů letiště ${airport.city} (${airport.iata}), dostupné časy, stav letu, terminál a gate. Vždy s odkazem na oficiální tabuli letiště.`
+  const description = `Odlety a přílety letiště ${airport.city} (${airport.iata}) a sledování letů: časy, stav letu, terminál a gate. Vždy s odkazem na oficiální tabuli letiště.`
   const url = `https://www.flyqueens.cz/letiste/${airport.slug}/odlety`
   return {
     title,
@@ -94,6 +94,14 @@ export default async function AirportFlightsPage({ params }: AirportFlightsPageP
           <h2 style={heading}>Přílety {airport.city}</h2>
           <p style={paragraph}>
             Přílety najdete na druhé záložce tabule, nebo je otevřete přímo odkazem <a href="#prilety" style={{ color: 'var(--gold)' }}>přílety na letiště {airport.city}</a>. Když jedete někoho vyzvednout, sledujte revidovaný čas přistání a výdejní pás, pokud ho zdroj uvádí. Od přistání do příchodu do haly obvykle nějakou dobu trvá výdej zavazadel a u letů mimo schengenský prostor i pasová kontrola.
+          </p>
+
+          <h2 style={heading}>Sledování letů {airport.city}</h2>
+          <p style={paragraph}>
+            Když chcete sledovat konkrétní let z letiště {airport.city} nebo na něj, najděte ho v tabuli podle čísla letu a klikněte na odkaz
+            „Na mapě“, pokud ho let má. Let podle čísla z letenky a data odletu vyhledáte i na <Link href="/" style={{ color: 'var(--gold)' }}>hlavní stránce</Link>,
+            letadlo ve vzduchu podle volacího znaku nebo registrace na <Link href="/radar" style={{ color: 'var(--gold)' }}>leteckém radaru</Link>.
+            Proč se číslo z letenky liší od volacího znaku, vysvětluje <Link href="/blog/jak-sledovat-let-podle-cisla" style={{ color: 'var(--gold)' }}>návod ke sledování letu podle čísla</Link>.
           </p>
 
           <h2 style={heading}>Která informace je rozhodující</h2>
