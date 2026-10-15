@@ -125,6 +125,8 @@ export default function A380PrahaArticle() {
           ]}
         />
 
+        <figure className={styles.photo}><Image src="/blog/airbus-a380-emirates-praha-2026-10-14.webp" alt="Airbus A380 Emirates pojíždí po letišti Praha, v pozadí nákladní Boeing 747 Fly Meta" width={1600} height={900} sizes="(max-width: 800px) calc(100vw - 36px), 760px" /><figcaption>Airbus A380 Emirates při pojíždění na letišti Praha, v pozadí nákladní Boeing 747 Fly Meta u terminálu Skyport. Foto: Pavla Zimmermannová / FlyQueens, 14. října 2026, 16:21.</figcaption></figure>
+
         <ArticleContents items={[
           { id: 'letovy-rad-a380-prahadubaj-od-rijna-2026', label: "Letový řád A380 Praha–Dubaj od října 2026" },
           { id: 'co-se-na-prazske-lince-zmenilo-v-roce', label: "Co se na pražské lince změnilo v roce 2026" },
