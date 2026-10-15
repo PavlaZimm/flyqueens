@@ -43,3 +43,8 @@ Dopravní letadlo letí kolem 900 km/h, tedy 250 m/s. Za 30 s ujede 7 500 m (7,5
 - Evropské povinnosti ADS-B Out (data jsme nečetli u evropského primárního zdroje, FAA je uvádí jen jako cizí údaj).
 - Zmínka o ATC poslechu (v kódu je za vypnutým příznakem).
 - Pozice a návštěvnost z Search Console jako sliby.
+
+## Doplněno 15. 10. 2026: sekce Vojenská letadla
+- Filtr „vojenská“ podle příznaku v databázi letadel: vlastní kód, popsáno už v RadarInfo (filtry).
+- „Část vojenských strojů ADS-B nevysílá“: VTM.cz, Jakub Čížek, 11. 5. 2026 (vojenská letadla se často dají zachytit jen přes MLAT, ne přes ADS-B).
+- Fráze „letecký radar“ doplněna do titulku, H1 a úvodu kvůli poptávce (MM: letecký radar 4 800, letecky radar 3 200), viz docs/keyword-mapa-sledovani-letu-2026-10-15.md.

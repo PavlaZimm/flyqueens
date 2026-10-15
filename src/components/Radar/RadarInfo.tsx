@@ -58,7 +58,7 @@ export function RadarInfo() {
       <div style={{ background: 'var(--midnight)', color: 'var(--text-primary)', fontFamily: 'var(--font-ibm-plex-sans), sans-serif' }}>
         <section id="jak-radar-funguje" className={styles.article} style={{ paddingTop: 48 }} aria-label="Jak radar letadel funguje">
           <p className={styles.lead} style={{ marginTop: 0 }}>
-            Radar ukazuje letadla, která vysílají svou polohu přes ADS-B, tedy systém, kterým letadlo samo oznamuje, kde je.
+            Letecký radar FlyQueens ukazuje letadla, která vysílají svou polohu přes ADS-B, tedy systém, kterým letadlo samo oznamuje, kde je.
             Začíná nad Českem a okolím, v nabídce oblastí je dalších sedm částí Evropy, od Britských ostrovů po Východní Evropu.
           </p>
 
@@ -95,6 +95,13 @@ export function RadarInfo() {
           <p>
             Radar je zdarma a nevyžaduje registraci. Analytiku a partnerské skripty spouštíme až po vašem souhlasu, radar funguje
             i bez něj.
+          </p>
+
+          <h2 id="vojenska-letadla">Vojenská letadla na radaru</h2>
+          <p>
+            Filtr „vojenská“ ukáže vojenská letadla, která právě vysílají ADS-B a v databázi letadel mají vojenský příznak.
+            Úplný vojenský letecký radar to není. Část vojenských strojů ADS-B nevysílá a na mapě pak chybí. Stroj bez vojenského příznaku v databázi zase uvidíte mezi ostatními letadly.
+            Co mapa ukáže, je tedy jen ta část vojenského provozu, která se sama ohlašuje.
           </p>
 
           <h2 id="odkud-jsou-polohy">Odkud jsou polohy a proč nějaké letadlo chybí</h2>

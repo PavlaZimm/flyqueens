@@ -6,11 +6,11 @@ import { RadarInfo } from '@/components/Radar/RadarInfo'
 import 'leaflet/dist/leaflet.css'
 
 export const metadata: Metadata = {
-  title: 'Radar letadel online zdarma: živá mapa letů | FlyQueens',
-  description: 'Radar letadel online zdarma: mapa letů nad Českem a Evropou se obnovuje každých 10 sekund. Najděte let podle volacího znaku, registrace nebo ICAO adresy.',
+  title: 'Letecký radar online zdarma: živá mapa letadel | FlyQueens',
+  description: 'Letecký radar a radar letadel online zdarma: mapa nad Českem a Evropou se obnovuje každých 10 sekund. Najděte let podle volacího znaku nebo registrace.',
   alternates: { canonical: 'https://www.flyqueens.cz/radar' },
   ...socialMetadata({
-    title: 'Radar letadel online zdarma: živá mapa letů | FlyQueens',
+    title: 'Letecký radar online zdarma: živá mapa letadel | FlyQueens',
     description: 'Sledujte dostupná ADS-B data o letadlech na přehledné interaktivní mapě Evropy.',
     url: 'https://www.flyqueens.cz/radar',
   }),
